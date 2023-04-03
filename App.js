@@ -20,13 +20,14 @@ import Setting from './src/screens/Stream/Setting/Setting';
 import { Store } from './src/redux/store';
 import PlayBack from './src/screens/Playback/Playback';
 import Notification from './src/screens/Notification';
+import Map from './src/screens/Map/Map';
 
 const Stack = createStackNavigator()
 export default function App() {
   return (
     <Provider store={Store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName='Wellcom' screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName='Map' screenOptions={{ headerShown: false }}>
           <Stack.Screen name='Login' component={Login} />
           <Stack.Screen name='Wellcom' component={Wellcome} />
           <Stack.Screen name="Home" component={MainContainer} />
@@ -40,6 +41,7 @@ export default function App() {
           <Stack.Screen name="Detail" component={Detail} />
           <Stack.Screen name="PlayBack" component={PlayBack} />
           <Stack.Screen name="Notification" component={Notification} />
+          <Stack.Screen name="Map" component={Map} />
           {/* <Stack.Screen name="Stream" component={Stream}/> */}
           {/* <Stack.Screen name="Forgot" component={Forgot}/> */}
         </Stack.Navigator>
