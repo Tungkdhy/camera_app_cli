@@ -1,32 +1,28 @@
 
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import Header from '../../components/Header/Header';
-import { ChartIcon,SearchIcon } from '../../components/Icons/Index';
-import Navigation from '../../navigation/Navigation';
-import { useSelector,useDispatch } from 'react-redux';
-import { setNameCamera } from '../../redux/actions/cameraAction';
 import { style } from './styles';
+import CountCamera from './CountCamera';
+import DonutChart from './DonutChart';
+import LineChartService from './LineChart';
 
-export default function Home({navigation}) {
-  const camera = useSelector(state=>state.useReducer)
-  const dispatch = useDispatch()
-  console.log(camera);
+
+export default function Home({ navigation }) {
+
   return (
-   <>
-     <Header title={"Thống kê"}/>
-     <View style={style.container}>
-      <TextInput
-        placeholder='Nhập'
-        value={camera.name}
-        onChangeText={(text)=> dispatch(setNameCamera(text))}
-      />
-      
-      <Text>{camera.name} Open up Home.js to start working on your Home! hello tran tung</Text>
-      {/* <StatusBar style={style.auto} /> */}
-      <ChartIcon/>
-    </View>
-    {/* <Navigation navigation={navigation}/> */}
-   </>
+    <>
+      <Header title={"Thống kê"} navigation={navigation} />
+      <View style={style.container}>
+        <ScrollView>
+          <CountCamera />
+          <DonutChart title={'Tổng số Camera theo nhóm'} type={'group'} />
+          <DonutChart title={'Tổng số Camera theo địa điểm'} type={'warehouse'} />
+          <LineChartService type={'Phát hiện chuyển động'} />
+          <LineChartService type={'Nhận diện người'} />
+          <LineChartService type={'Nhận diện khuôn mặt'} />
+        </ScrollView>
+      </View>
+    </>
   );
 }
 

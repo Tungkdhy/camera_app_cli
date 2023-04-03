@@ -1,16 +1,16 @@
 import React from 'react';
-import {View, Pressable, Text} from 'react-native';
-import {Back, Edit} from '../../../components/Icons/Index';
-import {styles} from './styles';
+import { View, Pressable, Text } from 'react-native';
+import { Back, Edit } from '../../../components/Icons/Index';
+import { styles } from './styles';
 
-const Detail = ({navigation}) => {
+const Detail = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Pressable 
-           onPress={() => {
+        <Pressable
+          onPress={() => {
             navigation.navigate('Home');
-          }}>  
+          }}>
 
           <Back />
         </Pressable>
