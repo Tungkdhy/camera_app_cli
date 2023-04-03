@@ -19,30 +19,32 @@ import { Provider } from 'react-redux';
 import Setting from './src/screens/Stream/Setting/Setting';
 import { Store } from './src/redux/store';
 import PlayBack from './src/screens/Playback/Playback';
+import Notification from './src/screens/Notification';
 
 const Stack = createStackNavigator()
 export default function App() {
   return (
-   <Provider store={Store}>
-     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Login' screenOptions={{headerShown:false}}>
-        <Stack.Screen name='Login' component={Login}/>
-        <Stack.Screen name='Wellcom' component={Wellcome}/>
-        <Stack.Screen name="Home" component={MainContainer}/>
-        <Stack.Screen name="Forgot" component={Forgot}/>
-        <Stack.Screen name="Register" component={Register}/>
-        <Stack.Screen name="ChangePassword" component={ChangePassword}/>
-        <Stack.Screen name="CodeVerify" component={CodeVerify}/>
-        <Stack.Screen name="Success" component={Success}/>
-        <Stack.Screen name="Live" component={Live}/>
-        <Stack.Screen name="Setting" component={Setting}/>
-        <Stack.Screen name="Detail" component={Detail}/>
-        <Stack.Screen name="PlayBack" component={PlayBack}/>
-        {/* <Stack.Screen name="Stream" component={Stream}/> */}
-        {/* <Stack.Screen name="Forgot" component={Forgot}/> */}
-      </Stack.Navigator>
-    </NavigationContainer>
-   </Provider>
+    <Provider store={Store}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName='Wellcom' screenOptions={{ headerShown: false }}>
+          <Stack.Screen name='Login' component={Login} />
+          <Stack.Screen name='Wellcom' component={Wellcome} />
+          <Stack.Screen name="Home" component={MainContainer} />
+          <Stack.Screen name="Forgot" component={Forgot} />
+          <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="ChangePassword" component={ChangePassword} />
+          <Stack.Screen name="CodeVerify" component={CodeVerify} />
+          <Stack.Screen name="Success" component={Success} />
+          <Stack.Screen name="Live" component={Live} />
+          <Stack.Screen name="Setting" component={Setting} />
+          <Stack.Screen name="Detail" component={Detail} />
+          <Stack.Screen name="PlayBack" component={PlayBack} />
+          <Stack.Screen name="Notification" component={Notification} />
+          {/* <Stack.Screen name="Stream" component={Stream}/> */}
+          {/* <Stack.Screen name="Forgot" component={Forgot}/> */}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
@@ -52,9 +54,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    
+
   },
-  auto:{
-    
+  auto: {
+
   }
 });
