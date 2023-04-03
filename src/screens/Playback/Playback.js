@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, Pressable, FlatList, Image} from 'react-native';
-import {Back, SearchIcon} from '../../components/Icons/Index';
+import {Back, SearchIcon, PlayBackDownIcon} from '../../components/Icons/Index';
 import {styles} from './styles';
 import DatePicker from 'react-native-date-picker';
 import {useDispatch, useSelector} from 'react-redux';
@@ -8,6 +8,7 @@ import {
   getListPlayBack as play,
   setDay,
   setTime,
+  setTimeEnd,
 } from '../../redux/actions/playBackAction';
 import axiosClient from '../../services/axiosClient';
 import {formatDDMMYY, formatHour, formatTimehp} from '../../utils';
@@ -16,6 +17,7 @@ export default function PlayBack({navigation, route}) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
+  const [open3, setOpen3] = useState(false);
   const [cameraActive, setCameraActive] = useState();
   const [camId, setCamId] = useState();
   const playback = useSelector(state => state.playBackReducer);
@@ -30,10 +32,8 @@ export default function PlayBack({navigation, route}) {
             camera_code: item.CODE,
           };
         });
-        const day =
-          playback.filter.day === 'All' ? {} : {day: playback.filter.day};
-        const time =
-          playback.filter.time === 'ALL' ? {} : {time: playback.filter.time};
+        const day = {day: playback.filter.day};
+        const time = {time: playback.filter.time};
         const res = await axiosClient.get(
           'camPlayback/get-list-cam-playback/',
           {
@@ -44,7 +44,6 @@ export default function PlayBack({navigation, route}) {
             },
           },
         );
-        console.log(res.data);
         const playbacks = res.data.map(item => {
           return {
             code: item.camera_code,
@@ -68,7 +67,6 @@ export default function PlayBack({navigation, route}) {
     });
     setCameraActive(camActive);
   }, [playback.playBacks, camId]);
-  console.log(cameraActive);
   return (
     <View style={styles.container}>
       <DatePicker
@@ -95,19 +93,29 @@ export default function PlayBack({navigation, route}) {
           dispatch(setTime(formatHour(date)));
         }}
         onCancel={() => {
-          setOpen2(false);
+          setOpen3(false);
+        }}
+      />
+      <DatePicker
+        modal
+        mode="time"
+        open={open3}
+        date={new Date()}
+        onConfirm={date => {
+          setOpen3(false);
+          dispatch(setTimeEnd(formatHour(date)));
+        }}
+        onCancel={() => {
+          setOpen3(false);
         }}
       />
       <View style={styles.header}>
         <Pressable
           onPress={() => {
-            dispatch(setDay('All'));
-            dispatch(setTime('All'));
-            navigation.navigate('Playback', {
-              name: 'Playback',
-            });
-            // dispatch(getPathStream([]));
-            // navigation.navigate('Stream');
+            dispatch(setDay(formatDDMMYY(new Date())));
+            dispatch(setTime('00:00'));
+            dispatch(setTimeEnd('24:00'));
+            navigation.navigate('Playback');
           }}>
           <Back />
         </Pressable>
@@ -118,25 +126,28 @@ export default function PlayBack({navigation, route}) {
       </View>
       <View style={styles.filter}>
         <Pressable onPress={() => setOpen(true)} style={styles.btnFilter}>
-          <Text>
-            {playback.filter.day === 'All'
-              ? 'Tất cả ngày'
-              : playback.filter.day}
-          </Text>
+          <View style={styles.textContent}>
+            <Text>{playback.filter.day}</Text>
+            <View>
+              <PlayBackDownIcon />
+            </View>
+          </View>
         </Pressable>
         <Pressable onPress={() => setOpen2(true)} style={styles.btnFilter}>
-          <Text>
-            {playback.filter.time === 'All'
-              ? 'Tất cả thời gian'
-              : playback.filter.time}
-          </Text>
+          <View style={styles.textContent}>
+            <Text>{playback.filter.time}</Text>
+            <View>
+              <PlayBackDownIcon />
+            </View>
+          </View>
         </Pressable>
-        <Pressable onPress={() => setOpen2(true)} style={styles.btnFilter}>
-          <Text>
-            {playback.filter.time === 'All'
-              ? 'Tất cả thời gian'
-              : playback.filter.time}
-          </Text>
+        <Pressable onPress={() => setOpen3(true)} style={styles.btnFilter}>
+          <View style={styles.textContent}>
+            <Text>{playback.filter.timeEnd}</Text>
+            <View>
+              <PlayBackDownIcon />
+            </View>
+          </View>
         </Pressable>
       </View>
       <VideoCamera

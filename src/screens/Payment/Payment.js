@@ -10,7 +10,6 @@ export default function Payment() {
         <Text>
           Open up Payment.js to start working on your Payment! hello tran tung
         </Text>
-        <StatusBar style={styles.auto} />
       </View>
     </>
   );

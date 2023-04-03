@@ -55,6 +55,9 @@ export default function Stream({navigation, ...props}) {
       cam:camera.camera ,
     })
   };
+  const handleNavigateSmart = (it,item)=>{
+    navigation.navigate("Smart")
+  }
   const handleShowCamera = code => {
     if (code === camera.wareCode) {
       dispatch(setWareHouseCode(''));
@@ -200,7 +203,7 @@ export default function Stream({navigation, ...props}) {
     <>
       <Header
         title={
-          props.route.name === 'Stream' ? 'Xem trực tiếp' : 'Xem lại Camera'
+          props.route.name === 'Stream' ?  'Xem trực tiếp'  :  props.route.name === 'Smart'?'Cảnh báo thông minh':'Xem lại Camera'
         }
       />
       <Modal

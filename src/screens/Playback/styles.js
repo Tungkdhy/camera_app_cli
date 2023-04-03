@@ -26,7 +26,6 @@ export const styles = StyleSheet.create({
         flex:1,
         backgroundColor:"#fff",
         padding:12,
-        marginTop:10,
         flexDirection:"column",
         paddingTop:0
     },
@@ -67,19 +66,30 @@ export const styles = StyleSheet.create({
     filter:{
         flexDirection:"row",
         backgroundColor:"#fff",
-        paddingTop:8,
-        paddingBottom:8,
-        gap:12,
+        justifyContent:"center",
+        gap:16,
         justifyContent:"space-between",
         display:"flex",
     },
     btnFilter:{
-        padding:8,
+        padding:6,
         paddingLeft:18,
         paddingRight:18,
-        backgroundColor:"rgba(0, 0, 0, 0.03)",
+        backgroundColor:"#FFFFFF",
         borderRadius:4,
         display:"flex",
+        alignItems:"center",
+        // flex:1,
+        borderColor:"rgba(0, 0, 0, 0.2)",
+        borderWidth:1,
+        justifyContent:"center",
+        // flexDirection:"row"
+        
+    },
+    textContent:{
+        display:"flex",
+        flexDirection:"row",
+        gap:8,
         alignItems:"center"
     }
 })

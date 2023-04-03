@@ -1,9 +1,11 @@
-import {GET_LIST_PLAYBACK, SET_DAY, SET_TIME,SET_FULL_SCREEN} from '../actions/playBackAction';
+import {GET_LIST_PLAYBACK, SET_DAY, SET_TIME,SET_FULL_SCREEN,SET_TIME_END} from '../actions/playBackAction';
+import { formatDDMMYY } from '../../utils';
 const initialState = {
   playBacks: [],
   filter: {
-    day: 'All',
-    time: 'All',
+    day: formatDDMMYY(new Date),
+    time: '00:00',
+    timeEnd:'23:59'
   },
   isFullScreen:false
 };
@@ -19,6 +21,10 @@ const playBackReducer = (state = initialState, action) => {
       return {...state, filter: {
         ...state.filter,time:action.payload
       }};
+      case SET_TIME_END:
+        return {...state, filter: {
+          ...state.filter,timeEnd:action.payload
+        }};
       case SET_FULL_SCREEN:
       return {...state, isFullScreen:!state.isFullScreen};
     default:

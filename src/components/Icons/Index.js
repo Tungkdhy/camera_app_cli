@@ -4,6 +4,11 @@ export {default as CameraActiveIcon} from './BottomBar/CameraActiveIcon'
 export {default as ChartIcon} from './BottomBar/ChartIcon'
 export {default as PaymentIcon} from './BottomBar/PaymentIcon'
 export {default as YoutubeIcon} from './BottomBar/YoutubeIcon'
+export {default as CameraIcon} from './BottomBar/CameraIcon'
+export {default as SmartIcon} from './BottomBar/SmartIcon'
+export {default as YoutubeIconActive} from './BottomBar/YoutubeIconActive'
+export {default as MapIconActive} from './BottomBar/MapIconActive'
+export {default as ChartIconActive} from './BottomBar/ChartIconActive'
 
 //icon Header screen
 export {default as SearchIcon} from './HeaderIcon/SearchIcon'
@@ -43,3 +48,4 @@ export {default as Edit} from './Info/Edit'
 
 //icon screen playback
 export {default as BackIcon2} from './PlayBack/BackIcon'
+export {default as PlayBackDownIcon} from './PlayBack/PlayBackDownIcon'

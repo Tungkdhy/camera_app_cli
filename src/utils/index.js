@@ -33,3 +33,8 @@ export const formatHour = (date) => {
   const minute = dateA.getMinutes() < 10 ? '0' + dateA.getMinutes() : dateA.getMinutes()
   return (hour + ':' + minute)
 }
+export const compareTime = (start,end)=>{
+  if(start.split(":")[0]){
+    
+  }
+}
