@@ -16,7 +16,7 @@ const rootReducer = combineReducers({
   wareHouseReducer,
   playBackReducer,
   notificationReducer,
-  userReducer
+  userReducer,
   reportReducer
 });
 
