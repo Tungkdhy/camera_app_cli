@@ -1,12 +1,11 @@
 import { StyleSheet } from "react-native"
-export const style = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
+    height: '100%',
+    width: '100%',
     position: 'relative'
   },
-  box_item: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    height: 500,
-  }
-})
+  map: {
+    flex: 1
+  },
+});

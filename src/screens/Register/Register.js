@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   TouchableHighlight,
@@ -11,7 +11,7 @@ import {
   ScrollView,
 } from 'react-native';
 import axios from 'axios';
-import {isValidatePassword} from '../../utils';
+import { isValidatePassword } from '../../utils';
 import {
   Logo,
   BackIcon,
@@ -19,12 +19,14 @@ import {
   UserIcon,
   EyeIcon,
 } from '../../components/Icons/Index';
-import {isValidatorName, isValidatorEmail} from '../../utils';
+import { isValidatorName, isValidatorEmail } from '../../utils';
 import axiosClient from '../../services/axiosClient';
-import {styles} from './styles';
+import { styles } from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Picker } from '@react-native-picker/picker';
 
-const Register = ({navigation}) => {
+const Register = ({ navigation }) => {
+  const [listCompany, setListCompany] = useState([])
   const [register, setRegister] = useState({
     name: '',
     email: '',
@@ -44,7 +46,7 @@ const Register = ({navigation}) => {
           //  username: "string",
           password: register.password,
           email: register.email,
-          company_code: register.company,
+          company_code: register.company === 'All' ? '' : register.company,
           usertype_code: '300920220005',
         });
         if (res) {
@@ -62,6 +64,14 @@ const Register = ({navigation}) => {
       Alert.alert('Đăng ký không thành công');
     }
   };
+
+  useEffect(() => {
+    async function getListCompany() {
+      const res = await axiosClient.get('company/get-list-company/')
+      setListCompany(res)
+    }
+    getListCompany()
+  }, [])
   return (
     <ImageBackground
       style={styles.container}
@@ -79,13 +89,13 @@ const Register = ({navigation}) => {
         <View style={styles.contentForm}>
           <View style={styles.formLogin}>
             <Text style={styles.header}>Đăng ký tài khoản</Text>
-            <ScrollView style={{height:560,paddingBottom:12}}>
+            <ScrollView style={{ height: 560, paddingBottom: 12 }}>
               <Text style={styles.label}>Tên người dùng</Text>
               <TextInput
-                onChangeText={text => setRegister({...register, name: text})}
+                onChangeText={text => setRegister({ ...register, name: text })}
                 style={
                   !isValidatorName(register.name) && register.name !== ''
-                    ? {...styles.input, ...styles.borderError}
+                    ? { ...styles.input, ...styles.borderError }
                     : styles.input
                 }
                 value={register.name}
@@ -111,10 +121,10 @@ const Register = ({navigation}) => {
                 /> */}
               <Text style={styles.label}>Email</Text>
               <TextInput
-                onChangeText={text => setRegister({...register, email: text})}
+                onChangeText={text => setRegister({ ...register, email: text })}
                 style={
                   register.email !== '' && !isValidatorEmail(register.email)
-                    ? {...styles.input, ...styles.borderError}
+                    ? { ...styles.input, ...styles.borderError }
                     : styles.input
                 }
                 value={register.email}
@@ -127,16 +137,16 @@ const Register = ({navigation}) => {
               )}
               <Text style={styles.label}>Số điện thoại</Text>
               <TextInput
-                onChangeText={text => setRegister({...register, phone: text})}
+                onChangeText={text => setRegister({ ...register, phone: text })}
                 style={
                   register.phone.length < 6 && register.phone !== ''
-                    ? {...styles.input, ...styles.borderError}
+                    ? { ...styles.input, ...styles.borderError }
                     : styles.input
                 }
                 value={register.phone}
                 placeholder="Nhập"
               />
-              <Text style={styles.label}>Công ty trực thuộc</Text>
+              {/* <Text style={styles.label}>Công ty trực thuộc</Text>
               <TextInput
                 onChangeText={text => setRegister({...register, company: text})}
                 style={
@@ -146,16 +156,43 @@ const Register = ({navigation}) => {
                 }
                 value={register.company}
                 placeholder="Nhập"
-              />
+              /> */}
+              <View>
+                <Text style={styles.label}>Công ty trực thuộc</Text>
+                <View style={
+                  register.company === 'All'
+                    ? { ...styles.input_picker, ...styles.borderError }
+                    : styles.input_picker
+                }>
+                  <Picker
+                    selectedValue={register.company}
+                    onValueChange={(itemValue, itemIndex) => {
+                      setRegister(prev => ({ ...prev, company: itemValue }))
+                    }}
+                    style={{ color: 'rgba(0,0,0,0.4)', marginLeft: -4 }}
+                  >
+                    <Picker.Item label="Nhập" value={'All'} />
+                    {listCompany.length > 0 && listCompany.map((company) => {
+                      return (
+                        <Picker.Item
+                          key={company.CODE}
+                          label={company.NAME}
+                          value={company.CODE}
+                        />
+                      )
+                    })}
+                  </Picker>
+                </View>
+              </View>
               <Text style={styles.label}>Mật khẩu</Text>
               <TextInput
                 onChangeText={text =>
-                  setRegister({...register, password: text})
+                  setRegister({ ...register, password: text })
                 }
                 style={
                   !isValidatePassword(register.password) &&
-                  register.password !== ''
-                    ? {...styles.input, ...styles.borderError}
+                    register.password !== ''
+                    ? { ...styles.input, ...styles.borderError }
                     : styles.input
                 }
                 value={register.password}
@@ -169,23 +206,23 @@ const Register = ({navigation}) => {
               <TextInput
                 style={
                   !isValidatePassword(register.passwordRefresh) &&
-                  register.passwordRefresh !== ''
-                    ? {...styles.input, ...styles.borderError}
+                    register.passwordRefresh !== ''
+                    ? { ...styles.input, ...styles.borderError }
                     : styles.input
                 }
                 placeholder="Nhập"
                 value={register.passwordRefresh}
                 onChangeText={text =>
-                  setRegister({...register, passwordRefresh: text})
+                  setRegister({ ...register, passwordRefresh: text })
                 }
               />
             </ScrollView>
 
-              <TouchableHighlight onPress={handleLogin} style={styles.login}>
-                <View style={styles.buttonLogin}>
-                  <Text style={styles.btnText}>Tiếp tục</Text>
-                </View>
-              </TouchableHighlight>
+            <TouchableHighlight onPress={handleLogin} style={styles.login}>
+              <View style={styles.buttonLogin}>
+                <Text style={styles.btnText}>Tiếp tục</Text>
+              </View>
+            </TouchableHighlight>
           </View>
         </View>
       </View>

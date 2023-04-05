@@ -1,9 +1,9 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Home/Home';
 import Stream from '../screens/Stream/Stream';
-import Map from '../screens/Map/Map';
+import Map from '../screens/Map/MapScreen';
 import Info from '../screens/Info/Info';
 // import { MapIcon } from "../components/Icons/Index";
 import {
@@ -22,7 +22,7 @@ const Tab = createBottomTabNavigator();
 const MainContainer = () => {
   return (
     <Tab.Navigator
-      initialRouteName="Info"
+      // initialRouteName="Info"
       screenOptions={{
         tabBarActiveBackgroundColor: '#FFFFFF',
         tabBarActiveTintColor: 'red',
@@ -35,8 +35,8 @@ const MainContainer = () => {
       }}>
       <Tab.Screen
         name="Trang chu"
-        options={({navigator}) => ({
-          tabBarIcon: ({color, focused}) =>
+        options={({ navigator }) => ({
+          tabBarIcon: ({ color, focused }) =>
             focused ? <ChartIconActive /> : <ChartIcon />,
           tabBarShowLabel: false,
         })}
@@ -46,7 +46,7 @@ const MainContainer = () => {
         name="Stream"
         component={Stream}
         options={{
-          tabBarIcon: ({color, focused}) =>
+          tabBarIcon: ({ color, focused }) =>
             focused ? <CameraActiveIcon /> : <CameraIcon />,
           tabBarShowLabel: false,
         }}
@@ -55,7 +55,7 @@ const MainContainer = () => {
         name="Map"
         component={Map}
         options={{
-          tabBarIcon: ({color, focused}) =>
+          tabBarIcon: ({ color, focused }) =>
             focused ? <MapIconActive /> : <MapIcon />,
           tabBarShowLabel: false,
         }}
@@ -64,7 +64,7 @@ const MainContainer = () => {
         name="Playback"
         component={Stream}
         options={{
-          tabBarIcon: ({color, focused}) =>
+          tabBarIcon: ({ color, focused }) =>
             focused ? <YoutubeIconActive /> : <YoutubeIcon />,
           tabBarShowLabel: false,
         }}
@@ -73,7 +73,7 @@ const MainContainer = () => {
         name="Smart"
         component={Stream}
         options={{
-          tabBarIcon: ({color, focused}) =>
+          tabBarIcon: ({ color, focused }) =>
             focused ? <SmartIcon /> : <PaymentIcon />,
           tabBarShowLabel: false,
         }}
@@ -82,7 +82,7 @@ const MainContainer = () => {
         name="Info"
         component={Info}
         options={{
-          tabBarIcon: ({color}) => <PaymentIcon />,
+          tabBarIcon: ({ color }) => <PaymentIcon />,
           tabBarShowLabel: false,
         }}
       />

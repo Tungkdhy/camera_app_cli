@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { View, Text, Switch, Pressable } from "react-native";
 import { AddressIcon, DownIcon } from "../Icons/Index";
 import { setStatus } from "../../redux/actions/cameraAction";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { styles } from "./styles";
 //Filter location
-const Filter = ({ onClick, address,filter }) => {
+const Filter = ({ onClick, address, filter }) => {
   const dispatch = useDispatch()
+  const camera = useSelector(state => state.useReducer);
   //Change status camera
-  const toggleSwitch = () =>dispatch(setStatus(filter ==="On"?"Off":"On"));
+  const toggleSwitch = () => dispatch(setStatus(filter === "On" ? "Off" : "On"));
   return (
     <View style={styles.filter}>
       <Pressable onPress={onClick}>
@@ -19,7 +20,9 @@ const Filter = ({ onClick, address,filter }) => {
 
           <View style={styles.area}>
             <Text style={{ color: "rgba(0, 0, 0, 0.4)" }}>Khu vực: </Text>
-            <Text>Đống Đa,Hà Nội</Text>
+            <Text numberOfLines={1} style={styles.name_location}>
+              {camera?.filter?.district_name ? camera?.filter?.district_name + ',' : ''}{camera?.filter?.province_name ? camera?.filter?.province_name : 'Thành phố Hà Nội'}
+            </Text>
             <DownIcon />
           </View>
         </View>
@@ -32,7 +35,7 @@ const Filter = ({ onClick, address,filter }) => {
           thumbColor={filter === "On" ? "#f4f3f4" : "#f4f3f4"}
           ios_backgroundColor="#3e3e3e"
           onValueChange={toggleSwitch}
-          value={filter === "On"?true:false}
+          value={filter === "On" ? true : false}
           style={{ transform: [{ scaleX: 0.6 }, { scaleY: 0.6 }] }}
         />
       </View>

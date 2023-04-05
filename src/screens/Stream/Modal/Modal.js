@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Modal as ModalLocation,
   View,
@@ -7,14 +7,14 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
-import {CheckBox} from 'react-native-elements';
-import {Close, NextIcon,Radio,RadioCheck} from '../../../components/Icons/Index';
-import {useDispatch} from 'react-redux';
+import { CheckBox } from 'react-native-elements';
+import { Close, NextIcon, Radio, RadioCheck } from '../../../components/Icons/Index';
+import { useDispatch } from 'react-redux';
 import {
   setProvinceCode,
   setDistrictCode,
 } from '../../../redux/actions/cameraAction';
-import {styles} from './styles';
+import { styles } from './styles';
 const Modal = ({
   data,
   filter,
@@ -22,11 +22,12 @@ const Modal = ({
   isShow,
   setIsProvince,
   isProvince,
+  animate
 }) => {
   const dispatch = useDispatch();
   return (
     <ModalLocation
-      animationType="fade"
+      animationType={animate ? animate : 'fade'}
       transparent={true}
       visible={isShow}
       onRequestClose={() => {
@@ -36,11 +37,11 @@ const Modal = ({
         <View style={styles.modalView}>
           <View style={styles.modalHeader}>
             <Text style={styles.titleHeader}>Khu vực</Text>
-            <Pressable onPress={() =>{
-               onShowModal()
-               if(!isProvince){
-                  setIsProvince()
-               }
+            <Pressable onPress={() => {
+              onShowModal()
+              if (!isProvince) {
+                setIsProvince()
+              }
             }} style={styles.iconModal}>
               <Close />
             </Pressable>
@@ -54,8 +55,8 @@ const Modal = ({
                 <CheckBox
                   containerStyle={styles.radio}
                   title="Tất cả"
-                  checkedIcon={<RadioCheck/>}
-                  uncheckedIcon={<Radio/>}
+                  checkedIcon={<RadioCheck />}
+                  uncheckedIcon={<Radio />}
                   onPress={() => {
                     dispatch(setProvinceCode(''));
                     dispatch(setDistrictCode(''));
@@ -73,13 +74,13 @@ const Modal = ({
                       containerStyle={styles.radio}
                       title={item.name}
                       key={index}
-                      checkedIcon={<RadioCheck/>}
-                      uncheckedIcon={<Radio/>}
+                      checkedIcon={<RadioCheck />}
+                      uncheckedIcon={<Radio />}
                       onPress={() =>
                         dispatch(
                           isProvince
-                            ? setProvinceCode(item.code)
-                            : setDistrictCode(item.code),
+                            ? setProvinceCode({ code: item.code, name: item.name })
+                            : setDistrictCode({ code: item.code, name: item.name }),
                         )
                       }
                       checked={filter === item.code ? true : false}
