@@ -56,7 +56,10 @@ export default function Stream({navigation, ...props}) {
     })
   };
   const handleNavigateSmart = (it,item)=>{
-    navigation.navigate("Smart")
+    console.log(it);
+    navigation.navigate("Report",{
+      camera:it
+    })
   }
   const handleShowCamera = code => {
     if (code === camera.wareCode) {
@@ -68,10 +71,10 @@ export default function Stream({navigation, ...props}) {
   const setIsShowProvince = () => {
     setIsProvince(!isProvince);
   };
-  const renderItem = ({item}) => {
+  const renderItem = ({item,index}) => {
     return (
       <>
-        <View style={styles.border}>
+        <View key={index} style={styles.border}>
           <View style={styles.cameraItem}>
             <View style={styles.icon}>
               {item.CODE === camera.wareCode ? <DownIcon /> : <ShowIcon />}
@@ -99,7 +102,7 @@ export default function Stream({navigation, ...props}) {
                         <Text
                           onPress={
                             props.route.name === 'Stream'
-                              ? () => liveStream(it, item)
+                              ? () => liveStream(it, item) : props.route.name === 'Smart'?()=>handleNavigateSmart(it,item)
                               : () => navigatePlayBackCamera(it, item)
                           }>
                           {it.NAME_CAM} 
@@ -230,6 +233,7 @@ export default function Stream({navigation, ...props}) {
               renderItem={renderItem}
               keyExtractor={item => item.CODE}
               onEndReachedThreshold={0}
+              accessibilityElementsHidden
             />
           </View>
         </ScrollView>

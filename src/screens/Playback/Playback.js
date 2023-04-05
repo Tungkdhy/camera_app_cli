@@ -21,6 +21,7 @@ export default function PlayBack({navigation, route}) {
   const [cameraActive, setCameraActive] = useState();
   const [camId, setCamId] = useState();
   const playback = useSelector(state => state.playBackReducer);
+  console.log(playback);
   const isFullScreen = useSelector(state => state.useReducer.isFullScreen);
   const getInfo = () => {};
   useEffect(() => {
@@ -40,7 +41,8 @@ export default function PlayBack({navigation, route}) {
             params: {
               list_camera_code: JSON.stringify({data: data}),
               ...day,
-              ...time,
+              time_start:playback.filter.time,
+              time_end:playback.filter.timeEnd,
             },
           },
         );
@@ -60,7 +62,7 @@ export default function PlayBack({navigation, route}) {
       }
     }
     getListPlayBack();
-  }, [route.params.wareHouse, playback.filter.day, playback.filter.time]);
+  }, [route.params.wareHouse, playback.filter.day, playback.filter.time,playback.filter.timeEnd]);
   useEffect(() => {
     const camActive = playback.playBacks.filter(item => {
       return item.code === camId;
@@ -89,7 +91,6 @@ export default function PlayBack({navigation, route}) {
         date={new Date()}
         onConfirm={date => {
           setOpen2(false);
-          console.log(formatHour(date));
           dispatch(setTime(formatHour(date)));
         }}
         onCancel={() => {
@@ -114,7 +115,8 @@ export default function PlayBack({navigation, route}) {
           onPress={() => {
             dispatch(setDay(formatDDMMYY(new Date())));
             dispatch(setTime('00:00'));
-            dispatch(setTimeEnd('24:00'));
+            dispatch(setTimeEnd('23:59'));
+            dispatch(play([]))
             navigation.navigate('Playback');
           }}>
           <Back />

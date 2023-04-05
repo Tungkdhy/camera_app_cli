@@ -9,8 +9,7 @@ import Wellcome from './src/screens/Login/Wellcome';
 import Forgot from './src/screens/Forgot/Forgot';
 import Register from './src/screens/Register/Register';
 import ChangePassword from './src/screens/ChangePassWord/ChangePassword';
-import Stream from './src/screens/Stream/Stream';
-import Layout from './src/navigation/Layout';
+import Payment from './src/screens/Payment/Payment';
 import CodeVerify from './src/components/CodeVerify/CodeVerify';
 import Success from './src/components/CodeVerify/Success';
 import Live from './src/screens/Stream/Live/Live';
@@ -40,6 +39,7 @@ export default function App() {
           <Stack.Screen name="Detail" component={Detail} />
           <Stack.Screen name="PlayBack" component={PlayBack} />
           <Stack.Screen name="Notification" component={Notification} />
+          <Stack.Screen name="Report" component={Payment} />
           {/* <Stack.Screen name="Stream" component={Stream}/> */}
           {/* <Stack.Screen name="Forgot" component={Forgot}/> */}
         </Stack.Navigator>
