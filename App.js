@@ -19,6 +19,7 @@ import Setting from './src/screens/Stream/Setting/Setting';
 import { Store } from './src/redux/store';
 import PlayBack from './src/screens/Playback/Playback';
 import Notification from './src/screens/Notification';
+import MapScreen from './src/screens/Map/MapScreen';
 
 const Stack = createStackNavigator()
 export default function App() {
@@ -39,6 +40,7 @@ export default function App() {
           <Stack.Screen name="Detail" component={Detail} />
           <Stack.Screen name="PlayBack" component={PlayBack} />
           <Stack.Screen name="Notification" component={Notification} />
+          <Stack.Screen name="Map" component={MapScreen} />
           <Stack.Screen name="Report" component={Payment} />
           {/* <Stack.Screen name="Stream" component={Stream}/> */}
           {/* <Stack.Screen name="Forgot" component={Forgot}/> */}
