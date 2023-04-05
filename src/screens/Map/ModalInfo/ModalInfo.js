@@ -9,7 +9,7 @@ import { setWareHouseCode } from "../../../redux/actions/cameraAction";
 
 function ModalInfo({ navigation, data, onCloseBoxInfo, show }) {
     const dispatch = useDispatch()
-    const handleChooseViewLive = (name, code) => {
+    const handleChooseViewLive = (code) => {
         dispatch(setWareHouseCode(code))
         navigation.navigate('Stream')
         onCloseBoxInfo()
@@ -40,14 +40,14 @@ function ModalInfo({ navigation, data, onCloseBoxInfo, show }) {
                     <View style={styles.info_item}>
                         <Text style={styles.label}>Trạng thái</Text>
                         <Text style={{ ...styles.info, color: '#0040FF' }}>
-                            {data.COUNT_CAM > 0 ? 'Đang hoạt động' : 'Ko hoạt động'}
+                            {data && data.COUNT_CAM > 0 ? 'Đang hoạt động' : 'Ko hoạt động'}
                         </Text>
                     </View>
                     <View style={styles.info_item}>
                         <Text style={styles.label}>Kho</Text>
                         <Text style={styles.info}>{data ? data.WAREHOUSE_NAME : 'Kho Như Anh'}</Text>
                     </View>
-                    <TouchableHighlight style={styles.login} onPress={() => handleChooseViewLive(data.WAREHOUSE_NAME, data.CODE)}>
+                    <TouchableHighlight style={styles.login} onPress={() => handleChooseViewLive(data.CODE)}>
                         <View style={styles.buttonLogin}>
                             <Text style={styles.btnText}>Xem Camera</Text>
                         </View>
