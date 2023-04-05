@@ -9,8 +9,7 @@ import Wellcome from './src/screens/Login/Wellcome';
 import Forgot from './src/screens/Forgot/Forgot';
 import Register from './src/screens/Register/Register';
 import ChangePassword from './src/screens/ChangePassWord/ChangePassword';
-import Stream from './src/screens/Stream/Stream';
-import Layout from './src/navigation/Layout';
+import Payment from './src/screens/Payment/Payment';
 import CodeVerify from './src/components/CodeVerify/CodeVerify';
 import Success from './src/components/CodeVerify/Success';
 import Live from './src/screens/Stream/Live/Live';
@@ -20,8 +19,12 @@ import Setting from './src/screens/Stream/Setting/Setting';
 import { Store } from './src/redux/store';
 import PlayBack from './src/screens/Playback/Playback';
 import Notification from './src/screens/Notification';
+
 import EditInfo from './src/screens/Info/EditInfo/Edit';
 import ChangePasswordInfo from './src/screens/Info/ChangePasswordInfo/ChangePasswordInfo';
+
+import MapScreen from './src/screens/Map/MapScreen';
+
 
 const Stack = createStackNavigator()
 export default function App() {
@@ -42,8 +45,13 @@ export default function App() {
           <Stack.Screen name="Detail" component={Detail} />
           <Stack.Screen name="PlayBack" component={PlayBack} />
           <Stack.Screen name="Notification" component={Notification} />
-          <Stack.Screen name="ChangePasswordInfo" component={ChangePasswordInfo} />
+
+         <Stack.Screen name="ChangePasswordInfo" component={ChangePasswordInfo} />
           <Stack.Screen name="EditInfo" component={EditInfo} />
+
+          <Stack.Screen name="Map" component={MapScreen} />
+          <Stack.Screen name="Report" component={Payment} />
+
           {/* <Stack.Screen name="Stream" component={Stream}/> */}
           {/* <Stack.Screen name="Forgot" component={Forgot}/> */}
         </Stack.Navigator>

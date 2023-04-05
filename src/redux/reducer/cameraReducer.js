@@ -23,30 +23,33 @@ const initialState = {
     camera_status: 'On',
     province_code: '',
     district_code: '',
+    province_name: '',
+    district_name: '',
   },
   pathStream: [],
   camera_info: {},
-  isFullScreen:false
+  isFullScreen: false
 };
 
 const useReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_NAME_CAMERA:
-      return {...state, name: action.payload};
+      return { ...state, name: action.payload };
     case GET_LIST_LOCATION:
-      return {...state, camera: action.payload};
+      return { ...state, camera: action.payload };
     case GET_PROVINCE:
-      return {...state, province: action.payload};
+      return { ...state, province: action.payload };
     case GET_FILTER:
-      return {...state, filter: action.payload};
+      return { ...state, filter: action.payload };
     case GET_DISTRICT:
-      return {...state, district: action.payload};
+      return { ...state, district: action.payload };
     case SET_PROVINCE_CODE:
       return {
         ...state,
         filter: {
           ...state.filter,
-          province_code: action.payload,
+          province_code: action.payload.code,
+          province_name: action.payload.name
         },
       };
     case SET_DISTRICT_CODE:
@@ -54,7 +57,8 @@ const useReducer = (state = initialState, action) => {
         ...state,
         filter: {
           ...state.filter,
-          district_code: action.payload,
+          district_code: action.payload.code,
+          district_name: action.payload.name
         },
       };
     case SET_STATUS:
@@ -80,11 +84,11 @@ const useReducer = (state = initialState, action) => {
         ...state,
         wareCode: action.payload,
       };
-      case SET_IS_FULLSCREEN:
-        return {
-          ...state,
-          isFullScreen: !state.isFullScreen,
-        };
+    case SET_IS_FULLSCREEN:
+      return {
+        ...state,
+        isFullScreen: !state.isFullScreen,
+      };
     default:
       return state;
   }
