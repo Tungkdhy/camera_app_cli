@@ -1,17 +1,12 @@
 import { StyleSheet } from "react-native"
 export const styles = StyleSheet.create({
     // info
-    box_info: {
+    box_view: {
         position: 'absolute',
         bottom: 0,
         left: 0,
-        height: 400,
         width: '100%',
         backgroundColor: '#fff',
-        borderTopLeftRadius: 12,
-        borderTopRightRadius: 12,
-        zIndex: 99999999,
-        overflow: 'hidden',
     },
     info_control: {
         padding: 16,

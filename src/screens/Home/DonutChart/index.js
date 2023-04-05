@@ -31,15 +31,16 @@ function DonutChart({ title, type }) {
     const [dataChart, setDataChart] = useState()
     const screenWidth = Dimensions.get("window").width;
     const chartConfig = {
-        backgroundColor: "white",
-        backgroundGradientFrom: 'white',
-        backgroundGradientTo: 'white',
-        backgroundGradientFromOpacity: 1,
-        backgroundGradientToOpacity: 1,
-        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+        backgroundGradientFrom: "#fff",
+        backgroundGradientFromOpacity: 0,
+        backgroundGradientTo: "#fff",
+        backgroundGradientToOpacity: 0,
+        color: (opacity = 0) => `rgba(255, 255, 255, ${opacity})`,
         strokeWidth: 2,
-        barPercentage: 1,
+        barPercentage: 0,
         useShadowColorFromDataset: false,
+        fillShadowGradient: 'white',
+        fillShadowGradientOpacity: 1
     };
 
     const autoCreateNewColor = (dataInfo, dataColor) => {
@@ -102,7 +103,7 @@ function DonutChart({ title, type }) {
                             chartConfig={chartConfig}
                             accessor={"population"}
                             hasLegend={false}
-                            style={{ backgroundColor: 'white' }}
+                            backgroundColor="transparent"
                         />
                     )}
                 </View>
