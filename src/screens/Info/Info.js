@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, ImageBackground, Text, Image, Pressable } from 'react-native';
+import { View, ImageBackground, Text, Image, Pressable, ScrollView } from 'react-native';
+
 import { styles } from './styles';
 import { CricleUser, FadeId, Logout, NextIcon, Pass, UploadIcon, Website } from '../../components/Icons/Index';
-import { ScrollView } from 'react-native-gesture-handler';
 const Info = ({ navigation }) => {
     return (
         <View style={styles.container}>
@@ -26,7 +26,9 @@ const Info = ({ navigation }) => {
                             <NextIcon />
                         </Pressable>
                     </Pressable>
-                    <View style={styles.item}>
+                    <Pressable onPress={() => {
+                        navigation.navigate('ChangePasswordInfo');
+                    }} style={styles.item}>
                         <View style={styles.title}>
                             <Text style={styles.icon}><Pass /></Text>
                             <Text style={styles.text}>Đổi mật khẩu</Text>
@@ -34,7 +36,7 @@ const Info = ({ navigation }) => {
                         <Pressable style={styles.next}>
                             <NextIcon />
                         </Pressable>
-                    </View>
+                    </Pressable>
                     <View style={styles.item}>
                         <View style={styles.title}>
                             <Text style={styles.icon}><FadeId /></Text>

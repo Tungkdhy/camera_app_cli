@@ -23,7 +23,7 @@ export const formatDDMMYY = (date) => {
   const day = dateA.getDate() < 10 ? '0' + dateA.getDate() : dateA.getDate()
   return (day + '/' + month + '/' + year);
 }
-export const formatTimehp = (hour)=>{
+export const formatTimehp = (hour) => {
   const data = hour.split(":")
   return `${data[0]}h${data[1]}`
 }
@@ -33,8 +33,21 @@ export const formatHour = (date) => {
   const minute = dateA.getMinutes() < 10 ? '0' + dateA.getMinutes() : dateA.getMinutes()
   return (hour + ':' + minute)
 }
-export const compareTime = (start,end)=>{
-  if(start.split(":")[0]){
-    
+export const compareTime = (start, end) => {
+  if (start.split(":")[0]) {
+
   }
+}
+
+// format date DD/MM/YYYY
+export const formatDate = (date) => {
+  const dateA = new Date(date);
+  const year = dateA.getFullYear();
+  const month = dateA.getMonth() + 1;
+  const day = dateA.getDate()
+  return ((day <= 9 ? '0' + day : day) + '/' + (month <= 9 ? '0' + month : month) + '/' + year);
+}
+// validator confirm password
+export const isValidateConfirm = (oldVar, newVar) => {
+  return !!oldVar.match(newVar)
 }
