@@ -38,6 +38,7 @@ export const styles = StyleSheet.create({
         lineHeight: 24,
         fontWeight: '700',
         marginBottom: 4,
+        color: 'black'
     },
     name: {
         fontSize: 16,

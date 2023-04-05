@@ -173,7 +173,12 @@ function MapScreen({ navigation }) {
           </MapView>
         </View>
         {/* Info */}
-        {showInfo && <ModalInfo navigation={navigation} data={infoDetail} onCloseBoxInfo={handleCloseBox} />}
+        <ModalInfo
+          navigation={navigation}
+          data={infoDetail}
+          onCloseBoxInfo={handleCloseBox}
+          show={showInfo}
+        />
         <Modal
           isShow={modalVisible}
           onShowModal={handleSetShowModal}

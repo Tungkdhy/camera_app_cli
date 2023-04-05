@@ -21,7 +21,7 @@ const Filter = ({ onClick, address, filter }) => {
           <View style={styles.area}>
             <Text style={{ color: "rgba(0, 0, 0, 0.4)" }}>Khu vực: </Text>
             <Text numberOfLines={1} style={styles.name_location}>
-              {camera?.filter?.district_name ? camera?.filter?.district_name + ',' : ''}{camera?.filter?.province_name ? camera?.filter?.province_name : 'Thành phố Hà Nội'}
+              {camera?.filter?.district_name ? camera?.filter?.district_name + ',' : ''}{camera?.filter?.province_name ? camera?.filter?.province_name : 'Tất cả'}
             </Text>
             <DownIcon />
           </View>
