@@ -24,8 +24,13 @@ export const formatDDMMYY = (date) => {
   return (day + '/' + month + '/' + year);
 }
 export const formatTimehp = (hour) => {
+ if(hour){
   const data = hour.split(":")
   return `${data[0]}h${data[1]}`
+ }
+ else{
+  return hour
+ }
 }
 export const formatHour = (date) => {
   const dateA = new Date(date);

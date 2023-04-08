@@ -28,6 +28,7 @@ import {
 } from '../../redux/actions/reportAction';
 import DatePicker from 'react-native-date-picker';
 import {formatTimehp, formatHour, formatDDMMYY} from '../../utils';
+import VideoPlayer from 'react-native-video-controls';
 import {styles} from './styles';
 import axiosClient from '../../services/axiosClient';
 
@@ -37,9 +38,9 @@ export default function Payment({route, navigation}) {
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
   const report = useSelector(state => state.reportReducer);
-  console.log(`http://42.96.41.91:10711${report.video_active.path}`);
+ 
   const renderItem = ({item, index}) => {
-    console.log(item);
+    // console.log(item.PATH);
     return (
       <View key={index} style={styles.item}>
         <View style={styles.image}>
@@ -193,6 +194,10 @@ export default function Payment({route, navigation}) {
           </Pressable>
         </View>
       </ScrollView>
+      {/* <VideoPlayer
+        source={{uri: `http://42.96.41.91:10711/data/RECORD/20230322000000000064/2023-04-06/17:31/motion_1.m3u8`}}
+        // navigator={this.props.navigator}
+      /> */}
       {!report.isFullScreen && (
         <View style={styles.content}>
           <FlatList data={report.reports} renderItem={renderItem} />
@@ -216,19 +221,20 @@ export default function Payment({route, navigation}) {
                 }>
                 <Video
                   source={{
-                    uri: `http://42.96.41.91:10711${report.video_active.path}`,
+                    uri: `http://42.96.41.91:10711/data/RECORD/20230322000000000064/2023-04-06/17:31/motion_1.m3u8`,
                   }}
                   rate={1.0}
                   volume={1.0}
                   isMuted={false}
                   resizeMode="cover"
                   shouldPlay={true}
-                  useNativeControls={true}
+                  // useNativeControls={true}
                   isLooping
-                  style={{
-                    // report.isFullScreen
-                    //   ? styles.fullScreen
-                    //   : {
+                  controls={true}
+                  style={
+                    report.isFullScreen
+                      ? styles.fullScreen
+                      : {
                     width: 380,
                     height: 200,
                   }}
