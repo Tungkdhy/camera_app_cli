@@ -53,6 +53,7 @@ const VideoCamera = ({
                     shouldPlay={true}
                     useNativeControls={true}
                     isLooping
+                    controls={true}
                     style={
                       isFullScreen
                         ? styles.fullScreen
