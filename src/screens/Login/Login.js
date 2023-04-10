@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   View,
   TouchableHighlight,
@@ -26,6 +26,19 @@ const Login = ({ navigation }) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [isShowPass, setIsShowPass] = useState(true);
+  const [data,setData] = useState()
+  useEffect(()=>{
+    async function getData(){
+      try{
+        const res = await axios.get('https://jsonplaceholder.typicode.com/todos/1')
+        setData(res.data)
+      }
+      catch(e){
+
+      }
+    }
+    getData()
+  },[])
   const handleLogin = async () => {
     try {
       const res = await axios.post(
@@ -127,7 +140,7 @@ const Login = ({ navigation }) => {
                   onPress={() => navigation.navigate("Forgot")}
                   style={styles.forgot}
                 >
-                  Quên mật khẩu
+                  {data?.title}
                 </Text>
               </View>
             </View>

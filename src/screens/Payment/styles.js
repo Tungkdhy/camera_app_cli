@@ -112,7 +112,9 @@ export const styles = StyleSheet.create({
     serviceItem:{
         padding:6,
         backgroundColor:"rgba(0, 0, 0, 0.03)",
-        borderRadius:4
+        borderRadius:4,
+        maxWidth:120,
+        textAlign:"center"
     },
     filter:{
         paddingTop:10,

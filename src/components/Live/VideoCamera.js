@@ -58,7 +58,7 @@ const VideoCamera = ({
                       isFullScreen
                         ? styles.fullScreen
                         : {
-                            width: 380,
+                            width: '50%',
                             height: 200,
                           }
                     }
