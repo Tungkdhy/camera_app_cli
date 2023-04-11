@@ -20,9 +20,10 @@ const VideoCamera = ({
   streamPath,
   getInfo,
   setCamId,
+  type="livestream"
 }) => {
   const dispatch = useDispatch();
-  console.log(cameraActive);
+ 
   return (
     <View style={isFullScreen ? styles.contentFull : {}}>
       <View style={isFullScreen ? styles.activeFull : styles.active}>
@@ -44,7 +45,7 @@ const VideoCamera = ({
                   }>
                   <Video
                     source={{
-                      uri: `http://42.96.41.91:10711${item.path}`,
+                      uri: `http://cameraai.cds.vinorsoft.com/${type}${item.path}`,
                     }}
                     rate={1.0}
                     volume={1.0}
@@ -53,20 +54,16 @@ const VideoCamera = ({
                     shouldPlay={true}
                     useNativeControls={true}
                     isLooping
-                    controls={true}
+                    controls={!isFullScreen}
                     style={
                       isFullScreen
                         ? styles.fullScreen
                         : {
-                            width: '50%',
+                            width:"100%",
                             height: 200,
                           }
                     }
-                    // fullscreen={true}
-                    // Can be a URL or a local file.
                   />
-
-                  {/* <Text style={styles.nameCamera}>{title}</Text> */}
                 </View>
                 <View style={isFullScreen ? styles.infoFull : styles.info}>
                   <View style={styles.cam}>
@@ -135,6 +132,7 @@ const VideoCamera = ({
                 setCamId={setCamId}
                 title={item?.name}
                 path={item?.path}
+                type={type}
               />
             )}
             numColumns={2}

@@ -1,15 +1,15 @@
 import React from 'react';
-import {View, Image, Text} from 'react-native';
-// import ReactHlsPlayer from 'react-hls-player';
+import {View, Text,Pressable} from 'react-native';
 import Video from 'react-native-video';
 import {styles} from './styles';
-const CameraItem = ({title, path,setCamId,id}) => {
+const CameraItem = ({title, path,setCamId,id,type}) => {
+ 
   return (
-    <View  style={{paddingBottom: 12, width: '48%',alignItems: 'stretch'}}>
+    <Pressable  style={{paddingBottom: 12, width: '48%',alignItems: 'stretch'}}>
       <View >
         <Video
           source={{
-            uri: `http://42.96.41.91:10711${path}`,
+            uri: `http://cameraai.cds.vinorsoft.com/livestream${path}`,
           }}
           rate={1.0}
           volume={1.0}
@@ -20,11 +20,10 @@ const CameraItem = ({title, path,setCamId,id}) => {
           isLooping
           style={{height: 96, flex: 1}}
         
-          // Can be a URL or a local file.
         />
       </View>
       <Text onPress={()=>setCamId(id)} style={styles.nameCamera}>{title}</Text>
-    </View>
+    </Pressable>
   );
 };
 

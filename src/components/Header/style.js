@@ -7,7 +7,7 @@ export const style = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: 'row',
     color: "#ffffff",
-    paddingTop: 44
+    // paddingTop: 44
   },
   text: {
     color: "#ffffff",

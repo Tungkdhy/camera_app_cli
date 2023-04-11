@@ -4,6 +4,8 @@ export const SET_TIME_REPORT = "SET_TIME_REPORT"
 export const SET_TIME_END = "SET_TIME_END"
 export const SET_FULL_SCREEN = "SET_FULL_SCREEN"
 export const VIDEO_ACTIVE = "VIDEO_ACTIVE"
+export const GET_LIST_SERVICE_PACKAGE = "GET_LIST_SERVICE_PACKAGE"
+export const SET_AI_CODE = "SET_AI_CODE"
 
 export const getListReport = (data) => {
     return {
@@ -38,6 +40,18 @@ export const getListReport = (data) => {
   export const videoActive = (data)=>{
     return {
       type:VIDEO_ACTIVE,
+      payload:data
+    }
+  }
+  export const servicePackage = (data)=>{
+    return {
+      type:GET_LIST_SERVICE_PACKAGE,
+      payload:data
+    }
+  }
+  export const setAiCode = (data)=>{
+    return {
+      type:SET_AI_CODE,
       payload:data
     }
   }

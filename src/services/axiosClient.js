@@ -10,7 +10,7 @@ const getToken =async ()=>{
   }
 }
 const axiosClient = axios.create({
-  baseURL: "http://42.96.41.91:10710/vinorsoft/aicamera/v1.0/",
+  baseURL: "http://cameraai.cds.vinorsoft.com/camera/vinorsoft/aicamera/v1.0/",
   headers: {
     "content-type": "application/json",
   },

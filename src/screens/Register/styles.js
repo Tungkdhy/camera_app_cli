@@ -83,7 +83,7 @@ export const styles = StyleSheet.create({
     paddingLeft: 16
   },
   contentForm: {
-    height: "85%",
+    height: "95%",
     justifyContent: "space-between",
     backgroundColor: "#ffffff",
     display: "flex",
@@ -101,8 +101,8 @@ export const styles = StyleSheet.create({
 
   },
   login: {
-    marginTop: 24,
-    marginBottom: 24
+    // marginTop: 24,
+    marginBottom: 59
   },
   buttonLogin: {
     padding: 12,
@@ -125,7 +125,7 @@ export const styles = StyleSheet.create({
   },
   icon: {
     position: "absolute",
-    bottom: -8,
+    bottom: 12,
     left: 20,
     backgroundColor: "rgba(255, 255, 255, 0.15)",
     padding: 10,

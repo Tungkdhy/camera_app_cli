@@ -49,13 +49,13 @@ export default function PlayBack({navigation, route}) {
         const playbacks = res.data.map(item => {
           return {
             code: item.camera_code,
-            path: item.path,
+            path: item.path+'/stream_0.m3u8',
             time: item.total_time,
             name:
               item.name + '- ' + formatTimehp(item.time_start.split(' ')[1]),
           };
         });
-
+        console.log(playbacks);
         dispatch(play(playbacks));
       } catch (e) {
         console.log(e);
@@ -159,6 +159,7 @@ export default function PlayBack({navigation, route}) {
         streamPath={playback.playBacks}
         setCamId={setCamId}
         getInfo={getInfo}
+        type='playback/'
       />
     </View>
   );

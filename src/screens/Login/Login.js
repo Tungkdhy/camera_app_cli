@@ -42,12 +42,13 @@ const Login = ({ navigation }) => {
   const handleLogin = async () => {
     try {
       const res = await axios.post(
-        "http://42.96.41.91:10710/vinorsoft/aicamera/v1.0/authenticator/login/",
+        "http://cameraai.cds.vinorsoft.com/camera/vinorsoft/aicamera/v1.0/authenticator/login/",
         {
           username: userName,
           password: password,
         }
       );
+      console.log(res);
       if (res) {
         Alert.alert("Đăng nhập thành công" + res.data.access);
         await AsyncStorage.setItem("token",res.data.access)
@@ -140,7 +141,7 @@ const Login = ({ navigation }) => {
                   onPress={() => navigation.navigate("Forgot")}
                   style={styles.forgot}
                 >
-                  {data?.title}
+                  Quên mật khẩu
                 </Text>
               </View>
             </View>

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 const streamingClient = axios.create({
-    baseURL: "http://42.96.41.91:10711/vinorsoft/streamingcamera/v1.0/",
+    baseURL: "http://cameraai.cds.vinorsoft.com/stream/vinorsoft/streamingcamera/v1.0/",
     headers:{
         'content-type':'application/json',
         // 'authorization': `vinorsoft ${sessionStorage.getItem('token')}`
