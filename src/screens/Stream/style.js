@@ -58,6 +58,7 @@ export const styles = StyleSheet.create({
     },
     name:{
         // lineHeight:2,
+        color:"#000",
         fontSize:14,
         fontWeight:"600"
     },
@@ -76,7 +77,9 @@ export const styles = StyleSheet.create({
     },
     nameCamera:{
         paddingBottom:8,
-        paddingTop:8
+        paddingTop:8,
+        color:"#000",
+
     },
     status:{
         width:12,

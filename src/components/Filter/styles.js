@@ -25,7 +25,8 @@ export const styles = StyleSheet.create({
         alignItems: "center",
     },
     name_location: {
-        maxWidth: 160
+        maxWidth: 160,
+        color:"rgba(0, 0, 0, 0.4)",
     }
 
 })

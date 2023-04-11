@@ -28,7 +28,7 @@ const Filter = ({ onClick, address, filter }) => {
         </View>
       </Pressable>
       <View style={styles.status}>
-        <Text style={{}}>Hoạt động</Text>
+        <Text style={{color: "rgba(0, 0, 0, 0.4)"}}>Hoạt động</Text>
 
         <Switch
           trackColor={{ false: "#767577", true: "#0040FF" }}
