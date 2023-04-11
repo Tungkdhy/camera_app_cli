@@ -1,5 +1,4 @@
 import {
-  StyleSheet,
   Text,
   View,
   Pressable,
@@ -7,7 +6,6 @@ import {
   Image,
   ScrollView,
   Alert,
-  Dimensions,
 } from 'react-native';
 import Video from 'react-native-video';
 import {useEffect, useState} from 'react';
@@ -22,25 +20,24 @@ import {
   getListReport,
   setDayReport,
   setTimeReport,
-  setTimeEnd,
   setIsFullScreen,
   videoActive,
+  servicePackage,
+  setAiCode,
 } from '../../redux/actions/reportAction';
+import {Picker} from '@react-native-picker/picker';
 import DatePicker from 'react-native-date-picker';
-import {formatTimehp, formatHour, formatDDMMYY} from '../../utils';
-import VideoPlayer from 'react-native-video-controls';
+import {formatTimehp, formatDDMMYY} from '../../utils';
 import {styles} from './styles';
 import axiosClient from '../../services/axiosClient';
-
 export default function Payment({route, navigation}) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
   const report = useSelector(state => state.reportReducer);
- 
+
   const renderItem = ({item, index}) => {
-    // console.log(item.PATH);
     return (
       <View key={index} style={styles.item}>
         <View style={styles.image}>
@@ -52,7 +49,7 @@ export default function Payment({route, navigation}) {
             dispatch(
               videoActive({
                 name: `${route.params.camera.NAME_CAM} - ${formatTimehp(
-                  item.TIME_START,
+                  item.TIME_START.split(' ')[1],
                 )}`,
                 path: item.PATH,
               }),
@@ -60,7 +57,7 @@ export default function Payment({route, navigation}) {
             dispatch(setIsFullScreen());
           }}>
           <View style={styles.time}>
-            <Text>{formatDDMMYY(item.PATH.split('/')[4])}</Text>
+            <Text>{formatDDMMYY(item.TIME_START.split(' ')[0])}</Text>
             <Text>{item.time}</Text>
           </View>
           <Text
@@ -68,11 +65,12 @@ export default function Payment({route, navigation}) {
               color: '#000',
               fontSize: 16,
               fontWeight: '600',
-              paddingTop: 6,
+              paddingTop: 2,
+              paddingBottom: 4,
             }}>{`${route.params.camera.NAME_CAM} - ${formatTimehp(
-            item.TIME_START,
+            item.TIME_START.split(' ')[1],
           )}`}</Text>
-          <Text style={styles.serviceItem}>Chuyển động</Text>
+          <Text style={styles.serviceItem}>{item.SUBJECT_NAME}</Text>
         </Pressable>
       </View>
     );
@@ -86,7 +84,7 @@ export default function Payment({route, navigation}) {
           const res = await axiosClient.get('/camAI/get-list-cam-ai/', {
             params: {
               camera_code: route.params.camera.CODE,
-              ai_service_code: '20230222000000000001',
+              ai_service_code: report.filter.ai_code,
               day_start: formatDDMMYY(report.filter.day),
               day_end: formatDDMMYY(report.filter.time),
             },
@@ -101,7 +99,21 @@ export default function Payment({route, navigation}) {
     report.filter.day,
     report.filter.time,
     report.filter.timeEnd,
+    report.filter.ai_code,
   ]);
+  useEffect(() => {
+    async function getPackage() {
+      try {
+        const res = await axiosClient.get('/service/get-list-services/');
+        console.log(res);
+        dispatch(servicePackage(res));
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    getPackage();
+  }, []);
+  console.log(`http://cameraai.cds.vinorsoft.com/event${report.video_active.path}`);
   return (
     <View style={styles.container}>
       <DatePicker
@@ -133,19 +145,6 @@ export default function Payment({route, navigation}) {
             dispatch(setTimeReport(date));
           }
           setOpen2(false);
-        }}
-        onCancel={() => {
-          setOpen3(false);
-        }}
-      />
-      <DatePicker
-        modal
-        mode="time"
-        open={open3}
-        date={new Date()}
-        onConfirm={date => {
-          dispatch(setTimeEnd(formatHour(date)));
-          setOpen3(false);
         }}
         onCancel={() => {
           setOpen3(false);
@@ -184,20 +183,26 @@ export default function Payment({route, navigation}) {
               </View>
             </View>
           </Pressable>
-          <Pressable onPress={() => setOpen3(true)} style={styles.btnFilter}>
-            <View style={styles.textContent}>
-              <Text>Chuyển động</Text>
-              <View>
-                <PlayBackDownIcon />
-              </View>
+            <View style={styles.input_picker}>
+              <Picker
+                selectedValue={report.filter.ai_code}
+                onValueChange={(itemValue, itemIndex) => {
+                  dispatch(setAiCode(itemValue));
+                }}>
+                {report.package.length > 0 &&
+                  report.package.map(service => {
+                    return (
+                      <Picker.Item
+                        key={service.CODE}
+                        label={service.SUBJECT_NAME}
+                        value={service.CODE}
+                      />
+                    );
+                  })}
+              </Picker>
             </View>
-          </Pressable>
         </View>
       </ScrollView>
-      {/* <VideoPlayer
-        source={{uri: `http://42.96.41.91:10711/data/RECORD/20230322000000000064/2023-04-06/17:31/motion_1.m3u8`}}
-        // navigator={this.props.navigator}
-      /> */}
       {!report.isFullScreen && (
         <View style={styles.content}>
           <FlatList data={report.reports} renderItem={renderItem} />
@@ -216,28 +221,28 @@ export default function Payment({route, navigation}) {
                         alignItems: 'center',
                         width: '100%',
                         height: '100%',
-                      }
+                      } 
                     : {}
                 }>
                 <Video
                   source={{
-                    uri: `http://42.96.41.91:10711/data/RECORD/20230322000000000064/2023-04-06/17:31/motion_1.m3u8`,
+                    uri: `http://cameraai.cds.vinorsoft.com/event/${report.video_active.path}`,
                   }}
-                  rate={1.0}
+                  rate={1.0} 
                   volume={1.0}
                   isMuted={false}
                   resizeMode="cover"
                   shouldPlay={true}
-                  // useNativeControls={true}
                   isLooping
-                  controls={true}
+                  controls={!report.isFullScreen}
                   style={
                     report.isFullScreen
                       ? styles.fullScreen
                       : {
-                    width: 380,
-                    height: 200,
-                  }}
+                          width: 380,
+                          height: 200,
+                        }
+                  }
                 />
               </View>
               <View style={report.isFullScreen ? styles.infoFull : styles.info}>

@@ -66,26 +66,15 @@ const Live = ({route, navigation}) => {
         const listCamId = JSON.stringify({
           data: data,
         });
-        const res2 = await axiosClient.get(
-          'camPlayback/get-list-cam-playback/',
-          {
-            params: {
-              list_camera_code: listCamId,
-              // ...day,
-              // ...time
-            },
-          },
-        );
-        console.log(res2);
         const res = await streamingClient.get(
-          '/streamingManagement/get-list-path-streaming/',
+          '/streamManagement/get-list-path-streaming/',
           {
             params: {
               ids_cam: listCamId,
             },
           },
         );
-
+        console.log(res);
         dispatch(getPathStream(res.stream));
       } catch (e) {
         console.log(e);
