@@ -100,6 +100,7 @@ export default function Stream({navigation, ...props}) {
                       </View>
                       <View style={styles.nameCamera}>
                         <Text
+                          style={{color:"#000"}}
                           onPress={
                             props.route.name === 'Stream'
                               ? () => liveStream(it, item) : props.route.name === 'Smart'?()=>handleNavigateSmart(it,item)
@@ -109,7 +110,7 @@ export default function Stream({navigation, ...props}) {
                         </Text>
                       </View>
                     </View>
-                    <Pressable
+                    {/* <Pressable
                       onPress={() => {
                         dispatch(setWareHouseCode(''));
                         navigation.navigate('Setting', {
@@ -118,7 +119,7 @@ export default function Stream({navigation, ...props}) {
                       }}
                       style={{paddingRight: 12}}>
                       <MenuIcon />
-                    </Pressable>
+                    </Pressable> */}
                   </View>
                 );
               })}
