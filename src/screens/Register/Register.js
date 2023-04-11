@@ -42,7 +42,7 @@ const Register = ({ navigation }) => {
       if (register.password === register.passwordRefresh) {
         const res = await axiosClient.post('/authenticator/register/', {
           name: register.name,
-          username: 'sang2001redalffk',
+          username: register.username,
           //  username: "string",
           password: register.password,
           email: register.email,
@@ -106,8 +106,8 @@ const Register = ({ navigation }) => {
               ) : (
                 <Text></Text>
               )}
-              {/* <Text style={styles.label}>Tên đăng nhập</Text> */}
-              {/* <TextInput
+              <Text style={styles.label}>Tên đăng nhập</Text>
+              <TextInput
                   onChangeText={(text) =>
                     setRegister({ ...register, username: text })
                   }
@@ -118,7 +118,7 @@ const Register = ({ navigation }) => {
                   }
                   value={register.username}
                   placeholder="Nhập"
-                /> */}
+                />
               <Text style={styles.label}>Email</Text>
               <TextInput
                 onChangeText={text => setRegister({ ...register, email: text })}
