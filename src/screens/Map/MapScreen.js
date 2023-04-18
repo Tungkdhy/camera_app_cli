@@ -71,7 +71,7 @@ function MapScreen({ navigation }) {
           setListWareHouse(data)
           const longitude = data[0].LONGITUDE;
           const latitude = data[0].LATITUDE;
-          setCoordinate([longitude, latitude])
+          setCoordinate([Number(longitude), Number(latitude)])
         }
         return res.data;
       } catch (error) {
@@ -80,7 +80,7 @@ function MapScreen({ navigation }) {
     }
     getListWareHouse()
   }, [camera?.filter?.province_code, camera?.filter?.district_code])
-
+  console.log(coordinate);
   useEffect(() => {
     async function getProvince() {
       try {
@@ -114,7 +114,7 @@ function MapScreen({ navigation }) {
     }
     getDistrict();
   }, [camera.filter?.province_code]);
-
+  console.log(listWareHouse);
   useEffect(() => {
     const statusWareHouse = camera.filter.camera_status;
     if (statusWareHouse === 'On') {
@@ -158,15 +158,16 @@ function MapScreen({ navigation }) {
             <Camera zoomLevel={11}
               centerCoordinate={coordinate}
             />
-            {listWareHouseRender.length > 0 && listWareHouseRender.map((wareHouse) => {
+            {listWareHouseRender && listWareHouseRender.length > 0 && listWareHouseRender.map((wareHouse) => {
+
               return (
                 <MarkerView
-                  key={wareHouse.CODE}
+                  key={wareHouse?.CODE}
                   id={'test'}
                   title='Test'
-                  coordinate={[wareHouse.LONGITUDE, wareHouse.LATITUDE]}
+                  coordinate={[Number(wareHouse?.LONGITUDE), Number(wareHouse?.LATITUDE)]}
                   style={{ zIndex: 1 }}
-                  children={<MarkerCustom onPressMaker={() => { handleClickMaker(wareHouse.CODE) }} />}
+                  children={<MarkerCustom onPressMaker={() => { handleClickMaker(wareHouse?.CODE) }} />}
                 />
               )
             })}

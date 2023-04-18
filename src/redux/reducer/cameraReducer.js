@@ -11,6 +11,8 @@ import {
   SET_STATUS,
   SET_WARE_HOUSE_CODE,
   SET_IS_FULLSCREEN,
+  SET_FILTER_DISTRICT,
+  SET_FILTER_PROVINCE,
 } from '../actions/cameraAction';
 
 const initialState = {
@@ -28,28 +30,32 @@ const initialState = {
   },
   pathStream: [],
   camera_info: {},
-  isFullScreen: false
+  isFullScreen: false,
+  filterLocate: {
+    province: '',
+    district: '',
+  },
 };
 
 const useReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_NAME_CAMERA:
-      return { ...state, name: action.payload };
+      return {...state, name: action.payload};
     case GET_LIST_LOCATION:
-      return { ...state, camera: action.payload };
+      return {...state, camera: action.payload};
     case GET_PROVINCE:
-      return { ...state, province: action.payload };
+      return {...state, province: action.payload};
     case GET_FILTER:
-      return { ...state, filter: action.payload };
+      return {...state, filter: action.payload};
     case GET_DISTRICT:
-      return { ...state, district: action.payload };
+      return {...state, district: action.payload};
     case SET_PROVINCE_CODE:
       return {
         ...state,
         filter: {
           ...state.filter,
           province_code: action.payload.code,
-          province_name: action.payload.name
+          province_name: action.payload.name,
         },
       };
     case SET_DISTRICT_CODE:
@@ -58,7 +64,7 @@ const useReducer = (state = initialState, action) => {
         filter: {
           ...state.filter,
           district_code: action.payload.code,
-          district_name: action.payload.name
+          district_name: action.payload.name,
         },
       };
     case SET_STATUS:
@@ -88,6 +94,22 @@ const useReducer = (state = initialState, action) => {
       return {
         ...state,
         isFullScreen: !state.isFullScreen,
+      };
+    case SET_FILTER_DISTRICT:
+      return {
+        ...state,
+        filterLocate: {
+          ...state.filterLocate,
+          district: action.payload,
+        },
+      };
+    case SET_FILTER_PROVINCE:
+      return {
+        ...state,
+        filterLocate: {
+          ...state.filterLocate,
+          province: action.payload,
+        },
       };
     default:
       return state;

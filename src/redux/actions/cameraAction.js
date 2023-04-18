@@ -10,6 +10,8 @@ export const GET_INFO = "GET_INFO"
 export const SET_STATUS = "SET_STATUS"
 export const SET_WARE_HOUSE_CODE = "SET_WARE_HOUSE_CODE"
 export const SET_IS_FULLSCREEN = "SET_IS_FULLSCREEN"
+export const SET_FILTER_PROVINCE = "SET_FILTER_PROVINCE"
+export const SET_FILTER_DISTRICT = "SET_FILTER_DISTRICT"
 export const setNameCamera = (name) => {
   return {
     type: SET_NAME_CAMERA,
@@ -79,6 +81,18 @@ export const getInfoCamera = (data) => {
 export const setWareHouseCode = (data) => {
   return {
     type: SET_WARE_HOUSE_CODE,
+    payload: data
+  }
+}
+export const setFilterProvince = (data) => {
+  return {
+    type: SET_FILTER_PROVINCE,
+    payload: data
+  }
+}
+export const setFilterDistrict = (data) => {
+  return {
+    type: SET_FILTER_DISTRICT,
     payload: data
   }
 }

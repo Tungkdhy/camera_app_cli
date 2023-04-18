@@ -158,7 +158,7 @@ export default function Stream({navigation, ...props}) {
   useEffect(() => {
     async function getDistrict() {
       const res = await axiosClient.get(
-        `/district/get-list-district/?province_code=${camera.filter?.province_code}&size=1000&page=1`,
+        `/district/get-list-district/?province_code=${camera.filter?.province_code}&size=1000&page=1&district_name=${camera.filterLocate?.district}`,
       );
       const data = res.map(item => {
         return {name: item.DISTRICT_NAME, code: item.DISTRICT_CODE};
@@ -166,24 +166,23 @@ export default function Stream({navigation, ...props}) {
       dispatch(getListDistrict(data));
     }
     getDistrict();
-  }, [camera.filter?.province_code]);
+  }, [camera.filter?.province_code,camera.filterLocate?.district]);
   useEffect(() => {
     async function getProvince() {
       try {
         const res = await axiosClient.get(
-          '/province/get-info-province/?nation_code=VNM',
+          `/province/get-info-province/?nation_code=VNM&province_name=${camera.filterLocate?.province}`,
         );
         const data = res.map(item => {
           return {name: item.PROVINCE_NAME, code: item.PROVINCE_CODE};
         });
-        console.log(res);
         dispatch(getListProvince(data));
       } catch (e) {
         console.log(e);
       }
     }
     getProvince();
-  }, []);
+  }, [camera.filterLocate?.province]);
   useEffect(() => {
     async function getProvince() {
       try {
@@ -209,6 +208,7 @@ export default function Stream({navigation, ...props}) {
         title={
           props.route.name === 'Stream' ?  'Xem trực tiếp'  :  props.route.name === 'Smart'?'Cảnh báo thông minh':'Xem lại Camera'
         }
+        navigation={navigation}
       />
       <Modal
         isShow={modalVisible}
@@ -227,8 +227,8 @@ export default function Stream({navigation, ...props}) {
           filter={camera.filter.camera_status}
           onClick={handleShowFilter}
         />
-        <ScrollView>
-          <View style={styles.camera}>
+        {/* <ScrollView> */}
+          <ScrollView style={styles.camera}>
             <FlatList
               data={wareHouse?.wareHouse}
               renderItem={renderItem}
@@ -236,8 +236,8 @@ export default function Stream({navigation, ...props}) {
               onEndReachedThreshold={0}
               accessibilityElementsHidden
             />
-          </View>
-        </ScrollView>
+          </ScrollView>
+        {/* </ScrollView> */}
       </View>
     </>
   );
