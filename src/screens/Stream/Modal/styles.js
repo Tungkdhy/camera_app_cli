@@ -91,7 +91,7 @@ export const styles = StyleSheet.create({
         justifyContent:"flex-end",    
     },
     modalView:{
-        height:600,
+        height:500,
         backgroundColor:"#fff",
         borderTopLeftRadius:12,
         borderTopRightRadius:12,
@@ -112,7 +112,6 @@ export const styles = StyleSheet.create({
         textAlign:"center"
     },
     input:{
-        marginTop:16,
         padding:16,
         borderRadius:4,
         paddingLeft:42,
@@ -145,5 +144,16 @@ export const styles = StyleSheet.create({
         zIndex:100,
         width:60,
         height:30
+    },
+    title:{
+        padding:16,
+        display:"flex",
+        flexDirection:"row",
+        alignItems:"center",
+        gap:8,
+        paddingLeft:0
+    },
+    textDist:{
+        fontSize:16
     }
   });
