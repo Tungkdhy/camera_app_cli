@@ -42,13 +42,19 @@ function DonutChart({ title, type }) {
         fillShadowGradient: 'white',
         fillShadowGradientOpacity: 1
     };
+    function randomHexColor() {
+        let hexColor = "#";
+        for (let i = 0; i < 6; i++) {
+            hexColor += Math.floor(Math.random() * 16).toString(16);
+        }
+        return hexColor;
+    }
 
     const autoCreateNewColor = (dataInfo, dataColor) => {
         let colorNew = [...dataColor];
         for (let i = 0; i < dataInfo.length - dataColor.length; i++) {
-            const randomColor = Math.floor(((dataInfo.length - colorNew.length) + (i / 50)) / 10 * 16777215).toString(16);
-            const newColor = '#' + randomColor;
-            colorNew.push(newColor);
+            const randomColor = randomHexColor();
+            colorNew.push(randomColor);
         }
         return colorNew;
     }
@@ -99,7 +105,7 @@ function DonutChart({ title, type }) {
                         <PieChart
                             data={dataChart}
                             width={screenWidth}
-                            height={250}
+                            height={200}
                             chartConfig={chartConfig}
                             accessor={"population"}
                             hasLegend={false}

@@ -101,8 +101,8 @@ export const styles = StyleSheet.create({
 
   },
   login: {
-    // marginTop: 24,
-    marginBottom: 59
+    marginTop: 24,
+    marginBottom: 100
   },
   buttonLogin: {
     padding: 12,

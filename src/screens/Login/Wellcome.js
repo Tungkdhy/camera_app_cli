@@ -1,14 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   ImageBackground,
   Text,
-  Button,
   TouchableHighlight,
+  Alert,
 } from "react-native";
 import { styles } from "./styles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axiosClient from "../../services/axiosClient";
+import { setUserTypeCode } from "../../redux/actions/getUserAction";
+import { useDispatch } from "react-redux";
 
 const Wellcome = ({ navigation }) => {
+  const dispatch = useDispatch()
+  async function getToken() {
+    const res = await AsyncStorage.getItem('remember');
+    if (res === 'true') {
+      try {
+        const infoUser = await axiosClient.get('/user/get-user-info/');
+        let userTypeCode = infoUser[0].USERTYPE_CODE;
+        dispatch(setUserTypeCode(userTypeCode));
+        if (userTypeCode !== '300920220005') {
+          navigation.navigate("Live");
+        } else {
+          navigation.navigate("Home");
+        }
+      } catch (error) {
+        Alert.alert('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại!');
+        navigation.navigate('Login');
+      }
+    } else {
+      navigation.navigate('Login');
+    }
+  }
   return (
     <ImageBackground
       style={styles.container}
@@ -20,7 +45,7 @@ const Wellcome = ({ navigation }) => {
 
         <View style={styles.actions}>
           <TouchableHighlight
-            onPress={() => navigation.navigate("Login")}
+            onPress={() => getToken()}
             style={styles.touch}
           >
             <View style={styles.button}>
@@ -29,7 +54,7 @@ const Wellcome = ({ navigation }) => {
           </TouchableHighlight>
           <TouchableHighlight style={styles.touch}>
             <View style={styles.buttonRegister}>
-              <Text onPress={()=>navigation.navigate("Register")} style={styles.btnText}>Đăng ký</Text>
+              <Text onPress={() => navigation.navigate("Register")} style={styles.btnText}>Đăng ký</Text>
             </View>
           </TouchableHighlight>
         </View>

@@ -161,10 +161,10 @@ function MapScreen({ navigation }) {
             {listWareHouseRender.length > 0 && listWareHouseRender.map((wareHouse) => {
               return (
                 <MarkerView
-                  key={wareHouse.CODE}
+                  key={wareHouse?.CODE}
                   id={'test'}
                   title='Test'
-                  coordinate={[wareHouse.LONGITUDE, wareHouse.LATITUDE]}
+                  coordinate={wareHouse?.LONGITUDE ? [wareHouse.LONGITUDE, wareHouse.LATITUDE] : [105.8342, 21.0278]}
                   style={{ zIndex: 1 }}
                   children={<MarkerCustom onPressMaker={() => { handleClickMaker(wareHouse.CODE) }} />}
                 />

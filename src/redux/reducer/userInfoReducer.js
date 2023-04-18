@@ -1,7 +1,8 @@
-const { GET_INFO_USER } = require("../actions/getUserAction")
+const { GET_INFO_USER, GET_USER_TYPE_CODE } = require("../actions/getUserAction")
 
 const initialState = {
-    userInfo: {}
+    userInfo: {},
+    userTypeCode: null
 };
 
 const userReducer = (state = { ...initialState }, action) => {
@@ -10,6 +11,11 @@ const userReducer = (state = { ...initialState }, action) => {
             return {
                 ...state,
                 userInfo: action.payload
+            }
+        case GET_USER_TYPE_CODE:
+            return {
+                ...state,
+                userTypeCode: action.payload
             }
         default:
             return state

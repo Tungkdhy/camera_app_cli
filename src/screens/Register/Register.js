@@ -216,13 +216,12 @@ const Register = ({ navigation }) => {
                   setRegister({ ...register, passwordRefresh: text })
                 }
               />
-            </ScrollView>
-
             <TouchableHighlight onPress={handleLogin} style={styles.login}>
               <View style={styles.buttonLogin}>
                 <Text style={styles.btnText}>Tiếp tục</Text>
               </View>
             </TouchableHighlight>
+            </ScrollView>
           </View>
         </View>
       </View>
