@@ -83,7 +83,7 @@ export const styles = StyleSheet.create({
         paddingLeft:16
       },
       contentForm:{
-        height:"45%",
+        height:"55%",
         justifyContent:"space-between",
         backgroundColor:"#ffffff",
         display:"flex",
@@ -101,7 +101,8 @@ export const styles = StyleSheet.create({
 
       },
       login:{
-        marginTop:24
+        marginTop:24,
+        marginBottom:100,
       },
       buttonLogin:{
           padding:12,

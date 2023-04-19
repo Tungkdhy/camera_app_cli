@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SearchIcon,
   Back,
@@ -14,7 +14,7 @@ import {
   getInfoCamera,
 } from '../../../redux/actions/cameraAction';
 import VideoCamera from '../../../components/Live/VideoCamera';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import CameraItem from './CameraItem';
 import Video from 'react-native-video';
 import {
@@ -27,10 +27,10 @@ import {
   Pressable,
   Dimensions,
 } from 'react-native';
-import {styles} from './styles';
+import { styles } from './styles';
 import streamingClient from '../../../services/axiosStreaming';
 import axiosClient from '../../../services/axiosClient';
-const Live = ({route, navigation}) => {
+const Live = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const streamPath = useSelector(state => state.useReducer.pathStream);
   const cameraInfo = useSelector(state => state.useReducer.camera_info);
@@ -54,6 +54,7 @@ const Live = ({route, navigation}) => {
   };
   useEffect(() => {
     setCamId(route.params.active);
+    console.log('this', route.params.active);
     // console.log(props.route.name);
     async function getPath() {
       try {
@@ -184,7 +185,7 @@ const Live = ({route, navigation}) => {
           }}>
           <Back />
         </Pressable>
-        <Text style={styles.text}>{route.params.wareHouse}</Text>
+        <Text style={styles.text}>{route && route.params && route.params.wareHouse ? route.params.wareHouse : ''}</Text>
         <View>
           <SearchIcon color={'black'} />
         </View>

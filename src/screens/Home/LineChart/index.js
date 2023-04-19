@@ -32,6 +32,8 @@ function LineChartService({ type }) {
     const [codeCamera, setCodeCamera] = useState(null)
     const [listCamera, setListCamera] = useState()
     const [dataValue, setDataValue] = useState([0])
+    const [dataValueDetectHuman, setDataValueDetectHuman] = useState([0])
+    const [dataValueDetectFace, setDataValueDetectFace] = useState([0])
     const [listLabel, setListLabel] = useState(['0', dayFill[0].label])
     const screenWidth = Dimensions.get("window").width;
     const chartConfig = {
@@ -48,12 +50,14 @@ function LineChartService({ type }) {
         fillShadowGradientTo: `#141ED2`,
         fillShadowGradientToOpacity: 0
     };
-
+    let dataChart = type === 'Phát hiện chuyển động' ? dataValue :
+        type === 'Nhận diện người' ? dataValueDetectHuman :
+            type === 'Nhận diện khuôn mặt' ? dataValueDetectFace : [0]
     const data = {
         labels: listLabel,
         datasets: [
             {
-                data: dataValue,
+                data: dataChart,
                 color: () => `#141ED2`,
                 strokeWidth: 2,
             }
@@ -102,6 +106,13 @@ function LineChartService({ type }) {
         }
     }
 
+    const getDataDetectHuman = async (duration, code) => {
+
+    }
+    const getDataDetectFace = async (duration, code) => {
+
+    }
+
     const handleClickChangeValue = (label, value) => {
         setStateValue(label)
         const newLabel = checkValue(value, dayFill)
@@ -115,6 +126,12 @@ function LineChartService({ type }) {
             case 'Phát hiện chuyển động':
                 getDataDetectAction(newDate, code)
                 break;
+            case 'Nhận diện người':
+                getDataDetectHuman(newDate, code)
+                break;
+            case 'Nhận diện khuôn mặt':
+                getDataDetectFace(newDate, code)
+                break;
             default:
                 break;
         }
@@ -125,6 +142,14 @@ function LineChartService({ type }) {
             case 'Phát hiện chuyển động':
                 setCodeCamera(code)
                 getDataDetectAction(null, code)
+                break;
+            case 'Nhận diện người':
+                setCodeCamera(code)
+                // getDataDetectAction(null, code)
+                break;
+            case 'Nhận diện khuôn mặt':
+                setCodeCamera(code)
+                // getDataDetectAction(null, code)
                 break;
             default:
                 break;

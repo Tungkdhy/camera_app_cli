@@ -168,6 +168,12 @@ export const styles = StyleSheet.create({
         top:118,
         right:12,
         zIndex:10
+      },
+      checkboxContainer: {
+        flexDirection: 'row',
+        marginBottom: 20,
+        alignItems:'center',
+        gap: 16,
       }
 
 })

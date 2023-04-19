@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   TouchableHighlight,
@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
+  Pressable,
 } from "react-native";
 import axios from "axios";
 import {
@@ -18,27 +19,34 @@ import {
   LockIcon,
   UserIcon,
   EyeIcon,
+  Radio,
+  RadioCheck,
 } from "../../components/Icons/Index";
 import { styles } from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axiosClient from "../../services/axiosClient";
+import { useDispatch } from "react-redux";
+import { setUserTypeCode } from "../../redux/actions/getUserAction";
 
 const Login = ({ navigation }) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [isShowPass, setIsShowPass] = useState(true);
-  const [data,setData] = useState()
-  useEffect(()=>{
-    async function getData(){
-      try{
+  const [data, setData] = useState();
+  const [rememberMe, setRememberMe] = useState(false)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    async function getData() {
+      try {
         const res = await axios.get('https://jsonplaceholder.typicode.com/todos/1')
         setData(res.data)
       }
-      catch(e){
+      catch (e) {
 
       }
     }
     getData()
-  },[])
+  }, [])
   const handleLogin = async () => {
     try {
       const res = await axios.post(
@@ -48,11 +56,18 @@ const Login = ({ navigation }) => {
           password: password,
         }
       );
-      console.log(res);
       if (res) {
-        Alert.alert("Đăng nhập thành công" + res.data.access);
-        await AsyncStorage.setItem("token",res.data.access)
-        navigation.navigate("Home");
+        Alert.alert("Đăng nhập thành công");
+        await AsyncStorage.setItem("token", res.data.access)
+        await AsyncStorage.setItem("remember", `${rememberMe}`)
+        const infoUser = await axiosClient.get('/user/get-user-info/')
+        let userTypeCode = infoUser[0].USERTYPE_CODE;
+        dispatch(setUserTypeCode(userTypeCode))
+        if (userTypeCode !== '300920220005') {
+          navigation.navigate("Live");
+        } else {
+          navigation.navigate("Home");
+        }
       }
     } catch (e) {
       Alert.alert("Đăng nhập không thành công");
@@ -131,6 +146,12 @@ const Login = ({ navigation }) => {
                       Mật khẩu tối thiểu có 6 ký tự
                     </Text>
                   )}
+                  <View style={styles.checkboxContainer}>
+                    <Pressable onPress={() => setRememberMe(!rememberMe)}>
+                      {rememberMe ? <RadioCheck /> : <Radio/>}
+                    </Pressable>
+                    <Text>Lưu đăng nhập</Text>
+                  </View>
                 </SafeAreaView>
                 <TouchableHighlight onPress={handleLogin} style={styles.login}>
                   <View style={styles.buttonLogin}>
