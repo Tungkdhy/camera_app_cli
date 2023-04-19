@@ -1,4 +1,6 @@
 import {StyleSheet, Dimensions} from 'react-native';
+const height = Dimensions.get('window').width;
+const width = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
   container: {
     paddingLeft: 16,
@@ -47,15 +49,17 @@ export const styles = StyleSheet.create({
     // transform: [{rotateZ: '90deg'}],
   },
   infoFull: {
-    paddingTop: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    position: 'absolute',
-    top: -360,
-    left: -160,
-    bottom: 0,
-    right: 100,
+    position:"absolute",
+    top:12
+    // paddingTop: 8,
+    // flexDirection: 'row',
+    // justifyContent: 'space-between',
+    // alignItems: 'center',
+    // position: 'absolute',
+    // top: -360,
+    // left: -160,
+    // bottom: 0,
+    // right: 100,
     // backgroundColor:"black"
   },
   header: {
@@ -143,8 +147,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   fullScreen: {
-    width: Dimensions.get('screen').height - 160,
-    height: Dimensions.get('screen').width,
+    width: width,
+    height: height,
   },
   time: {
     display: 'flex',

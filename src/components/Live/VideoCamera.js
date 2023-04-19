@@ -10,8 +10,8 @@ import {setIsFullScreen} from '../../redux/actions/cameraAction';
 import {useDispatch} from 'react-redux';
 import CameraItem from './CameraItem';
 import Video from 'react-native-video';
-import VideoPlayer from 'react-native-video-controls';
-import {View, Text, FlatList, Pressable} from 'react-native';
+import Orientation from 'react-native-orientation-locker';
+import {View, Text, FlatList, Pressable, StatusBar} from 'react-native';
 import {styles} from './styles';
 const VideoCamera = ({
   navigation,
@@ -20,10 +20,33 @@ const VideoCamera = ({
   streamPath,
   getInfo,
   setCamId,
-  type="livestream"
+  type = 'livestream',
 }) => {
   const dispatch = useDispatch();
- 
+  const handleOrientation = orientation => {
+    if (orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT') {
+      dispatch(setIsFullScreen(true));
+
+      StatusBar.setHidden(true);
+    } else {
+      dispatch(setIsFullScreen(false));
+
+      StatusBar.setHidden(false);
+    }
+  };
+  const handleFullscreen = () => {
+    if (isFullScreen) {
+      Orientation.unlockAllOrientations();
+    } else {
+      Orientation.lockToLandscapeLeft();
+    }
+  };
+  useEffect(() => {
+    Orientation.addOrientationListener(handleOrientation);
+    return () => {
+      Orientation.removeOrientationListener(handleOrientation);
+    };
+  }, []);
   return (
     <View style={isFullScreen ? styles.contentFull : {}}>
       <View style={isFullScreen ? styles.activeFull : styles.active}>
@@ -54,13 +77,13 @@ const VideoCamera = ({
                     shouldPlay={true}
                     useNativeControls={true}
                     isLooping
-                    controls={!isFullScreen}
+                    controls={true}
                     style={
                       isFullScreen
                         ? styles.fullScreen
                         : {
-                            width:"100%",
-                            height: 200,
+                            width: '100%',
+                            height: 240,
                           }
                     }
                   />
@@ -69,10 +92,7 @@ const VideoCamera = ({
                   <View style={styles.cam}>
                     <View>
                       {isFullScreen ? (
-                        <Pressable
-                          onPress={() => {
-                            dispatch(setIsFullScreen());
-                          }}>
+                        <Pressable onPress={handleFullscreen}>
                           <BackIcon2 />
                         </Pressable>
                       ) : item.status === 'On' ? (
@@ -86,34 +106,26 @@ const VideoCamera = ({
                       {item.name}
                     </Text>
                   </View>
+
                   {!isFullScreen && (
-                    <View style={styles.setting}>
-                      <View style={styles.iconSetting}>
-                        <Text onPress={() => getInfo(item.code)}>
-                          <InfoIcon />
-                        </Text>
+                    <>
+                      <View style={styles.setting}>
+                        <View style={styles.iconSetting}>
+                          <Text onPress={() => getInfo(item.code)}>
+                            <InfoIcon />
+                          </Text>
+                        </View>
+                        <Pressable
+                          onPress={handleFullscreen}
+                          style={styles.iconSetting}>
+                          <Text>
+                            <FullScreenIcon
+                              color={isFullScreen ? '#fff' : 'black'}
+                            />
+                          </Text>
+                        </Pressable>
                       </View>
-                      <Pressable
-                        onPress={() => {
-                          navigation.navigate('Setting');
-                        }}
-                        style={styles.iconSetting}>
-                        <Text>
-                          <SettingIcon />
-                        </Text>
-                      </Pressable>
-                      <Pressable
-                        onPress={() => {
-                          dispatch(setIsFullScreen('tung'));
-                        }}
-                        style={styles.iconSetting}>
-                        <Text>
-                          <FullScreenIcon
-                            color={isFullScreen ? '#fff' : 'black'}
-                          />
-                        </Text>
-                      </Pressable>
-                    </View>
+                    </>
                   )}
                 </View>
               </>

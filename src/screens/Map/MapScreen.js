@@ -54,18 +54,27 @@ function MapScreen({ navigation }) {
     setModalVisible(true);
   };
 
-
+  console.log(camera.filter)
   useEffect(() => {
-    const provinceCode = camera?.filter?.province_code;
-    const districtCode = camera?.filter?.district_code;
+    const province = camera.filter?.province_code
+          ? {
+              province_code: camera.filter?.province_code,
+            }
+          : {};
+        const district = camera.filter?.district_code
+          ? {
+              district_code: camera.filter?.district_code,
+            }
+          : {};
     async function getListWareHouse() {
       try {
         const res = await axiosClient.get('warehouse/get-list-warehouse/', {
           params: {
-            province_code: provinceCode.length > 0 ? provinceCode : null,
-            district_code: districtCode.length > 0 ? districtCode : null,
+            ...province,
+            ...district,
           }
         })
+        console.log(res);
         if (res) {
           const data = res.data
           setListWareHouse(data)
@@ -165,7 +174,7 @@ function MapScreen({ navigation }) {
                   key={wareHouse?.CODE}
                   id={'test'}
                   title='Test'
-                  coordinate={[Number(wareHouse?.LONGITUDE), Number(wareHouse?.LATITUDE)]}
+                  coordinate={[wareHouse?.LONGITUDE?Number(wareHouse?.LONGITUDE):0,wareHouse?.LATITUDE? Number(wareHouse.LATITUDE):0]}
                   style={{ zIndex: 1 }}
                   children={<MarkerCustom onPressMaker={() => { handleClickMaker(wareHouse?.CODE) }} />}
                 />

@@ -26,7 +26,7 @@ const playBackReducer = (state = initialState, action) => {
           ...state.filter,timeEnd:action.payload
         }};
       case SET_FULL_SCREEN:
-      return {...state, isFullScreen:!state.isFullScreen};
+      return {...state, isFullScreen:action.payload};
     default:
       return state;
   }

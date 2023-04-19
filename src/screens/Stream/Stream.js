@@ -55,12 +55,14 @@ export default function Stream({navigation, ...props}) {
       cam:camera.camera ,
     })
   };
+  //Navigate Screen Smart
   const handleNavigateSmart = (it,item)=>{
     console.log(it);
     navigation.navigate("Report",{
       camera:it
     })
   }
+  //Show menu2 stream
   const handleShowCamera = code => {
     if (code === camera.wareCode) {
       dispatch(setWareHouseCode(''));
@@ -68,9 +70,11 @@ export default function Stream({navigation, ...props}) {
       dispatch(setWareHouseCode(code));
     }
   };
+  // Navigate form select district
   const setIsShowProvince = () => {
     setIsProvince(!isProvince);
   };
+  //Render menu camera
   const renderItem = ({item,index}) => {
     return (
       <>
@@ -110,16 +114,6 @@ export default function Stream({navigation, ...props}) {
                         </Text>
                       </View>
                     </View>
-                    {/* <Pressable
-                      onPress={() => {
-                        dispatch(setWareHouseCode(''));
-                        navigation.navigate('Setting', {
-                          camera_code: it.CODE,
-                        });
-                      }}
-                      style={{paddingRight: 12}}>
-                      <MenuIcon />
-                    </Pressable> */}
                   </View>
                 );
               })}
@@ -130,6 +124,7 @@ export default function Stream({navigation, ...props}) {
     );
   };
   useEffect(() => {
+    //Get warehouse
     async function getLocation() {
       try {
         const province = camera.filter?.province_code
@@ -156,6 +151,7 @@ export default function Stream({navigation, ...props}) {
     getLocation();
   }, [camera.filter?.province_code, camera.filter?.district_code]);
   useEffect(() => {
+    
     async function getDistrict() {
       const res = await axiosClient.get(
         `/district/get-list-district/?province_code=${camera.filter?.province_code}&size=1000&page=1&district_name=${camera.filterLocate?.district}`,

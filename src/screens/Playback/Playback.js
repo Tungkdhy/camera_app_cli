@@ -21,7 +21,6 @@ export default function PlayBack({navigation, route}) {
   const [cameraActive, setCameraActive] = useState();
   const [camId, setCamId] = useState();
   const playback = useSelector(state => state.playBackReducer);
-  console.log(playback);
   const isFullScreen = useSelector(state => state.useReducer.isFullScreen);
   const getInfo = () => {};
   useEffect(() => {
@@ -41,15 +40,16 @@ export default function PlayBack({navigation, route}) {
             params: {
               list_camera_code: JSON.stringify({data: data}),
               ...day,
-              time_start:playback.filter.time,
-              time_end:playback.filter.timeEnd,
+              time_start: playback.filter.time,
+              time_end: playback.filter.timeEnd,
             },
           },
         );
+        console.log(res);
         const playbacks = res.data.map(item => {
           return {
             code: item.camera_code,
-            path: item.path+'/stream_0.m3u8',
+            path: item.path ,
             time: item.total_time,
             name:
               item.name + '- ' + formatTimehp(item.time_start.split(' ')[1]),
@@ -62,7 +62,12 @@ export default function PlayBack({navigation, route}) {
       }
     }
     getListPlayBack();
-  }, [route.params.wareHouse, playback.filter.day, playback.filter.time,playback.filter.timeEnd]);
+  }, [
+    route.params.wareHouse,
+    playback.filter.day,
+    playback.filter.time,
+    playback.filter.timeEnd,
+  ]);
   useEffect(() => {
     const camActive = playback.playBacks.filter(item => {
       return item.code === camId;
@@ -110,48 +115,52 @@ export default function PlayBack({navigation, route}) {
           setOpen3(false);
         }}
       />
-      <View style={styles.header}>
-        <Pressable
-          onPress={() => {
-            dispatch(setDay(formatDDMMYY(new Date())));
-            dispatch(setTime('00:00'));
-            dispatch(setTimeEnd('23:59'));
-            dispatch(play([]))
-            navigation.navigate('Playback');
-          }}>
-          <Back />
-        </Pressable>
-        <Text style={styles.text}>{route.params.wareHouse}</Text>
-        <View>
-          <SearchIcon color={'black'} />
-        </View>
-      </View>
-      <View style={styles.filter}>
-        <Pressable onPress={() => setOpen(true)} style={styles.btnFilter}>
-          <View style={styles.textContent}>
-            <Text>{playback.filter.day}</Text>
+      {!isFullScreen && (
+        <>
+          <View style={styles.header}>
+            <Pressable
+              onPress={() => {
+                dispatch(setDay(formatDDMMYY(new Date())));
+                dispatch(setTime('00:00'));
+                dispatch(setTimeEnd('23:59'));
+                dispatch(play([]));
+                navigation.navigate('Playback');
+              }}>
+              <Back />
+            </Pressable>
+            <Text style={styles.text}>{route.params.wareHouse}</Text>
             <View>
-              <PlayBackDownIcon />
+              <SearchIcon color={'black'} />
             </View>
           </View>
-        </Pressable>
-        <Pressable onPress={() => setOpen2(true)} style={styles.btnFilter}>
-          <View style={styles.textContent}>
-            <Text>{playback.filter.time}</Text>
-            <View>
-              <PlayBackDownIcon />
-            </View>
+          <View style={styles.filter}>
+            <Pressable onPress={() => setOpen(true)} style={styles.btnFilter}>
+              <View style={styles.textContent}>
+                <Text>{playback.filter.day}</Text>
+                <View>
+                  <PlayBackDownIcon />
+                </View>
+              </View>
+            </Pressable>
+            <Pressable onPress={() => setOpen2(true)} style={styles.btnFilter}>
+              <View style={styles.textContent}>
+                <Text>{playback.filter.time}</Text>
+                <View>
+                  <PlayBackDownIcon />
+                </View>
+              </View>
+            </Pressable>
+            <Pressable onPress={() => setOpen3(true)} style={styles.btnFilter}>
+              <View style={styles.textContent}>
+                <Text>{playback.filter.timeEnd}</Text>
+                <View>
+                  <PlayBackDownIcon />
+                </View>
+              </View>
+            </Pressable>
           </View>
-        </Pressable>
-        <Pressable onPress={() => setOpen3(true)} style={styles.btnFilter}>
-          <View style={styles.textContent}>
-            <Text>{playback.filter.timeEnd}</Text>
-            <View>
-              <PlayBackDownIcon />
-            </View>
-          </View>
-        </Pressable>
-      </View>
+        </>
+      )}
       <VideoCamera
         navigation={navigation}
         cameraActive={cameraActive}
@@ -159,7 +168,7 @@ export default function PlayBack({navigation, route}) {
         streamPath={playback.playBacks}
         setCamId={setCamId}
         getInfo={getInfo}
-        type='playback/'
+        type="playback/"
       />
     </View>
   );
