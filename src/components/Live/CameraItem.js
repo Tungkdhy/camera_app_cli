@@ -9,7 +9,7 @@ const CameraItem = ({title, path,setCamId,id,type}) => {
       <View >
         <Video
           source={{
-            uri: `http://cameraai.cds.vinorsoft.com/livestream${path}`,
+            uri: `http://cameraai.cds.vinorsoft.com/${type}${path}`,
           }}
           rate={1.0}
           volume={1.0}

@@ -28,6 +28,7 @@ import {
 import {Picker} from '@react-native-picker/picker';
 import DatePicker from 'react-native-date-picker';
 import {formatTimehp, formatDDMMYY} from '../../utils';
+import Orientation from 'react-native-orientation-locker';
 import {styles} from './styles';
 import axiosClient from '../../services/axiosClient';
 export default function Payment({route, navigation}) {
@@ -54,7 +55,7 @@ export default function Payment({route, navigation}) {
                 path: item.PATH,
               }),
             );
-            dispatch(setIsFullScreen());
+            handleFullscreen()
           }}>
           <View style={styles.time}>
             <Text>{formatDDMMYY(item.TIME_START.split(' ')[0])}</Text>
@@ -75,6 +76,30 @@ export default function Payment({route, navigation}) {
       </View>
     );
   };
+  const handleOrientation = orientation => {
+    if (orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT') {
+      dispatch(setIsFullScreen(true));
+
+      StatusBar.setHidden(true);
+    } else {
+      dispatch(setIsFullScreen(false));
+
+      StatusBar.setHidden(false);
+    }
+  };
+  const handleFullscreen = () => {
+    if (report.isFullScreen) {
+      Orientation.unlockAllOrientations();
+    } else {
+      Orientation.lockToLandscapeLeft();
+    }
+  };
+  useEffect(() => {
+    Orientation.addOrientationListener(handleOrientation);
+    return () => {
+      Orientation.removeOrientationListener(handleOrientation);
+    };
+  }, []);
   useEffect(() => {
     async function getVideoReport() {
       try {
@@ -113,7 +138,9 @@ export default function Payment({route, navigation}) {
     }
     getPackage();
   }, []);
-  console.log(`http://cameraai.cds.vinorsoft.com/event${report.video_active.path}`);
+  console.log(
+    `http://cameraai.cds.vinorsoft.com/event${report.video_active.path}`,
+  );
   return (
     <View style={styles.container}>
       <DatePicker
@@ -151,58 +178,64 @@ export default function Payment({route, navigation}) {
         }}
       />
 
-      <View style={styles.header}>
-        <Pressable
-          onPress={() => {
-            dispatch(setDayReport(new Date()));
-            dispatch(setTimeReport(new Date()));
-            navigation.navigate('Smart');
-          }}>
-          <Back />
-        </Pressable>
-        <Text style={styles.text}>{route.params.camera.NAME_CAM}</Text>
-        <View>
-          <SearchIcon color={'black'} />
-        </View>
-      </View>
-      <ScrollView style={{flexGrow: 0}} horizontal>
-        <View style={styles.filter}>
-          <Pressable onPress={() => setOpen(true)} style={styles.btnFilter}>
-            <View style={styles.textContent}>
-              <Text>{formatDDMMYY(report.filter.day)}</Text>
-              <View>
-                <PlayBackDownIcon />
+      {!report.isFullScreen && (
+        <>
+          <View style={styles.header}>
+            <Pressable
+              onPress={() => {
+                dispatch(setDayReport(new Date()));
+                dispatch(setTimeReport(new Date()));
+                navigation.navigate('Smart');
+              }}>
+              <Back />
+            </Pressable>
+            <Text style={styles.text}>{route.params.camera.NAME_CAM}</Text>
+            <View>
+              <SearchIcon color={'black'} />
+            </View>
+          </View>
+          <ScrollView style={{flexGrow: 0}} horizontal>
+            <View style={styles.filter}>
+              <Pressable onPress={() => setOpen(true)} style={styles.btnFilter}>
+                <View style={styles.textContent}>
+                  <Text>{formatDDMMYY(report.filter.day)}</Text>
+                  <View>
+                    <PlayBackDownIcon />
+                  </View>
+                </View>
+              </Pressable>
+              <Pressable
+                onPress={() => setOpen2(true)}
+                style={styles.btnFilter}>
+                <View style={styles.textContent}>
+                  <Text>{formatDDMMYY(report.filter.time)}</Text>
+                  <View>
+                    <PlayBackDownIcon />
+                  </View>
+                </View>
+              </Pressable>
+              <View style={styles.input_picker}>
+                <Picker
+                  selectedValue={report.filter.ai_code}
+                  onValueChange={(itemValue, itemIndex) => {
+                    dispatch(setAiCode(itemValue));
+                  }}>
+                  {report.package.length > 0 &&
+                    report.package.map(service => {
+                      return (
+                        <Picker.Item
+                          key={service.CODE}
+                          label={service.SUBJECT_NAME}
+                          value={service.CODE}
+                        />
+                      );
+                    })}
+                </Picker>
               </View>
             </View>
-          </Pressable>
-          <Pressable onPress={() => setOpen2(true)} style={styles.btnFilter}>
-            <View style={styles.textContent}>
-              <Text>{formatDDMMYY(report.filter.time)}</Text>
-              <View>
-                <PlayBackDownIcon />
-              </View>
-            </View>
-          </Pressable>
-            <View style={styles.input_picker}>
-              <Picker
-                selectedValue={report.filter.ai_code}
-                onValueChange={(itemValue, itemIndex) => {
-                  dispatch(setAiCode(itemValue));
-                }}>
-                {report.package.length > 0 &&
-                  report.package.map(service => {
-                    return (
-                      <Picker.Item
-                        key={service.CODE}
-                        label={service.SUBJECT_NAME}
-                        value={service.CODE}
-                      />
-                    );
-                  })}
-              </Picker>
-            </View>
-        </View>
-      </ScrollView>
+          </ScrollView>
+        </>
+      )}
       {!report.isFullScreen && (
         <View style={styles.content}>
           <FlatList data={report.reports} renderItem={renderItem} />
@@ -221,26 +254,26 @@ export default function Payment({route, navigation}) {
                         alignItems: 'center',
                         width: '100%',
                         height: '100%',
-                      } 
+                      }
                     : {}
                 }>
                 <Video
                   source={{
                     uri: `http://cameraai.cds.vinorsoft.com/event/${report.video_active.path}`,
                   }}
-                  rate={1.0} 
+                  rate={1.0}
                   volume={1.0}
                   isMuted={false}
                   resizeMode="cover"
                   shouldPlay={true}
                   isLooping
-                  controls={!report.isFullScreen}
+                  controls={true}
                   style={
                     report.isFullScreen
                       ? styles.fullScreen
                       : {
-                          width: 380,
-                          height: 200,
+                          width: '100%',
+                          height: 240,
                         }
                   }
                 />
@@ -250,9 +283,7 @@ export default function Payment({route, navigation}) {
                   <View>
                     {report.isFullScreen && (
                       <Pressable
-                        onPress={() => {
-                          dispatch(setIsFullScreen());
-                        }}>
+                        onPress={handleFullscreen}>
                         <BackIcon2 />
                       </Pressable>
                     )}

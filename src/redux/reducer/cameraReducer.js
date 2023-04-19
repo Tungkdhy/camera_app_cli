@@ -93,7 +93,7 @@ const useReducer = (state = initialState, action) => {
     case SET_IS_FULLSCREEN:
       return {
         ...state,
-        isFullScreen: !state.isFullScreen,
+        isFullScreen: action.payload,
       };
     case SET_FILTER_DISTRICT:
       return {
