@@ -1,18 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
   InfoIcon,
-  SettingIcon,
   FullScreenIcon,
   Status,
   BackIcon2,
 } from '../../components/Icons/Index';
+
 import {setIsFullScreen} from '../../redux/actions/cameraAction';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import CameraItem from './CameraItem';
 import Video from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
 import {View, Text, FlatList, Pressable, StatusBar} from 'react-native';
 import {styles} from './styles';
+import {convertToSecond} from '../../utils';
+import {videoActive} from '../../redux/actions/reportAction';
 const VideoCamera = ({
   navigation,
   cameraActive,
@@ -22,7 +24,12 @@ const VideoCamera = ({
   setCamId,
   type = 'livestream',
 }) => {
+  const ref = useRef();
   const dispatch = useDispatch();
+  const stick_time = useSelector(
+    state => state.playBackReducer.filter.stick_time,
+  );
+
   const handleOrientation = orientation => {
     if (orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT') {
       dispatch(setIsFullScreen(true));
@@ -47,6 +54,18 @@ const VideoCamera = ({
       Orientation.removeOrientationListener(handleOrientation);
     };
   }, []);
+  useEffect(() => {
+    if (type !== 'livestream' && cameraActive?.length > 0) {
+      console.log(cameraActive[0]?.path?.TIME_START);
+      if (cameraActive[0]?.path?.TIME_START) {
+        ref.current.seek(
+          Number(convertToSecond(stick_time)) -
+            Number(convertToSecond(cameraActive[0]?.path?.TIME_START.split(" ")[1]))
+        );
+      }
+    }
+  }, [cameraActive]);
+
   return (
     <View style={isFullScreen ? styles.contentFull : {}}>
       <View style={isFullScreen ? styles.activeFull : styles.active}>
@@ -66,27 +85,38 @@ const VideoCamera = ({
                         }
                       : {}
                   }>
-                  <Video
-                    source={{
-                      uri: `http://cameraai.cds.vinorsoft.com/${type}${item.path}`,
-                    }}
-                    rate={1.0}
-                    volume={1.0}
-                    isMuted={false}
-                    resizeMode="cover"
-                    shouldPlay={true}
-                    useNativeControls={true}
-                    isLooping
-                    controls={true}
-                    style={
-                      isFullScreen
-                        ? styles.fullScreen
-                        : {
-                            width: '100%',
-                            height: 240,
-                          }
-                    }
-                  />
+                  {item.path === 'no-path' ? (
+                    <View style={styles.noPath}>
+                        <Text>Không có đường dẫn</Text>
+                    </View>
+                  ) : (
+                    <Video
+                      source={{
+                        uri: `http://cameraai.cds.vinorsoft.com/${type}${
+                          type === 'playback/'
+                            ? item?.path.PATH
+                            : item?.data[0]?.PATH
+                        }`,
+                      }}
+                      ref={ref}
+                      rate={1.0}
+                      volume={1.0}
+                      isMuted={false}
+                      resizeMode="cover"
+                      shouldPlay={true}
+                      useNativeControls={true}
+                      isLooping
+                      controls={true}
+                      style={
+                        isFullScreen
+                          ? styles.fullScreen
+                          : {
+                              width: '100%',
+                              height: 240,
+                            }
+                      }
+                    />
+                  )}
                 </View>
                 <View style={isFullScreen ? styles.infoFull : styles.info}>
                   <View style={styles.cam}>
@@ -132,7 +162,7 @@ const VideoCamera = ({
             );
           })}
       </View>
-      {!isFullScreen && (
+      {!isFullScreen && type !== 'playback/' && (
         <View>
           <FlatList
             data={streamPath}
@@ -143,7 +173,7 @@ const VideoCamera = ({
                 id={item.code}
                 setCamId={setCamId}
                 title={item?.name}
-                path={item?.path}
+                path={item?.data[0]?.PATH}
                 type={type}
               />
             )}

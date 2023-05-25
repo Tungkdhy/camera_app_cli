@@ -111,9 +111,9 @@ const Modal = ({
                   }}
                   checked={filter === '' ? true : false}
                 />
-                <Pressable onPress={() => setIsProvince()}>
+                {/* <Pressable onPress={() => setIsProvince()}>
                   <NextIcon />
-                </Pressable>
+                </Pressable> */}
               </View>
               {data.map((item, index) => {
                 return (
@@ -139,12 +139,15 @@ const Modal = ({
                       }
                       checked={filter === item.code ? true : false}
                     />
-                    <Pressable onPress={() => {
-                      setIsProvince()
-                      setInput('')
-                    }}>
-                      <NextIcon />
-                    </Pressable>
+                    {isProvince && (
+                      <Pressable
+                        onPress={() => {
+                          setIsProvince();
+                          setInput('');
+                        }}>
+                        <NextIcon />
+                      </Pressable>
+                    )}
                   </View>
                 );
               })}

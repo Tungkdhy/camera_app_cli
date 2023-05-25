@@ -22,6 +22,7 @@ import {
   Radio,
   RadioCheck,
 } from "../../components/Icons/Index";
+import messaging from '@react-native-firebase/messaging';
 import { styles } from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axiosClient from "../../services/axiosClient";
@@ -34,11 +35,14 @@ const Login = ({ navigation }) => {
   const [isShowPass, setIsShowPass] = useState(true);
   const [data, setData] = useState();
   const [rememberMe, setRememberMe] = useState(false)
+  const [token,setToken] = useState('')
   const dispatch = useDispatch()
   useEffect(() => {
     async function getData() {
       try {
         const res = await axios.get('https://jsonplaceholder.typicode.com/todos/1')
+        const token1 = await messaging().getToken()
+        setToken(token1)
         setData(res.data)
       }
       catch (e) {

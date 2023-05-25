@@ -61,7 +61,8 @@ export const styles = StyleSheet.create({
       },
       title:{
          paddingTop:100,
-         position:"relative"
+         position:"relative",
+         color:"#000"
       },
       contentLogin:{
         backgroundColor:"linear-gradient(180deg, rgba(0, 64, 255, 0.69) 0%, rgba(0, 64, 255, 0.39) 100%)",
@@ -98,6 +99,8 @@ export const styles = StyleSheet.create({
         borderColor:"rgba(0, 0, 0, 0.2)",
         borderRadius:4,
         paddingLeft:12,
+        color:"#000"
+
 
       },
       login:{
@@ -168,7 +171,9 @@ export const styles = StyleSheet.create({
 
       },
       text:{
-        fontSize:12
+        fontSize:12,
+        color:"#000"
+
       }
 
 })

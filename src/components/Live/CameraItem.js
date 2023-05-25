@@ -5,7 +5,7 @@ import {styles} from './styles';
 const CameraItem = ({title, path,setCamId,id,type}) => {
  
   return (
-    <Pressable  style={{paddingBottom: 12, width: '48%',alignItems: 'stretch'}}>
+    <Pressable onPress={()=>setCamId(id)}  style={{paddingBottom: 12, width: '48%',alignItems: 'stretch'}}>
       <View >
         <Video
           source={{
@@ -18,6 +18,7 @@ const CameraItem = ({title, path,setCamId,id,type}) => {
           shouldPlay={false}
           useNativeControls={true}
           isLooping
+          
           style={{height: 96, flex: 1}}
         
         />

@@ -29,16 +29,22 @@ const MainContainer = () => {
         tabBarActiveBackgroundColor: 'rgba(20, 30, 210, 0.05)',
         tabBarItemStyle: {
           borderColor: 'rgba(0, 0, 0, 0.05)',
-          borderTopWidth: 1,
+          // borderTopWidth: 1,
+        
         },
         headerShown: false,
+        
       }}>
       <Tab.Screen
         name="Trang chu"
         options={({ navigator }) => ({
+          tabBarStyle:{
+            // padding:12
+          },
           tabBarIcon: ({ color, focused }) =>
             focused ? <ChartIconActive /> : <ChartIcon />,
           tabBarShowLabel: false,
+        
         })}
         component={Home}
       />

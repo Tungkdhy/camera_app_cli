@@ -107,7 +107,8 @@ export const styles = StyleSheet.create({
         borderRadius:4,
         paddingLeft:42,
         paddingRight:40,
-        marginBottom:30
+        marginBottom:30,
+        color:"#000"
       },
       login:{
         // marginTop:24

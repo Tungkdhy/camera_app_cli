@@ -7,6 +7,7 @@ import {
   VIDEO_ACTIVE,
   GET_LIST_SERVICE_PACKAGE,
   SET_AI_CODE,
+  SET_AI_NAME,
 } from '../actions/reportAction';
 const initialState = {
   reports: [],
@@ -14,8 +15,9 @@ const initialState = {
     day: new Date(),
     time: new Date(),
     timeEnd: '23:59',
-    service: 'Chuyển động',
+    service: 'Phát hiện chuyển động',
     ai_code: '20230222000000000001',
+    name:'Phát hiện chuyển động'
   },
   isFullScreen: false,
   video_active: [
@@ -25,6 +27,7 @@ const initialState = {
     },
   ],
   package: [],
+
 };
 const reportReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -68,6 +71,14 @@ const reportReducer = (state = initialState, action) => {
           ai_code: action.payload,
         },
       };
+      case SET_AI_NAME:
+        return {
+          ...state,
+          filter: {
+            ...state.filter,
+            name: action.payload,
+          },
+        };
     default:
       return state;
   }
