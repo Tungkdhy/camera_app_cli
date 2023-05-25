@@ -49,3 +49,4 @@ export {default as Edit} from './Info/Edit'
 //icon screen playback
 export {default as BackIcon2} from './PlayBack/BackIcon'
 export {default as PlayBackDownIcon} from './PlayBack/PlayBackDownIcon'
+export {default as DateTime} from './PlayBack/DateTime'

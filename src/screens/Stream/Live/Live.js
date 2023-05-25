@@ -54,28 +54,21 @@ const Live = ({ route, navigation }) => {
   };
   useEffect(() => {
     setCamId(route.params.active);
-    console.log('this', route.params.active);
-    // console.log(props.route.name);
     async function getPath() {
       try {
         const data = route.params.cam.map(item => {
           return {
-            camera_code: item.CODE,
+            camera_code: item?.CAMERA.CODE,
           };
         });
-
-        const listCamId = JSON.stringify({
-          data: data,
-        });
-        const res = await streamingClient.get(
-          '/streamManagement/get-list-path-streaming/',
+        const res = await streamingClient.post(
+          '/streamManagement/post-list-path-streaming/',
           {
-            params: {
-              ids_cam: listCamId,
+            list_camera: {
+              data: data,
             },
-          },
+          }
         );
-        console.log(res);
         dispatch(getPathStream(res.stream));
       } catch (e) {
         console.log(e);

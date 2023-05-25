@@ -3,6 +3,7 @@ export const SET_DAY = "SET_DAY"
 export const SET_TIME = "SET_TIME"
 export const SET_TIME_END = "SET_TIME_END"
 export const SET_FULL_SCREEN = "SET_FULL_SCREEN"
+export const SET_TIME_STICK = "SET_TIME_STICK"
 
 export const getListPlayBack = (data) => {
     return {
@@ -31,6 +32,12 @@ export const getListPlayBack = (data) => {
   export const setIsFullScreen = (data) => {
     return {
       type: SET_FULL_SCREEN,
+      payload: data,
+    };
+  };
+  export const setTimeStick = (data) => {
+    return {
+      type: SET_TIME_STICK,
       payload: data,
     };
   };

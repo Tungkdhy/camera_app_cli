@@ -22,25 +22,26 @@ import {styles} from './style';
 
 export default function Stream({navigation, ...props}) {
   const dispatch = useDispatch();
-  const [modalVisible, setModalVisible] = useState(false);
   const [isProvince, setIsProvince] = useState(true);
   const camera = useSelector(state => state.useReducer);
   const wareHouse = useSelector(state => state.wareHouseReducer);
   //Show filter
-  const handleShowFilter = () => {
-    setModalVisible(true);
-  };
+  const [modalVisible, setModalVisible] = useState(false);
   const handleSetShowModal = () => {
     setModalVisible(!modalVisible);
   };
+  const handleShowFilter = () => {
+    setModalVisible(true);
+  };
+
   //Navigate Screen Live
   const liveStream = (it, item) => {
-    if (it.STATUS === 'On') {
+    if (it?.CAMERA.STATUS === 'On') {
       dispatch(setWareHouseCode(''));
       navigation.navigate('Live', {
         wareHouse: item.WAREHOUSE_NAME,
-        active: it.CODE,
-        cam: camera.camera.filter(itt => itt.STATUS === 'On'),
+        active: it?.CAMERA.CODE,
+        cam: camera.camera.filter(itt => itt?.CAMERA.STATUS === 'On'),
       });
     } else {
       Alert.alert('Camera đang tắt');
@@ -51,15 +52,15 @@ export default function Stream({navigation, ...props}) {
   const navigatePlayBackCamera = (it,item) => {
     navigation.navigate("PlayBack",{
       wareHouse: item.WAREHOUSE_NAME,
-      active: it.CODE,
+      active: it.CAMERA.CODE,
+      activeName:it.CAMERA.NAME_CAM,
       cam:camera.camera ,
     })
   };
   //Navigate Screen Smart
   const handleNavigateSmart = (it,item)=>{
-    console.log(it);
     navigation.navigate("Report",{
-      camera:it
+      camera:it.CAMERA
     })
   }
   //Show menu2 stream
@@ -91,12 +92,12 @@ export default function Stream({navigation, ...props}) {
           </View>
           {item.CODE === camera.wareCode && (
             <View style={styles.listCamera}>
-              {camera.camera.map((it, index) => {
+              {camera.camera && camera.camera?.length > 0 && camera.camera.map((it, index) => {
                 return (
                   <View key={index} style={styles.flex}>
                     <View style={styles.cameraName}>
                       <View>
-                        {it.STATUS === 'On' ? (
+                        {it?.CAMERA.STATUS === 'On' ? (
                           <Status />
                         ) : (
                           <Status color="#FF3300" />
@@ -110,7 +111,7 @@ export default function Stream({navigation, ...props}) {
                               ? () => liveStream(it, item) : props.route.name === 'Smart'?()=>handleNavigateSmart(it,item)
                               : () => navigatePlayBackCamera(it, item)
                           }>
-                          {it.NAME_CAM} 
+                          {it?.CAMERA.NAME_CAM} 
                         </Text>
                       </View>
                     </View>
@@ -169,6 +170,7 @@ export default function Stream({navigation, ...props}) {
         const res = await axiosClient.get(
           `/province/get-info-province/?nation_code=VNM&province_name=${camera.filterLocate?.province}`,
         );
+        console.log(res);
         const data = res.map(item => {
           return {name: item.PROVINCE_NAME, code: item.PROVINCE_CODE};
         });
@@ -183,15 +185,17 @@ export default function Stream({navigation, ...props}) {
     async function getProvince() {
       try {
         const res = await axiosClient.get(
-          '/camerainfo/get-list-camera-by-infoCamera/',
+          'cameraManagement/get-list-camera/',
           {
             params: {
               warehouse_code: camera.wareCode,
               camera_status: camera.filter.camera_status,
+              page:1,
+              size:1000
             },
           },
         );
-        dispatch(getListLocation(res));
+        dispatch(getListLocation(res.data));
       } catch (e) {
         console.log(e);
       }

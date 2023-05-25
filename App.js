@@ -1,5 +1,6 @@
 
 import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import MainContainer from './src/navigation/MainContainer';
@@ -14,9 +15,9 @@ import CodeVerify from './src/components/CodeVerify/CodeVerify';
 import Success from './src/components/CodeVerify/Success';
 import Live from './src/screens/Stream/Live/Live';
 import Detail from './src/screens/Info/Detail/Detail';
-import { Provider } from 'react-redux';
 import Setting from './src/screens/Stream/Setting/Setting';
 import { Store } from './src/redux/store';
+import { Provider } from 'react-redux';
 import PlayBack from './src/screens/Playback/Playback';
 import Notification from './src/screens/Notification';
 
@@ -24,10 +25,15 @@ import EditInfo from './src/screens/Info/EditInfo/Edit';
 import ChangePasswordInfo from './src/screens/Info/ChangePasswordInfo/ChangePasswordInfo';
 
 import MapScreen from './src/screens/Map/MapScreen';
-
-
+import requestUserPermission from './src/utils/FCM_helper';
+import { NotificationListener } from './src/utils/FCM_helper';
 const Stack = createStackNavigator()
 export default function App() {
+  
+  React.useEffect(()=>{
+    requestUserPermission()
+    NotificationListener()
+  },[])
   return (
     <Provider store={Store}>
       <NavigationContainer>

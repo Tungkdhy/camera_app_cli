@@ -6,6 +6,7 @@ import {
   Image,
   ScrollView,
   Alert,
+  StatusBar,
 } from 'react-native';
 import Video from 'react-native-video';
 import {useEffect, useState} from 'react';
@@ -23,11 +24,10 @@ import {
   setIsFullScreen,
   videoActive,
   servicePackage,
-  setAiCode,
 } from '../../redux/actions/reportAction';
-import {Picker} from '@react-native-picker/picker';
 import DatePicker from 'react-native-date-picker';
-import {formatTimehp, formatDDMMYY} from '../../utils';
+import {formatTimehp, formatDDMMYY2} from '../../utils';
+import Modal from './Modal/Modal';
 import Orientation from 'react-native-orientation-locker';
 import {styles} from './styles';
 import axiosClient from '../../services/axiosClient';
@@ -35,9 +35,11 @@ export default function Payment({route, navigation}) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
-  const [open3, setOpen3] = useState(false);
   const report = useSelector(state => state.reportReducer);
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const handleSetShowModal = () => {
+    setModalVisible(!modalVisible);
+  };
   const renderItem = ({item, index}) => {
     return (
       <View key={index} style={styles.item}>
@@ -58,7 +60,7 @@ export default function Payment({route, navigation}) {
             handleFullscreen()
           }}>
           <View style={styles.time}>
-            <Text>{formatDDMMYY(item.TIME_START.split(' ')[0])}</Text>
+            <Text>{formatDDMMYY2(item.TIME_START.split(' ')[0])}</Text>
             <Text>{item.time}</Text>
           </View>
           <Text
@@ -106,14 +108,16 @@ export default function Payment({route, navigation}) {
         if (report.filter.day > report.filter.time) {
           Alert.alert('Vui lòng chọn ngày kết thúc lớn hơn ngày bắt đầu');
         } else {
+          console.log(route.params.camera.CODE);
           const res = await axiosClient.get('/camAI/get-list-cam-ai/', {
             params: {
               camera_code: route.params.camera.CODE,
               ai_service_code: report.filter.ai_code,
-              day_start: formatDDMMYY(report.filter.day),
-              day_end: formatDDMMYY(report.filter.time),
+              day_start: formatDDMMYY2(report.filter.day),
+              day_end: formatDDMMYY2(report.filter.time),
             },
           });
+          console.log(res);
           dispatch(getListReport(res.data));
         }
       } catch (e) {}
@@ -126,11 +130,11 @@ export default function Payment({route, navigation}) {
     report.filter.timeEnd,
     report.filter.ai_code,
   ]);
+  console.log(report);
   useEffect(() => {
     async function getPackage() {
       try {
         const res = await axiosClient.get('/service/get-list-services/');
-        console.log(res);
         dispatch(servicePackage(res));
       } catch (e) {
         console.log(e);
@@ -138,9 +142,6 @@ export default function Payment({route, navigation}) {
     }
     getPackage();
   }, []);
-  console.log(
-    `http://cameraai.cds.vinorsoft.com/event${report.video_active.path}`,
-  );
   return (
     <View style={styles.container}>
       <DatePicker
@@ -160,7 +161,7 @@ export default function Payment({route, navigation}) {
           setOpen(false);
         }}
       />
-      <DatePicker
+      {/* <DatePicker
         modal
         mode="date"
         open={open2}
@@ -176,8 +177,12 @@ export default function Payment({route, navigation}) {
         onCancel={() => {
           setOpen3(false);
         }}
+      /> */}
+      <Modal
+        filter={report.filter.ai_code}
+        isShow={modalVisible}
+        onShowModal={handleSetShowModal}
       />
-
       {!report.isFullScreen && (
         <>
           <View style={styles.header}>
@@ -190,15 +195,15 @@ export default function Payment({route, navigation}) {
               <Back />
             </Pressable>
             <Text style={styles.text}>{route.params.camera.NAME_CAM}</Text>
-            <View>
-              <SearchIcon color={'black'} />
+            <View style= {{width:20,height:20}}>
+              
             </View>
           </View>
           <ScrollView style={{flexGrow: 0}} horizontal>
             <View style={styles.filter}>
               <Pressable onPress={() => setOpen(true)} style={styles.btnFilter}>
                 <View style={styles.textContent}>
-                  <Text>{formatDDMMYY(report.filter.day)}</Text>
+                  <Text>{formatDDMMYY2(report.filter.day)}</Text>
                   <View>
                     <PlayBackDownIcon />
                   </View>
@@ -208,30 +213,20 @@ export default function Payment({route, navigation}) {
                 onPress={() => setOpen2(true)}
                 style={styles.btnFilter}>
                 <View style={styles.textContent}>
-                  <Text>{formatDDMMYY(report.filter.time)}</Text>
+                  <Text>{formatDDMMYY2(report.filter.time)}</Text>
                   <View>
                     <PlayBackDownIcon />
                   </View>
                 </View>
               </Pressable>
-              <View style={styles.input_picker}>
-                <Picker
-                  selectedValue={report.filter.ai_code}
-                  onValueChange={(itemValue, itemIndex) => {
-                    dispatch(setAiCode(itemValue));
-                  }}>
-                  {report.package.length > 0 &&
-                    report.package.map(service => {
-                      return (
-                        <Picker.Item
-                          key={service.CODE}
-                          label={service.SUBJECT_NAME}
-                          value={service.CODE}
-                        />
-                      );
-                    })}
-                </Picker>
-              </View>
+              <Pressable onPress={() => setModalVisible(true)} style={styles.btnFilter}>
+                <View style={styles.textContent}>
+                  <Text>{report.filter.name}</Text>
+                  <View>
+                    <PlayBackDownIcon />
+                  </View>
+                </View>
+              </Pressable>
             </View>
           </ScrollView>
         </>
@@ -241,65 +236,72 @@ export default function Payment({route, navigation}) {
           <FlatList data={report.reports} renderItem={renderItem} />
         </View>
       )}
-      {report.isFullScreen && (
-        <View style={report.isFullScreen ? styles.contentFull : {}}>
-          <View style={report.isFullScreen ? styles.activeFull : styles.active}>
-            <>
+      {report.isFullScreen &&
+        report.video_active?.length > 0 &&
+        report.video_active.map((item, index) => {
+          return (
+            <View key={index} style={report.isFullScreen ? styles.contentFull : {}}>
               <View
-                style={
-                  report.isFullScreen
-                    ? {
-                        flex: 1,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: '100%',
-                        height: '100%',
-                      }
-                    : {}
-                }>
-                <Video
-                  source={{
-                    uri: `http://cameraai.cds.vinorsoft.com/event/${report.video_active.path}`,
-                  }}
-                  rate={1.0}
-                  volume={1.0}
-                  isMuted={false}
-                  resizeMode="cover"
-                  shouldPlay={true}
-                  isLooping
-                  controls={true}
-                  style={
-                    report.isFullScreen
-                      ? styles.fullScreen
-                      : {
-                          width: '100%',
-                          height: 240,
-                        }
-                  }
-                />
-              </View>
-              <View style={report.isFullScreen ? styles.infoFull : styles.info}>
-                <View style={styles.cam}>
-                  <View>
-                    {report.isFullScreen && (
-                      <Pressable
-                        onPress={handleFullscreen}>
-                        <BackIcon2 />
-                      </Pressable>
-                    )}
-                  </View>
-                  <Text
+                style={report.isFullScreen ? styles.activeFull : styles.active}>
+                <>
+                  <View
                     style={
-                      report.isFullScreen ? {fontSize: 18, color: '#fff'} : {}
+                      report.isFullScreen
+                        ? {
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '100%',
+                            height: '100%',
+                          }
+                        : {}
                     }>
-                    {report.video_active.name}
-                  </Text>
-                </View>
+                    <Video
+                      source={{
+                        uri: `http://cameraai.cds.vinorsoft.com/event/${item.path}`,
+                      }}
+                      rate={1.0}
+                      volume={1.0}
+                      isMuted={false}
+                      resizeMode="cover"
+                      shouldPlay={true}
+                      isLooping
+                      controls={true}
+                      style={
+                        report.isFullScreen
+                          ? styles.fullScreen
+                          : {
+                              width: '100%',
+                              height: 240,
+                            }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={report.isFullScreen ? styles.infoFull : styles.info}>
+                    <View style={styles.cam}>
+                      <View>
+                        {report.isFullScreen && (
+                          <Pressable onPress={handleFullscreen}>
+                            <BackIcon2 />
+                          </Pressable>
+                        )}
+                      </View>
+                      <Text
+                        style={
+                          report.isFullScreen
+                            ? {fontSize: 18, color: '#fff'}
+                            : {}
+                        }>
+                        {item.name}
+                      </Text>
+                    </View>
+                  </View>
+                </>
               </View>
-            </>
-          </View>
-        </View>
-      )}
+            </View>
+          );
+        })}
     </View>
   );
 }

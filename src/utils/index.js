@@ -23,6 +23,13 @@ export const formatDDMMYY = (date) => {
   const day = dateA.getDate() < 10 ? '0' + dateA.getDate() : dateA.getDate()
   return (day + '/' + month + '/' + year);
 }
+export const formatDDMMYY2 = (date) => {
+  const dateA = new Date(date);
+  const year = dateA.getFullYear();
+  const month = dateA.getMonth() + 1 < 10 ? '0' + (dateA.getMonth() + 1) : dateA.getMonth() + 1
+  const day = dateA.getDate() < 10 ? '0' + dateA.getDate() : dateA.getDate()
+  return (day + '-' + month + '-' + year);
+}
 export const formatTimehp = (hour) => {
  if(hour){
   const data = hour.split(":")
@@ -55,4 +62,18 @@ export const formatDate = (date) => {
 // validator confirm password
 export const isValidateConfirm = (oldVar, newVar) => {
   return !!oldVar.match(newVar)
+}
+export const convertToSecond = (day)=>{
+  const split = day.split(":")
+  const hour =Number(split[0])
+  const minute =Number(split[1])
+  const second = Number(split[2])
+  return hour * 3600 + minute*60+second
+}
+export const covertWidthToHour = (width)=>{
+  const second = width*3600
+  const hour = Math.floor(second /3600)
+  const minute = Math.floor((second - hour*3600)/60)
+  const ss = Math.floor(second - hour * 3600 - minute * 60)
+  return `${hour >= 10 ?hour:'0'+hour}:${minute >= 10 ?minute:'0'+minute}:${ss >= 10 ?ss:'0'+ss}`
 }

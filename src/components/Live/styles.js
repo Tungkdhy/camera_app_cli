@@ -171,5 +171,12 @@ export const styles = StyleSheet.create({
     height: height,
 
     // transform: [{rotate: '90deg'}],
+  },
+  noPath:{
+    width:"100%",
+    height:240,
+    display:"flex",
+    alignItems:"center",
+    justifyContent:"center"
   }
 });

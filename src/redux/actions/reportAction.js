@@ -6,6 +6,7 @@ export const SET_FULL_SCREEN = "SET_FULL_SCREEN"
 export const VIDEO_ACTIVE = "VIDEO_ACTIVE"
 export const GET_LIST_SERVICE_PACKAGE = "GET_LIST_SERVICE_PACKAGE"
 export const SET_AI_CODE = "SET_AI_CODE"
+export const SET_AI_NAME = "SET_AI_NAME"
 
 export const getListReport = (data) => {
     return {
@@ -22,6 +23,12 @@ export const getListReport = (data) => {
   export const setTimeReport = (data) => {
     return {
       type: SET_TIME_REPORT,
+      payload: data,
+    };
+  };
+  export const setNameAI = (data) => {
+    return {
+      type: SET_AI_NAME,
       payload: data,
     };
   };

@@ -6,12 +6,11 @@ import { useSelector } from 'react-redux';
 
 const Header = ({ title, navigation }) => {
     const count = useSelector(state => state.notificationReducer)
-    console.log(title);
     return (
         <View style={style.content}>
             <Text style={style.text}>{title}</Text>
             <View style={style.icons}>
-                {title === "Thống kê" ? <></>: <SearchIcon color={"white"} />}
+                {/* {title === "Thống kê" ? <></>: <SearchIcon color={"white"} />} */}
                 <Pressable onPress={() => (navigation.navigate('Notification', { screen: 'Notification' }))}>
                     <View style={style.notification}>
                         <BellIcon />

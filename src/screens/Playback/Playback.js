@@ -1,6 +1,11 @@
 import {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, Pressable, FlatList, Image} from 'react-native';
-import {Back, SearchIcon, PlayBackDownIcon} from '../../components/Icons/Index';
+import {StyleSheet, Text, View, Pressable, Modal, Alert} from 'react-native';
+
+import {
+  Back,
+  DateTime,
+  Close
+} from '../../components/Icons/Index';
 import {styles} from './styles';
 import DatePicker from 'react-native-date-picker';
 import {useDispatch, useSelector} from 'react-redux';
@@ -9,65 +14,79 @@ import {
   setDay,
   setTime,
   setTimeEnd,
+  setTimeStick,
 } from '../../redux/actions/playBackAction';
+import { getInfoCamera } from '../../redux/actions/cameraAction';
 import axiosClient from '../../services/axiosClient';
-import {formatDDMMYY, formatHour, formatTimehp} from '../../utils';
+import {
+  formatDDMMYY,
+  formatHour,
+  formatDDMMYY2,
+  formatTimehp,
+} from '../../utils';
+import StickTime from '../../components/StickTime/StickTime';
 import VideoCamera from '../../components/Live/VideoCamera';
 export default function PlayBack({navigation, route}) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const [open2, setOpen2] = useState(false);
-  const [open3, setOpen3] = useState(false);
   const [cameraActive, setCameraActive] = useState();
   const [camId, setCamId] = useState();
   const playback = useSelector(state => state.playBackReducer);
+  const cameraInfo = useSelector(state => state.useReducer.camera_info);
+  const [modalVisible, setModalVisible] = useState(false);
   const isFullScreen = useSelector(state => state.useReducer.isFullScreen);
-  const getInfo = () => {};
+  const stick_time = useSelector(
+    state => state.playBackReducer.filter.stick_time,
+  );
+  const getInfo = async(code) => {
+    try {
+      setModalVisible(!modalVisible);
+      const res = await axiosClient.get(
+        `/cameraManagement/get-camera-info-by-code/?camera_code=${code}`,
+      );
+      if (res) {
+        dispatch(getInfoCamera(res));
+      }
+    } catch (e) {
+      console.log(e);
+      Alert.alert('Lấy thông tin camera không thành công');
+    }
+  };
   useEffect(() => {
     setCamId(route.params.active);
     async function getListPlayBack() {
       try {
-        const data = route.params.cam.map(item => {
-          return {
-            camera_code: item.CODE,
-          };
-        });
         const day = {day: playback.filter.day};
-        const time = {time: playback.filter.time};
         const res = await axiosClient.get(
-          'camPlayback/get-list-cam-playback/',
+          '/camPlayback/get-list-path-timeline/',
           {
             params: {
-              list_camera_code: JSON.stringify({data: data}),
+              list_camera_code: JSON.stringify({
+                data: [{camera_code: route.params.active}],
+              }),
               ...day,
-              time_start: playback.filter.time,
-              time_end: playback.filter.timeEnd,
+              time_line: stick_time,
+              // time_end: playback.filter.timeEnd,
             },
           },
         );
-        console.log(res);
-        const playbacks = res.data.map(item => {
+        console.log(res.time_line);
+        const playbacks = res.time_line.map(item => {
           return {
             code: item.camera_code,
-            path: item.path ,
-            time: item.total_time,
-            name:
-              item.name + '- ' + formatTimehp(item.time_start.split(' ')[1]),
+            path: item.path,
+            // time: item.total_time,
+            name: item.name_cam,
+            status:item.status
           };
         });
-        console.log(playbacks);
         dispatch(play(playbacks));
       } catch (e) {
         console.log(e);
       }
     }
     getListPlayBack();
-  }, [
-    route.params.wareHouse,
-    playback.filter.day,
-    playback.filter.time,
-    playback.filter.timeEnd,
-  ]);
+  }, [playback.filter.day, route.params.active, stick_time]);
   useEffect(() => {
     const camActive = playback.playBacks.filter(item => {
       return item.code === camId;
@@ -76,6 +95,91 @@ export default function PlayBack({navigation, route}) {
   }, [playback.playBacks, camId]);
   return (
     <View style={styles.container}>
+        <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.titleHeader}>Thông tin camera</Text>
+              <Text
+                onPress={() => setModalVisible(false)}
+                style={styles.iconModal}>
+                <Close />
+              </Text>
+            </View>
+            <View style={styles.modalContent}>
+              <View style={styles.infoItem}>
+                <View style={styles.titleInfo}>
+                  <Text style={styles.title}>Địa chỉ</Text>
+                </View>
+                <View style={styles.descriptionInfo}>
+                  <Text>
+                    {cameraInfo.length > 0 && cameraInfo[0]?.COMMUNE_NAME} ,{' '}
+                    {cameraInfo.length > 0 && cameraInfo[0]?.DISTRICT_NAME},{' '}
+                    {cameraInfo.length > 0 && cameraInfo[0]?.PROVINCE_NAME}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.infoItem}>
+                <View style={styles.titleInfo}>
+                  <Text style={styles.title}>Kho</Text>
+                </View>
+                <View style={styles.descriptionInfo}>
+                  <Text>
+                    {cameraInfo.length > 0 && cameraInfo[0]?.WAREHOUSE_NAME}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.infoItem}>
+                <View style={styles.titleInfo}>
+                  <Text style={styles.title}>Đướng dẫn RPST</Text>
+                </View>
+                <View style={styles.descriptionInfo}>
+                  <Text>
+                    {cameraInfo.length > 0 && cameraInfo[0]?.RTSP_CHINH}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.infoItem}>
+                <View style={styles.titleInfo}>
+                  <Text style={styles.title}>Nguồn</Text>
+                </View>
+                <View style={styles.descriptionInfo}>
+                  <Text>Chính</Text>
+                </View>
+              </View>
+              <View style={styles.infoItem}>
+                <View style={styles.titleInfo}>
+                  <Text style={styles.title}>Độ phân giải</Text>
+                </View>
+                <View style={styles.descriptionInfo}>
+                  <Text>
+                    {cameraInfo.length > 0 && cameraInfo[0]?.MAIN_SOURCE}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.infoItem}>
+                <View style={styles.titleInfo}>
+                  <Text style={styles.title}>Trạng thái</Text>
+                </View>
+                <View style={styles.descriptionInfo}>
+                  <Text>
+                    {cameraInfo.length > 0 && cameraInfo[0]?.STATUS === 'On'
+                      ? 'Đang hoạt động'
+                      : 'Không hoạt động'}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <DatePicker
         modal
         mode="date"
@@ -83,36 +187,10 @@ export default function PlayBack({navigation, route}) {
         date={new Date()}
         onConfirm={date => {
           setOpen(false);
-          dispatch(setDay(formatDDMMYY(date)));
+          dispatch(setDay(formatDDMMYY2(date)));
         }}
         onCancel={() => {
           setOpen(false);
-        }}
-      />
-      <DatePicker
-        modal
-        mode="time"
-        open={open2}
-        date={new Date()}
-        onConfirm={date => {
-          setOpen2(false);
-          dispatch(setTime(formatHour(date)));
-        }}
-        onCancel={() => {
-          setOpen3(false);
-        }}
-      />
-      <DatePicker
-        modal
-        mode="time"
-        open={open3}
-        date={new Date()}
-        onConfirm={date => {
-          setOpen3(false);
-          dispatch(setTimeEnd(formatHour(date)));
-        }}
-        onCancel={() => {
-          setOpen3(false);
         }}
       />
       {!isFullScreen && (
@@ -120,42 +198,19 @@ export default function PlayBack({navigation, route}) {
           <View style={styles.header}>
             <Pressable
               onPress={() => {
-                dispatch(setDay(formatDDMMYY(new Date())));
+                dispatch(setDay(formatDDMMYY2(new Date())));
                 dispatch(setTime('00:00'));
                 dispatch(setTimeEnd('23:59'));
                 dispatch(play([]));
+                dispatch(setTimeStick("00:00:00"))
                 navigation.navigate('Playback');
               }}>
               <Back />
             </Pressable>
-            <Text style={styles.text}>{route.params.wareHouse}</Text>
-            <View>
-              <SearchIcon color={'black'} />
-            </View>
-          </View>
-          <View style={styles.filter}>
-            <Pressable onPress={() => setOpen(true)} style={styles.btnFilter}>
-              <View style={styles.textContent}>
-                <Text>{playback.filter.day}</Text>
-                <View>
-                  <PlayBackDownIcon />
-                </View>
-              </View>
-            </Pressable>
-            <Pressable onPress={() => setOpen2(true)} style={styles.btnFilter}>
-              <View style={styles.textContent}>
-                <Text>{playback.filter.time}</Text>
-                <View>
-                  <PlayBackDownIcon />
-                </View>
-              </View>
-            </Pressable>
-            <Pressable onPress={() => setOpen3(true)} style={styles.btnFilter}>
-              <View style={styles.textContent}>
-                <Text>{playback.filter.timeEnd}</Text>
-                <View>
-                  <PlayBackDownIcon />
-                </View>
+            <Text style={styles.text}>{route.params?.activeName}</Text>
+            <Pressable onPress={() => setOpen(true)}>
+              <View>
+                <DateTime />
               </View>
             </Pressable>
           </View>
@@ -170,6 +225,7 @@ export default function PlayBack({navigation, route}) {
         getInfo={getInfo}
         type="playback/"
       />
+      {!isFullScreen && <StickTime />}
     </View>
   );
 }

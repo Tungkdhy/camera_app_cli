@@ -98,6 +98,8 @@ export const styles = StyleSheet.create({
         borderColor:"rgba(0, 0, 0, 0.2)",
         borderRadius:4,
         paddingLeft:12,
+        color:"#000"
+
 
       },
       login:{
@@ -167,12 +169,17 @@ export const styles = StyleSheet.create({
 
       },
       text:{
-        fontSize:12
+        fontSize:12,
+        color:"#000"
+
       },
       validate:{
         fontSize:12,
         paddingTop:6,
         paddingBottom:6
+      },
+      label:{
+        color:"#000"
       }
 
 })
