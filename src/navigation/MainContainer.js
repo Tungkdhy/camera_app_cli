@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Home/Home';
 import Stream from '../screens/Stream/Stream';
-import Map from '../screens/Map/MapScreen';
+// import Map from '../screens/Map/MapScreen';
 import Info from '../screens/Info/Info';
 // import { MapIcon } from "../components/Icons/Index";
 import {
@@ -57,7 +57,7 @@ const MainContainer = () => {
           tabBarShowLabel: false,
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Map"
         component={Map}
         options={{
@@ -65,7 +65,7 @@ const MainContainer = () => {
             focused ? <MapIconActive /> : <MapIcon />,
           tabBarShowLabel: false,
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Playback"
         component={Stream}

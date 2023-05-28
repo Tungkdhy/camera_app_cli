@@ -7,13 +7,7 @@ export const styles = StyleSheet.create({
         position:"relative"
     },
     content:{
-        // flexDirection:"column",
-        // position:"absolute",
-        justifyContent:"flex-end",
-        // alignItems:"flex-end",
-        // bottom:40,
-        // left:20,
-        // right:20
+        justifyContent:"flex-end", 
         height:"100%",
         paddingBottom:40,
         paddingLeft:20,

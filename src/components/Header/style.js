@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet,Platform } from "react-native";
 
 export const style = StyleSheet.create({
   content: {
@@ -7,7 +7,14 @@ export const style = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: 'row',
     color: "#ffffff",
-    // paddingTop: 44
+    ...Platform.select({
+      ios:{
+        paddingTop:44
+      },
+      android:{
+        // paddingTop:12
+      }
+    })
   },
   text: {
     color: "#ffffff",

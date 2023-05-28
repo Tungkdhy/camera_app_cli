@@ -24,16 +24,16 @@ import Notification from './src/screens/Notification';
 import EditInfo from './src/screens/Info/EditInfo/Edit';
 import ChangePasswordInfo from './src/screens/Info/ChangePasswordInfo/ChangePasswordInfo';
 
-import MapScreen from './src/screens/Map/MapScreen';
-import requestUserPermission from './src/utils/FCM_helper';
-import { NotificationListener } from './src/utils/FCM_helper';
+// import MapScreen from './src/screens/Map/MapScreen';
+// import requestUserPermission from './src/utils/FCM_helper';
+// import { NotificationListener } from './src/utils/FCM_helper';
 const Stack = createStackNavigator()
 export default function App() {
   
-  React.useEffect(()=>{
-    requestUserPermission()
-    NotificationListener()
-  },[])
+  // React.useEffect(()=>{
+  //   requestUserPermission()
+  //   NotificationListener()
+  // },[])
   return (
     <Provider store={Store}>
       <NavigationContainer>
@@ -55,7 +55,7 @@ export default function App() {
          <Stack.Screen name="ChangePasswordInfo" component={ChangePasswordInfo} />
           <Stack.Screen name="EditInfo" component={EditInfo} />
 
-          <Stack.Screen name="Map" component={MapScreen} />
+          {/* <Stack.Screen name="Map" component={MapScreen} /> */}
           <Stack.Screen name="Report" component={Payment} />
 
           {/* <Stack.Screen name="Stream" component={Stream}/> */}
