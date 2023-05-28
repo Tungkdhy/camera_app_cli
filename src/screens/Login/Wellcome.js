@@ -52,11 +52,7 @@ const Wellcome = ({ navigation }) => {
               <Text style={styles.btnText}>Đăng nhập</Text>
             </View>
           </TouchableHighlight>
-          <TouchableHighlight style={styles.touch}>
-            <View style={styles.buttonRegister}>
-              <Text onPress={() => navigation.navigate("Register")} style={styles.btnText}>Đăng ký</Text>
-            </View>
-          </TouchableHighlight>
+       
         </View>
       </View>
     </ImageBackground>

@@ -203,7 +203,7 @@ export default function Payment({route, navigation}) {
             <View style={styles.filter}>
               <Pressable onPress={() => setOpen(true)} style={styles.btnFilter}>
                 <View style={styles.textContent}>
-                  <Text>{formatDDMMYY2(report.filter.day)}</Text>
+                  <Text style={{color:"#000"}}>{formatDDMMYY2(report.filter.day)}</Text>
                   <View>
                     <PlayBackDownIcon />
                   </View>
@@ -213,7 +213,7 @@ export default function Payment({route, navigation}) {
                 onPress={() => setOpen2(true)}
                 style={styles.btnFilter}>
                 <View style={styles.textContent}>
-                  <Text>{formatDDMMYY2(report.filter.time)}</Text>
+                  <Text style={{color:"#000"}}>{formatDDMMYY2(report.filter.time)}</Text>
                   <View>
                     <PlayBackDownIcon />
                   </View>
@@ -221,7 +221,7 @@ export default function Payment({route, navigation}) {
               </Pressable>
               <Pressable onPress={() => setModalVisible(true)} style={styles.btnFilter}>
                 <View style={styles.textContent}>
-                  <Text>{report.filter.name}</Text>
+                  <Text style={{color:"#000"}}>{report.filter.name}</Text>
                   <View>
                     <PlayBackDownIcon />
                   </View>

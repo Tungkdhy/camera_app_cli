@@ -91,7 +91,7 @@ export const styles = StyleSheet.create({
         position:"absolute"
       },
       contentForm:{
-        height:514,
+        height:450,
         justifyContent:"space-between",
         backgroundColor:"#ffffff",
         display:"flex",

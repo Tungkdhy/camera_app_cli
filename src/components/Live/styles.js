@@ -107,6 +107,7 @@ export const styles = StyleSheet.create({
   },
   nameCamera: {
     paddingTop: 4,
+    color:"#000"
   },
   imageItem: {
     width: "100%",
@@ -177,6 +178,7 @@ export const styles = StyleSheet.create({
     height:240,
     display:"flex",
     alignItems:"center",
-    justifyContent:"center"
+    justifyContent:"center",
+    color:"#000"
   }
 });

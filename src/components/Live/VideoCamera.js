@@ -87,7 +87,7 @@ const VideoCamera = ({
                   }>
                   {item.path === 'no-path' ? (
                     <View style={styles.noPath}>
-                        <Text>Không có đường dẫn</Text>
+                        <Text style={{color:"#000"}}>Không có đường dẫn</Text>
                     </View>
                   ) : (
                     <Video
@@ -132,7 +132,7 @@ const VideoCamera = ({
                       )}
                     </View>
                     <Text
-                      style={isFullScreen ? {fontSize: 18, color: '#fff'} : {}}>
+                      style={isFullScreen ? {fontSize: 18, color: '#fff'} : {color:"#000"}}>
                       {item.name}
                     </Text>
                   </View>

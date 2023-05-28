@@ -95,15 +95,6 @@ const Login = ({ navigation }) => {
               <Text style={styles.textLogin}>Đăng nhập</Text>
             </View>
             <View style={styles.contentForm}>
-              <View style={styles.register}>
-                <Text>Bạn chưa có tài khoản ? </Text>
-                <Text
-                  onPress={() => navigation.navigate("Register")}
-                  style={styles.re}
-                >
-                  Đăng ký
-                </Text>
-              </View>
               <View style={styles.formLogin}>
                 <View style={styles.logo}>
                   <Logo />
@@ -113,6 +104,7 @@ const Login = ({ navigation }) => {
                     <UserIcon />
                   </View>
                   <TextInput
+                    placeholderTextColor={"rgba(0, 0, 0, 0.4)"}
                     onChangeText={(text) => setUserName(text)}
                     style={
                       userName.length < 6 && userName !== ""
@@ -135,6 +127,7 @@ const Login = ({ navigation }) => {
                     <EyeIcon />
                   </Text>
                   <TextInput
+                    placeholderTextColor={"rgba(0, 0, 0, 0.4)"}
                     style={
                       password.length < 6 && password !== ""
                         ? { ...styles.input, ...styles.borderError }
@@ -154,7 +147,7 @@ const Login = ({ navigation }) => {
                     <Pressable onPress={() => setRememberMe(!rememberMe)}>
                       {rememberMe ? <RadioCheck /> : <Radio/>}
                     </Pressable>
-                    <Text>Lưu đăng nhập</Text>
+                    <Text style={{color:"rgba(0, 0, 0, 0.4)"}}>Lưu đăng nhập</Text>
                   </View>
                 </SafeAreaView>
                 <TouchableHighlight onPress={handleLogin} style={styles.login}>

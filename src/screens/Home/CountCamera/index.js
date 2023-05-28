@@ -7,6 +7,11 @@ import ImageCamOn from '../../../assets/images/online.png';
 import ImageCamOff from '../../../assets/images/off.png';
 import ImageCam from '../../../assets/images/cam.png';
 import ImageEye from '../../../assets/images/eye.png';
+import Move from '../../../assets/images/Movement.png';
+import Motion from '../../../assets/images/Motion.png';
+import Object1 from '../../../assets/images/Object.png';
+import Weak from '../../../assets/images/Weak.png';
+import DisConnect from '../../../assets/images/DisConnect.png';
 
 function CountCamera() {
   const [countCamera, setCountCamera] = useState({
@@ -83,7 +88,9 @@ function CountCamera() {
         <View style={styles.boxHeader}>
           <View style={styles.headerItem}>
             <ImageBackground style={styles.image_camera} source={ImageCamOn} />
-            <Text style={styles.number}>{countCamera.ACTIVE - countCamera.WEAK - countCamera.NO_CONNECT}</Text>
+            <Text style={styles.number}>
+              {countCamera.ACTIVE - countCamera.WEAK - countCamera.NO_CONNECT}
+            </Text>
             <Text style={styles.name}>Đang hoạt động</Text>
           </View>
           <View style={styles.headerItem}>
@@ -92,28 +99,39 @@ function CountCamera() {
             <Text style={styles.name}>Không hoạt động</Text>
           </View>
         </View>
+
         <View style={styles.boxHeader}>
           <View style={styles.headerItem}>
-            <ImageBackground style={styles.image_camera} source={ImageCamOn} />
+            <ImageBackground style={styles.image_camera} source={Weak} />
             <Text style={styles.number}>{countCamera.WEAK}</Text>
             <Text style={styles.name}>Kết nối yếu</Text>
           </View>
           <View style={styles.headerItem}>
-            <ImageBackground style={styles.image_camera} source={ImageCamOff} />
+            <ImageBackground style={styles.image_camera} source={DisConnect} />
             <Text style={styles.number}>{countCamera.NO_CONNECT}</Text>
             <Text style={styles.name}>Mất kết nối</Text>
           </View>
         </View>
+        <Text style={styles.header}>
+          Thống kê Camera sử dụng dịch vụ AI
+        </Text>
         <View style={styles.boxHeader}>
           <View style={styles.headerItem}>
-            <ImageBackground style={styles.image_camera} source={ImageCamOn} />
+            <ImageBackground style={styles.image_camera} source={Motion} />
             <Text style={styles.number}>{countCamera.MOTION}</Text>
             <Text style={styles.name}>Phát hiện chuyển động</Text>
           </View>
           <View style={styles.headerItem}>
-            <ImageBackground style={styles.image_camera} source={ImageCamOff} />
+            <ImageBackground style={styles.image_camera} source={Object1} />
             <Text style={styles.number}>{countCamera.COMMON_OBJECT}</Text>
             <Text style={styles.name}>Đối tượng phổ biến</Text>
+          </View>
+        </View>
+        <View style={styles.boxHeader}>
+          <View style={styles.headerItem}>
+            <ImageBackground style={styles.image_camera} source={Move} />
+            <Text style={styles.number}>{countCamera.MOVEMENT}</Text>
+            <Text style={styles.name}>Camera dịch chuyển</Text>
           </View>
         </View>
       </View>

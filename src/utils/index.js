@@ -77,3 +77,7 @@ export const covertWidthToHour = (width)=>{
   const ss = Math.floor(second - hour * 3600 - minute * 60)
   return `${hour >= 10 ?hour:'0'+hour}:${minute >= 10 ?minute:'0'+minute}:${ss >= 10 ?ss:'0'+ss}`
 }
+export const convertTimeToPx = (time)=>{
+  const second = convertToSecond(time)
+  return Math.floor((second * 100)/3600)
+}

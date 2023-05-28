@@ -225,7 +225,7 @@ export default function PlayBack({navigation, route}) {
         getInfo={getInfo}
         type="playback/"
       />
-      {!isFullScreen && <StickTime />}
+      {!isFullScreen && <StickTime day = {playback.filter.day} code ={route.params.active}/>}
     </View>
   );
 }
