@@ -1,34 +1,22 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   View,
   ImageBackground,
   Text,
   TouchableHighlight,
-  Alert,
 } from "react-native";
 import { styles } from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axiosClient from "../../services/axiosClient";
-import { setUserTypeCode } from "../../redux/actions/getUserAction";
-import { useDispatch } from "react-redux";
 
 const Wellcome = ({ navigation }) => {
-  const dispatch = useDispatch()
   async function getToken() {
-    const res = await AsyncStorage.getItem('remember');
-    if (res === 'true') {
-      try {
-        const infoUser = await axiosClient.get('/user/get-user-info/');
-        let userTypeCode = infoUser[0].USERTYPE_CODE;
-        dispatch(setUserTypeCode(userTypeCode));
-        if (userTypeCode !== '300920220005') {
-          navigation.navigate("Live");
-        } else {
-          navigation.navigate("Home");
-        }
-      } catch (error) {
-        Alert.alert('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại!');
-        navigation.navigate('Login');
+    const token = await AsyncStorage.getItem('token');
+    const role = await AsyncStorage.getItem('role');
+    if (token) {
+      if (role !== 'A') {
+        navigation.navigate("Live");
+      } else {
+        navigation.navigate("Home");
       }
     } else {
       navigation.navigate('Login');
@@ -52,7 +40,7 @@ const Wellcome = ({ navigation }) => {
               <Text style={styles.btnText}>Đăng nhập</Text>
             </View>
           </TouchableHighlight>
-       
+
         </View>
       </View>
     </ImageBackground>

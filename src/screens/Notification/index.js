@@ -136,7 +136,6 @@ function Notification({navigation}) {
 
   const handleCheckNotification = (code, notification) => {
     seenNotification(code);
-
     if (smartReport) {
       navigation.navigate('Report', {
         camera: {

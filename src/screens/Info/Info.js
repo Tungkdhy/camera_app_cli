@@ -9,20 +9,21 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {styles} from './styles';
+import { styles } from './styles';
 import {
   CricleUser,
-  FadeId,
   Logout,
   NextIcon,
   Pass,
-  UploadIcon,
-  Website,
 } from '../../components/Icons/Index';
-const Info = ({navigation}) => {
+import axiosClient from '../../services/axiosClient';
+const Info = ({ navigation }) => {
   const handleLogout = async () => {
-    AsyncStorage.clear();
-    console.log('a');
+    const refresh = await AsyncStorage.getItem('refresh');
+    await axiosClient.post('/authenticator/logout', {
+      refresh: refresh
+    })
+    await AsyncStorage.clear();
     navigation.navigate('Login');
   };
   return (
@@ -69,38 +70,8 @@ const Info = ({navigation}) => {
               <NextIcon />
             </Pressable>
           </Pressable>
-          {/* <View style={styles.item}>
-                        <View style={styles.title}>
-                            <Text style={styles.icon}><FadeId /></Text>
-                            <Text style={styles.text}>Đăng nhập bằng FaceID</Text>
-                        </View>
-                        <Pressable style={styles.next}>
-                            <NextIcon />
-                        </Pressable>
-                    </View>
-                    <View style={styles.item}>
-                        <View style={styles.title}>
-                            <Text style={styles.icon}><Website /></Text>
-                            <Text style={styles.text}>Ngôn ngữ</Text>
-                        </View>
-                        <Pressable style={styles.next}>
-                            <NextIcon />
-                        </Pressable>
-                    </View>
-                    <View style={styles.item}>
-                        <View style={styles.title}>
-                            <Text style={styles.icon}><UploadIcon /></Text>
-                            <Text style={styles.text}>Cập nhập phiên bản</Text>
-                        </View>
-                        <Pressable style={styles.next}>
-                            <NextIcon />
-                        </Pressable>
-                    </View> */}
           <Pressable
-            onPress={async () => {
-              navigation.navigate('Login');
-              AsyncStorage.clear();
-            }}
+            onPress={handleLogout}
             style={styles.item}>
             <View style={styles.title}>
               <Text style={styles.icon}>

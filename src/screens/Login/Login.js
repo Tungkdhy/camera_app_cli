@@ -63,14 +63,16 @@ const Login = ({ navigation }) => {
       if (res) {
         Alert.alert("Đăng nhập thành công");
         await AsyncStorage.setItem("token", res.data.access)
-        await AsyncStorage.setItem("remember", `${rememberMe}`)
-        const infoUser = await axiosClient.get('/user/get-user-info/')
-        let userTypeCode = infoUser[0].USERTYPE_CODE;
-        dispatch(setUserTypeCode(userTypeCode))
-        if (userTypeCode !== '300920220005') {
-          navigation.navigate("Live");
+        await AsyncStorage.setItem("refresh", res.data.refresh)
+        await AsyncStorage.setItem("role", res.data.role)
+        if(res?.data?.status === 0) {
+          navigation.navigate('ChangePasswordInfo')
         } else {
-          navigation.navigate("Home");
+          if(res.data.role !== 'A') {
+            navigation.navigate('Live')
+          } else {
+            navigation.navigate('Home')
+          }
         }
       }
     } catch (e) {
@@ -143,12 +145,12 @@ const Login = ({ navigation }) => {
                       Mật khẩu tối thiểu có 6 ký tự
                     </Text>
                   )}
-                  <View style={styles.checkboxContainer}>
+                  {/* <View style={styles.checkboxContainer}>
                     <Pressable onPress={() => setRememberMe(!rememberMe)}>
                       {rememberMe ? <RadioCheck /> : <Radio/>}
                     </Pressable>
                     <Text style={{color:"rgba(0, 0, 0, 0.4)"}}>Lưu đăng nhập</Text>
-                  </View>
+                  </View> */}
                 </SafeAreaView>
                 <TouchableHighlight onPress={handleLogin} style={styles.login}>
                   <View style={styles.buttonLogin}>

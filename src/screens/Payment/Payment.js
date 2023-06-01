@@ -7,11 +7,11 @@ import {
   ScrollView,
   Alert,
   StatusBar,
+  BackHandler,
 } from 'react-native';
 import Video from 'react-native-video';
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {
-  SearchIcon,
   Back,
   PlayBackDownIcon,
   BackIcon2,
@@ -37,9 +37,9 @@ export default function Payment({route, navigation}) {
   const [open2, setOpen2] = useState(false);
   const report = useSelector(state => state.reportReducer);
   const [modalVisible, setModalVisible] = useState(false);
-  const handleSetShowModal = () => {
+  const handleSetShowModal = useCallback(() => {
     setModalVisible(!modalVisible);
-  };
+  }, [modalVisible]);
   const renderItem = ({item, index}) => {
     return (
       <View key={index} style={styles.item}>
@@ -51,7 +51,7 @@ export default function Payment({route, navigation}) {
           onPress={() => {
             dispatch(
               videoActive({
-                name: `${route.params.camera.NAME_CAM} - ${formatTimehp(
+                name: `${route.params.camera?.NAME_CAM} - ${formatTimehp(
                   item.TIME_START.split(' ')[1],
                 )}`,
                 path: item.PATH,
@@ -78,37 +78,34 @@ export default function Payment({route, navigation}) {
       </View>
     );
   };
-  const handleOrientation = orientation => {
+  const handleOrientation = useCallback((orientation) => {
     if (orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT') {
       dispatch(setIsFullScreen(true));
-
       StatusBar.setHidden(true);
     } else {
       dispatch(setIsFullScreen(false));
-
       StatusBar.setHidden(false);
     }
-  };
-  const handleFullscreen = () => {
+  }, []);
+  const handleFullscreen = useCallback(() => {
     if (report.isFullScreen) {
       Orientation.unlockAllOrientations();
     } else {
       Orientation.lockToLandscapeLeft();
     }
-  };
+  }, [report.isFullScreen])
   useEffect(() => {
     Orientation.addOrientationListener(handleOrientation);
     return () => {
       Orientation.removeOrientationListener(handleOrientation);
-    };
-  }, []);
+    }
+  }, [handleOrientation]);
   useEffect(() => {
     async function getVideoReport() {
       try {
         if (report.filter.day > report.filter.time) {
           Alert.alert('Vui lòng chọn ngày kết thúc lớn hơn ngày bắt đầu');
         } else {
-          console.log(route.params.camera.CODE);
           const res = await axiosClient.get('/camAI/get-list-cam-ai/', {
             params: {
               camera_code: route.params.camera.CODE,
@@ -117,7 +114,6 @@ export default function Payment({route, navigation}) {
               day_end: formatDDMMYY2(report.filter.time),
             },
           });
-          console.log(res);
           dispatch(getListReport(res.data));
         }
       } catch (e) {}
@@ -130,18 +126,30 @@ export default function Payment({route, navigation}) {
     report.filter.timeEnd,
     report.filter.ai_code,
   ]);
-  console.log(report);
   useEffect(() => {
     async function getPackage() {
       try {
         const res = await axiosClient.get('/service/get-list-services/');
         dispatch(servicePackage(res));
       } catch (e) {
-        console.log(e);
       }
     }
     getPackage();
   }, []);
+
+  useEffect(() => {
+    const backAction = () => {
+      handleFullscreen();
+      return true;
+    }
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction)
+    return () => backHandler.remove();
+  }, [handleFullscreen])
+
+
+
+  // JSX
+
   return (
     <View style={styles.container}>
       <DatePicker
@@ -161,23 +169,6 @@ export default function Payment({route, navigation}) {
           setOpen(false);
         }}
       />
-      {/* <DatePicker
-        modal
-        mode="date"
-        open={open2}
-        date={new Date()}
-        onConfirm={date => {
-          if (report.filter.day > date) {
-            Alert.alert('Chọn ngày bắt đầu nhỏ hơn ngày kết thúc');
-          } else {
-            dispatch(setTimeReport(date));
-          }
-          setOpen2(false);
-        }}
-        onCancel={() => {
-          setOpen3(false);
-        }}
-      /> */}
       <Modal
         filter={report.filter.ai_code}
         isShow={modalVisible}

@@ -48,7 +48,6 @@ const Live = ({ route, navigation }) => {
         dispatch(getInfoCamera(res));
       }
     } catch (e) {
-      console.log(e);
       Alert.alert('Lấy thông tin camera không thành công');
     }
   };
@@ -71,7 +70,6 @@ const Live = ({ route, navigation }) => {
         );
         dispatch(getPathStream(res.stream));
       } catch (e) {
-        console.log(e);
         Alert.alert('Lấy danh sách đường dẫn ko thành công');
       }
     }
