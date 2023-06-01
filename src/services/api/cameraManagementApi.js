@@ -15,6 +15,11 @@ import streamingClient from "../axiosStreaming";
     },
     delete: (code) => {
         return axiosClient.delete(`/cameraManagement/delete-remove-camera/?camera_code=${code}`)
+    },
+    getListCamera: (params) => {
+        return axiosClient.get('/cameraManagement/get-list-camera/', {
+            params: params
+        })
     }
 
 }

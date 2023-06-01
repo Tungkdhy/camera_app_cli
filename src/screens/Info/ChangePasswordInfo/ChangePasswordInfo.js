@@ -46,7 +46,6 @@ const ChangePasswordInfo = ({ navigation }) => {
                 new_password: newPassword,
             })
             Alert.alert('Thay đổi thành công')
-            console.log(res);
             return res;
         } catch (error) {
             Alert.alert('Thay đổi không thành công')

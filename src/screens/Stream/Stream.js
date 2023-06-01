@@ -1,8 +1,8 @@
-import {Text, View, ScrollView, Alert, FlatList, Pressable} from 'react-native';
+import { Text, View, ScrollView, Alert, FlatList, Pressable } from 'react-native';
 import Header from '../../components/Header/Header';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import Filter from '../../components/Filter/Filter';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import axiosClient from '../../services/axiosClient';
 import {
   getListLocation,
@@ -10,7 +10,7 @@ import {
   getListDistrict,
   setWareHouseCode,
 } from '../../redux/actions/cameraAction';
-import {getListWareHouse} from '../../redux/actions/wareHouseAction';
+import { getListWareHouse } from '../../redux/actions/wareHouseAction';
 import {
   DownIcon,
   Status,
@@ -18,9 +18,9 @@ import {
   MenuIcon,
 } from '../../components/Icons/Index';
 import Modal from './Modal/Modal';
-import {styles} from './style';
+import { styles } from './style';
 
-export default function Stream({navigation, ...props}) {
+export default function Stream({ navigation, ...props }) {
   const dispatch = useDispatch();
   const [isProvince, setIsProvince] = useState(true);
   const camera = useSelector(state => state.useReducer);
@@ -49,18 +49,18 @@ export default function Stream({navigation, ...props}) {
   };
 
   //Navigate Screen PlayBack
-  const navigatePlayBackCamera = (it,item) => {
-    navigation.navigate("PlayBack",{
+  const navigatePlayBackCamera = (it, item) => {
+    navigation.navigate("PlayBack", {
       wareHouse: item.WAREHOUSE_NAME,
       active: it.CAMERA.CODE,
-      activeName:it.CAMERA.NAME_CAM,
-      cam:camera.camera ,
+      activeName: it.CAMERA.NAME_CAM,
+      cam: camera.camera,
     })
   };
   //Navigate Screen Smart
-  const handleNavigateSmart = (it,item)=>{
-    navigation.navigate("Report",{
-      camera:it.CAMERA
+  const handleNavigateSmart = (it, item) => {
+    navigation.navigate("Report", {
+      camera: it.CAMERA
     })
   }
   //Show menu2 stream
@@ -76,7 +76,7 @@ export default function Stream({navigation, ...props}) {
     setIsProvince(!isProvince);
   };
   //Render menu camera
-  const renderItem = ({item,index}) => {
+  const renderItem = ({ item, index }) => {
     return (
       <>
         <View key={index} style={styles.border}>
@@ -105,13 +105,15 @@ export default function Stream({navigation, ...props}) {
                       </View>
                       <View style={styles.nameCamera}>
                         <Text
-                          style={{color:"#000"}}
+                          style={{ color: "#000" }}
                           onPress={
                             props.route.name === 'Stream'
-                              ? () => liveStream(it, item) : props.route.name === 'Smart'?()=>handleNavigateSmart(it,item)
-                              : () => navigatePlayBackCamera(it, item)
+                              ? () => liveStream(it, item)
+                              : props.route.name === 'Smart'
+                                ? () => handleNavigateSmart(it, item)
+                                : () => navigatePlayBackCamera(it, item)
                           }>
-                          {it?.CAMERA.NAME_CAM} 
+                          {it?.CAMERA.NAME_CAM}
                         </Text>
                       </View>
                     </View>
@@ -130,13 +132,13 @@ export default function Stream({navigation, ...props}) {
       try {
         const province = camera.filter?.province_code
           ? {
-              province_code: camera.filter?.province_code,
-            }
+            province_code: camera.filter?.province_code,
+          }
           : {};
         const district = camera.filter?.district_code
           ? {
-              district_code: camera.filter?.district_code,
-            }
+            district_code: camera.filter?.district_code,
+          }
           : {};
         const res = await axiosClient.get(`/warehouse/get-list-warehouse/`, {
           params: {
@@ -146,67 +148,69 @@ export default function Stream({navigation, ...props}) {
         });
         dispatch(getListWareHouse(res.data));
       } catch (e) {
-        console.log(e);
       }
     }
     getLocation();
   }, [camera.filter?.province_code, camera.filter?.district_code]);
   useEffect(() => {
-    
+
     async function getDistrict() {
       const res = await axiosClient.get(
         `/district/get-list-district/?province_code=${camera.filter?.province_code}&size=1000&page=1&district_name=${camera.filterLocate?.district}`,
       );
       const data = res.map(item => {
-        return {name: item.DISTRICT_NAME, code: item.DISTRICT_CODE};
+        return { name: item.DISTRICT_NAME, code: item.DISTRICT_CODE };
       });
       dispatch(getListDistrict(data));
     }
     getDistrict();
-  }, [camera.filter?.province_code,camera.filterLocate?.district]);
+  }, [camera.filter?.province_code, camera.filterLocate?.district]);
   useEffect(() => {
     async function getProvince() {
       try {
         const res = await axiosClient.get(
           `/province/get-info-province/?nation_code=VNM&province_name=${camera.filterLocate?.province}`,
         );
-        console.log(res);
         const data = res.map(item => {
-          return {name: item.PROVINCE_NAME, code: item.PROVINCE_CODE};
+          return { name: item.PROVINCE_NAME, code: item.PROVINCE_CODE };
         });
         dispatch(getListProvince(data));
       } catch (e) {
-        console.log(e);
       }
     }
     getProvince();
   }, [camera.filterLocate?.province]);
   useEffect(() => {
     async function getProvince() {
+      const params = {
+        warehouse_code: camera.wareCode,
+        camera_status: camera.filter.camera_status,
+        page: 1,
+        size: 1000
+      }
+      if (props.route.name === 'Smart') {
+        params.ai_already = camera.filter.record_status
+      } else if (props.route.name === 'Playback') {
+        params.record_already = camera.filter.record_status
+      } 
       try {
         const res = await axiosClient.get(
           'cameraManagement/get-list-camera/',
           {
-            params: {
-              warehouse_code: camera.wareCode,
-              camera_status: camera.filter.camera_status,
-              page:1,
-              size:1000
-            },
+            params: params,
           },
         );
         dispatch(getListLocation(res.data));
       } catch (e) {
-        console.log(e);
       }
     }
     getProvince();
-  }, [camera.wareCode, camera.filter.camera_status]);
+  }, [camera.wareCode, camera.filter.camera_status, props.route.name, camera.filter.record_status]);
   return (
     <>
       <Header
         title={
-          props.route.name === 'Stream' ?  'Xem trực tiếp'  :  props.route.name === 'Smart'?'Cảnh báo thông minh':'Xem lại Camera'
+          props.route.name === 'Stream' ? 'Xem trực tiếp' : props.route.name === 'Smart' ? 'Cảnh báo thông minh' : 'Xem lại Camera'
         }
         navigation={navigation}
       />
@@ -222,21 +226,23 @@ export default function Stream({navigation, ...props}) {
             : camera?.filter?.district_code
         }
       />
-      <View style={styles.container}> 
+      <View style={styles.container}>
         <Filter
+          playback={props.route.name !== 'Stream'}
           filter={camera.filter.camera_status}
+          record={camera.filter.record_status}
           onClick={handleShowFilter}
         />
         {/* <ScrollView> */}
-          <ScrollView style={styles.camera}>
-            <FlatList
-              data={wareHouse?.wareHouse}
-              renderItem={renderItem}
-              keyExtractor={item => item.CODE}
-              onEndReachedThreshold={0}
-              accessibilityElementsHidden
-            />
-          </ScrollView>
+        <ScrollView style={styles.camera}>
+          <FlatList
+            data={wareHouse?.wareHouse}
+            renderItem={renderItem}
+            keyExtractor={item => item.CODE}
+            onEndReachedThreshold={0}
+            accessibilityElementsHidden
+          />
+        </ScrollView>
         {/* </ScrollView> */}
       </View>
     </>
