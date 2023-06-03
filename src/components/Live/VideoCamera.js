@@ -1,4 +1,6 @@
+
 import React, { useCallback, useEffect, useRef } from 'react';
+
 import {
   InfoIcon,
   FullScreenIcon,
@@ -11,7 +13,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import CameraItem from './CameraItem';
 import Video from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
-import { View, Text, FlatList, Pressable, StatusBar, BackHandler } from 'react-native';
+
+import {
+  View,
+  Text,
+  FlatList,
+  Pressable,
+  StatusBar,
+  Platform,
+  BackHandler
+} from 'react-native';
 import { styles } from './styles';
 import { convertToSecond } from '../../utils';
 import { videoActive } from '../../redux/actions/reportAction';
@@ -23,16 +34,19 @@ const VideoCamera = ({
   getInfo,
   setCamId,
   type = 'livestream',
+  change,
 }) => {
   const ref = useRef();
   const dispatch = useDispatch();
   const stick_time = useSelector(
     state => state.playBackReducer.filter.stick_time,
   );
-
+  const reload = useSelector(state => state.useReducer.reload);
   const handleOrientation = orientation => {
+    console.log(orientation);
     if (orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT') {
       dispatch(setIsFullScreen(true));
+      // Orientation.lockToLandscapeLeft();
 
       StatusBar.setHidden(true);
     } else {
@@ -43,11 +57,18 @@ const VideoCamera = ({
   };
   const handleFullscreen = useCallback(() => {
     if (isFullScreen) {
-      Orientation.unlockAllOrientations();
+      Orientation.lockToPortrait();
+      dispatch(setIsFullScreen(false));
+
+      // dispatch(setIsFullScreen(false));
     } else {
       Orientation.lockToLandscapeLeft();
+      dispatch(setIsFullScreen(true));
+
+      // dispatch(setIsFullScreen(true));
     }
-  },[])
+
+ }
   useEffect(() => {
     Orientation.addOrientationListener(handleOrientation);
     return () => {
@@ -56,30 +77,26 @@ const VideoCamera = ({
   }, []);
   useEffect(() => {
     if (type !== 'livestream' && cameraActive?.length > 0) {
-      console.log(cameraActive[0]?.path?.TIME_START);
       if (cameraActive[0]?.path?.TIME_START) {
         ref.current.seek(
           Number(convertToSecond(stick_time)) -
-          Number(convertToSecond(cameraActive[0]?.path?.TIME_START.split(" ")[1]))
+          Number(
+            convertToSecond(cameraActive[0]?.path?.TIME_START.split(' ')[1]),
+          ),
+
         );
       }
     }
   }, [cameraActive]);
 
-  useEffect(() => {
-    const pressBack = () => {
-        handleFullscreen()
-        return true;
-    }
-    const backAction = BackHandler.addEventListener('hardwareBackPress', pressBack);
-    return ()=> backAction.remove();
-  }, [handleFullscreen])
-
   return (
-      <View style={isFullScreen ? styles.contentFull : {}}>
+    <View style={isFullScreen ? styles.contentFull : {}}>
+      {
         <View style={isFullScreen ? styles.activeFull : styles.active}>
           {cameraActive &&
             cameraActive.map((item, index) => {
+              console.log(item);
+
               return (
                 <>
                   <View
@@ -96,7 +113,9 @@ const VideoCamera = ({
                     }>
                     {item.path === 'no-path' ? (
                       <View style={styles.noPath}>
-                        <Text style={{ color: "#000" }}>Không có đường dẫn</Text>
+
+                        <Text style={{ color: '#000' }}>Không có đường dẫn</Text>
+
                       </View>
                     ) : (
                       <Video
@@ -114,7 +133,8 @@ const VideoCamera = ({
                         shouldPlay={true}
                         useNativeControls={true}
                         isLooping
-                        controls={true}
+                        controls={type === 'playback/' ? change : false}
+
                         style={
                           isFullScreen
                             ? styles.fullScreen
@@ -133,14 +153,26 @@ const VideoCamera = ({
                           <Pressable onPress={handleFullscreen}>
                             <BackIcon2 />
                           </Pressable>
-                        ) : item.status === 'On' ? (
+
+                        ) : (
+                          type === 'playback/'
+                            ? item.status === 'On'
+                            : item.data[0].STATUS === 'On'
+                        ) ? (
+
                           <Status />
                         ) : (
                           <Status color="#FF3300" />
                         )}
                       </View>
                       <Text
-                        style={isFullScreen ? { fontSize: 18, color: '#fff' } : { color: "#000" }}>
+
+                        style={
+                          isFullScreen
+                            ? { fontSize: 18, color: '#fff', paddingLeft: 12 }
+                            : { color: '#000' }
+                        }>
+
                         {item.name}
                       </Text>
                     </View>
@@ -153,6 +185,7 @@ const VideoCamera = ({
                               <InfoIcon />
                             </Text>
                           </View>
+
                           <Pressable
                             onPress={handleFullscreen}
                             style={styles.iconSetting}>
@@ -169,32 +202,34 @@ const VideoCamera = ({
                 </>
               );
             })}
+
         </View>
-        {!isFullScreen && type !== 'playback/' && (
-          <View>
-            <FlatList
-              data={streamPath}
-              //   scrollEnabled
-              renderItem={({ item, index }) => (
-                <CameraItem
-                  key={index}
-                  id={item.code}
-                  setCamId={setCamId}
-                  title={item?.name}
-                  path={item?.data[0]?.PATH}
-                  type={type}
-                />
-              )}
-              numColumns={2}
-              style={styles.list}
-              columnWrapperStyle={{
-                justifyContent: 'space-between',
-              }}
-              keyExtractor={(item, index) => index}
-              maxHeight={284}
-            />
-          </View>
-        )}
+      }
+      {!isFullScreen && type !== 'playback/' && (
+        <View>
+          <FlatList
+            data={streamPath}
+            //   scrollEnabled
+            renderItem={({ item, index }) => (
+              <CameraItem
+                key={index}
+                id={item.code}
+                setCamId={setCamId}
+                title={item?.name}
+                path={item?.data[0]?.PATH}
+                type={type}
+              />
+            )}
+            numColumns={2}
+            style={styles.list}
+            columnWrapperStyle={{
+              justifyContent: 'space-between',
+            }}
+            keyExtractor={(item, index) => index}
+            maxHeight={500}
+          />
+
+        </View>
       </View>
   );
 };

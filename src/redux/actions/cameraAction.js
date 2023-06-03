@@ -12,7 +12,11 @@ export const SET_WARE_HOUSE_CODE = "SET_WARE_HOUSE_CODE"
 export const SET_IS_FULLSCREEN = "SET_IS_FULLSCREEN"
 export const SET_FILTER_PROVINCE = "SET_FILTER_PROVINCE"
 export const SET_FILTER_DISTRICT = "SET_FILTER_DISTRICT"
+
+export const SET_RELOAD = "SET_RELOAD"
+
 export const SET_RECORD = "SET_RECORD"
+
 export const setNameCamera = (name) => {
   return {
     type: SET_NAME_CAMERA,
@@ -95,6 +99,12 @@ export const setFilterDistrict = (data) => {
   return {
     type: SET_FILTER_DISTRICT,
     payload: data
+  }
+}
+
+export const setReload = (data) => {
+  return {
+    type: SET_RELOAD,
   }
 }
 export const setRecord = (data) => {

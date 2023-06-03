@@ -47,6 +47,7 @@ export default function App() {
           <Stack.Screen name="Detail" component={Detail} />
           <Stack.Screen name="PlayBack" component={PlayBack} />
           <Stack.Screen name="Notification" component={Notification} />
+
           <Stack.Screen name="ChangePasswordInfo" component={ChangePasswordInfo} />
           <Stack.Screen name="EditInfo" component={EditInfo} />
           <Stack.Screen name="Report" component={Payment} />

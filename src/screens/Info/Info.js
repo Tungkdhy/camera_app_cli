@@ -16,7 +16,9 @@ import {
   NextIcon,
   Pass,
 } from '../../components/Icons/Index';
+
 import axiosClient from '../../services/axiosClient';
+
 const Info = ({ navigation }) => {
   const handleLogout = async () => {
     const refresh = await AsyncStorage.getItem('refresh');
@@ -46,9 +48,9 @@ const Info = ({ navigation }) => {
             }}
             style={styles.item}>
             <View style={styles.title}>
-              <Text style={styles.icon}>
+              <View style={styles.icon}>
                 <CricleUser />
-              </Text>
+              </View>
               <Text style={styles.text}>Thông tin cá nhân</Text>
             </View>
             <Pressable style={styles.next}>
@@ -61,9 +63,9 @@ const Info = ({ navigation }) => {
             }}
             style={styles.item}>
             <View style={styles.title}>
-              <Text style={styles.icon}>
+              <View style={styles.icon}>
                 <Pass />
-              </Text>
+              </View>
               <Text style={styles.text}>Đổi mật khẩu</Text>
             </View>
             <Pressable style={styles.next}>
@@ -74,9 +76,9 @@ const Info = ({ navigation }) => {
             onPress={handleLogout}
             style={styles.item}>
             <View style={styles.title}>
-              <Text style={styles.icon}>
+              <View style={styles.icon}>
                 <Logout />
-              </Text>
+              </View>
               <Text style={styles.text}>Đăng xuất</Text>
             </View>
             <Pressable style={styles.next}>

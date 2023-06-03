@@ -78,15 +78,14 @@ export default function Stream({ navigation, ...props }) {
   //Render menu camera
   const renderItem = ({ item, index }) => {
     return (
-      <>
-        <View key={index} style={styles.border}>
+      <Pressable onPress={() => handleShowCamera(item.CODE)}
+        key={index}>
+        <View style={styles.border}>
           <View style={styles.cameraItem}>
             <View style={styles.icon}>
               {item.CODE === camera.wareCode ? <DownIcon /> : <ShowIcon />}
             </View>
-            <Text
-              onPress={() => handleShowCamera(item.CODE)}
-              style={styles.name}>
+            <Text style={styles.name}>
               {item.WAREHOUSE_NAME}
             </Text>
           </View>
@@ -94,7 +93,11 @@ export default function Stream({ navigation, ...props }) {
             <View style={styles.listCamera}>
               {camera.camera && camera.camera?.length > 0 && camera.camera.map((it, index) => {
                 return (
-                  <View key={index} style={styles.flex}>
+                  <Pressable onPress={
+                    props.route.name === 'Stream'
+                      ? () => liveStream(it, item) : props.route.name === 'Smart' ? () => handleNavigateSmart(it, item)
+                        : () => navigatePlayBackCamera(it, item)
+                  } key={index} style={styles.flex}>
                     <View style={styles.cameraName}>
                       <View>
                         {it?.CAMERA.STATUS === 'On' ? (
@@ -106,6 +109,7 @@ export default function Stream({ navigation, ...props }) {
                       <View style={styles.nameCamera}>
                         <Text
                           style={{ color: "#000" }}
+
                           onPress={
                             props.route.name === 'Stream'
                               ? () => liveStream(it, item)
@@ -117,13 +121,13 @@ export default function Stream({ navigation, ...props }) {
                         </Text>
                       </View>
                     </View>
-                  </View>
+                  </Pressable>
                 );
               })}
             </View>
           )}
         </View>
-      </>
+      </Pressable>
     );
   };
   useEffect(() => {
@@ -197,7 +201,12 @@ export default function Stream({ navigation, ...props }) {
         const res = await axiosClient.get(
           'cameraManagement/get-list-camera/',
           {
-            params: params,
+            params: {
+              warehouse_code: camera.wareCode,
+              camera_status: camera.filter.camera_status,
+              page: 1,
+              size: 1000
+            },
           },
         );
         dispatch(getListLocation(res.data));

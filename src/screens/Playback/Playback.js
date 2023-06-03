@@ -1,14 +1,14 @@
-import {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, Pressable, Modal, Alert} from 'react-native';
+import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Pressable, Modal, Alert } from 'react-native';
 
 import {
   Back,
   DateTime,
   Close
 } from '../../components/Icons/Index';
-import {styles} from './styles';
+import { styles } from './styles';
 import DatePicker from 'react-native-date-picker';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getListPlayBack as play,
   setDay,
@@ -26,11 +26,12 @@ import {
 } from '../../utils';
 import StickTime from '../../components/StickTime/StickTime';
 import VideoCamera from '../../components/Live/VideoCamera';
-export default function PlayBack({navigation, route}) {
+export default function PlayBack({ navigation, route }) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [cameraActive, setCameraActive] = useState();
   const [camId, setCamId] = useState();
+  const [change, setChange] = useState(true)
   const playback = useSelector(state => state.playBackReducer);
   const cameraInfo = useSelector(state => state.useReducer.camera_info);
   const [modalVisible, setModalVisible] = useState(false);
@@ -38,7 +39,7 @@ export default function PlayBack({navigation, route}) {
   const stick_time = useSelector(
     state => state.playBackReducer.filter.stick_time,
   );
-  const getInfo = async(code) => {
+  const getInfo = async (code) => {
     try {
       setModalVisible(!modalVisible);
       const res = await axiosClient.get(
@@ -56,13 +57,13 @@ export default function PlayBack({navigation, route}) {
     setCamId(route.params.active);
     async function getListPlayBack() {
       try {
-        const day = {day: playback.filter.day};
+        const day = { day: playback.filter.day };
         const res = await axiosClient.get(
           '/camPlayback/get-list-path-timeline/',
           {
             params: {
               list_camera_code: JSON.stringify({
-                data: [{camera_code: route.params.active}],
+                data: [{ camera_code: route.params.active }],
               }),
               ...day,
               time_line: stick_time,
@@ -77,7 +78,7 @@ export default function PlayBack({navigation, route}) {
             path: item.path,
             // time: item.total_time,
             name: item.name_cam,
-            status:item.status
+            status: item.status
           };
         });
         dispatch(play(playbacks));
@@ -95,7 +96,7 @@ export default function PlayBack({navigation, route}) {
   }, [playback.playBacks, camId]);
   return (
     <View style={styles.container}>
-        <Modal
+      <Modal
         animationType="fade"
         transparent={true}
         visible={modalVisible}
@@ -107,11 +108,11 @@ export default function PlayBack({navigation, route}) {
           <View style={styles.modalView}>
             <View style={styles.modalHeader}>
               <Text style={styles.titleHeader}>Thông tin camera</Text>
-              <Text
+              <Pressable
                 onPress={() => setModalVisible(false)}
                 style={styles.iconModal}>
                 <Close />
-              </Text>
+              </Pressable>
             </View>
             <View style={styles.modalContent}>
               <View style={styles.infoItem}>
@@ -224,8 +225,9 @@ export default function PlayBack({navigation, route}) {
         setCamId={setCamId}
         getInfo={getInfo}
         type="playback/"
+        change={change}
       />
-      {!isFullScreen && <StickTime day = {playback.filter.day} code ={route.params.active}/>}
+      {!isFullScreen && <StickTime setChange={setChange} day={playback.filter.day} code={route.params.active} />}
     </View>
   );
 }

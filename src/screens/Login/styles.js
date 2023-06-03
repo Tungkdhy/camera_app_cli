@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet,Platform } from "react-native";
 
 export const styles = StyleSheet.create({
     container:{
@@ -96,13 +96,23 @@ export const styles = StyleSheet.create({
       input:{
         marginTop:10,
         borderWidth: 1,
-        padding:12,
         borderColor:"rgba(0, 0, 0, 0.2)",
+        ...Platform.select({
+          ios:{
+        padding:16,
+
+          },
+          android:{
+        padding:12,
+
+          }
+        }),
         borderRadius:4,
         paddingLeft:42,
         paddingRight:40,
         marginBottom:30,
         color:"#000"
+
       },
       login:{
         // marginTop:24

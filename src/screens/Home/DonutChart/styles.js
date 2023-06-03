@@ -4,7 +4,7 @@ export const styles = StyleSheet.create({
         display: 'flex',
         backgroundColor: '#fff',
         textAlign: 'left',
-        flex:1,
+        flex: 1,
         marginTop: 0,
         padding: 16,
         marginBottom: 8,

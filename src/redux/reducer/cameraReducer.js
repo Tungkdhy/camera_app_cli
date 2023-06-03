@@ -13,7 +13,9 @@ import {
   SET_IS_FULLSCREEN,
   SET_FILTER_DISTRICT,
   SET_FILTER_PROVINCE,
+  SET_RELOAD,
   SET_RECORD,
+
 } from '../actions/cameraAction';
 
 const initialState = {
@@ -37,6 +39,7 @@ const initialState = {
     province: '',
     district: '',
   },
+  reload: false
 };
 
 const useReducer = (state = initialState, action) => {
@@ -113,6 +116,12 @@ const useReducer = (state = initialState, action) => {
           province: action.payload,
         },
       };
+
+    case SET_RELOAD:
+      return {
+        ...state,
+        reload: action.payload,
+      }
     case SET_RECORD:
       return {
         ...state,
