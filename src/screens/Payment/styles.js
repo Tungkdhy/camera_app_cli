@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 const height = Dimensions.get('window').width;
 const width = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-  
+
     zIndex: 1000,
   },
   activeFull: {
@@ -39,6 +39,12 @@ export const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     gap: 4,
+    ...Platform.select({
+      ios: {
+        paddingTop: 4,
+        paddingLeft: 8,
+      },
+    }),
   },
   info: {
     paddingTop: 8,
@@ -49,8 +55,8 @@ export const styles = StyleSheet.create({
     // transform: [{rotateZ: '90deg'}],
   },
   infoFull: {
-    position:"absolute",
-    top:12
+    position: 'absolute',
+    top: 12,
     // paddingTop: 8,
     // flexDirection: 'row',
     // justifyContent: 'space-between',
@@ -66,7 +72,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    paddingTop: 16,
+    ...Platform.select({
+      ios: {
+        paddingTop: 44,
+      },
+      android: {
+        paddingTop: 16,
+      },
+    }),
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.05)',
   },
@@ -75,7 +88,7 @@ export const styles = StyleSheet.create({
     paddingLeft: 16,
     fontSize: 18,
     fontWeight: '700',
-    color:"#000"
+    color: '#000',
   },
   content: {
     flex: 1,
@@ -89,18 +102,20 @@ export const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.05)',
     paddingBottom: 12,
     paddingTop: 12,
+    gap: 8,
   },
   image: {
-    flex: 1,
+    flex: 2,
   },
   detail: {
-    flex: 3,
+    flex: 5,
     paddingLeft: 20,
   },
   time: {
     flexDirection: 'row',
     gap: 12,
     paddingBottom: 4,
+    fontSize: 11,
   },
   fileName: {
     fontSize: 14,
@@ -117,6 +132,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.03)',
     borderRadius: 4,
     textAlign: 'center',
+    fontSize: 12,
   },
   filter: {
     paddingTop: 10,
@@ -157,8 +173,8 @@ export const styles = StyleSheet.create({
     gap: 6,
   },
   input_picker: {
-    minWidth:200,
-    padding:0,
+    minWidth: 200,
+    padding: 0,
     // marginTop: 10,
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.2)',

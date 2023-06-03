@@ -37,6 +37,7 @@ const Live = ({ route, navigation }) => {
   const isFullScreen = useSelector(state => state.useReducer.isFullScreen);
   const [modalVisible, setModalVisible] = useState(false);
   const [cameraActive, setCameraActive] = useState();
+  const [reload, setReload] = useState(true);
   const [camId, setCamId] = useState();
   const getInfo = async code => {
     try {
@@ -67,7 +68,7 @@ const Live = ({ route, navigation }) => {
             list_camera: {
               data: data,
             },
-          }
+          },
         );
         dispatch(getPathStream(res.stream));
       } catch (e) {
@@ -178,10 +179,12 @@ const Live = ({ route, navigation }) => {
           }}>
           <Back />
         </Pressable>
-        <Text style={styles.text}>{route && route.params && route.params.wareHouse ? route.params.wareHouse : ''}</Text>
-        <View>
-          <SearchIcon color={'black'} />
-        </View>
+        <Text style={styles.text}>
+          {route && route.params && route.params.wareHouse
+            ? route.params.wareHouse
+            : ''}
+        </Text>
+        <View />
       </View>
       <VideoCamera
         navigation={navigation}
@@ -190,6 +193,7 @@ const Live = ({ route, navigation }) => {
         streamPath={streamPath}
         getInfo={getInfo}
         setCamId={setCamId}
+        reload={reload}
       />
     </View>
   );

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {styles} from './styles';
+import { styles } from './styles';
 import {
   CricleUser,
   FadeId,
@@ -19,7 +19,7 @@ import {
   UploadIcon,
   Website,
 } from '../../components/Icons/Index';
-const Info = ({navigation}) => {
+const Info = ({ navigation }) => {
   const handleLogout = async () => {
     AsyncStorage.clear();
     console.log('a');
@@ -45,9 +45,9 @@ const Info = ({navigation}) => {
             }}
             style={styles.item}>
             <View style={styles.title}>
-              <Text style={styles.icon}>
+              <View style={styles.icon}>
                 <CricleUser />
-              </Text>
+              </View>
               <Text style={styles.text}>Thông tin cá nhân</Text>
             </View>
             <Pressable style={styles.next}>
@@ -60,9 +60,9 @@ const Info = ({navigation}) => {
             }}
             style={styles.item}>
             <View style={styles.title}>
-              <Text style={styles.icon}>
+              <View style={styles.icon}>
                 <Pass />
-              </Text>
+              </View>
               <Text style={styles.text}>Đổi mật khẩu</Text>
             </View>
             <Pressable style={styles.next}>
@@ -103,9 +103,9 @@ const Info = ({navigation}) => {
             }}
             style={styles.item}>
             <View style={styles.title}>
-              <Text style={styles.icon}>
+              <View style={styles.icon}>
                 <Logout />
-              </Text>
+              </View>
               <Text style={styles.text}>Đăng xuất</Text>
             </View>
             <Pressable style={styles.next}>

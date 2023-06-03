@@ -1,11 +1,11 @@
-import React, {useRef, useState, useEffect} from 'react';
-import {ScrollView, Text, View, Dimensions} from 'react-native';
-import {styles} from './styles';
-import {useSelector, useDispatch} from 'react-redux';
-import {setTimeStick} from '../../redux/actions/playBackAction';
-import {convertTimeToPx, convertToSecond, covertWidthToHour} from '../../utils';
-import {playBackApi} from '../../services/api/playBackApi';
-const StickTime = ({code, day}) => {
+import React, { useRef, useState, useEffect } from 'react';
+import { ScrollView, Text, View, Dimensions } from 'react-native';
+import { styles } from './styles';
+import { useSelector, useDispatch } from 'react-redux';
+import { setTimeStick } from '../../redux/actions/playBackAction';
+import { convertTimeToPx, convertToSecond, covertWidthToHour } from '../../utils';
+import { playBackApi } from '../../services/api/playBackApi';
+const StickTime = ({ code, day, setChange }) => {
   const [list, setList] = useState([
     '00:00',
     '01:00',
@@ -65,36 +65,38 @@ const StickTime = ({code, day}) => {
         day: day,
       });
       console.log(res[0].timeline_record);
-      if(res.length > 0){
+      if (res.length > 0) {
         setTimelines(res[0].timeline_record)
       }
     };
     getTimeLine();
-  }, [code,day]);
+  }, [code, day]);
   return (
-    <View style={{position: 'relative'}}>
+    <View style={{ position: 'relative' }}>
       <Text style={styles.time}>
         {playback.filter.day} {stick_time}
       </Text>
       <ScrollView
         onScroll={event => {
           const x = event.nativeEvent.contentOffset.x / 100;
+          setChange(false)
           if (debouce.current) {
             clearTimeout(debouce.current);
           }
           debouce.current = setTimeout(() => {
             dispatch(setTimeStick(covertWidthToHour(x)));
+            setChange(true)
           }, 300);
         }}
-        style={{flexGrow: 0, position: 'relative'}}
+        style={{ flexGrow: 0, position: 'relative' }}
         showsHorizontalScrollIndicator={false}
         horizontal
         // contentOffset={{y:0,x:convertToSecond(stick_time)}}
         ref={ref}>
         <View style={styles.container}>
           {timelines?.length > 0 && timelines.map((item, index) => {
-           
-            if(item.TIME_END){
+
+            if (item.TIME_END) {
               return (
                 <View
                   key={index}
@@ -102,14 +104,14 @@ const StickTime = ({code, day}) => {
                     position: 'absolute',
                     top: 0,
                     bottom: 0,
-                    left:screenWidth/2 + convertTimeToPx(item?.TIME_START) -15 ,
+                    left: screenWidth / 2 + convertTimeToPx(item?.TIME_START) - 15,
                     right: 2400 - convertTimeToPx(item?.TIME_END),
                     backgroundColor: '#29b1ed',
                     zIndex: 2,
                   }}></View>
               );
             }
-            else{
+            else {
               // return <React.Fragment key={index}></React.Fragment>
             }
           })}
@@ -121,7 +123,7 @@ const StickTime = ({code, day}) => {
             }}></View>
           {list.map(item => (
             <View style={styles.item} key={item}>
-              <Text style={{color: 'white'}}>{item}</Text>
+              <Text style={{ color: 'white' }}>{item}</Text>
             </View>
           ))}
         </View>

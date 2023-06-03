@@ -29,7 +29,7 @@ import ChangePasswordInfo from './src/screens/Info/ChangePasswordInfo/ChangePass
 // import { NotificationListener } from './src/utils/FCM_helper';
 const Stack = createStackNavigator()
 export default function App() {
-  
+
   // React.useEffect(()=>{
   //   requestUserPermission()
   //   NotificationListener()
@@ -52,7 +52,7 @@ export default function App() {
           <Stack.Screen name="PlayBack" component={PlayBack} />
           <Stack.Screen name="Notification" component={Notification} />
 
-         <Stack.Screen name="ChangePasswordInfo" component={ChangePasswordInfo} />
+          <Stack.Screen name="ChangePasswordInfo" component={ChangePasswordInfo} />
           <Stack.Screen name="EditInfo" component={EditInfo} />
 
           {/* <Stack.Screen name="Map" component={MapScreen} /> */}

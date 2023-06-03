@@ -1,9 +1,15 @@
 #import "AppDelegate.h"
-
+#import "Orientation.h"
 #import <React/RCTBundleURLProvider.h>
 
 @implementation AppDelegate
-
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+  while ([[UIDevice currentDevice] isGeneratingDeviceOrientationNotifications]) {
+      [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+  }
+  
+  return [Orientation getOrientation];
+}
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   self.moduleName = @"camera_app";

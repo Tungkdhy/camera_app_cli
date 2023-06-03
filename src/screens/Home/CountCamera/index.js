@@ -91,12 +91,12 @@ function CountCamera() {
             <Text style={styles.number}>
               {countCamera.ACTIVE - countCamera.WEAK - countCamera.NO_CONNECT}
             </Text>
-            <Text style={styles.name}>Đang hoạt động</Text>
+            <Text style={styles.name}>Đang trực tuyến</Text>
           </View>
           <View style={styles.headerItem}>
             <ImageBackground style={styles.image_camera} source={ImageCamOff} />
             <Text style={styles.number}>{countCamera.INACTIVE}</Text>
-            <Text style={styles.name}>Không hoạt động</Text>
+            <Text style={styles.name}>Sẵn sàng</Text>
           </View>
         </View>
 

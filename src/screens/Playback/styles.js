@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     paddingLeft: 16,
@@ -10,7 +10,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    paddingTop: 16,
+    ...Platform.select({
+      ios: {
+        paddingTop: 44
+      },
+      android: {
+        paddingTop: 16
+      }
+    }),
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.05)',
     backgroundColor: '#fff',
@@ -20,7 +27,7 @@ export const styles = StyleSheet.create({
     paddingLeft: 16,
     fontSize: 18,
     fontWeight: '700',
-    color:"#000"
+    color: "#000"
   },
   content: {
     flex: 1,
@@ -119,11 +126,11 @@ export const styles = StyleSheet.create({
   },
   iconModal: {
     position: 'absolute',
-    right: 8,
+    right: 0,
     top: 6,
     zIndex: 100,
-    width: 30,
-    height: 30,
+    width: 36,
+    height: 50,
   },
   modalContent: {
     padding: 16,

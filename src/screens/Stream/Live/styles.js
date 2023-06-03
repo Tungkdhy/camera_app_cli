@@ -1,4 +1,4 @@
-import { StyleSheet,Dimensions } from "react-native";
+import { StyleSheet,Dimensions ,Platform} from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
@@ -16,7 +16,14 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
-    paddingTop: 16,
+    ...Platform.select({
+      ios:{
+        paddingTop:44
+      },
+      android:{
+        paddingTop:16
+      }
+    }),
     borderBottomWidth: 1,
     borderColor: "rgba(0, 0, 0, 0.05)",
   },

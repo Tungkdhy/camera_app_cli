@@ -9,14 +9,14 @@ import {
   StatusBar,
 } from 'react-native';
 import Video from 'react-native-video';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import {
   SearchIcon,
   Back,
   PlayBackDownIcon,
   BackIcon2,
 } from '../../components/Icons/Index';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getListReport,
   setDayReport,
@@ -26,12 +26,12 @@ import {
   servicePackage,
 } from '../../redux/actions/reportAction';
 import DatePicker from 'react-native-date-picker';
-import {formatTimehp, formatDDMMYY2} from '../../utils';
+import { formatTimehp, formatDDMMYY2 } from '../../utils';
 import Modal from './Modal/Modal';
 import Orientation from 'react-native-orientation-locker';
-import {styles} from './styles';
+import { styles } from './styles';
 import axiosClient from '../../services/axiosClient';
-export default function Payment({route, navigation}) {
+export default function Payment({ route, navigation }) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -40,42 +40,51 @@ export default function Payment({route, navigation}) {
   const handleSetShowModal = () => {
     setModalVisible(!modalVisible);
   };
-  const renderItem = ({item, index}) => {
+  const renderItem = ({ item, index }) => {
     return (
-      <View key={index} style={styles.item}>
+      <Pressable
+        onPress={() => {
+          dispatch(
+            videoActive({
+              name: `${route.params.camera.NAME_CAM} - ${formatTimehp(
+                item.TIME_START.split(' ')[1],
+              )}`,
+              path: item.PATH,
+            }),
+          );
+          console.log('Ok');
+          handleFullscreen();
+        }}
+        key={index}
+        style={styles.item}>
         <View style={styles.image}>
-          <Image source={require('../../assets/images/Video.png')} />
+          <Image
+            style={{ width: '120%' }}
+            source={require('../../assets/images/Video.png')}
+          />
         </View>
-        <Pressable
-          style={styles.detail}
-          onPress={() => {
-            dispatch(
-              videoActive({
-                name: `${route.params.camera.NAME_CAM} - ${formatTimehp(
-                  item.TIME_START.split(' ')[1],
-                )}`,
-                path: item.PATH,
-              }),
-            );
-            handleFullscreen()
-          }}>
+        <View style={styles.detail}>
           <View style={styles.time}>
-            <Text>{formatDDMMYY2(item.TIME_START.split(' ')[0])}</Text>
+            <Text style={{ fontSize: 12 }}>
+              {' '}
+              {formatDDMMYY2(item.TIME_START.split(' ')[0])}
+            </Text>
             <Text>{item.time}</Text>
           </View>
           <Text
             style={{
               color: '#000',
-              fontSize: 16,
+              fontSize: 13,
               fontWeight: '600',
-              paddingTop: 2,
+              paddingTop: 4,
               paddingBottom: 4,
+              paddingLeft: 4,
             }}>{`${route.params.camera.NAME_CAM} - ${formatTimehp(
-            item.TIME_START.split(' ')[1],
-          )}`}</Text>
+              item.TIME_START.split(' ')[1],
+            )}`}</Text>
           <Text style={styles.serviceItem}>{item.SUBJECT_NAME}</Text>
-        </Pressable>
-      </View>
+        </View>
+      </Pressable>
     );
   };
   const handleOrientation = orientation => {
@@ -91,9 +100,12 @@ export default function Payment({route, navigation}) {
   };
   const handleFullscreen = () => {
     if (report.isFullScreen) {
-      Orientation.unlockAllOrientations();
+      Orientation.lockToPortrait();
+
+      dispatch(setIsFullScreen(false));
     } else {
       Orientation.lockToLandscapeLeft();
+      dispatch(setIsFullScreen(true));
     }
   };
   useEffect(() => {
@@ -120,7 +132,7 @@ export default function Payment({route, navigation}) {
           console.log(res);
           dispatch(getListReport(res.data));
         }
-      } catch (e) {}
+      } catch (e) { }
     }
     getVideoReport();
   }, [
@@ -130,7 +142,6 @@ export default function Payment({route, navigation}) {
     report.filter.timeEnd,
     report.filter.ai_code,
   ]);
-  console.log(report);
   useEffect(() => {
     async function getPackage() {
       try {
@@ -195,15 +206,15 @@ export default function Payment({route, navigation}) {
               <Back />
             </Pressable>
             <Text style={styles.text}>{route.params.camera.NAME_CAM}</Text>
-            <View style= {{width:20,height:20}}>
-              
-            </View>
+            <View style={{ width: 20, height: 20 }} />
           </View>
-          <ScrollView style={{flexGrow: 0}} horizontal>
+          <ScrollView style={{ flexGrow: 0 }} horizontal>
             <View style={styles.filter}>
               <Pressable onPress={() => setOpen(true)} style={styles.btnFilter}>
                 <View style={styles.textContent}>
-                  <Text style={{color:"#000"}}>{formatDDMMYY2(report.filter.day)}</Text>
+                  <Text style={{ color: '#000' }}>
+                    {formatDDMMYY2(report.filter.day)}
+                  </Text>
                   <View>
                     <PlayBackDownIcon />
                   </View>
@@ -213,15 +224,19 @@ export default function Payment({route, navigation}) {
                 onPress={() => setOpen2(true)}
                 style={styles.btnFilter}>
                 <View style={styles.textContent}>
-                  <Text style={{color:"#000"}}>{formatDDMMYY2(report.filter.time)}</Text>
+                  <Text style={{ color: '#000' }}>
+                    {formatDDMMYY2(report.filter.time)}
+                  </Text>
                   <View>
                     <PlayBackDownIcon />
                   </View>
                 </View>
               </Pressable>
-              <Pressable onPress={() => setModalVisible(true)} style={styles.btnFilter}>
+              <Pressable
+                onPress={() => setModalVisible(true)}
+                style={styles.btnFilter}>
                 <View style={styles.textContent}>
-                  <Text style={{color:"#000"}}>{report.filter.name}</Text>
+                  <Text style={{ color: '#000' }}>{report.filter.name}</Text>
                   <View>
                     <PlayBackDownIcon />
                   </View>
@@ -240,7 +255,9 @@ export default function Payment({route, navigation}) {
         report.video_active?.length > 0 &&
         report.video_active.map((item, index) => {
           return (
-            <View key={index} style={report.isFullScreen ? styles.contentFull : {}}>
+            <View
+              key={index}
+              style={report.isFullScreen ? styles.contentFull : {}}>
               <View
                 style={report.isFullScreen ? styles.activeFull : styles.active}>
                 <>
@@ -248,12 +265,12 @@ export default function Payment({route, navigation}) {
                     style={
                       report.isFullScreen
                         ? {
-                            flex: 1,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            width: '100%',
-                            height: '100%',
-                          }
+                          flex: 1,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          width: '100%',
+                          height: '100%',
+                        }
                         : {}
                     }>
                     <Video
@@ -271,9 +288,9 @@ export default function Payment({route, navigation}) {
                         report.isFullScreen
                           ? styles.fullScreen
                           : {
-                              width: '100%',
-                              height: 240,
-                            }
+                            width: '100%',
+                            height: 240,
+                          }
                       }
                     />
                   </View>
@@ -290,7 +307,7 @@ export default function Payment({route, navigation}) {
                       <Text
                         style={
                           report.isFullScreen
-                            ? {fontSize: 18, color: '#fff'}
+                            ? { fontSize: 18, color: '#fff' }
                             : {}
                         }>
                         {item.name}

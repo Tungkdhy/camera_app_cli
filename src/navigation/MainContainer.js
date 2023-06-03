@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Home/Home';
@@ -18,11 +18,22 @@ import {
   ChartIconActive,
   YoutubeIconActive,
 } from '../components/Icons/Index';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Tab = createBottomTabNavigator();
 const MainContainer = () => {
+  const [role, setRole] = useState('A');
+  useEffect(() => {
+    const getRole = async () => {
+      try {
+        const roles = await AsyncStorage.getItem('role');
+        setRole(roles);
+      } catch (e) { }
+    };
+    getRole();
+  }, []);
   return (
     <Tab.Navigator
-      // initialRouteName="Info"
+      initialRouteName={role === 'A' ? 'Trang chu' : 'Stream'}
       screenOptions={{
         tabBarActiveBackgroundColor: '#FFFFFF',
         tabBarActiveTintColor: 'red',
@@ -30,24 +41,23 @@ const MainContainer = () => {
         tabBarItemStyle: {
           borderColor: 'rgba(0, 0, 0, 0.05)',
           // borderTopWidth: 1,
-        
         },
         headerShown: false,
-        
       }}>
-      <Tab.Screen
-        name="Trang chu"
-        options={({ navigator }) => ({
-          tabBarStyle:{
-            // padding:12
-          },
-          tabBarIcon: ({ color, focused }) =>
-            focused ? <ChartIconActive /> : <ChartIcon />,
-          tabBarShowLabel: false,
-        
-        })}
-        component={Home}
-      />
+      {role === 'A' && (
+        <Tab.Screen
+          name="Trang chu"
+          options={({ navigator }) => ({
+            tabBarStyle: {
+              // padding:12
+            },
+            tabBarIcon: ({ color, focused }) =>
+              focused ? <ChartIconActive /> : <ChartIcon />,
+            tabBarShowLabel: false,
+          })}
+          component={Home}
+        />
+      )}
       <Tab.Screen
         name="Stream"
         component={Stream}
