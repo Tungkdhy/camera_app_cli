@@ -169,7 +169,7 @@ export const styles = StyleSheet.create({
     // height: Dimensions.get('window').width,
     // minWidth: Dimensions.get('window').height,
     // minHeight: Dimensions.get('window').width,
-    width: width - 60,
+    width: width - 30,
     height: height,
 
     // transform: [{rotate: '90deg'}],

@@ -1,4 +1,3 @@
-
 import React, { useCallback, useEffect, useRef } from 'react';
 
 import {
@@ -21,7 +20,7 @@ import {
   Pressable,
   StatusBar,
   Platform,
-  BackHandler
+  BackHandler,
 } from 'react-native';
 import { styles } from './styles';
 import { convertToSecond } from '../../utils';
@@ -55,7 +54,7 @@ const VideoCamera = ({
       StatusBar.setHidden(false);
     }
   };
-  const handleFullscreen = useCallback(() => {
+  const handleFullscreen = () => {
     if (isFullScreen) {
       Orientation.lockToPortrait();
       dispatch(setIsFullScreen(false));
@@ -67,8 +66,7 @@ const VideoCamera = ({
 
       // dispatch(setIsFullScreen(true));
     }
-
- }
+  }
   useEffect(() => {
     Orientation.addOrientationListener(handleOrientation);
     return () => {
@@ -83,7 +81,6 @@ const VideoCamera = ({
           Number(
             convertToSecond(cameraActive[0]?.path?.TIME_START.split(' ')[1]),
           ),
-
         );
       }
     }
@@ -113,9 +110,7 @@ const VideoCamera = ({
                     }>
                     {item.path === 'no-path' ? (
                       <View style={styles.noPath}>
-
                         <Text style={{ color: '#000' }}>Không có đường dẫn</Text>
-
                       </View>
                     ) : (
                       <Video
@@ -134,7 +129,6 @@ const VideoCamera = ({
                         useNativeControls={true}
                         isLooping
                         controls={type === 'playback/' ? change : false}
-
                         style={
                           isFullScreen
                             ? styles.fullScreen
@@ -153,26 +147,22 @@ const VideoCamera = ({
                           <Pressable onPress={handleFullscreen}>
                             <BackIcon2 />
                           </Pressable>
-
                         ) : (
                           type === 'playback/'
                             ? item.status === 'On'
                             : item.data[0].STATUS === 'On'
                         ) ? (
-
                           <Status />
                         ) : (
                           <Status color="#FF3300" />
                         )}
                       </View>
                       <Text
-
                         style={
                           isFullScreen
                             ? { fontSize: 18, color: '#fff', paddingLeft: 12 }
                             : { color: '#000' }
                         }>
-
                         {item.name}
                       </Text>
                     </View>
@@ -202,7 +192,6 @@ const VideoCamera = ({
                 </>
               );
             })}
-
         </View>
       }
       {!isFullScreen && type !== 'playback/' && (
@@ -228,9 +217,9 @@ const VideoCamera = ({
             keyExtractor={(item, index) => index}
             maxHeight={500}
           />
-
         </View>
-      </View>
+      )}
+    </View>
   );
 };
 

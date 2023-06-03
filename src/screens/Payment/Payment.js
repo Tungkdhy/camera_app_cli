@@ -11,13 +11,9 @@ import {
 } from 'react-native';
 import Video from 'react-native-video';
 
-import {useCallback, useEffect, useState} from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import {
-  Back,
-  PlayBackDownIcon,
-  BackIcon2,
-} from '../../components/Icons/Index';
+import { Back, PlayBackDownIcon, BackIcon2 } from '../../components/Icons/Index';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getListReport,
@@ -42,7 +38,7 @@ export default function Payment({ route, navigation }) {
   const handleSetShowModal = useCallback(() => {
     setModalVisible(!modalVisible);
   }, [modalVisible]);
-  const renderItem = ({item, index}) => {
+  const renderItem = ({ item, index }) => {
     return (
       <Pressable
         onPress={() => {
@@ -77,7 +73,7 @@ export default function Payment({ route, navigation }) {
                 path: item.PATH,
               }),
             );
-            handleFullscreen()
+            handleFullscreen();
           }}>
           <View style={styles.time}>
             <Text style={{ fontSize: 12 }}>
@@ -98,11 +94,11 @@ export default function Payment({ route, navigation }) {
               item.TIME_START.split(' ')[1],
             )}`}</Text>
           <Text style={styles.serviceItem}>{item.SUBJECT_NAME}</Text>
-        </View>
+        </Pressable>
       </Pressable>
     );
   };
-  const handleOrientation = useCallback((orientation) => {
+  const handleOrientation = useCallback(orientation => {
     if (orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT') {
       dispatch(setIsFullScreen(true));
       StatusBar.setHidden(true);
@@ -111,7 +107,7 @@ export default function Payment({ route, navigation }) {
       StatusBar.setHidden(false);
     }
   }, []);
-  const handleFullscreen = useCallback(() => {
+  const handleFullscreen = () => {
     if (report.isFullScreen) {
       Orientation.lockToPortrait();
 
@@ -120,12 +116,12 @@ export default function Payment({ route, navigation }) {
       Orientation.lockToLandscapeLeft();
       dispatch(setIsFullScreen(true));
     }
-  }, [report.isFullScreen])
+  };
   useEffect(() => {
     Orientation.addOrientationListener(handleOrientation);
     return () => {
       Orientation.removeOrientationListener(handleOrientation);
-    }
+    };
   }, [handleOrientation]);
   useEffect(() => {
     async function getVideoReport() {
@@ -158,8 +154,7 @@ export default function Payment({ route, navigation }) {
       try {
         const res = await axiosClient.get('/service/get-list-services/');
         dispatch(servicePackage(res));
-      } catch (e) {
-      }
+      } catch (e) { }
     }
     getPackage();
   }, []);
@@ -168,12 +163,13 @@ export default function Payment({ route, navigation }) {
     const backAction = () => {
       handleFullscreen();
       return true;
-    }
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction)
+    };
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
     return () => backHandler.remove();
-  }, [handleFullscreen])
-
-
+  }, [handleFullscreen]);
 
   // JSX
 
@@ -261,6 +257,7 @@ export default function Payment({ route, navigation }) {
       {report.isFullScreen &&
         report.video_active?.length > 0 &&
         report.video_active.map((item, index) => {
+          console.log(item.path);
           return (
             <View
               key={index}
