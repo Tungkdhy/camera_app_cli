@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
-import { View, Text, Pressable } from "react-native";
+import { useCallback, useEffect, useState } from "react";
+import { View, Text, Pressable, Alert } from "react-native";
 import axiosClient from "../../../services/axiosClient";
 import { styles } from './styles';
-import { Image } from "react-native-svg";
 import { LineChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import { eventAI } from "../../../services/api/eventAI";
+import { cameraManagement } from "../../../services/api/cameraManagementApi";
 const Item = ({ title, active }) => (
     <View style={styles.item}>
         <Text style={active ? { ...styles.title, ...styles.active } : { ...styles.title }}>{title}</Text>
@@ -27,13 +28,12 @@ const dayFill = [
     }
 ]
 
-function LineChartService({ type }) {
-    const [stateValue, setStateValue] = useState(dayFill[0].label)
+function LineChartService({ type, codeService }) {
+    const [stateValue, setStateValue] = useState({ label: dayFill[0].label, value: dayFill[0].value })
     const [codeCamera, setCodeCamera] = useState(null)
     const [listCamera, setListCamera] = useState()
     const [dataValue, setDataValue] = useState([0])
-    const [dataValueDetectHuman, setDataValueDetectHuman] = useState([0])
-    const [dataValueDetectFace, setDataValueDetectFace] = useState([0])
+    const [listData, setListData] = useState([])
     const [listLabel, setListLabel] = useState(['0', dayFill[0].label])
     const screenWidth = Dimensions.get("window").width;
     const chartConfig = {
@@ -50,29 +50,30 @@ function LineChartService({ type }) {
         fillShadowGradientTo: `#141ED2`,
         fillShadowGradientToOpacity: 0
     };
-    let dataChart = type === 'Phát hiện chuyển động' ? dataValue :
-        type === 'Nhận diện người' ? dataValueDetectHuman :
-            type === 'Nhận diện khuôn mặt' ? dataValueDetectFace : [0]
+
     const data = {
         labels: listLabel,
         datasets: [
             {
-                data: dataChart,
+                data: dataValue,
                 color: () => `#141ED2`,
                 strokeWidth: 2,
             }
         ],
     };
 
-
-    const getListCamera = async () => {
+    const getListCamera = useCallback(async () => {
         try {
-            const res = await axiosClient.get('cameraManagement/get-list-camera/')
-            setListCamera(res)
+            const params = {
+                ai_service_code: codeService,
+                ai_already: 1
+            }
+            const res = await cameraManagement.getListCamera(params)
+            return res;
         } catch (error) {
-            console.log(error);
+            return 0
         }
-    }
+    }, [])
 
     const checkValue = (data, array) => {
         let indexData = 0;
@@ -89,78 +90,86 @@ function LineChartService({ type }) {
         return label
     }
 
-    const getDataDetectAction = async (duration, code) => {
+    const getDataDetectAction = useCallback(async (service) => {
         try {
-            const res = await axiosClient.get('statEventAI/get-list-stat-event-ai/', {
-                params: {
-                    duration: duration,
-                    camera_code: code
-                }
-            })
-            const data = res.map(item => (item.COUNT))
-            setDataValue(prev => [...prev, ...data])
-            await axiosClient.post('statEventAI/post-add-stat-event-ai/')
-            return res;
+            const params = {
+                ai_service_code: service
+            }
+            const res = await eventAI.getStatEvent(params)
+            if (res && res?.length > 0) {
+                await eventAI.postStatEvent()
+                return res;
+            } else {
+                return [];
+            }
         } catch (error) {
-            console.log(error);
+            return [];
         }
-    }
+    }, [])
 
-    const getDataDetectHuman = async (duration, code) => {
-
-    }
-    const getDataDetectFace = async (duration, code) => {
-
+    const handleGetCameraAct = (value) => {
+        setCodeCamera(value)
     }
 
     const handleClickChangeValue = (label, value) => {
-        setStateValue(label)
+        setStateValue({ label: label, value: value })
         const newLabel = checkValue(value, dayFill)
-        setListLabel(['0', ...newLabel])
-        handleGetDateAct(value, type, codeCamera)
+        setListLabel(["0", ...newLabel])
     }
 
-    const handleGetDateAct = (date, type, code) => {
-        const newDate = `${date} DAYS`;
-        switch (type) {
-            case 'Phát hiện chuyển động':
-                getDataDetectAction(newDate, code)
-                break;
-            case 'Nhận diện người':
-                getDataDetectHuman(newDate, code)
-                break;
-            case 'Nhận diện khuôn mặt':
-                getDataDetectFace(newDate, code)
-                break;
-            default:
-                break;
-        }
-    }
+    const getCameraData = useCallback((codeCamera, listData) => {
+        const data = [...listData]
+        const dataCamera = data?.filter(item => item.CAMERA_CODE === codeCamera)
+        return dataCamera;
+    }, [])
 
-    const handleGetCameraAct = (code, type) => {
-        switch (type) {
-            case 'Phát hiện chuyển động':
-                setCodeCamera(code)
-                getDataDetectAction(null, code)
-                break;
-            case 'Nhận diện người':
-                setCodeCamera(code)
-                // getDataDetectAction(null, code)
-                break;
-            case 'Nhận diện khuôn mặt':
-                setCodeCamera(code)
-                // getDataDetectAction(null, code)
-                break;
-            default:
-                break;
+    const getDataFill = useCallback((day, data) => {
+        let data7Days = data?.filter(item => item.DURATION === '7 DAYS');
+        let data30Days =data?.filter(item => item.DURATION === '30 DAYS');
+        let data90Days = data?.filter(item => item.DURATION === '90 DAYS');
+        let dataStatistic = [];
+        if (day === 7) {
+            dataStatistic.push(data7Days[0])
+        } else if (day === 30) {
+            dataStatistic.push(data7Days[0])
+            dataStatistic.push(data30Days[0])
+        } else if (day === 90) {
+            dataStatistic.push(data7Days[0])
+            dataStatistic.push(data30Days[0])
+            dataStatistic.push(data90Days[0])
         }
-    }
+        const values = dataStatistic.map((item) => {
+            if(item && item?.COUNT) {
+                return item.COUNT
+            } else {
+                return 0;
+            }
+        });
+        return values;
+    }, [])
 
     useEffect(() => {
-        getListCamera();
-        const initTime = '7 DAYS'
-        getDataDetectAction(initTime, null)
-    }, [])
+        const getData = async () => {
+            try {
+                const valueDetect = await getDataDetectAction(codeService);
+                const valueCamera = await getListCamera();
+                setListData(valueDetect);
+                setListCamera(valueCamera);
+                setCodeCamera(valueCamera?.data[0]?.CAMERA?.CODE)
+            } catch (error) {
+                Alert.alert('Không có dữ liệu')
+            }
+        }
+        getData();
+    }, [getDataDetectAction, getListCamera])
+    useEffect(() => {
+        if (codeCamera && listData?.length > 0) {
+            const data = getCameraData(codeCamera, listData);
+            let day = stateValue.value;
+            const analytic = getDataFill(day, data);
+            setDataValue([0, ...analytic]);
+        }
+    }, [codeCamera, listData, getCameraData, stateValue.value, getDataFill])
     return (
         <View style={styles.container}>
             <View style={styles.header_fill}>
@@ -169,26 +178,27 @@ function LineChartService({ type }) {
                     {dayFill.map(item => {
                         return (
                             <Pressable key={item.value} onPress={e => handleClickChangeValue(item.label, item.value)}>
-                                <Item active={stateValue === item.label} title={item.label} />
+                                <Item active={stateValue.label === item.label} title={item.label} />
                             </Pressable>
                         )
                     })}
                 </View>
             </View>
             <View style={styles.choose_camera}>
-                <Picker
-                    selectedValue={codeCamera}
-                    style={{ marginTop: -5 }}
-                    onValueChange={(itemValue) =>
-                        handleGetCameraAct(itemValue, type)
-                    }>
-                    <Picker.Item label={'Tất cả'} value={'all'} />
-                    {listCamera && listCamera.data.map((camera) => {
-                        return (
-                            <Picker.Item key={camera.CAMERA.CODE} label={camera.CAMERA.NAME_CAM} value={camera.CAMERA.CODE} />
-                        )
-                    })}
-                </Picker>
+                {listCamera && listCamera?.data?.length > 0 && (
+                    <Picker
+                        selectedValue={codeCamera}
+                        style={{ marginTop: -5 }}
+                        onValueChange={(itemValue) =>
+                            handleGetCameraAct(itemValue)
+                        }>
+                        {listCamera && listCamera.data.map((camera) => {
+                            return (
+                                <Picker.Item key={camera?.CAMERA?.CODE} label={camera?.CAMERA?.NAME_CAM} value={camera?.CAMERA?.CODE} />
+                            )
+                        })}
+                    </Picker>
+                )}
             </View>
             {/* content */}
             <View style={styles.contentChart}>

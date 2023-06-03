@@ -30,10 +30,6 @@ import ChangePasswordInfo from './src/screens/Info/ChangePasswordInfo/ChangePass
 const Stack = createStackNavigator()
 export default function App() {
 
-  // React.useEffect(()=>{
-  //   requestUserPermission()
-  //   NotificationListener()
-  // },[])
   return (
     <Provider store={Store}>
       <NavigationContainer>
@@ -54,9 +50,9 @@ export default function App() {
 
           <Stack.Screen name="ChangePasswordInfo" component={ChangePasswordInfo} />
           <Stack.Screen name="EditInfo" component={EditInfo} />
+          <Stack.Screen name="Report" component={Payment} />
 
           {/* <Stack.Screen name="Map" component={MapScreen} /> */}
-          <Stack.Screen name="Report" component={Payment} />
 
           {/* <Stack.Screen name="Stream" component={Stream}/> */}
           {/* <Stack.Screen name="Forgot" component={Forgot}/> */}

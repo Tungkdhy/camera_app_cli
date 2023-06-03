@@ -71,6 +71,7 @@ const Login = ({ navigation }) => {
         dispatch(setUserTypeCode(userTypeCode));
 
         navigation.navigate('Home');
+
       }
     } catch (e) {
       Alert.alert('Đăng nhập không thành công');
@@ -139,14 +140,6 @@ const Login = ({ navigation }) => {
                       Mật khẩu tối thiểu có 6 ký tự
                     </Text>
                   )}
-                  <View style={styles.checkboxContainer}>
-                    <Pressable onPress={() => setRememberMe(!rememberMe)}>
-                      {rememberMe ? <RadioCheck /> : <Radio />}
-                    </Pressable>
-                    <Text style={{ color: 'rgba(0, 0, 0, 0.4)' }}>
-                      Lưu đăng nhập
-                    </Text>
-                  </View>
                 </SafeAreaView>
                 <TouchableHighlight onPress={handleLogin} style={styles.login}>
                   <View style={styles.buttonLogin}>

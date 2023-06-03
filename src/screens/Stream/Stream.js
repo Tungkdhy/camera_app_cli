@@ -109,7 +109,14 @@ export default function Stream({ navigation, ...props }) {
                       <View style={styles.nameCamera}>
                         <Text
                           style={{ color: "#000" }}
-                        >
+
+                          onPress={
+                            props.route.name === 'Stream'
+                              ? () => liveStream(it, item)
+                              : props.route.name === 'Smart'
+                                ? () => handleNavigateSmart(it, item)
+                                : () => navigatePlayBackCamera(it, item)
+                          }>
                           {it?.CAMERA.NAME_CAM}
                         </Text>
                       </View>
@@ -145,7 +152,6 @@ export default function Stream({ navigation, ...props }) {
         });
         dispatch(getListWareHouse(res.data));
       } catch (e) {
-        console.log(e);
       }
     }
     getLocation();
@@ -169,19 +175,28 @@ export default function Stream({ navigation, ...props }) {
         const res = await axiosClient.get(
           `/province/get-info-province/?nation_code=VNM&province_name=${camera.filterLocate?.province}`,
         );
-        console.log(res);
         const data = res.map(item => {
           return { name: item.PROVINCE_NAME, code: item.PROVINCE_CODE };
         });
         dispatch(getListProvince(data));
       } catch (e) {
-        console.log(e);
       }
     }
     getProvince();
   }, [camera.filterLocate?.province]);
   useEffect(() => {
     async function getProvince() {
+      const params = {
+        warehouse_code: camera.wareCode,
+        camera_status: camera.filter.camera_status,
+        page: 1,
+        size: 1000
+      }
+      if (props.route.name === 'Smart') {
+        params.ai_already = camera.filter.record_status
+      } else if (props.route.name === 'Playback') {
+        params.record_already = camera.filter.record_status
+      } 
       try {
         const res = await axiosClient.get(
           'cameraManagement/get-list-camera/',
@@ -196,11 +211,10 @@ export default function Stream({ navigation, ...props }) {
         );
         dispatch(getListLocation(res.data));
       } catch (e) {
-        console.log(e);
       }
     }
     getProvince();
-  }, [camera.wareCode, camera.filter.camera_status]);
+  }, [camera.wareCode, camera.filter.camera_status, props.route.name, camera.filter.record_status]);
   return (
     <>
       <Header
@@ -223,7 +237,9 @@ export default function Stream({ navigation, ...props }) {
       />
       <View style={styles.container}>
         <Filter
+          playback={props.route.name !== 'Stream'}
           filter={camera.filter.camera_status}
+          record={camera.filter.record_status}
           onClick={handleShowFilter}
         />
         {/* <ScrollView> */}

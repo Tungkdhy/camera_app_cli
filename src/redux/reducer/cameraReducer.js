@@ -14,6 +14,8 @@ import {
   SET_FILTER_DISTRICT,
   SET_FILTER_PROVINCE,
   SET_RELOAD,
+  SET_RECORD,
+
 } from '../actions/cameraAction';
 
 const initialState = {
@@ -28,6 +30,7 @@ const initialState = {
     district_code: '',
     province_name: '',
     district_name: '',
+    record_status: 1,
   },
   pathStream: [],
   camera_info: {},
@@ -113,10 +116,19 @@ const useReducer = (state = initialState, action) => {
           province: action.payload,
         },
       };
+
     case SET_RELOAD:
       return {
         ...state,
         reload: action.payload,
+      }
+    case SET_RECORD:
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          record_status: action.payload,
+        },
       };
     default:
       return state;

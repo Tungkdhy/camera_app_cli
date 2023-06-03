@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     flex:1,
-    
+    paddingBottom: 100
     
   },
   containerFull:{

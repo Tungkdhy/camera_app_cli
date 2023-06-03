@@ -1,4 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+
+import React, { useCallback, useEffect, useRef } from 'react';
+
 import {
   InfoIcon,
   FullScreenIcon,
@@ -11,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import CameraItem from './CameraItem';
 import Video from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
+
 import {
   View,
   Text,
@@ -18,6 +21,7 @@ import {
   Pressable,
   StatusBar,
   Platform,
+  BackHandler
 } from 'react-native';
 import { styles } from './styles';
 import { convertToSecond } from '../../utils';
@@ -51,7 +55,7 @@ const VideoCamera = ({
       StatusBar.setHidden(false);
     }
   };
-  const handleFullscreen = () => {
+  const handleFullscreen = useCallback(() => {
     if (isFullScreen) {
       Orientation.lockToPortrait();
       dispatch(setIsFullScreen(false));
@@ -63,8 +67,8 @@ const VideoCamera = ({
 
       // dispatch(setIsFullScreen(true));
     }
-    // dispatch(setIsFullScreen(!isFullScreen));
-  };
+
+ }
   useEffect(() => {
     Orientation.addOrientationListener(handleOrientation);
     return () => {
@@ -79,11 +83,12 @@ const VideoCamera = ({
           Number(
             convertToSecond(cameraActive[0]?.path?.TIME_START.split(' ')[1]),
           ),
+
         );
       }
     }
   }, [cameraActive]);
-  console.log(cameraActive);
+
   return (
     <View style={isFullScreen ? styles.contentFull : {}}>
       {
@@ -91,6 +96,7 @@ const VideoCamera = ({
           {cameraActive &&
             cameraActive.map((item, index) => {
               console.log(item);
+
               return (
                 <>
                   <View
@@ -107,7 +113,9 @@ const VideoCamera = ({
                     }>
                     {item.path === 'no-path' ? (
                       <View style={styles.noPath}>
+
                         <Text style={{ color: '#000' }}>Không có đường dẫn</Text>
+
                       </View>
                     ) : (
                       <Video
@@ -126,6 +134,7 @@ const VideoCamera = ({
                         useNativeControls={true}
                         isLooping
                         controls={type === 'playback/' ? change : false}
+
                         style={
                           isFullScreen
                             ? styles.fullScreen
@@ -144,22 +153,26 @@ const VideoCamera = ({
                           <Pressable onPress={handleFullscreen}>
                             <BackIcon2 />
                           </Pressable>
+
                         ) : (
                           type === 'playback/'
                             ? item.status === 'On'
                             : item.data[0].STATUS === 'On'
                         ) ? (
+
                           <Status />
                         ) : (
                           <Status color="#FF3300" />
                         )}
                       </View>
                       <Text
+
                         style={
                           isFullScreen
                             ? { fontSize: 18, color: '#fff', paddingLeft: 12 }
                             : { color: '#000' }
                         }>
+
                         {item.name}
                       </Text>
                     </View>
@@ -172,7 +185,7 @@ const VideoCamera = ({
                               <InfoIcon />
                             </Text>
                           </View>
-                          {/* {Platform.OS === 'android' && ( */}
+
                           <Pressable
                             onPress={handleFullscreen}
                             style={styles.iconSetting}>
@@ -182,7 +195,6 @@ const VideoCamera = ({
                               />
                             </Text>
                           </Pressable>
-                          {/* )} */}
                         </View>
                       </>
                     )}
@@ -190,6 +202,7 @@ const VideoCamera = ({
                 </>
               );
             })}
+
         </View>
       }
       {!isFullScreen && type !== 'playback/' && (
@@ -215,9 +228,9 @@ const VideoCamera = ({
             keyExtractor={(item, index) => index}
             maxHeight={500}
           />
+
         </View>
-      )}
-    </View>
+      </View>
   );
 };
 
