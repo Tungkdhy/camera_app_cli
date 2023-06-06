@@ -41,7 +41,7 @@ const VideoCamera = ({
     state => state.playBackReducer.filter.stick_time,
   );
   const reload = useSelector(state => state.useReducer.reload);
-  const handleOrientation = (orientation) => {
+  const handleOrientation = orientation => {
     console.log(orientation);
     if (orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT') {
       dispatch(setIsFullScreen(true));
@@ -54,18 +54,19 @@ const VideoCamera = ({
       StatusBar.setHidden(false);
     }
   };
-  console.log(isFullScreen);
-  const handleFullscreen = useCallback(() => {
+  const handleFullscreen = () => {
     if (isFullScreen) {
       Orientation.lockToPortrait();
       dispatch(setIsFullScreen(false));
-      // disable navigate to prev screen on click to back button hardware
-      return true;
+
+      // dispatch(setIsFullScreen(false));
     } else {
       Orientation.lockToLandscapeLeft();
       dispatch(setIsFullScreen(true));
+
+      // dispatch(setIsFullScreen(true));
     }
-  }, [isFullScreen])
+  }
   useEffect(() => {
     Orientation.addOrientationListener(handleOrientation);
     return () => {
@@ -84,12 +85,6 @@ const VideoCamera = ({
       }
     }
   }, [cameraActive]);
-  useEffect(() => {
-    if (isFullScreen) {
-      const backAction = BackHandler.addEventListener('hardwareBackPress', handleFullscreen)
-      return () => backAction.remove()
-    }
-  }, [isFullScreen, handleFullscreen, BackHandler])
 
   return (
     <View style={isFullScreen ? styles.contentFull : {}}>
@@ -97,6 +92,8 @@ const VideoCamera = ({
         <View style={isFullScreen ? styles.activeFull : styles.active}>
           {cameraActive &&
             cameraActive.map((item, index) => {
+              console.log(item);
+
               return (
                 <>
                   <View
@@ -119,8 +116,8 @@ const VideoCamera = ({
                       <Video
                         source={{
                           uri: `http://cameraai.cds.vinorsoft.com/${type}${type === 'playback/'
-                            ? item?.path.PATH
-                            : item?.data[0]?.PATH
+                              ? item?.path.PATH
+                              : item?.data[0]?.PATH
                             }`,
                         }}
                         ref={ref}
@@ -218,7 +215,7 @@ const VideoCamera = ({
               justifyContent: 'space-between',
             }}
             keyExtractor={(item, index) => index}
-          // maxHeight={500}
+            maxHeight={500}
           />
         </View>
       )}

@@ -49,6 +49,7 @@ export default function PlayBack({ navigation, route }) {
         dispatch(getInfoCamera(res));
       }
     } catch (e) {
+      console.log(e);
       Alert.alert('Lấy thông tin camera không thành công');
     }
   };
@@ -70,6 +71,7 @@ export default function PlayBack({ navigation, route }) {
             },
           },
         );
+        console.log(res.time_line);
         const playbacks = res.time_line.map(item => {
           return {
             code: item.camera_code,

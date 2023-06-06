@@ -68,7 +68,7 @@ export const styles = StyleSheet.create({
       },
       logo:{
         alignItems:"center",
-        marginBottom: 50,
+        marginBottom:30
       },
       error:{
         color:"red",
@@ -115,7 +115,7 @@ export const styles = StyleSheet.create({
 
       },
       login:{
-        // marginBottom: 50
+        // marginTop:24
       },
       buttonLogin:{
           padding:12,
