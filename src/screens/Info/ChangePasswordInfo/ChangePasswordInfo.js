@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Pressable, Text, TextInput, TouchableHighlight, Alert } from 'react-native';
 import { Back, EyeIcon } from '../../../components/Icons/Index';
 import axiosClient from '../../../services/axiosClient';
@@ -26,14 +26,6 @@ const ChangePasswordInfo = ({ navigation }) => {
         setErrorInConfirm(false)
     }
 
-    const onLogout = useCallback(async () => {
-        const refresh = await AsyncStorage.getItem('refresh');
-        await axiosClient.post('/authenticator/logout', {
-            refresh: refresh
-        })
-        await AsyncStorage.clear();
-        navigation.navigate('Login');
-    }, [])
 
     const handleChangePassword = async () => {
         if (isValidatePassword(newPassword) && isValidatePassword(confirmPassword) && isValidateConfirm(newPassword, confirmPassword)) {
@@ -53,8 +45,7 @@ const ChangePasswordInfo = ({ navigation }) => {
                 old_password: oldPassword,
                 new_password: newPassword,
             })
-            Alert.alert('Thay đổi thành công. Vui lòng đăng nhập lại')
-            onLogout()
+            Alert.alert('Thay đổi thành công')
             return res;
         } catch (error) {
             Alert.alert('Thay đổi không thành công')

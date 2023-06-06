@@ -84,13 +84,11 @@ export const styles = StyleSheet.create({
     paddingLeft: 16
   },
   contentForm: {
-    position: 'absolute',
-    left: 0,
-    bottom: 0,
-    width: "100%",
+    height: "30%",
     justifyContent: "space-between",
     backgroundColor: "#ffffff",
     display: "flex",
+
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
   },
@@ -176,10 +174,6 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     color: "#000"
 
-  },
-  box_view: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
   }
+
 })

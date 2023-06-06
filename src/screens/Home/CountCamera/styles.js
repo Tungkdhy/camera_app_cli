@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
         marginTop: 0,
         padding: 16,
         marginBottom: 8,
-        width: '100%'
     },
     header: {
         fontWeight: '700',

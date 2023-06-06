@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   View,
   ImageBackground,
@@ -6,7 +6,6 @@ import {
   Image,
   Pressable,
   ScrollView,
-  Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -19,10 +18,8 @@ import {
 } from '../../components/Icons/Index';
 
 import axiosClient from '../../services/axiosClient';
-import { userManager } from '../../services/api/userManager';
 
 const Info = ({ navigation }) => {
-  const [infoUser, setInfoUser] = useState();
   const handleLogout = async () => {
     const refresh = await AsyncStorage.getItem('refresh');
     await axiosClient.post('/authenticator/logout', {
@@ -31,19 +28,6 @@ const Info = ({ navigation }) => {
     await AsyncStorage.clear();
     navigation.navigate('Login');
   };
-  useEffect(() => {
-    const getUserInfo = async () => {
-      try {
-        const res = await userManager.getCurrentUser();
-        res?.forEach(element => {
-          setInfoUser(element);
-        });
-      } catch (error) {
-        Alert.alert('Lấy thông tin không thành công')
-      }
-    }
-    getUserInfo()
-  }, [])
   return (
     <View style={styles.container}>
       <View style={styles.bgName}>
@@ -52,8 +36,8 @@ const Info = ({ navigation }) => {
           resizeMode="cover"
           style={styles.image}>
           <Image source={require('../../assets/images/Avatar2.png')} />
-          <Text style={styles.name}>{infoUser ? infoUser?.NAME : ''}</Text>
-          <Text style={styles.username}>Tên đăng nhập: {infoUser ? infoUser?.USERNAME : ''}</Text>
+          <Text style={styles.name}>Trần Văn Tùng</Text>
+          <Text style={styles.username}>Tên đăng nhập: tunghy2001</Text>
         </ImageBackground>
       </View>
       <ScrollView>

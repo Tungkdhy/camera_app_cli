@@ -5,10 +5,8 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        paddingTop: 4,
-        maxWidth: '100%',
-        flexWrap: 'wrap',
-        marginBottom: 16,
+        paddingBottom: 10,
+        paddingTop: 4
     },
     location: {
         display: "flex",
@@ -18,7 +16,7 @@ export const styles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         flexDirection: "row",
-        marginTop: 10,
+
     },
     area: {
         paddingLeft: 8,
