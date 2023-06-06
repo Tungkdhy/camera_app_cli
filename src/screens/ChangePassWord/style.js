@@ -83,7 +83,10 @@ export const styles = StyleSheet.create({
         paddingLeft:16
       },
       contentForm:{
-        height:"45%",
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        width: "100%",
         justifyContent:"space-between",
         backgroundColor:"#ffffff",
         display:"flex",
