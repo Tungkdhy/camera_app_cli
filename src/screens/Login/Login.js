@@ -37,20 +37,6 @@ const Login = ({ navigation }) => {
   const [rememberMe, setRememberMe] = useState(false);
   const [token, setToken] = useState('');
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   async function getData() {
-  //     try {
-  //       const res = await axios.get('https://jsonplaceholder.typicode.com/todos/1')
-  //       const token1 = await messaging().getToken()
-  //       setToken(token1)
-  //       setData(res.data)
-  //     }
-  //     catch (e) {
-
-  //     }
-  //   }
-  //   getData()
-  // }, [])
   const handleLogin = async () => {
     try {
       const res = await axios.post(
@@ -60,7 +46,6 @@ const Login = ({ navigation }) => {
           password: password,
         },
       );
-      console.log(res.data);
       if (res) {
         Alert.alert('Đăng nhập thành công');
         await AsyncStorage.setItem('token', res.data.access);
