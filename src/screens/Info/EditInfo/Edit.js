@@ -115,12 +115,7 @@ const EditInfo = ({ navigation }) => {
                     <View style={styles.item}>
                         <Text style={styles.title}>Nhóm người dùng</Text>
                         <View style={styles.picker}>
-                            <Picker
-                                enabled={false}
-                                style={{ marginTop: -5 }}
-                            >
-                                <Picker.Item label={userType} value="1" />
-                            </Picker>
+                            <Text></Text>
                         </View>
                     </View>
                     <View style={styles.item}>

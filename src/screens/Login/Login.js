@@ -11,6 +11,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Pressable,
+  Image,
 } from 'react-native';
 import axios from 'axios';
 import {
@@ -19,15 +20,16 @@ import {
   LockIcon,
   UserIcon,
   EyeIcon,
-  Radio,
-  RadioCheck,
 } from '../../components/Icons/Index';
 // import messaging from '@react-native-firebase/messaging';
 import { styles } from './styles';
+import Orientation from 'react-native-orientation-locker';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axiosClient from '../../services/axiosClient';
 import { useDispatch } from 'react-redux';
 import { setUserTypeCode } from '../../redux/actions/getUserAction';
+import { isValidatorUsername } from '../../utils';
 
 const Login = ({ navigation }) => {
   const [userName, setUserName] = useState('');
@@ -60,7 +62,6 @@ const Login = ({ navigation }) => {
           password: password,
         },
       );
-      console.log(res.data);
       if (res) {
         Alert.alert('Đăng nhập thành công');
         await AsyncStorage.setItem('token', res.data.access);
@@ -71,12 +72,14 @@ const Login = ({ navigation }) => {
         dispatch(setUserTypeCode(userTypeCode));
 
         navigation.navigate('Home');
-
       }
     } catch (e) {
       Alert.alert('Đăng nhập không thành công');
     }
   };
+  useEffect(() => {
+    Orientation.lockToPortrait(); //this will lock the view to Portrait
+  }, []);
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <ImageBackground
@@ -112,8 +115,14 @@ const Login = ({ navigation }) => {
                     value={userName}
                     placeholder="Tên đăng nhập"
                   />
-                  {userName.length < 6 && userName !== '' && (
+                  {userName.length < 6 && userName !== '' ? (
                     <Text style={styles.error}>Vui lòng nhập đủ 6 ký tự</Text>
+                  ) : isValidatorUsername(userName) ? (
+                    <React.Fragment />
+                  ) : (
+                    <Text style={styles.error}>
+                      Tài khoản không chứa các ký tự đặc biệt
+                    </Text>
                   )}
                   <View style={styles.lockIcon}>
                     <LockIcon />

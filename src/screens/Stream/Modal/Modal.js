@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Modal as ModalLocation,
   View,
@@ -6,8 +6,11 @@ import {
   Pressable,
   TextInput,
   ScrollView,
+  KeyboardAvoidingView,
+  TouchableNativeFeedback,
+  Keyboard,
 } from 'react-native';
-import {CheckBox} from 'react-native-elements';
+import { CheckBox } from 'react-native-elements';
 import {
   Close,
   NextIcon,
@@ -15,14 +18,14 @@ import {
   RadioCheck,
   Back,
 } from '../../../components/Icons/Index';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   setProvinceCode,
   setDistrictCode,
   setFilterProvince,
   setFilterDistrict,
 } from '../../../redux/actions/cameraAction';
-import {styles} from './styles';
+import { styles } from './styles';
 const Modal = ({
   data,
   filter,
@@ -89,14 +92,18 @@ const Modal = ({
                 <Text style={styles.textDist}>Chọn quận, huyện, thị xã</Text>
               </View>
             )}
-            <View style={styles.search}>
-              <TextInput
-                value={input}
-                onChangeText={data => onChangeTextSearch(data)}
-                style={styles.input}
-                placeholder="Tìm kiếm"
-              />
-            </View>
+            <TouchableNativeFeedback onPress={() => Keyboard.dismiss()}>
+              <KeyboardAvoidingView enabled={true} behavior={'padding'}>
+                <View style={styles.search}>
+                  <TextInput
+                    value={input}
+                    onChangeText={data => onChangeTextSearch(data)}
+                    style={styles.input}
+                    placeholder="Tìm kiếm"
+                  />
+                </View>
+              </KeyboardAvoidingView>
+            </TouchableNativeFeedback>
 
             <ScrollView>
               <View style={styles.item}>
@@ -112,43 +119,58 @@ const Modal = ({
                   checked={filter === '' ? true : false}
                 />
                 {/* <Pressable onPress={() => setIsProvince()}>
-                  <NextIcon />
-                </Pressable> */}
+            <NextIcon />
+          </Pressable> */}
               </View>
               {data.map((item, index) => {
                 return (
-                  <View key={index} style={styles.item}>
+                  <Pressable
+                    onPress={() => {
+                      dispatch(
+                        isProvince
+                          ? setProvinceCode({
+                            code: item.code,
+                            name: item.name,
+                          })
+                          : setDistrictCode({
+                            code: item.code,
+                            name: item.name,
+                          }),
+                      );
+                      setIsProvince();
+                      setInput('');
+                    }}
+                    key={index}
+                    style={styles.item}>
                     <CheckBox
                       containerStyle={styles.radio}
                       title={item.name}
                       key={index}
                       checkedIcon={<RadioCheck />}
                       uncheckedIcon={<Radio />}
-                      onPress={() =>
+                      checked={filter === item.code ? true : false}
+                      onPress={() => {
                         dispatch(
                           isProvince
                             ? setProvinceCode({
-                                code: item.code,
-                                name: item.name,
-                              })
+                              code: item.code,
+                              name: item.name,
+                            })
                             : setDistrictCode({
-                                code: item.code,
-                                name: item.name,
-                              }),
-                        )
-                      }
-                      checked={filter === item.code ? true : false}
+                              code: item.code,
+                              name: item.name,
+                            }),
+                        );
+                        setIsProvince();
+                        setInput('');
+                      }}
                     />
                     {isProvince && (
-                      <Pressable
-                        onPress={() => {
-                          setIsProvince();
-                          setInput('');
-                        }}>
+                      <View>
                         <NextIcon />
-                      </Pressable>
+                      </View>
                     )}
-                  </View>
+                  </Pressable>
                 );
               })}
             </ScrollView>

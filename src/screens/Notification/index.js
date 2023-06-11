@@ -1,12 +1,12 @@
-import {useEffect, useState} from 'react';
-import {Pressable, View, Text, ScrollView} from 'react-native';
-import {Back} from '../../components/Icons/Index';
+import { useEffect, useState } from 'react';
+import { Pressable, View, Text, ScrollView } from 'react-native';
+import { Back } from '../../components/Icons/Index';
 import axiosClient from '../../services/axiosClient';
-import {styles} from './styles';
-import {useDispatch} from 'react-redux';
-import {setCountNotification} from '../../redux/actions/notification';
+import { styles } from './styles';
+import { useDispatch } from 'react-redux';
+import { setCountNotification } from '../../redux/actions/notification';
 
-function Notification({navigation}) {
+function Notification({ navigation }) {
   const [listNotificationSystem, setListNotificationSystem] = useState([]);
   const [listNotificationSmart, setListNotificationSmart] = useState([]);
   const [reGetData, setReGetData] = useState(false);
@@ -83,8 +83,7 @@ function Notification({navigation}) {
   useEffect(() => {
     const getNotification = async () => {
       const res = await axiosClient.get(
-        `/notification/get-list-notification/?page=${page}&size=10&type=${
-          smartReport ? 'AI' : 'STATUS'
+        `/notification/get-list-notification/?page=${page}&size=10&type=${smartReport ? 'AI' : 'STATUS'
         }`,
       );
       const data = res.data;
@@ -149,7 +148,7 @@ function Notification({navigation}) {
   const handleGetMoreNotification = () => {
     setPage(page + 1);
   };
-  const navigatePlayBackCamera = notification => {};
+  const navigatePlayBackCamera = notification => { };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -165,15 +164,15 @@ function Notification({navigation}) {
         <Pressable
           style={
             !smartReport
-              ? {...styles.button, ...styles.button_active}
-              : {...styles.button}
+              ? { ...styles.button, ...styles.button_active }
+              : { ...styles.button }
           }
           onPress={() => setSmartReport(false)}>
           <Text
             style={
               !smartReport
-                ? {...styles.sub_button, ...styles.sub_button_active}
-                : {...styles.button}
+                ? { ...styles.sub_button, ...styles.sub_button_active }
+                : { ...styles.button }
             }>
             Thông báo hệ thống
           </Text>
@@ -182,14 +181,14 @@ function Notification({navigation}) {
           onPress={() => setSmartReport(true)}
           style={
             smartReport
-              ? {...styles.button, ...styles.button_active}
-              : {...styles.button}
+              ? { ...styles.button, ...styles.button_active }
+              : { ...styles.button }
           }>
           <Text
             style={
               smartReport
-                ? {...styles.sub_button, ...styles.sub_button_active}
-                : {...styles.button}
+                ? { ...styles.sub_button, ...styles.sub_button_active }
+                : { ...styles.button }
             }>
             Cảnh báo thông minh
           </Text>
@@ -201,6 +200,7 @@ function Notification({navigation}) {
             <>
               {listNotificationSmart.length > 0 &&
                 listNotificationSmart.map((notification, index) => {
+                  console.log(notification);
                   return (
                     <Pressable
                       onPress={() => navigatePlayBackCamera(notification)}
@@ -220,8 +220,8 @@ function Notification({navigation}) {
                                 <View
                                   style={
                                     item.SEEN === 0
-                                      ? {...styles.item, ...styles.new}
-                                      : {...styles.item}
+                                      ? { ...styles.item, ...styles.new }
+                                      : { ...styles.item }
                                   }>
                                   <Text style={styles.time}>{item.TIME}</Text>
                                   <Text style={styles.name}>{item.NAME}</Text>
@@ -229,7 +229,7 @@ function Notification({navigation}) {
                                     {item.DETAIL}
                                   </Text>
                                   {item.SEEN === 0 && (
-                                    <View style={styles.tick}></View>
+                                    <View style={styles.tick} />
                                   )}
                                 </View>
                               </Pressable>
@@ -259,14 +259,14 @@ function Notification({navigation}) {
                               <View
                                 style={
                                   item.SEEN === 0
-                                    ? {...styles.item, ...styles.new}
-                                    : {...styles.item}
+                                    ? { ...styles.item, ...styles.new }
+                                    : { ...styles.item }
                                 }>
                                 <Text style={styles.time}>{item.TIME}</Text>
                                 <Text style={styles.name}>{item.NAME}</Text>
                                 <Text style={styles.title}>{item.DETAIL}</Text>
                                 {item.SEEN === 0 && (
-                                  <View style={styles.tick}></View>
+                                  <View style={styles.tick} />
                                 )}
                               </View>
                             </Pressable>

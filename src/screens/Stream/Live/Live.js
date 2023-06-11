@@ -1,32 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import {
-  SearchIcon,
-  Back,
-  InfoIcon,
-  SettingIcon,
-  FullScreenIcon,
-  Close,
-  Status,
-  BackIcon2,
-} from '../../../components/Icons/Index';
+import { Back, Close } from '../../../components/Icons/Index';
 import {
   getPathStream,
   getInfoCamera,
 } from '../../../redux/actions/cameraAction';
 import VideoCamera from '../../../components/Live/VideoCamera';
 import { useSelector, useDispatch } from 'react-redux';
-import CameraItem from './CameraItem';
-import Video from 'react-native-video';
-import {
-  View,
-  Text,
-  Image,
-  Modal,
-  FlatList,
-  Alert,
-  Pressable,
-  Dimensions,
-} from 'react-native';
+
+import { View, Text, Modal, Alert, Pressable } from 'react-native';
 import { styles } from './styles';
 import streamingClient from '../../../services/axiosStreaming';
 import axiosClient from '../../../services/axiosClient';
@@ -58,7 +39,7 @@ const Live = ({ route, navigation }) => {
       try {
         const data = route.params.cam.map(item => {
           return {
-            camera_code: item?.CAMERA.CODE,
+            camera_code: item?.CODE,
           };
         });
         const res = await streamingClient.post(
@@ -69,6 +50,7 @@ const Live = ({ route, navigation }) => {
             },
           },
         );
+        // console.log(res.stream);
         dispatch(getPathStream(res.stream));
       } catch (e) {
         Alert.alert('Lấy danh sách đường dẫn ko thành công');

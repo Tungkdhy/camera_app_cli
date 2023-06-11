@@ -14,13 +14,13 @@ const Detail = ({ navigation }) => {
     phoneNumber: '',
     dateJoined: '',
     editTime: '',
-  })
-  const dispatch = useDispatch()
+  });
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getDataUser = async () => {
       try {
-        const res = await axiosClient.get('/user/get-user-info/')
+        const res = await axiosClient.get('/user/get-user-info/');
         if (res) {
           const data = res[0];
           setDataUser({
@@ -29,16 +29,15 @@ const Detail = ({ navigation }) => {
             phoneNumber: data.PHONE,
             dateJoined: data.DATE_JOINED,
             editTime: data.EDIT_TIME,
-          })
-          dispatch(setUserInfo(data))
+          });
+          dispatch(setUserInfo(data));
         }
-      }
-      catch (error) {
+      } catch (error) {
         // Alert.alert('You not permission')
       }
-    }
-    getDataUser()
-  }, [])
+    };
+    getDataUser();
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -46,16 +45,15 @@ const Detail = ({ navigation }) => {
           onPress={() => {
             navigation.navigate('Home');
           }}>
-
           <Back />
         </Pressable>
         <Text style={styles.text}>Thông tin cá nhân</Text>
         <View>
-          <Pressable onPress={() => {
-            navigation.navigate('EditInfo')
-          }}>
-            <Edit />
-          </Pressable>
+          <Pressable
+            onPress={() => {
+              navigation.navigate('EditInfo');
+            }}
+          />
         </View>
       </View>
       <View style={styles.content}>
@@ -73,11 +71,15 @@ const Detail = ({ navigation }) => {
         </View>
         <View style={styles.item}>
           <Text style={styles.title}>Thời gian tạo</Text>
-          <Text style={styles.description}>{formatDate(dataUser.dateJoined)}</Text>
+          <Text style={styles.description}>
+            {formatDate(dataUser.dateJoined)}
+          </Text>
         </View>
         <View style={styles.item}>
           <Text style={styles.title}>Sửa lần cuối</Text>
-          <Text style={styles.description}>{formatDate(dataUser.editTime)}</Text>
+          <Text style={styles.description}>
+            {formatDate(dataUser.editTime)}
+          </Text>
         </View>
       </View>
     </View>
