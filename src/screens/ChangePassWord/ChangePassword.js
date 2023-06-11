@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   View,
   TouchableHighlight,
@@ -7,9 +7,11 @@ import {
   TextInput,
   Text,
   Alert,
-  Modal,
-} from "react-native";
-import axios from "axios";
+  TouchableNativeFeedback,
+  Keyboard,
+  KeyboardAvoidingView,
+} from 'react-native';
+import axios from 'axios';
 import {
   Logo,
   BackIcon,
@@ -21,9 +23,10 @@ import { isValidateConfirm, isValidatePassword } from "../../utils";
 import { styles } from "./style";
 import { authenticatorAPI } from "../../services/api/authenticator";
 
-const ChangePassword = ({ route, navigation }) => {
-  const [newPassword, setNewPassword] = useState("");
-  const [password, setPassword] = useState("");
+
+const ChangePassword = ({ navigation }) => {
+  const [newPassword, setNewPassword] = useState('');
+  const [password, setPassword] = useState('');
   const [isShowPass, setIsShowPass] = useState(true);
   const handleLogin = async () => {
     try {
@@ -32,13 +35,11 @@ const ChangePassword = ({ route, navigation }) => {
         let data = {
           password: password,
           token: token.token,
+
         }
-        await authenticatorAPI.passwordResetConfirm(data);
-        navigation.navigate("Success");
       }
     } catch (e) {
-      console.log(e);
-      Alert.alert("Đổi mật khẩu không thành công");
+      Alert.alert('Đổi mật khẩu không thành công');
     }
   };
 
@@ -120,11 +121,61 @@ const ChangePassword = ({ route, navigation }) => {
                 </View>
               </TouchableHighlight>
             </View>
+            <View style={styles.contentForm}>
+              <View style={styles.formLogin}>
+                <Text style={styles.header}>Đổi mật khẩu</Text>
+                <SafeAreaView>
+                  <Text style={styles.label}>Mật khẩu</Text>
+                  <TextInput
+                    onChangeText={text => setPassword(text)}
+                    style={
+                      password !== '' && !isValidatePassword(password)
+                        ? { ...styles.input, ...styles.borderError }
+                        : styles.input
+                    }
+                    value={password}
+                    placeholder="Nhập"
+                    secureTextEntry={true}
+                  />
+                  <Text style={styles.validate}>
+                    Dài trên 11 kí tự, bao gồm cả chữ, số, viết hoa, viết thường
+                    và cả những kí tự đặc biệt
+                  </Text>
+                  <Text style={styles.label}>Nhập lại mật khẩu</Text>
+                  <TextInput
+                    style={
+                      newPassword.length < 6 &&
+                        newPassword !== '' &&
+                        !isValidatePassword(newPassword)
+                        ? { ...styles.input, ...styles.borderError }
+                        : styles.input
+                    }
+                    placeholder="Nhập"
+                    value={newPassword}
+                    onChangeText={text => setNewPassword(text)}
+                    secureTextEntry={true}
+                  />
+                  {newPassword.length < 6 &&
+                    newPassword !== '' &&
+                    !isValidatePassword(newPassword) ? (
+                    <Text style={styles.error}>
+                      Vui lòng nhập đúng định dạng
+                    </Text>
+                  ) : (
+                    <Text />
+                  )}
+                </SafeAreaView>
+                <TouchableHighlight onPress={handleLogin} style={styles.login}>
+                  <View style={styles.buttonLogin}>
+                    <Text style={styles.btnText}>Tiếp tục</Text>
+                  </View>
+                </TouchableHighlight>
+              </View>
+            </View>
           </View>
-
-        </Modal>
-      </View>
-    </ImageBackground>
+        </KeyboardAvoidingView>
+      </ImageBackground>
+    </TouchableNativeFeedback>
   );
 };
 export default ChangePassword;

@@ -1,15 +1,14 @@
-import { StyleSheet } from "react-native"
+import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
     container: {
         display: 'flex',
         backgroundColor: '#fff',
-        flexWrap: 'wrap',
-        textAlign: 'left',
-        flex: 1,
+        // textAlign: 'left',
+        flexDirection: 'column',
+        // flex: 1,
         marginTop: 0,
         padding: 16,
         marginBottom: 8,
-        width: '100%'
     },
     header: {
         fontWeight: '700',
@@ -23,7 +22,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     boxHeader: {
-        width: '100%',
+        // width: '100%',
         display: 'flex',
         flexDirection: 'row',
         padding: 18,
@@ -32,19 +31,19 @@ export const styles = StyleSheet.create({
         display: 'flex',
         width: 170,
         flexDirection: 'column',
-        alignItems: "center",
+        alignItems: 'center',
     },
     number: {
         fontSize: 24,
         lineHeight: 24,
         fontWeight: '700',
         marginBottom: 4,
-        color: 'black'
+        color: 'black',
     },
     name: {
         fontSize: 16,
         lineHeight: 24,
-        color: "rgba(0, 0, 0, 0.4)",
+        color: 'rgba(0, 0, 0, 0.4)',
     },
     image_camera: {
         width: 52,
@@ -53,8 +52,8 @@ export const styles = StyleSheet.create({
     },
     icons: {
         flexDirection: 'row',
-        display: "flex",
+        display: 'flex',
         gap: 12,
-        paddingRight: 16
-    }
-})
+        paddingRight: 16,
+    },
+});

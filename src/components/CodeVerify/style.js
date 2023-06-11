@@ -84,13 +84,11 @@ export const styles = StyleSheet.create({
         paddingLeft:16
       },
       contentForm:{
-        position: 'absolute',
-        left: 0,
-        bottom: 0,
-        width: "100%",
+        height:"40%",
         justifyContent:"space-between",
         backgroundColor:"#ffffff",
         display:"flex",
+        
         borderTopLeftRadius:12,
         borderTopRightRadius:12,
       },
@@ -175,8 +173,7 @@ export const styles = StyleSheet.create({
       formGroup:{
         display:"flex",
         flexDirection:"row",
-        justifyContent:"space-between",
-        gap: 16,
+        justifyContent:"space-between"
       },
       formControl:{
         borderWidth:1,
@@ -188,11 +185,11 @@ export const styles = StyleSheet.create({
         borderColor:"rgba(0, 0, 0, 0.2)"
       },
       otp:{
-        // width:"100%",
+        width:"100%",
       },
       hl:{
         flexDirection:"row",
-        justifyContent:"center",
+        justifyContent:"space-between",
         fontSize:17,
         paddingTop:24
       },

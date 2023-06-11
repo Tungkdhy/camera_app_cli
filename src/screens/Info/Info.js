@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   View,
   ImageBackground,
@@ -6,44 +6,47 @@ import {
   Image,
   Pressable,
   ScrollView,
-  Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import { styles } from './styles';
-import {
-  CricleUser,
-  Logout,
-  NextIcon,
-  Pass,
-} from '../../components/Icons/Index';
-
 import axiosClient from '../../services/axiosClient';
-import { userManager } from '../../services/api/userManager';
+import { styles } from './styles';
+import { CricleUser, Logout, NextIcon, Pass } from '../../components/Icons/Index';
 
 const Info = ({ navigation }) => {
-  const [infoUser, setInfoUser] = useState();
+  const [userData, setUserData] = React.useState({
+    name: '',
+    userName: '',
+  });
   const handleLogout = async () => {
     const refresh = await AsyncStorage.getItem('refresh');
     await axiosClient.post('/authenticator/logout', {
-      refresh: refresh
-    })
+      refresh: refresh,
+    });
     await AsyncStorage.clear();
-    navigation.navigate('Login');
+    navigation.replace('Login');
   };
-  useEffect(() => {
-    const getUserInfo = async () => {
+  React.useEffect(() => {
+    const getDataUser = async () => {
       try {
-        const res = await userManager.getCurrentUser();
-        res?.forEach(element => {
-          setInfoUser(element);
-        });
+        const res = await axiosClient.get('/user/get-user-info/');
+        if (res) {
+          const data = res[0];
+          setUserData({
+            name: data.NAME,
+            email: data.EMAIL,
+            phoneNumber: data.PHONE,
+            dateJoined: data.DATE_JOINED,
+            editTime: data.EDIT_TIME,
+            userName: data.USERNAME,
+          });
+          console.log(data);
+        }
       } catch (error) {
-        Alert.alert('Lấy thông tin không thành công')
+        // Alert.alert('You not permission')
       }
-    }
-    getUserInfo()
-  }, [])
+    };
+    getDataUser();
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.bgName}>
@@ -52,8 +55,10 @@ const Info = ({ navigation }) => {
           resizeMode="cover"
           style={styles.image}>
           <Image source={require('../../assets/images/Avatar2.png')} />
-          <Text style={styles.name}>{infoUser ? infoUser?.NAME : ''}</Text>
-          <Text style={styles.username}>Tên đăng nhập: {infoUser ? infoUser?.USERNAME : ''}</Text>
+          <Text style={styles.name}>{userData.name}</Text>
+          <Text style={styles.username}>
+            Tên đăng nhập: {userData.userName}
+          </Text>
         </ImageBackground>
       </View>
       <ScrollView>
@@ -88,9 +93,7 @@ const Info = ({ navigation }) => {
               <NextIcon />
             </Pressable>
           </Pressable>
-          <Pressable
-            onPress={handleLogout}
-            style={styles.item}>
+          <Pressable onPress={handleLogout} style={styles.item}>
             <View style={styles.title}>
               <View style={styles.icon}>
                 <Logout />

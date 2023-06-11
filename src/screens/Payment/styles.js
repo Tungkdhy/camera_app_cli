@@ -96,6 +96,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
     flexDirection: 'column',
     marginTop: 12,
+    marginBottom: 20,
   },
   item: {
     flexDirection: 'row',
@@ -165,7 +166,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   fullScreen: {
-    width: width,
+    width: width - 70,
     height: height,
   },
   time: {

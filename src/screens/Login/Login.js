@@ -11,6 +11,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Pressable,
+  Image,
 } from 'react-native';
 import axios from 'axios';
 import {
@@ -19,21 +20,36 @@ import {
   LockIcon,
   UserIcon,
   EyeIcon,
-  Radio,
-  RadioCheck,
 } from '../../components/Icons/Index';
 // import messaging from '@react-native-firebase/messaging';
 import { styles } from './styles';
+import Orientation from 'react-native-orientation-locker';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axiosClient from '../../services/axiosClient';
 import { useDispatch } from 'react-redux';
 import { setUserTypeCode } from '../../redux/actions/getUserAction';
+import { isValidatorUsername } from '../../utils';
 
 const Login = ({ navigation }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [isShowPass, setIsShowPass] = useState(true);
   const dispatch = useDispatch();
+  // useEffect(() => {
+  //   async function getData() {
+  //     try {
+  //       const res = await axios.get('https://jsonplaceholder.typicode.com/todos/1')
+  //       const token1 = await messaging().getToken()
+  //       setToken(token1)
+  //       setData(res.data)
+  //     }
+  //     catch (e) {
+
+  //     }
+  //   }
+  //   getData()
+  // }, [])
   const handleLogin = async () => {
     try {
       const res = await axios.post(
@@ -56,6 +72,9 @@ const Login = ({ navigation }) => {
       Alert.alert('Đăng nhập không thành công');
     }
   };
+  useEffect(() => {
+    Orientation.lockToPortrait(); //this will lock the view to Portrait
+  }, []);
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <ImageBackground
@@ -91,8 +110,14 @@ const Login = ({ navigation }) => {
                     value={userName}
                     placeholder="Tên đăng nhập"
                   />
-                  {userName.length < 6 && userName !== '' && (
+                  {userName.length < 6 && userName !== '' ? (
                     <Text style={styles.error}>Vui lòng nhập đủ 6 ký tự</Text>
+                  ) : isValidatorUsername(userName) ? (
+                    <React.Fragment />
+                  ) : (
+                    <Text style={styles.error}>
+                      Tài khoản không chứa các ký tự đặc biệt
+                    </Text>
                   )}
                   <View style={styles.lockIcon}>
                     <LockIcon />

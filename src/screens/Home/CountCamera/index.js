@@ -23,9 +23,8 @@ function CountCamera({ countCamera, companyName }) {
           </View>
           <View style={styles.headerItem}>
             <ImageBackground style={styles.image_camera} source={ImageCamOn} />
-            <Text style={styles.number}>
-              {countCamera.ACTIVE}
-            </Text>
+
+            <Text style={styles.number}>{countCamera.ACTIVE}</Text>
             <Text style={styles.name}>Đang trực tuyến</Text>
           </View>
         </View>

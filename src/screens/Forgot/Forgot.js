@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   View,
   TouchableHighlight,
@@ -21,11 +21,20 @@ const Forgot = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+
   const handleLogin = async () => {
     setLoading(true)
     try {
-      let data = {
-        email: email
+      const token = await axios.post(
+        'http://cameraai.cds.vinorsoft.com/camera/vinorsoft/aicamera/v1.0/authenticator/password-reset/require',
+        {
+          email: email,
+        },
+      );
+      await AsyncStorage.setItem('email', email);
+      if (token.data.status) {
+        // await AsyncStorage.setItem("token", token.data.token);
+        navigation.navigate('CodeVerify', { name: 'Forgot' });
       }
       await authenticatorAPI.forgotPassRequire(data);
       navigation.navigate("CodeVerify", { name: "Forgot" });
@@ -37,9 +46,6 @@ const Forgot = ({ navigation }) => {
       Alert.alert("Mã xác thực gửi về email của bạn");
     }
   };
-  const onPrevious = () => {
-    navigation.navigate('Wellcom')
-  }
   return (
     <ImageBackground
       style={styles.container}
@@ -93,6 +99,36 @@ const Forgot = ({ navigation }) => {
                 </View>
               </TouchableHighlight>
             </View>
+            <View style={styles.contentForm}>
+              <View style={styles.formLogin}>
+                <Text style={styles.header}>Quên mật khẩu</Text>
+                <SafeAreaView>
+                  <Text style={styles.label}>Email</Text>
+                  <TextInput
+                    style={
+                      email.length < 6 &&
+                        email !== '' &&
+                        isValidatorEmail(email)
+                        ? { ...styles.input, ...styles.borderError }
+                        : styles.input
+                    }
+                    placeholder="Nhập"
+                    value={email}
+                    onChangeText={text => setEmail(text)}
+                  />
+                  {email !== '' && !isValidatorEmail(email) ? (
+                    <Text style={styles.error}>Vui lòng nhập đúng email</Text>
+                  ) : (
+                    <Text />
+                  )}
+                </SafeAreaView>
+                <TouchableHighlight onPress={handleLogin} style={styles.login}>
+                  <View style={styles.buttonLogin}>
+                    <Text style={styles.btnText}>Tiếp tục</Text>
+                  </View>
+                </TouchableHighlight>
+              </View>
+            </View>
           </View>
         {loading && (
           <View style={styles.behavior}>
@@ -103,6 +139,7 @@ const Forgot = ({ navigation }) => {
       </View>
       {/* </KeyboardAvoidingView> */}
     </ImageBackground>
+
   );
 };
 export default Forgot;
