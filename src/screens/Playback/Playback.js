@@ -71,7 +71,6 @@ export default function PlayBack({ navigation, route }) {
             },
           },
         );
-        console.log(res.time_line);
         const playbacks = res.time_line.map(item => {
           return {
             code: item.camera_code,

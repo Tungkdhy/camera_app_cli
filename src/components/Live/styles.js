@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   },
   containerFull: {
     flex: 1,
-    backgroundColor: 'black',
+    // backgroundColor: 'black',
   },
   header: {
     alignItems: 'center',
@@ -65,7 +65,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     display: 'flex',
     alignItems: 'center',
-    gap: 2,
+    // gap: 2,
     ...Platform.select({
       ios: {
         paddingTop: 4,
@@ -83,7 +83,8 @@ export const styles = StyleSheet.create({
   },
   infoFull: {
     position: 'absolute',
-    top: 12,
+    top: 10,
+    left: 16,
     // paddingTop: 8,
     // flexDirection: "row",
     // justifyContent: "space-between",
@@ -102,6 +103,10 @@ export const styles = StyleSheet.create({
   iconSetting: {
     paddingLeft: 8,
     alignItems: 'center',
+    paddingTop: 2,
+    paddingRight: 2,
+    paddingBottom: 2,
+    display: 'flex',
   },
   list: {
     marginVertical: 20,
@@ -169,7 +174,7 @@ export const styles = StyleSheet.create({
     // height: Dimensions.get('window').width,
     // minWidth: Dimensions.get('window').height,
     // minHeight: Dimensions.get('window').width,
-    width: width - 30,
+    width: width - 70,
     height: height,
 
     // transform: [{rotate: '90deg'}],

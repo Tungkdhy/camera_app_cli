@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
   InfoIcon,
@@ -24,7 +24,7 @@ import {
 } from 'react-native';
 import { styles } from './styles';
 import { convertToSecond } from '../../utils';
-import { videoActive } from '../../redux/actions/reportAction';
+import { setNameAI, videoActive } from '../../redux/actions/reportAction';
 const VideoCamera = ({
   navigation,
   cameraActive,
@@ -40,9 +40,10 @@ const VideoCamera = ({
   const stick_time = useSelector(
     state => state.playBackReducer.filter.stick_time,
   );
+  const [count, setCount] = useState(1);
+  const [listPath, setListPath] = useState([]);
   const reload = useSelector(state => state.useReducer.reload);
   const handleOrientation = orientation => {
-    console.log(orientation);
     if (orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT') {
       dispatch(setIsFullScreen(true));
       // Orientation.lockToLandscapeLeft();
@@ -66,7 +67,7 @@ const VideoCamera = ({
 
       // dispatch(setIsFullScreen(true));
     }
-  }
+  };
   useEffect(() => {
     Orientation.addOrientationListener(handleOrientation);
     return () => {
@@ -85,14 +86,28 @@ const VideoCamera = ({
       }
     }
   }, [cameraActive]);
-
+  useEffect(() => {
+    const data = streamPath.filter(
+      (item, index) => index >= (count - 1) * 6 && index < count * 6,
+    );
+    setListPath([...listPath, ...data]);
+  }, [streamPath, count]);
+  useEffect(
+    () =>
+      navigation.addListener('beforeRemove', e => {
+        Orientation.lockToPortrait();
+        dispatch(setIsFullScreen(false));
+        navigation.dispatch(e.data.action);
+      }),
+    [navigation],
+  );
   return (
     <View style={isFullScreen ? styles.contentFull : {}}>
       {
         <View style={isFullScreen ? styles.activeFull : styles.active}>
           {cameraActive &&
             cameraActive.map((item, index) => {
-              console.log(item);
+              console.log(item.data);
 
               return (
                 <>
@@ -110,7 +125,7 @@ const VideoCamera = ({
                     }>
                     {item.path === 'no-path' ? (
                       <View style={styles.noPath}>
-                        <Text style={{ color: '#000' }}>Không có đường dẫn</Text>
+                        <Text style={{ color: '#000' }}>Không có video</Text>
                       </View>
                     ) : (
                       <Video
@@ -128,6 +143,8 @@ const VideoCamera = ({
                         shouldPlay={true}
                         useNativeControls={true}
                         isLooping
+                        poster={`http://cameraai.cds.vinorsoft.com/${type}/${item?.data[0]?.PATH.split('/')[1]
+                          }/image.jpg`}
                         controls={type === 'playback/' ? change : false}
                         style={
                           isFullScreen
@@ -171,20 +188,22 @@ const VideoCamera = ({
                       <>
                         <View style={styles.setting}>
                           <View style={styles.iconSetting}>
-                            <Text onPress={() => getInfo(item.code)}>
+                            <Pressable onPress={() => getInfo(item.code)}>
                               <InfoIcon />
-                            </Text>
+                            </Pressable>
                           </View>
 
-                          <Pressable
-                            onPress={handleFullscreen}
-                            style={styles.iconSetting}>
-                            <Text>
-                              <FullScreenIcon
-                                color={isFullScreen ? '#fff' : 'black'}
-                              />
-                            </Text>
-                          </Pressable>
+                          {type === 'livestream' && (
+                            <Pressable
+                              onPress={handleFullscreen}
+                              style={styles.iconSetting}>
+                              <View>
+                                <FullScreenIcon
+                                  color={isFullScreen ? '#fff' : 'black'}
+                                />
+                              </View>
+                            </Pressable>
+                          )}
                         </View>
                       </>
                     )}
@@ -197,7 +216,11 @@ const VideoCamera = ({
       {!isFullScreen && type !== 'playback/' && (
         <View>
           <FlatList
-            data={streamPath}
+            onEndReached={() => {
+              setCount(count + 1);
+            }}
+            onEndReachedThreshold={0}
+            data={listPath}
             //   scrollEnabled
             renderItem={({ item, index }) => (
               <CameraItem
@@ -215,7 +238,7 @@ const VideoCamera = ({
               justifyContent: 'space-between',
             }}
             keyExtractor={(item, index) => index}
-            maxHeight={500}
+            maxHeight={400}
           />
         </View>
       )}

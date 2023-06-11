@@ -57,7 +57,7 @@ export default function Payment({ route, navigation }) {
         style={styles.item}>
         <View style={styles.image}>
           <Image
-            style={{ width: '120%' }}
+            style={{ width: '120%', borderRadius: 4 }}
             source={require('../../assets/images/Video.png')}
           />
         </View>
@@ -192,6 +192,23 @@ export default function Payment({ route, navigation }) {
           setOpen(false);
         }}
       />
+      <DatePicker
+        modal
+        mode="date"
+        open={open2}
+        date={new Date()}
+        onConfirm={date => {
+          if (date < report.filter.day) {
+            Alert.alert('Chọn ngày kết thúc lớn hơn ngày bắt đầu');
+          } else {
+            dispatch(setTimeReport(date));
+          }
+          setOpen2(false);
+        }}
+        onCancel={() => {
+          setOpen2(false);
+        }}
+      />
       <Modal
         filter={report.filter.ai_code}
         isShow={modalVisible}
@@ -257,7 +274,6 @@ export default function Payment({ route, navigation }) {
       {report.isFullScreen &&
         report.video_active?.length > 0 &&
         report.video_active.map((item, index) => {
-          console.log(item.path);
           return (
             <View
               key={index}
@@ -288,6 +304,7 @@ export default function Payment({ route, navigation }) {
                       shouldPlay={true}
                       isLooping
                       controls={true}
+                      fullscreen={report.isFullScreen}
                       style={
                         report.isFullScreen
                           ? styles.fullScreen
@@ -308,6 +325,7 @@ export default function Payment({ route, navigation }) {
                           </Pressable>
                         )}
                       </View>
+
                       <Text
                         style={
                           report.isFullScreen

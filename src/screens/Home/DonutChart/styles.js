@@ -30,13 +30,13 @@ export const styles = StyleSheet.create({
     },
     chart: {
         flex: 1,
-        backgroundColor: '#fff'
+        backgroundolor: '#fff'
     },
     legend: {
         marginTop: 30,
         width: 170,
         maxHeight: 160,
-        marginRight: 32,
+        // marginRight: 32,
         backgroundColor: '#fff'
     },
     item: {

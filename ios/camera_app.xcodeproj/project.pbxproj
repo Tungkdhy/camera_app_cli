@@ -491,12 +491,12 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = camera_app/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Camera Ai ";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -521,12 +521,12 @@
 				DEVELOPMENT_TEAM = 94X8S7GFA2;
 				INFOPLIST_FILE = camera_app/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Camera Ai ";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

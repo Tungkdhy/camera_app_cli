@@ -1,5 +1,5 @@
-import {View, Text, ImageBackground} from 'react-native';
-import {styles} from './styles';
+import { View, Text, ImageBackground } from 'react-native';
+import { styles } from './styles';
 import ImageCamOn from '../../../assets/images/online.png';
 import ImageCamOff from '../../../assets/images/off.png';
 import ImageCam from '../../../assets/images/cam.png';
@@ -7,7 +7,7 @@ import ImageEye from '../../../assets/images/eye.png';
 import Weak from '../../../assets/images/Weak.png';
 import DisConnect from '../../../assets/images/DisConnect.png';
 
-function CountCamera({countCamera, companyName}) {
+function CountCamera({ countCamera, companyName }) {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>
@@ -30,9 +30,7 @@ function CountCamera({countCamera, companyName}) {
         <View style={styles.boxHeader}>
           <View style={styles.headerItem}>
             <ImageBackground style={styles.image_camera} source={ImageCamOn} />
-            <Text style={styles.number}>
-              {countCamera.ACTIVE - countCamera.WEAK - countCamera.NO_CONNECT}
-            </Text>
+            <Text style={styles.number}>{countCamera.ACTIVE}</Text>
             <Text style={styles.name}>Đang trực tuyến</Text>
           </View>
           <View style={styles.headerItem}>

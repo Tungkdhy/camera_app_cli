@@ -85,6 +85,7 @@ const CodeVerify = ({ route, navigation }) => {
                     <TextInput
                       placeholder="-"
                       //   keyboardType=""
+                      keyboardType="number-pad"
                       maxLength={1}
                       style={styles.otp}
                       ref={inputFirst}
@@ -98,7 +99,7 @@ const CodeVerify = ({ route, navigation }) => {
                   <View style={styles.formControl}>
                     <TextInput
                       placeholder="-"
-                      //   keyboardType="number-pad"
+                      keyboardType="number-pad"
                       maxLength={1}
                       style={styles.otp}
                       ref={inputS}
@@ -114,7 +115,7 @@ const CodeVerify = ({ route, navigation }) => {
                   <View style={styles.formControl}>
                     <TextInput
                       placeholder="-"
-                      //   keyboardType="number-pad"
+                      keyboardType="number-pad"
                       maxLength={1}
                       style={styles.otp}
                       ref={inputT}
@@ -129,7 +130,7 @@ const CodeVerify = ({ route, navigation }) => {
                   <View style={styles.formControl}>
                     <TextInput
                       placeholder="-"
-                      //   keyboardType="number-pad"
+                      keyboardType="number-pad"
                       maxLength={1}
                       style={styles.otp}
                       ref={inputF}
@@ -146,7 +147,7 @@ const CodeVerify = ({ route, navigation }) => {
                   <View style={styles.formControl}>
                     <TextInput
                       placeholder="-"
-                      //   keyboardType="number-pad"
+                      keyboardType="number-pad"
                       maxLength={1}
                       style={styles.otp}
                       ref={inputFive}
@@ -163,7 +164,7 @@ const CodeVerify = ({ route, navigation }) => {
                   <View style={styles.formControl}>
                     <TextInput
                       placeholder="-"
-                      //   keyboardType="number-pad"
+                      keyboardType="number-pad"
                       maxLength={1}
                       style={styles.otp}
                       ref={inputSix}
@@ -176,9 +177,6 @@ const CodeVerify = ({ route, navigation }) => {
                     />
                   </View>
                 </SafeAreaView>
-                <View style={styles.hl}>
-                  <Text style={styles.send}>Gửi lại</Text>
-                </View>
                 <TouchableHighlight onPress={handleLogin} style={styles.login}>
                   <View style={styles.buttonLogin}>
                     <Text style={styles.btnText}>Xác nhận</Text>
