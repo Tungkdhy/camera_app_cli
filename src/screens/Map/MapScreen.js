@@ -57,15 +57,15 @@ function MapScreen({ navigation }) {
   console.log(camera.filter)
   useEffect(() => {
     const province = camera.filter?.province_code
-          ? {
-              province_code: camera.filter?.province_code,
-            }
-          : {};
-        const district = camera.filter?.district_code
-          ? {
-              district_code: camera.filter?.district_code,
-            }
-          : {};
+      ? {
+        province_code: camera.filter?.province_code,
+      }
+      : {};
+    const district = camera.filter?.district_code
+      ? {
+        district_code: camera.filter?.district_code,
+      }
+      : {};
     async function getListWareHouse() {
       try {
         const res = await axiosClient.get('warehouse/get-list-warehouse/', {
@@ -174,7 +174,7 @@ function MapScreen({ navigation }) {
                   key={wareHouse?.CODE}
                   id={'test'}
                   title='Test'
-                  coordinate={[wareHouse?.LONGITUDE?Number(wareHouse?.LONGITUDE):0,wareHouse?.LATITUDE? Number(wareHouse.LATITUDE):0]}
+                  coordinate={[wareHouse?.LONGITUDE ? Number(wareHouse?.LONGITUDE) : 0, wareHouse?.LATITUDE ? Number(wareHouse.LATITUDE) : 0]}
                   style={{ zIndex: 1 }}
                   children={<MarkerCustom onPressMaker={() => { handleClickMaker(wareHouse?.CODE) }} />}
                 />

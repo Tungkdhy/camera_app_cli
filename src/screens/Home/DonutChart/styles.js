@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native"
+import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
     container: {
         display: 'flex',
@@ -19,25 +19,28 @@ export const styles = StyleSheet.create({
         width: '100%',
         display: 'flex',
         flexDirection: 'row',
-        gap: 8,
-        backgroundColor: '#fff'
+        gap: 12,
+        backgroundColor: '#fff',
+        justifyContent: 'space-between',
     },
 
     name: {
         fontSize: 16,
         lineHeight: 24,
-        color: "rgba(0, 0, 0, 0.4)",
+        color: 'rgba(0, 0, 0, 0.4)',
     },
     chart: {
         flex: 1,
-        backgroundolor: '#fff'
+        backgroundolor: '#fff',
     },
     legend: {
         marginTop: 30,
-        width: 170,
+
         maxHeight: 160,
+        flex: 1,
+        marginLeft: 16,
         // marginRight: 32,
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
     },
     item: {
         display: 'flex',
@@ -58,7 +61,7 @@ export const styles = StyleSheet.create({
     },
     label_legend: {
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     title: {
         marginLeft: 8,
@@ -66,6 +69,6 @@ export const styles = StyleSheet.create({
         lineHeight: 20,
         fontWeight: 400,
         color: '#000000',
-        maxWidth: 120
-    }
-})
+        maxWidth: 120,
+    },
+});

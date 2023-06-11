@@ -7,6 +7,7 @@ import {
   Pressable,
   TouchableNativeFeedback,
   KeyboardAvoidingView,
+  Keyboard,
 } from 'react-native';
 import Header from '../../components/Header/Header';
 import { useEffect, useState } from 'react';
@@ -226,18 +227,22 @@ export default function Stream({ navigation, ...props }) {
         }
         navigation={navigation}
       />
-      <Modal
-        isShow={modalVisible}
-        onShowModal={handleSetShowModal}
-        isProvince={isProvince}
-        setIsProvince={setIsShowProvince}
-        data={isProvince ? camera?.province : camera?.district}
-        filter={
-          isProvince
-            ? camera?.filter?.province_code
-            : camera?.filter?.district_code
-        }
-      />
+      <TouchableNativeFeedback onPress={() => Keyboard.dismiss()}>
+        <KeyboardAvoidingView enabled={true} behavior="padding">
+          <Modal
+            isShow={modalVisible}
+            onShowModal={handleSetShowModal}
+            isProvince={isProvince}
+            setIsProvince={setIsShowProvince}
+            data={isProvince ? camera?.province : camera?.district}
+            filter={
+              isProvince
+                ? camera?.filter?.province_code
+                : camera?.filter?.district_code
+            }
+          />
+        </KeyboardAvoidingView>
+      </TouchableNativeFeedback>
       <View style={styles.container}>
         <Filter
           playback={props.route.name !== 'Stream'}
