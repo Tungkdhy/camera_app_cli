@@ -39,7 +39,7 @@ const CameraItem = ({ title, path, setCamId, id, type }) => {
             }
           }}
           // poster={`http://cameraai.cds.vinorsoft.com/${type}${path}`}
-          style={{ height: 110, flex: 1, borderRadius: 4 }}
+          style={{ height: 105, flex: 1, borderRadius: 4 }}
         />
       </View>
       <Text onPress={() => setCamId(id)} style={styles.nameCamera}>

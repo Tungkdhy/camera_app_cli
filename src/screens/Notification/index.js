@@ -145,7 +145,7 @@ function Notification({ navigation }) {
     }
   };
 
-  const handleGetMoreNotification = (e) => {
+  const handleGetMoreNotification = e => {
     setPage(page + 1);
   };
   const navigatePlayBackCamera = notification => { };
@@ -196,87 +196,71 @@ function Notification({ navigation }) {
       </View>
       <View style={styles.content}>
         <ScrollView onScrollEndDrag={handleGetMoreNotification}>
-            <>
-              {listNotificationSmart.length > 0 &&
-                listNotificationSmart.map((notification, index) => {
-                  console.log(notification);
-                  return (
-                    <Pressable
-                      onPress={() => navigatePlayBackCamera(notification)}
-                      key={index}>
-                      <View style={styles.date_block}>
-                        <Text style={styles.time_block}>
-                          {notification.TIME}
-                        </Text>
-                        <View style={styles.list_item}>
-                          {notification.data.map(item => {
-                            return (
-                              <Pressable
-                                key={item.CODE}
-                                onPress={() =>
-                                  handleCheckNotification(item.CODE, item)
-                                }>
-                                <View
-                                  style={
-                                    item.SEEN === 0
-                                      ? { ...styles.item, ...styles.new }
-                                      : { ...styles.item }
-                                  }>
-                                  <Text style={styles.time}>{item.TIME}</Text>
-                                  <Text style={styles.name}>{item.NAME}</Text>
-                                  <Text style={styles.title}>
-                                    {item.DETAIL}
-                                  </Text>
-                                  {item.SEEN === 0 && (
-                                    <View style={styles.tick} />
-                                  )}
-                                </View>
-                              </Pressable>
-                            );
-                          })}
-                        </View>
-                      </View>
-                    </Pressable>
-                  );
-                })}
-            </>
-          ) : (
-            <>
-              {listNotificationSystem.length > 0 &&
-                listNotificationSystem.map((notification, index) => {
-                  return (
-                    <View style={styles.date_block} key={index}>
-                      <Text style={styles.time_block}>{notification.TIME}</Text>
-                      <View style={styles.list_item}>
-                        {notification.data.map(item => {
-                          return (
-                            <Pressable
-                              key={item.CODE}
-                              onPress={() =>
-                                handleCheckNotification(item.CODE)
+          {smartReport
+            ? listNotificationSmart.map((notification, index) => {
+              return (
+                <Pressable
+                  onPress={() => navigatePlayBackCamera(notification)}
+                  key={index}>
+                  <View style={styles.date_block}>
+                    <Text style={styles.time_block}>{notification.TIME}</Text>
+                    <View style={styles.list_item}>
+                      {notification.data.map(item => {
+                        return (
+                          <Pressable
+                            key={item.CODE}
+                            onPress={() =>
+                              handleCheckNotification(item.CODE, item)
+                            }>
+                            <View
+                              style={
+                                item.SEEN === 0
+                                  ? { ...styles.item, ...styles.new }
+                                  : { ...styles.item }
                               }>
-                              <View
-                                style={
-                                  item.SEEN === 0
-                                    ? { ...styles.item, ...styles.new }
-                                    : { ...styles.item }
-                                }>
-                                <Text style={styles.time}>{item.TIME}</Text>
-                                <Text style={styles.name}>{item.NAME}</Text>
-                                <Text style={styles.title}>{item.DETAIL}</Text>
-                                {item.SEEN === 0 && (
-                                  <View style={styles.tick} />
-                                )}
-                              </View>
-                            </Pressable>
-                          );
-                        })}
-                      </View>
+                              <Text style={styles.time}>{item.TIME}</Text>
+                              <Text style={styles.name}>{item.NAME}</Text>
+                              <Text style={styles.title}>{item.DETAIL}</Text>
+                              {item.SEEN === 0 && (
+                                <View style={styles.tick} />
+                              )}
+                            </View>
+                          </Pressable>
+                        );
+                      })}
                     </View>
-                  );
-                })}
-            </>
-          {/* )} */}
+                  </View>
+                </Pressable>
+              );
+            })
+            : listNotificationSystem.map((notification, index) => {
+              return (
+                <View style={styles.date_block} key={index}>
+                  <Text style={styles.time_block}>{notification.TIME}</Text>
+                  <View style={styles.list_item}>
+                    {notification.data.map(item => {
+                      return (
+                        <Pressable
+                          key={item.CODE}
+                          onPress={() => handleCheckNotification(item.CODE)}>
+                          <View
+                            style={
+                              item.SEEN === 0
+                                ? { ...styles.item, ...styles.new }
+                                : { ...styles.item }
+                            }>
+                            <Text style={styles.time}>{item.TIME}</Text>
+                            <Text style={styles.name}>{item.NAME}</Text>
+                            <Text style={styles.title}>{item.DETAIL}</Text>
+                            {item.SEEN === 0 && <View style={styles.tick} />}
+                          </View>
+                        </Pressable>
+                      );
+                    })}
+                  </View>
+                </View>
+              );
+            })}
         </ScrollView>
       </View>
     </View>

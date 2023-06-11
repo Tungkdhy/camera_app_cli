@@ -19,8 +19,7 @@ import {
   FlatList,
   Pressable,
   StatusBar,
-  Platform,
-  BackHandler,
+  Dimensions,
 } from 'react-native';
 import { styles } from './styles';
 import { convertToSecond } from '../../utils';
@@ -125,9 +124,7 @@ const VideoCamera = ({
                     }>
                     {item.path === 'no-path' ? (
                       <View style={styles.noPath}>
-
                         <Text style={{ color: '#000' }}>Không có video</Text>
-
                       </View>
                     ) : (
                       <Video
@@ -153,7 +150,7 @@ const VideoCamera = ({
                             ? styles.fullScreen
                             : {
                               width: '100%',
-                              height: 240,
+                              height: 190,
                             }
                         }
                       />

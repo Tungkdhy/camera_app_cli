@@ -18,11 +18,10 @@ import {
   LockIcon,
   UserIcon,
   EyeIcon,
-} from "../../components/Icons/Index";
-import { isValidateConfirm, isValidatePassword } from "../../utils";
-import { styles } from "./style";
-import { authenticatorAPI } from "../../services/api/authenticator";
-
+} from '../../components/Icons/Index';
+import { isValidateConfirm, isValidatePassword } from '../../utils';
+import { styles } from './style';
+import { authenticatorAPI } from '../../services/api/authenticator';
 
 const ChangePassword = ({ navigation }) => {
   const [newPassword, setNewPassword] = useState('');
@@ -30,13 +29,15 @@ const ChangePassword = ({ navigation }) => {
   const [isShowPass, setIsShowPass] = useState(true);
   const handleLogin = async () => {
     try {
-      if (isValidatePassword(password) && isValidateConfirm(password, newPassword)) {
+      if (
+        isValidatePassword(password) &&
+        isValidateConfirm(password, newPassword)
+      ) {
         const token = route.params?.token ? route.params?.token : null;
         let data = {
           password: password,
           token: token.token,
-
-        }
+        };
       }
     } catch (e) {
       Alert.alert('Đổi mật khẩu không thành công');
@@ -46,22 +47,19 @@ const ChangePassword = ({ navigation }) => {
   return (
     <ImageBackground
       style={styles.container}
-      source={require("../../assets/images/BgLogin.png")}
-    >
+      source={require('../../assets/images/BgLogin.png')}>
       <View style={styles.contentLogin}>
         <Modal
           transparent={true}
           visible={true}
           animationType="slide"
           onRequestClose={() => {
-            return 0
-          }}
-        >
+            return 0;
+          }}>
           <View style={styles.title}>
             <TouchableHighlight
-              onPress={() => navigation.navigate("Wellcom")}
-              style={styles.icon}
-            >
+              onPress={() => navigation.navigate('Wellcom')}
+              style={styles.icon}>
               <BackIcon />
             </TouchableHighlight>
           </View>
@@ -72,10 +70,9 @@ const ChangePassword = ({ navigation }) => {
                 <Text style={styles.label}>Mật khẩu</Text>
                 <View style={styles.contain}>
                   <TextInput
-                    onChangeText={(text) => setPassword(text)}
+                    onChangeText={text => setPassword(text)}
                     style={
-                      password !== "" &&
-                        !isValidatePassword(password)
+                      password !== '' && !isValidatePassword(password)
                         ? { ...styles.input, ...styles.borderError }
                         : styles.input
                     }
@@ -83,36 +80,41 @@ const ChangePassword = ({ navigation }) => {
                     placeholder="Nhập"
                     secureTextEntry={isShowPass}
                   />
-                  <Text style={styles.eyeIcon} onPress={() => setIsShowPass(!isShowPass)}>
+                  <Text
+                    style={styles.eyeIcon}
+                    onPress={() => setIsShowPass(!isShowPass)}>
                     <EyeIcon />
                   </Text>
                 </View>
                 <Text style={styles.validate}>
-                  Dài trên 11 kí tự, bao gồm cả chữ, số, viết hoa, viết thường và
-                  cả những kí tự đặc biệt
+                  Dài trên 11 kí tự, bao gồm cả chữ, số, viết hoa, viết thường
+                  và cả những kí tự đặc biệt
                 </Text>
                 <Text style={styles.label}>Nhập lại mật khẩu</Text>
                 <View style={styles.contain}>
                   <TextInput
                     style={
-                        !isValidatePassword(newPassword)
+                      !isValidatePassword(newPassword)
                         ? { ...styles.input, ...styles.borderError }
                         : styles.input
                     }
                     placeholder="Nhập"
                     value={newPassword}
-                    onChangeText={(text) => setNewPassword(text)}
+                    onChangeText={text => setNewPassword(text)}
                     secureTextEntry={isShowPass}
                   />
-                  <Text style={styles.eyeIcon} onPress={() => setIsShowPass(!isShowPass)}>
+                  <Text
+                    style={styles.eyeIcon}
+                    onPress={() => setIsShowPass(!isShowPass)}>
                     <EyeIcon />
                   </Text>
                 </View>
-                {
-                  !isValidateConfirm(password, newPassword) ? (
-                  <Text style={styles.error}>Mật khẩu nhập lại không giống</Text>
+                {!isValidateConfirm(password, newPassword) ? (
+                  <Text style={styles.error}>
+                    Mật khẩu nhập lại không giống
+                  </Text>
                 ) : (
-                  <Text></Text>
+                  <Text />
                 )}
               </SafeAreaView>
               <TouchableHighlight onPress={handleLogin} style={styles.login}>
@@ -173,9 +175,9 @@ const ChangePassword = ({ navigation }) => {
               </View>
             </View>
           </View>
-        </KeyboardAvoidingView>
-      </ImageBackground>
-    </TouchableNativeFeedback>
+        </Modal>
+      </View>
+    </ImageBackground>
   );
 };
 export default ChangePassword;

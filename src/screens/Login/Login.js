@@ -60,7 +60,6 @@ const Login = ({ navigation }) => {
         },
       );
       if (res) {
-        Alert.alert('Đăng nhập thành công');
         await AsyncStorage.setItem('token', res.data.access);
         await AsyncStorage.setItem('role', res.data.role);
         const infoUser = await axiosClient.get('/user/get-user-info/');
