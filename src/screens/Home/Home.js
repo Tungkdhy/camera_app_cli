@@ -39,16 +39,12 @@ export default function Home({ navigation }) {
       const getCountCamera = await axiosClient.get(
         '/statCountCam/get-list-stat-count-cam/',
       );
-      const status = await getListStatus();
-      const noConnect = status?.filter(item => item.status === 1);
-      const weak = status?.filter(item => item.status === 2);
       setCountCamera({
         COUNT_CAM: getCountCamera[0]?.COUNT_CAM,
         ACTIVE: getCountCamera[0]?.ACTIVE,
         INACTIVE: getCountCamera[0]?.INACTIVE,
-        NO_CONNECT: noConnect?.length,
-        WEAK: weak?.length,
-        VIEWS: getCountCamera[0]?.VIEWS,
+        NO_CONNECT: getCountCamera[0]?.LOST_CONNECT,
+        WEAK: getCountCamera[0]?.CONNECT_WEAK,
         COMPANY_CODE: getCountCamera[0]?.COMPANY_CODE,
         MOTION: getCountCamera[0]?.MOTION,
         COMMON_OBJECT: getCountCamera[0]?.COMMON_OBJECT,
@@ -57,7 +53,8 @@ export default function Home({ navigation }) {
       const getNameCompany = await axiosClient.get(
         `/company/get-list-company/?company_code=${getCountCamera[0]?.COMPANY_CODE}`,
       );
-      setCompanyName(getNameCompany[0]?.NAME);
+      let name = getNameCompany[0]?.NAME ? getNameCompany[0]?.NAME : 'Mặc định';
+      setCompanyName(name);
       const upDateCountCamera = await axiosClient.post(
         '/statCountCam/post-add-stat-count-cam/',
       );
@@ -65,7 +62,7 @@ export default function Home({ navigation }) {
     };
     getAndUpDateCountCamera();
   }, []);
-
+  console.log(countCamera);
   return (
     <>
       <Header title={"Thống kê"} navigation={navigation} />

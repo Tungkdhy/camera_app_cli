@@ -8,7 +8,7 @@ function CountAI({ countCamera }) {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>
-        Thống kê Camera sử dụng dịch vụ AI
+        Thống kê AI
       </Text>
       <View style={styles.boxHeader}>
         <View style={styles.headerItem}>

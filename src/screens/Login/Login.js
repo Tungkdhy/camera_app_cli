@@ -33,9 +33,6 @@ const Login = ({ navigation }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [isShowPass, setIsShowPass] = useState(true);
-  const [data, setData] = useState();
-  const [rememberMe, setRememberMe] = useState(false);
-  const [token, setToken] = useState('');
   const dispatch = useDispatch();
   const handleLogin = async () => {
     try {
@@ -49,14 +46,11 @@ const Login = ({ navigation }) => {
       if (res) {
         Alert.alert('Đăng nhập thành công');
         await AsyncStorage.setItem('token', res.data.access);
-        await AsyncStorage.setItem('remember', `${rememberMe}`);
         await AsyncStorage.setItem('role', res.data.role);
         const infoUser = await axiosClient.get('/user/get-user-info/');
         let userTypeCode = infoUser[0].USERTYPE_CODE;
         dispatch(setUserTypeCode(userTypeCode));
-
         navigation.navigate('Home');
-
       }
     } catch (e) {
       Alert.alert('Đăng nhập không thành công');

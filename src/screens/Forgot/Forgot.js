@@ -8,23 +8,32 @@ import {
   Text,
   Alert,
   Modal,
+  ActivityIndicator,
 } from "react-native";
 import { isValidatorEmail } from "../../utils";
 import { BackIcon } from "../../components/Icons/Index";
 import { styles } from "./style";
 import { authenticatorAPI } from "../../services/api/authenticator";
+import { useDispatch } from "react-redux";
+import { setEmailUser } from "../../redux/actions/getUserAction";
 
 const Forgot = ({ navigation }) => {
   const [email, setEmail] = useState("");
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const handleLogin = async () => {
+    setLoading(true)
     try {
       let data = {
         email: email
       }
       await authenticatorAPI.forgotPassRequire(data);
       navigation.navigate("CodeVerify", { name: "Forgot" });
+      setLoading(false)
+      dispatch(setEmailUser(data.email));
     } catch (e) {
       console.log(e);
+      setLoading(false)
       Alert.alert("Mã xác thực gửi về email của bạn");
     }
   };
@@ -38,7 +47,7 @@ const Forgot = ({ navigation }) => {
     >
 
       <View style={styles.contentLogin}>
-        
+
         <Modal
           transparent={true}
           visible={true}
@@ -49,14 +58,14 @@ const Forgot = ({ navigation }) => {
           style={styles.box_view}
         >
           <View style={styles.title}>
-          <TouchableHighlight
-            onPress={onPrevious}
-            style={styles.icon}
-          >
-            <BackIcon />
-          </TouchableHighlight>
+            <TouchableHighlight
+              onPress={onPrevious}
+              style={styles.icon}
+            >
+              <BackIcon />
+            </TouchableHighlight>
 
-        </View>
+          </View>
           <View style={styles.contentForm}>
             <View style={styles.formLogin}>
               <Text style={styles.header}>Quên mật khẩu</Text>
@@ -85,6 +94,11 @@ const Forgot = ({ navigation }) => {
               </TouchableHighlight>
             </View>
           </View>
+        {loading && (
+          <View style={styles.behavior}>
+            <ActivityIndicator size={'large'} />
+          </View>
+        )}
         </Modal>
       </View>
       {/* </KeyboardAvoidingView> */}

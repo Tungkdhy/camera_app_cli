@@ -61,7 +61,7 @@ export const formatDate = (date) => {
 }
 // validator confirm password
 export const isValidateConfirm = (oldVar, newVar) => {
-  return !!oldVar.match(newVar)
+  return !!newVar.match(oldVar)
 }
 export const convertToSecond = (day)=>{
   const split = day.split(":")

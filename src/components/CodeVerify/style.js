@@ -181,7 +181,8 @@ export const styles = StyleSheet.create({
       formControl:{
         borderWidth:1,
         paddingTop:8,
-        paddingLeft:20,
+        paddingLeft:16,
+        paddingRight:3,
         paddingBottom:8,
         borderRadius:4,
         borderColor:"rgba(0, 0, 0, 0.2)"
@@ -215,6 +216,25 @@ export const styles = StyleSheet.create({
         flexDirection:"row",
         alignItems:"center",
         paddingTop:54,
+      },
+      clock: {
+        with: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+      },
+      time: {
+        fontWeight: '600',
+        color: '#0040FF',
+        fontSize: 14,
+      },
+      behavior: {
+        position:'absolute',
+        opacity: 0.5,
+        display: 'flex',
+        justifyContent:'center',
+        alignItems: 'center',
+        width: '100%',
+        height: '100%',
+        backgroundColor:'rgba(0,0,0,0.5)'
       }
-
 })

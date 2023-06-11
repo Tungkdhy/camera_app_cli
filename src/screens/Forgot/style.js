@@ -181,5 +181,15 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-end',
+  },
+  behavior: {
+    position:'absolute',
+    opacity: 0.5,
+    display: 'flex',
+    justifyContent:'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0,0,0,0.5)'
   }
 })
