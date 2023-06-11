@@ -99,4 +99,16 @@ export const styles = StyleSheet.create({
         borderColor: "red",
         color: "red"
     },
+    loading: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+    },
+    contain: {
+        position:'relative',
+        height: '100%',
+    }
 })

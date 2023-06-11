@@ -185,6 +185,7 @@ export const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: '#000',
+    color: 'white',
+    backgroundColor: '#333'
   },
 });

@@ -177,7 +177,7 @@ function LineChartService({ type, codeService }) {
             const analytic = getDataFill(day, data);
             setDataValue([0, ...analytic]);
         }
-    }, [codeCamera, listData, getCameraData, stateValue.value, getDataFill]);
+    }, [codeCamera, listData, getCameraData, stateValue, getDataFill])
     return (
         <View style={styles.container}>
             <View style={styles.header_fill}>

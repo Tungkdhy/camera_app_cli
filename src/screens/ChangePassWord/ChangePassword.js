@@ -18,10 +18,11 @@ import {
   LockIcon,
   UserIcon,
   EyeIcon,
-} from '../../components/Icons/Index';
-import { isValidatePassword } from '../../utils';
-import { styles } from './style';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+} from "../../components/Icons/Index";
+import { isValidateConfirm, isValidatePassword } from "../../utils";
+import { styles } from "./style";
+import { authenticatorAPI } from "../../services/api/authenticator";
+
 
 const ChangePassword = ({ navigation }) => {
   const [newPassword, setNewPassword] = useState('');
@@ -29,35 +30,95 @@ const ChangePassword = ({ navigation }) => {
   const [isShowPass, setIsShowPass] = useState(true);
   const handleLogin = async () => {
     try {
-      if (password === newPassword && password && newPassword) {
-        const token = await AsyncStorage.getItem('token');
-        const res = await axios.post(
-          'http://42.96.41.91:10710/vinorsoft/aicamera/v1.0/authenticator/password-reset/confirm',
-          {
-            password,
-            token,
-          },
-        );
-        if (res.status === 200) {
-          navigation.navigate('Success');
+      if (isValidatePassword(password) && isValidateConfirm(password, newPassword)) {
+        const token = route.params?.token ? route.params?.token : null;
+        let data = {
+          password: password,
+          token: token.token,
+
         }
       }
     } catch (e) {
       Alert.alert('Đổi mật khẩu không thành công');
     }
   };
+
   return (
-    <TouchableNativeFeedback onPress={() => Keyboard.dismiss()}>
-      <ImageBackground
-        style={styles.container}
-        source={require('../../assets/images/BgLogin.png')}>
-        <KeyboardAvoidingView enabled={true} behavior="padding">
-          <View style={styles.contentLogin}>
-            <View style={styles.title}>
-              <TouchableHighlight
-                onPress={() => navigation.navigate('Wellcom')}
-                style={styles.icon}>
-                <BackIcon />
+    <ImageBackground
+      style={styles.container}
+      source={require("../../assets/images/BgLogin.png")}
+    >
+      <View style={styles.contentLogin}>
+        <Modal
+          transparent={true}
+          visible={true}
+          animationType="slide"
+          onRequestClose={() => {
+            return 0
+          }}
+        >
+          <View style={styles.title}>
+            <TouchableHighlight
+              onPress={() => navigation.navigate("Wellcom")}
+              style={styles.icon}
+            >
+              <BackIcon />
+            </TouchableHighlight>
+          </View>
+          <View style={styles.contentForm}>
+            <View style={styles.formLogin}>
+              <Text style={styles.header}>Đổi mật khẩu</Text>
+              <SafeAreaView>
+                <Text style={styles.label}>Mật khẩu</Text>
+                <View style={styles.contain}>
+                  <TextInput
+                    onChangeText={(text) => setPassword(text)}
+                    style={
+                      password !== "" &&
+                        !isValidatePassword(password)
+                        ? { ...styles.input, ...styles.borderError }
+                        : styles.input
+                    }
+                    value={password}
+                    placeholder="Nhập"
+                    secureTextEntry={isShowPass}
+                  />
+                  <Text style={styles.eyeIcon} onPress={() => setIsShowPass(!isShowPass)}>
+                    <EyeIcon />
+                  </Text>
+                </View>
+                <Text style={styles.validate}>
+                  Dài trên 11 kí tự, bao gồm cả chữ, số, viết hoa, viết thường và
+                  cả những kí tự đặc biệt
+                </Text>
+                <Text style={styles.label}>Nhập lại mật khẩu</Text>
+                <View style={styles.contain}>
+                  <TextInput
+                    style={
+                        !isValidatePassword(newPassword)
+                        ? { ...styles.input, ...styles.borderError }
+                        : styles.input
+                    }
+                    placeholder="Nhập"
+                    value={newPassword}
+                    onChangeText={(text) => setNewPassword(text)}
+                    secureTextEntry={isShowPass}
+                  />
+                  <Text style={styles.eyeIcon} onPress={() => setIsShowPass(!isShowPass)}>
+                    <EyeIcon />
+                  </Text>
+                </View>
+                {
+                  !isValidateConfirm(password, newPassword) ? (
+                  <Text style={styles.error}>Mật khẩu nhập lại không giống</Text>
+                ) : (
+                  <Text></Text>
+                )}
+              </SafeAreaView>
+              <TouchableHighlight onPress={handleLogin} style={styles.login}>
+                <View style={styles.buttonLogin}>
+                  <Text style={styles.btnText}>Tiếp tục</Text>
+                </View>
               </TouchableHighlight>
             </View>
             <View style={styles.contentForm}>

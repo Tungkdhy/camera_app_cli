@@ -158,7 +158,7 @@ export const styles = StyleSheet.create({
       },
       eyeIcon:{
         position:"absolute",
-        top:136,
+        top: 28,
         right:12,
         zIndex:10
       },
@@ -180,6 +180,8 @@ export const styles = StyleSheet.create({
       },
       label:{
         color:"#000"
+      },
+      contain: {
+        position: 'relative'
       }
-
 })

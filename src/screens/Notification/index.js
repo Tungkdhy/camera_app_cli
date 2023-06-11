@@ -145,7 +145,7 @@ function Notification({ navigation }) {
     }
   };
 
-  const handleGetMoreNotification = () => {
+  const handleGetMoreNotification = (e) => {
     setPage(page + 1);
   };
   const navigatePlayBackCamera = notification => { };
@@ -196,7 +196,6 @@ function Notification({ navigation }) {
       </View>
       <View style={styles.content}>
         <ScrollView onScrollEndDrag={handleGetMoreNotification}>
-          {smartReport ? (
             <>
               {listNotificationSmart.length > 0 &&
                 listNotificationSmart.map((notification, index) => {
@@ -277,7 +276,7 @@ function Notification({ navigation }) {
                   );
                 })}
             </>
-          )}
+          {/* )} */}
         </ScrollView>
       </View>
     </View>

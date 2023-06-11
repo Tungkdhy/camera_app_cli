@@ -11,7 +11,7 @@ function CountCamera({ countCamera, companyName }) {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>
-        Thống kê Camera của công ty {companyName}
+        Thống kê camera {companyName}
       </Text>
       {/* content */}
       <View style={styles.contentHeader}>
@@ -22,35 +22,31 @@ function CountCamera({ countCamera, companyName }) {
             <Text style={styles.name}>Tổng Camera</Text>
           </View>
           <View style={styles.headerItem}>
-            <ImageBackground style={styles.image_camera} source={ImageEye} />
-            <Text style={styles.number}>{countCamera.VIEWS}</Text>
-            <Text style={styles.name}>Xem trực tiếp</Text>
-          </View>
-        </View>
-        <View style={styles.boxHeader}>
-          <View style={styles.headerItem}>
             <ImageBackground style={styles.image_camera} source={ImageCamOn} />
+
             <Text style={styles.number}>{countCamera.ACTIVE}</Text>
             <Text style={styles.name}>Đang trực tuyến</Text>
           </View>
+        </View>
+        <View style={styles.boxHeader}>
           <View style={styles.headerItem}>
             <ImageBackground style={styles.image_camera} source={ImageCamOff} />
             <Text style={styles.number}>{countCamera.INACTIVE}</Text>
             <Text style={styles.name}>Sẵn sàng</Text>
-          </View>
-        </View>
-
-        <View style={styles.boxHeader}>
-          <View style={styles.headerItem}>
-            <ImageBackground style={styles.image_camera} source={Weak} />
-            <Text style={styles.number}>{countCamera.WEAK}</Text>
-            <Text style={styles.name}>Kết nối yếu</Text>
           </View>
           <View style={styles.headerItem}>
             <ImageBackground style={styles.image_camera} source={DisConnect} />
             <Text style={styles.number}>{countCamera.NO_CONNECT}</Text>
             <Text style={styles.name}>Mất kết nối</Text>
           </View>
+        </View>
+        <View style={styles.boxHeader}>
+          <View style={styles.headerItem}>
+            <ImageBackground style={styles.image_camera} source={Weak} />
+            <Text style={styles.number}>{countCamera.WEAK}</Text>
+            <Text style={styles.name}>Kết nối yếu</Text>
+          </View>
+
         </View>
       </View>
     </View>

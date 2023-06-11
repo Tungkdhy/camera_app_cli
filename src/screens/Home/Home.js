@@ -41,6 +41,7 @@ export default function Home({ navigation }) {
         '/statCountCam/post-add-stat-count-cam/',
       );
       setCountCamera({
+
         COUNT_CAM: getCountCamera.data[0]?.COUNT_CAM,
         ACTIVE: getCountCamera.data[0]?.ACTIVE,
         INACTIVE: getCountCamera.data[0]?.INACTIVE,
@@ -55,7 +56,8 @@ export default function Home({ navigation }) {
       const getNameCompany = await axiosClient.get(
         `/company/get-list-company/?company_code=${getCountCamera[0]?.COMPANY_CODE}`,
       );
-      setCompanyName(getNameCompany[0]?.NAME);
+      let name = getNameCompany[0]?.NAME ? getNameCompany[0]?.NAME : 'Mặc định';
+      setCompanyName(name);
       const upDateCountCamera = await axiosClient.post(
         '/statCountCam/post-add-stat-count-cam/',
       );
@@ -63,6 +65,7 @@ export default function Home({ navigation }) {
     };
     getAndUpDateCountCamera();
   }, []);
+
   useEffect(() => {
     Orientation.lockToPortrait(); //this will lock the view to Portrait
   }, []);
