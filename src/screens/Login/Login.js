@@ -24,7 +24,6 @@ import {
 // import messaging from '@react-native-firebase/messaging';
 import { styles } from './styles';
 import Orientation from 'react-native-orientation-locker';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axiosClient from '../../services/axiosClient';
 import { useDispatch } from 'react-redux';
@@ -36,20 +35,6 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [isShowPass, setIsShowPass] = useState(true);
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   async function getData() {
-  //     try {
-  //       const res = await axios.get('https://jsonplaceholder.typicode.com/todos/1')
-  //       const token1 = await messaging().getToken()
-  //       setToken(token1)
-  //       setData(res.data)
-  //     }
-  //     catch (e) {
-
-  //     }
-  //   }
-  //   getData()
-  // }, [])
   const handleLogin = async () => {
     try {
       const res = await axios.post(
@@ -63,11 +48,12 @@ const Login = ({ navigation }) => {
         await AsyncStorage.setItem('token', res.data.access);
         await AsyncStorage.setItem('role', res.data.role);
         const infoUser = await axiosClient.get('/user/get-user-info/');
-        let userTypeCode = infoUser[0].USERTYPE_CODE;
+        let userTypeCode = infoUser[0]?.USERTYPE_CODE;
         dispatch(setUserTypeCode(userTypeCode));
         navigation.navigate('Home');
       }
     } catch (e) {
+      console.log(e);
       Alert.alert('Đăng nhập không thành công');
     }
   };
