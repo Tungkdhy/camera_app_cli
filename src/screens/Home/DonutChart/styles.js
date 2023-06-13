@@ -63,12 +63,12 @@ export const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
     },
-    title: {
-        marginLeft: 8,
-        fontSize: 14,
-        lineHeight: 20,
-        fontWeight: 400,
-        color: '#000000',
-        maxWidth: 120,
-    },
+    // title: {
+    //     marginLeft: 8,
+    //     fontSize: 14,
+    //     lineHeight: 20,
+    //     // fontWeight: 400,
+    //     color: '#000000',
+    //     maxWidth: 120,
+    // },
 });

@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-
 export const styles = StyleSheet.create({
   container: {
     width: "100%",
@@ -18,7 +17,6 @@ export const styles = StyleSheet.create({
     paddingBottom: 40,
     paddingLeft: 20,
     paddingRight: 20,
-
   },
   text: {
     color: "#ffffff",
@@ -70,7 +68,6 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   formLogin: {
-
     padding: 16
   },
   logo: {
@@ -84,11 +81,13 @@ export const styles = StyleSheet.create({
     paddingLeft: 16
   },
   contentForm: {
-    height: "30%",
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    width: "100%",
     justifyContent: "space-between",
     backgroundColor: "#ffffff",
     display: "flex",
-
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
   },
@@ -100,8 +99,6 @@ export const styles = StyleSheet.create({
     borderRadius: 4,
     paddingLeft: 12,
     color: "#000"
-
-
   },
   login: {
     marginTop: 24,
@@ -112,14 +109,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 4,
     backgroundColor: "#0040FF",
-
-
   },
   forgot: {
     textAlign: "center",
     paddingTop: 24,
     color: "#0040FF",
-
   },
   textLogin: {
     color: "#fff",
@@ -168,7 +162,6 @@ export const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "600",
     paddingBottom: 24
-
   },
   text: {
     fontSize: 12,
@@ -188,7 +181,5 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: 'rgba(0,0,0,0.5)'
-
   }
-
 })

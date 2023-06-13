@@ -4,11 +4,11 @@ import Move from '../../../assets/images/Movement.png';
 import Motion from '../../../assets/images/Motion.png';
 import Object1 from '../../../assets/images/Object.png';
 
-function CountAI({ countCamera }) {
+function CountAI({ countCamera, companyName }) {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>
-        Thống kê AI
+        Thống kê AI {companyName}
       </Text>
       <View style={styles.boxHeader}>
         <View style={styles.headerItem}>

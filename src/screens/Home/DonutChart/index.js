@@ -70,7 +70,7 @@ function DonutChart({ title, type }) {
                 const formatData = getData.map((item, index) => {
                     return ({
                         name: item.GROUP_NAME,
-                        population: Number(item.COUNT),
+                        population: Number(item?.COUNT),
                         color: arrColor[index],
                     })
                 })
@@ -83,8 +83,8 @@ function DonutChart({ title, type }) {
                 }
                 const formatData = getData.map((item, index) => {
                     return ({
-                        name: item.WAREHOUSE_NAME,
-                        population: Number(item.COUNT),
+                        name: item?.WAREHOUSE_NAME,
+                        population: Number(item?.COUNT),
                         color: arrColor[index],
                     })
                 })
@@ -93,7 +93,6 @@ function DonutChart({ title, type }) {
         }
         getAndUpDateDataForChart()
     }, [type, color])
-
 
     return (
         <View style={styles.container}>
