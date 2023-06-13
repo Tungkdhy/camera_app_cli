@@ -72,7 +72,7 @@ const StickTime = ({ code, day, setChange }) => {
     getTimeLine();
   }, [code, day]);
   return (
-    <View style={{ position: 'relative' }}>
+    <View style={{ position: 'relative', paddingRight: 16 }}>
       <Text style={styles.time}>
         {playback.filter.day} {stick_time}
       </Text>

@@ -166,7 +166,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   fullScreen: {
-    width: width - 70,
+    width: width - 40,
     height: height,
   },
   time: {

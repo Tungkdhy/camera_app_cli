@@ -1,93 +1,91 @@
-import { StyleSheet } from "react-native";
-
-export const styles = StyleSheet.create({
+import { StyleSheet } from 'react-native';
+const style = StyleSheet.create({
   container: {
-    width: "100%",
-    height: "100%",
-    position: "relative"
+    width: '100%',
+    height: '100%',
+    position: 'relative',
   },
   content: {
     // flexDirection:"column",
     // position:"absolute",
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
     // alignItems:"flex-end",
     // bottom:40,
     // left:20,
     // right:20
-    height: "100%",
+    height: '100%',
     paddingBottom: 40,
     paddingLeft: 20,
     paddingRight: 20,
-
   },
   text: {
-    color: "#ffffff",
+    color: '#ffffff',
     fontSize: 28,
     paddingBottom: 16,
-    width: "50%",
-    textAlign: "left"
+    width: '50%',
+    textAlign: 'left',
   },
   actions: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between"
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   button: {
     alignItems: 'center',
     backgroundColor: '#0040FF',
     padding: 14,
-    borderRadius: 4
+    borderRadius: 4,
   },
   btnText: {
-    color: "#ffffff"
+    color: '#ffffff',
   },
   countText: {
     color: '#FF00FF',
   },
   touch: {
-    width: "48%"
+    width: '48%',
   },
   buttonRegister: {
     alignItems: 'center',
     padding: 13,
     borderRadius: 4,
-    borderColor: "#fff",
-    borderWidth: 1
+    borderColor: '#fff',
+    borderWidth: 1,
   },
   description: {
     paddingBottom: 16,
-    color: "rgba(255, 255, 255, 0.7);",
-    fontSize: 18
+    color: 'rgba(255, 255, 255, 0.7);',
+    fontSize: 18,
   },
   title: {
     paddingTop: 100,
-    position: "relative",
-    color: "#000"
+    position: 'relative',
+    color: '#000',
   },
   contentLogin: {
-    backgroundColor: "linear-gradient(180deg, rgba(0, 64, 255, 0.69) 0%, rgba(0, 64, 255, 0.39) 100%)",
-    height: "100%",
-    justifyContent: "space-between",
+    backgroundColor:
+      'linear-gradient(180deg, rgba(0, 64, 255, 0.69) 0%, rgba(0, 64, 255, 0.39) 100%)',
+    height: '100%',
+    justifyContent: 'space-between',
   },
   formLogin: {
-
-    padding: 16
+    padding: 16,
   },
   logo: {
-    alignItems: "center",
-    marginBottom: 30
+    alignItems: 'center',
+    marginBottom: 30,
   },
   error: {
-    color: "red",
+    color: 'red',
     fontSize: 12,
     paddingTop: 6,
-    paddingLeft: 16
+    paddingLeft: 16,
   },
   contentForm: {
-    height: "30%",
-    justifyContent: "space-between",
-    backgroundColor: "#ffffff",
-    display: "flex",
+    height: '30%',
+    justifyContent: 'space-between',
+    backgroundColor: '#ffffff',
+    display: 'flex',
 
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
@@ -96,12 +94,10 @@ export const styles = StyleSheet.create({
     marginTop: 10,
     borderWidth: 1,
     padding: 12,
-    borderColor: "rgba(0, 0, 0, 0.2)",
+    borderColor: 'rgba(0, 0, 0, 0.2)',
     borderRadius: 4,
     paddingLeft: 12,
-    color: "#000"
-
-
+    color: '#000',
   },
   login: {
     marginTop: 24,
@@ -111,68 +107,64 @@ export const styles = StyleSheet.create({
     padding: 12,
     alignItems: 'center',
     borderRadius: 4,
-    backgroundColor: "#0040FF",
-
-
+    backgroundColor: '#0040FF',
   },
   forgot: {
-    textAlign: "center",
+    textAlign: 'center',
     paddingTop: 24,
-    color: "#0040FF",
-
+    color: '#0040FF',
   },
   textLogin: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 24,
-    textAlign: "center"
+    textAlign: 'center',
   },
   icon: {
-    position: "absolute",
+    position: 'absolute',
     bottom: -8,
     left: 20,
-    backgroundColor: "rgba(255, 255, 255, 0.15)",
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
     padding: 10,
     borderRadius: 50,
-    zIndex: 10
+    zIndex: 10,
   },
   register: {
     paddingBottom: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row"
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
   re: {
-    color: "#0040FF",
+    color: '#0040FF',
   },
   borderError: {
-    borderColor: "red",
-    color: "red"
+    borderColor: 'red',
+    color: 'red',
   },
   userIcon: {
-    position: "absolute",
+    position: 'absolute',
     top: 40,
-    left: 12
+    left: 12,
   },
   lockIcon: {
-    position: "absolute",
+    position: 'absolute',
     top: 132,
-    left: 12
+    left: 12,
   },
   eyeIcon: {
-    position: "absolute",
+    position: 'absolute',
     top: 136,
     right: 12,
-    zIndex: 10
+    zIndex: 10,
   },
   header: {
     fontSize: 24,
-    fontWeight: "600",
-    paddingBottom: 24
-
+    fontWeight: '600',
+    paddingBottom: 24,
   },
   text: {
     fontSize: 12,
-    color: "#000"
+    color: '#000',
   },
   box_view: {
     display: 'flex',
@@ -180,15 +172,14 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   behavior: {
-    position:'absolute',
+    position: 'absolute',
     opacity: 0.5,
     display: 'flex',
-    justifyContent:'center',
+    justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(0,0,0,0.5)'
-
-  }
-
-})
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+});
+export default style;

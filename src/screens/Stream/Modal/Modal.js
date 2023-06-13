@@ -59,41 +59,44 @@ const Modal = ({
       onRequestClose={() => {
         onShowModal();
       }}>
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <View style={styles.modalHeader}>
-            <Text style={styles.titleHeader}>Khu vực</Text>
-            <Pressable
-              onPress={() => {
-                onShowModal();
-                if (!isProvince) {
-                  setIsProvince();
-                }
-                dispatch(setFilterDistrict(''));
-                dispatch(setFilterProvince(''));
-                setInput('');
-              }}
-              style={styles.iconModal}>
-              <Close />
-            </Pressable>
-          </View>
-          <View style={styles.modalContent}>
-            {isProvince ? (
-              <></>
-            ) : (
-              <View style={styles.title}>
+      <TouchableNativeFeedback onPress={() => Keyboard.dismiss()}>
+        <KeyboardAvoidingView enabled={true} behavior={'padding'}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.titleHeader}>Khu vực</Text>
                 <Pressable
                   onPress={() => {
-                    setIsProvince();
+                    onShowModal();
+                    if (!isProvince) {
+                      setIsProvince();
+                    }
+                    dispatch(setFilterDistrict(''));
+                    dispatch(setFilterProvince(''));
                     setInput('');
-                  }}>
-                  <Back />
+                  }}
+                  style={styles.iconModal}>
+                  <Close />
                 </Pressable>
-                <Text style={styles.textDist}>Chọn quận, huyện, thị xã</Text>
               </View>
-            )}
-            <TouchableNativeFeedback onPress={() => Keyboard.dismiss()}>
-              <KeyboardAvoidingView enabled={true} behavior={'padding'}>
+              <View style={styles.modalContent}>
+                {isProvince ? (
+                  <></>
+                ) : (
+                  <View style={styles.title}>
+                    <Pressable
+                      onPress={() => {
+                        setIsProvince();
+                        setInput('');
+                      }}>
+                      <Back />
+                    </Pressable>
+                    <Text style={styles.textDist}>
+                      Chọn quận, huyện, thị xã
+                    </Text>
+                  </View>
+                )}
+
                 <View style={styles.search}>
                   <TextInput
                     value={input}
@@ -102,81 +105,81 @@ const Modal = ({
                     placeholder="Tìm kiếm"
                   />
                 </View>
-              </KeyboardAvoidingView>
-            </TouchableNativeFeedback>
 
-            <ScrollView>
-              <View style={styles.item}>
-                <CheckBox
-                  containerStyle={styles.radio}
-                  title="Tất cả"
-                  checkedIcon={<RadioCheck />}
-                  uncheckedIcon={<Radio />}
-                  onPress={() => {
-                    dispatch(setProvinceCode(''));
-                    dispatch(setDistrictCode(''));
-                  }}
-                  checked={filter === '' ? true : false}
-                />
-                {/* <Pressable onPress={() => setIsProvince()}>
-            <NextIcon />
-          </Pressable> */}
-              </View>
-              {data.map((item, index) => {
-                return (
-                  <Pressable
-                    onPress={() => {
-                      dispatch(
-                        isProvince
-                          ? setProvinceCode({
-                            code: item.code,
-                            name: item.name,
-                          })
-                          : setDistrictCode({
-                            code: item.code,
-                            name: item.name,
-                          }),
-                      );
-                      setIsProvince();
-                      setInput('');
-                    }}
-                    key={index}
-                    style={styles.item}>
+                <ScrollView>
+                  <View style={styles.item}>
                     <CheckBox
                       containerStyle={styles.radio}
-                      title={item.name}
-                      key={index}
+                      title="Tất cả"
                       checkedIcon={<RadioCheck />}
                       uncheckedIcon={<Radio />}
-                      checked={filter === item.code ? true : false}
                       onPress={() => {
-                        dispatch(
-                          isProvince
-                            ? setProvinceCode({
-                              code: item.code,
-                              name: item.name,
-                            })
-                            : setDistrictCode({
-                              code: item.code,
-                              name: item.name,
-                            }),
-                        );
-                        setIsProvince();
-                        setInput('');
+                        dispatch(setProvinceCode(''));
+                        dispatch(setDistrictCode(''));
                       }}
+                      checked={filter === '' ? true : false}
                     />
-                    {isProvince && (
-                      <View>
-                        <NextIcon />
-                      </View>
-                    )}
-                  </Pressable>
-                );
-              })}
-            </ScrollView>
+                    {/* <Pressable onPress={() => setIsProvince()}>
+            <NextIcon />
+          </Pressable> */}
+                  </View>
+                  {data.map((item, index) => {
+                    return (
+                      <Pressable
+                        onPress={() => {
+                          dispatch(
+                            isProvince
+                              ? setProvinceCode({
+                                code: item.code,
+                                name: item.name,
+                              })
+                              : setDistrictCode({
+                                code: item.code,
+                                name: item.name,
+                              }),
+                          );
+                          setIsProvince();
+                          setInput('');
+                        }}
+                        key={index}
+                        style={styles.item}>
+                        <CheckBox
+                          containerStyle={styles.radio}
+                          title={item.name}
+                          key={index}
+                          checkedIcon={<RadioCheck />}
+                          uncheckedIcon={<Radio />}
+                          checked={filter === item.code ? true : false}
+                          onPress={() => {
+                            dispatch(
+                              isProvince
+                                ? setProvinceCode({
+                                  code: item.code,
+                                  name: item.name,
+                                })
+                                : setDistrictCode({
+                                  code: item.code,
+                                  name: item.name,
+                                }),
+                            );
+                            setIsProvince();
+                            setInput('');
+                          }}
+                        />
+                        {isProvince && (
+                          <View>
+                            <NextIcon />
+                          </View>
+                        )}
+                      </Pressable>
+                    );
+                  })}
+                </ScrollView>
+              </View>
+            </View>
           </View>
-        </View>
-      </View>
+        </KeyboardAvoidingView>
+      </TouchableNativeFeedback>
     </ModalLocation>
   );
 };

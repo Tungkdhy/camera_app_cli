@@ -2,10 +2,10 @@ import React from "react";
 import { styles } from './styles';
 import { Modal, Pressable, View } from "react-native";
 import { Text } from "react-native";
-import { Close } from "../../../components/Icons/Index";
+import { Close } from "../../../../components/Icons/Index";
 import { TouchableHighlight } from "react-native";
 import { useDispatch } from "react-redux";
-import { setWareHouseCode } from "../../../redux/actions/cameraAction";
+import { setWareHouseCode } from "../../../../redux/actions/cameraAction";
 
 function ModalInfo({ navigation, data, onCloseBoxInfo, show }) {
     const dispatch = useDispatch()

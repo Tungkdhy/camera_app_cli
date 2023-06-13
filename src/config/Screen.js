@@ -2,7 +2,7 @@ import Home from "../screens/Home/Home";
 import Wellcome from "../screens/Login/Wellcome";
 import Forgot from "../screens/ChangePassWord/ChangePassword";
 import Login from "../screens/Login/Login";
-import Map from "../screens/Map/Map";
+import Map from "../screens/Home/Map/Map";
 
 export const screen = [
     {

@@ -1,16 +1,16 @@
 
 import { View } from 'react-native';
-import Header from '../../components/Header/Header';
-import Filter from '../../components/Filter/Filter';
+import Header from '../../../components/Header/Header';
+import Filter from '../../../components/Filter/Filter';
 import { useEffect, useState } from 'react';
 import Mapbox, { Camera, MapView, MarkerView } from '@rnmapbox/maps';
 import { styles } from './styles';
 import ModalInfo from './ModalInfo/ModalInfo';
 import MarkerCustom from './MarkerCustom/MarkerCustom';
-import axiosClient from '../../services/axiosClient';
-import Modal from '../Stream/Modal/Modal';
+import axiosClient from '../../../services/axiosClient';
+import Modal from '../../Stream/Modal/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { getListDistrict, getListProvince } from '../../redux/actions/cameraAction';
+import { getListDistrict, getListProvince } from '../../../redux/actions/cameraAction';
 Mapbox.setWellKnownTileServer('Mapbox');
 Mapbox.setAccessToken('pk.eyJ1IjoiY2h1bmd2cSIsImEiOiJjbGNzeHNuYWIwZmdlM29zMXp0emw0ZHIyIn0.qrkqLsQwQIkplAoGRYgWrQ');
 

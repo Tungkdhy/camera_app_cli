@@ -6,7 +6,7 @@ const width = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
   container: {
     paddingLeft: 16,
-    paddingRight: 16,
+    // paddingRight: 16,
     flex: 1,
   },
   containerFull: {
@@ -57,6 +57,7 @@ export const styles = StyleSheet.create({
   },
   active: {
     paddingTop: 12,
+    paddingRight: 16,
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.05)',
     paddingBottom: 12,
@@ -109,7 +110,10 @@ export const styles = StyleSheet.create({
     display: 'flex',
   },
   list: {
-    marginVertical: 20,
+    // marginVertical: 20,
+    // marginRight: 12
+    paddingRight: 8,
+    marginRight: 8
   },
   nameCamera: {
     paddingTop: 4,
@@ -174,7 +178,7 @@ export const styles = StyleSheet.create({
     // height: Dimensions.get('window').width,
     // minWidth: Dimensions.get('window').height,
     // minHeight: Dimensions.get('window').width,
-    width: width - 70,
+    width: width - 80,
     height: height,
 
     // transform: [{rotate: '90deg'}],
@@ -186,6 +190,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     color: 'white',
-    backgroundColor: '#333'
+    backgroundColor: '#333',
   },
 });
