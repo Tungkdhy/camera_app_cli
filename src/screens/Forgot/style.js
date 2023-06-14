@@ -1,5 +1,7 @@
-import { StyleSheet } from 'react-native';
-const style = StyleSheet.create({
+
+import { StyleSheet } from "react-native";
+export const styles = StyleSheet.create({
+
   container: {
     width: '100%',
     height: '100%',
@@ -82,11 +84,14 @@ const style = StyleSheet.create({
     paddingLeft: 16,
   },
   contentForm: {
-    height: '30%',
-    justifyContent: 'space-between',
-    backgroundColor: '#ffffff',
-    display: 'flex',
 
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    width: "100%",
+    justifyContent: "space-between",
+    backgroundColor: "#ffffff",
+    display: "flex",
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
   },
@@ -97,7 +102,7 @@ const style = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.2)',
     borderRadius: 4,
     paddingLeft: 12,
-    color: '#000',
+    color: "#000"
   },
   login: {
     marginTop: 24,
@@ -107,12 +112,12 @@ const style = StyleSheet.create({
     padding: 12,
     alignItems: 'center',
     borderRadius: 4,
-    backgroundColor: '#0040FF',
+    backgroundColor: "#0040FF",
   },
   forgot: {
     textAlign: 'center',
     paddingTop: 24,
-    color: '#0040FF',
+    color: "#0040FF",
   },
   textLogin: {
     color: '#fff',
@@ -159,8 +164,8 @@ const style = StyleSheet.create({
   },
   header: {
     fontSize: 24,
-    fontWeight: '600',
-    paddingBottom: 24,
+    fontWeight: "600",
+    paddingBottom: 24
   },
   text: {
     fontSize: 12,
@@ -179,7 +184,6 @@ const style = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  },
-});
-export default style;
+    backgroundColor: 'rgba(0,0,0,0.5)'
+  }
+})

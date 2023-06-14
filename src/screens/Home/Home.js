@@ -7,9 +7,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Orientation from 'react-native-orientation-locker';
 import CountAI from './CountAI';
 import axiosClient from '../../services/axiosClient';
-import streamingClient from '../../services/axiosStreaming';
 import AnalyticAI from './AnalyticAI';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Home({ navigation }) {
   const [countCamera, setCountCamera] = useState({
@@ -17,7 +15,7 @@ export default function Home({ navigation }) {
     ACTIVE: 0,
     INACTIVE: 0,
     VIEWS: 0,
-    COMPANY_CODE: null,
+    COMPANY_CODE: 'DEFAULT',
     MOTION: 0,
     COMMON_OBJECT: 0,
     MOVEMENT: 0,
@@ -25,23 +23,14 @@ export default function Home({ navigation }) {
     WEAK: 0,
   });
   const [companyName, setCompanyName] = useState('');
+  const [statusGet, setStatusGet] = useState(false);
 
-  const getListStatus = useCallback(async () => {
+  const getCountCam = useCallback(async () => {
     try {
-      const res = await streamingClient.get(
-        '/streamManagement/get-list-state-camera-stream/',
-      );
-      return res;
-    } catch (e) { }
-  }, []);
-
-  useEffect(() => {
-    const getAndUpDateCountCamera = async () => {
       const getCountCamera = await axiosClient.post(
         '/statCountCam/post-add-stat-count-cam/',
       );
       setCountCamera({
-
         COUNT_CAM: getCountCamera.data[0]?.COUNT_CAM,
         ACTIVE: getCountCamera.data[0]?.ACTIVE,
         INACTIVE: getCountCamera.data[0]?.INACTIVE,
@@ -53,18 +42,56 @@ export default function Home({ navigation }) {
         COMMON_OBJECT: getCountCamera.data[0]?.COMMON_OBJECT,
         MOVEMENT: getCountCamera.data[0]?.MOVEMENT,
       });
+      setStatusGet(getCountCamera.result)
+      return getCountCamera;
+    } catch (error) {
+      console.log(error);
+      setStatusGet(true)
+    }
+  }, [])
+
+  const getCompany = useCallback(async (code) => {
+    try {
       const getNameCompany = await axiosClient.get(
-        `/company/get-list-company/?company_code=${getCountCamera[0]?.COMPANY_CODE}`,
+        `/company/get-list-company/?company_code=${code}`,
       );
       let name = getNameCompany[0]?.NAME ? getNameCompany[0]?.NAME : 'Mặc định';
       setCompanyName(name);
-      const upDateCountCamera = await axiosClient.post(
-        '/statCountCam/post-add-stat-count-cam/',
-      );
-      return upDateCountCamera;
+    } catch (error) {
+      console.log(error);
+    }
+  }, [])
+
+  useEffect(() => {
+    const getAndUpDateCountCamera = async () => {
+      const countCam = await getCountCam()
+      let code = countCam[0]?.COMPANY_CODE
+      if(code) {
+        await getCompany()
+      }
     };
     getAndUpDateCountCamera();
-  }, []);
+  }, [getCountCam, getCompany]);
+
+  useEffect(() => {
+    const getUpdateCount = async () => {
+      try {
+        if(statusGet) {
+          const upDateCountCamera = await axiosClient.post(
+            '/statCountCam/post-add-stat-count-cam/',
+          );
+          if(companyName.trim().length <= 0) {
+            let code = upDateCountCamera[0]?.COMPANY_CODE;
+            await getCompany(code)
+          }
+          return upDateCountCamera;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getUpdateCount()
+  }, [statusGet, companyName, getCompany])
 
   useEffect(() => {
     Orientation.lockToPortrait(); //this will lock the view to Portrait
@@ -93,7 +120,7 @@ export default function Home({ navigation }) {
       <View style={style.container}>
         <ScrollView>
           <CountCamera companyName={companyName} countCamera={countCamera} />
-          <CountAI countCamera={countCamera} />
+          <CountAI countCamera={countCamera} companyName={companyName}/>
           <DonutChart title={'Tổng số Camera theo nhóm'} type={'group'} />
           <DonutChart
             title={'Tổng số Camera theo địa điểm'}

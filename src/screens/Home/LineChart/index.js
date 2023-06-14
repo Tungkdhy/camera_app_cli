@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { View, Text, Pressable, Alert } from 'react-native';
-import axiosClient from '../../../services/axiosClient';
 import { styles } from './styles';
 import { LineChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 import { eventAI } from '../../../services/api/eventAI';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -70,10 +68,10 @@ function LineChartService({ type, codeService }) {
         ],
     };
 
-    const getListCamera = useCallback(async () => {
+    const getListCamera = useCallback(async (code) => {
         try {
             const params = {
-                ai_service_code: codeService,
+                ai_service_code: code,
                 ai_already: 1,
             };
             const res = await cameraManagement.getListCamera(params);
@@ -160,16 +158,18 @@ function LineChartService({ type, codeService }) {
         const getData = async () => {
             try {
                 const valueDetect = await getDataDetectAction(codeService);
-                const valueCamera = await getListCamera();
-                setListData(valueDetect);
-                setListCamera(valueCamera);
-                setCodeCamera(valueCamera?.data[0]?.CAMERA?.CODE);
+                if (valueDetect?.length > 0) {
+                    const valueCamera = await getListCamera(codeService);
+                    setListData(valueDetect);
+                    setListCamera(valueCamera);
+                    setCodeCamera(valueCamera?.data[0]?.CAMERA?.CODE);
+                }
             } catch (error) {
                 Alert.alert('Không có dữ liệu');
             }
         };
         getData();
-    }, [getDataDetectAction, getListCamera]);
+    }, [getDataDetectAction, getListCamera, codeService]);
     useEffect(() => {
         if (codeCamera && listData?.length > 0) {
             const data = getCameraData(codeCamera, listData);
@@ -198,28 +198,12 @@ function LineChartService({ type, codeService }) {
                     })}
                 </View>
             </View>
-            {/* <View style={styles.choose_camera}>
-                {listCamera && listCamera?.data?.length > 0 && (
-                    <Picker
-                        selectedValue={codeCamera}
-                        style={{ marginTop: -5 }}
-                        onValueChange={itemValue => handleGetCameraAct(itemValue)}>
-                        {listCamera &&
-                            listCamera.data.map(camera => {
-                                return (
-                                    <Picker.Item
-                                        key={camera?.CAMERA?.CODE}
-                                        label={camera?.CAMERA?.NAME_CAM}
-                                        value={camera?.CAMERA?.CODE}
-                                    />
-                                );
-                            })}
-                    </Picker>
-                )}
-            </View> */}
             <View style={styles.choose_camera}>
                 <RNPickerSelect
-                    placeholder={{ label: 'Tất cả', value: null }}
+                    placeholder={{
+                        label: listCamera ? listCamera?.data[0]?.CAMERA?.NAME_CAM : 'Tất cả',
+                        value: listCamera ? listCamera?.data[0]?.CAMERA?.CODE : 0
+                    }}
                     doneText="Lựa chọn"
                     style={styles}
                     onValueChange={value => handleGetCameraAct(value)}
@@ -227,6 +211,7 @@ function LineChartService({ type, codeService }) {
                         listCamera
                             ? listCamera?.data.map((camera, index) => {
                                 return {
+                                    key: camera?.CAMERA?.CODE,
                                     label: camera?.CAMERA?.NAME_CAM,
                                     value: camera?.CAMERA?.CODE,
                                 };

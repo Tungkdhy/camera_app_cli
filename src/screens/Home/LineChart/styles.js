@@ -101,7 +101,4 @@ export const styles = StyleSheet.create({
         color: 'black',
         paddingRight: 30, // to ensure the text is never behind the icon
     },
-    // day: {
-    // //     paddingTop: 3,
-    // // },
 });
