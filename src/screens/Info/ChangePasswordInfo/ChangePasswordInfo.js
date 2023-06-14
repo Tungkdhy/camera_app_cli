@@ -25,11 +25,11 @@ const ChangePasswordInfo = ({ navigation }) => {
     }
     const handleChangeNewPassword = (value) => {
         setNewPassword(value)
-        setErrorInNew(true)
+        setErrorInNew(false)
     }
     const handleChangeConfirmPassword = (value) => {
         setConfirmPassword(value)
-        setErrorInConfirm(true)
+        setErrorInConfirm(false)
     }
 
 
@@ -51,11 +51,18 @@ const ChangePasswordInfo = ({ navigation }) => {
 
 
     const handleChangePassword = async () => {
-        if (isValidatePassword(newPassword) && isValidatePassword(confirmPassword) && isValidateConfirm(newPassword, confirmPassword)) {
+        if (isValidatePassword(newPassword) 
+        && isValidatePassword(confirmPassword) 
+        && isValidateConfirm(newPassword, confirmPassword)
+        && !isValidateConfirm(newPassword, oldPassword)
+        ) {
             changePassword()
         } else if (isValidatePassword(newPassword)) {
             setErrorInConfirm(true)
             Alert.alert('Thay đổi không thành công')
+        } else if (isValidateConfirm(newPassword, oldPassword)) {
+            setErrorInNew(true)
+            Alert.alert('Mật khẩu mới không được trùng với mật khẩu hiện tại')
         } else {
             setErrorInNew(true)
             Alert.alert('Thay đổi không thành công')

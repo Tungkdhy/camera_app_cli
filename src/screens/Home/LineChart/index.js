@@ -56,7 +56,6 @@ function LineChartService({ type, codeService }) {
         fillShadowGradientTo: '#141ED2',
         fillShadowGradientToOpacity: 0,
     };
-    console.log(dataValue);
     const data = {
         labels: listLabel,
         datasets: [

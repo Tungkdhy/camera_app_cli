@@ -76,7 +76,9 @@ export const formatDate = date => {
 };
 // validator confirm password
 export const isValidateConfirm = (oldVar, newVar) => {
-  return !!newVar.match(oldVar)
+  if(oldVar?.length === newVar?.length) {
+    return !!newVar.match(oldVar)
+  }
 }
 export const convertToSecond = (day)=>{
   const split = day.split(":")
@@ -95,4 +97,10 @@ export const covertWidthToHour = (width)=>{
 export const convertTimeToPx = (time)=>{
   const second = convertToSecond(time)
   return Math.floor((second * 100)/3600)
+}
+
+export const sorterDateInArr = (arr, method) => {
+  return arr.sort((a,b) => {
+    return new Date(a[method]) - new Date(b[method])
+  })
 }

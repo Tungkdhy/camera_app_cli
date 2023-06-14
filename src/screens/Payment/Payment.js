@@ -24,7 +24,7 @@ import {
   servicePackage,
 } from '../../redux/actions/reportAction';
 import DatePicker from 'react-native-date-picker';
-import { formatTimehp, formatDDMMYY2 } from '../../utils';
+import { formatTimehp, formatDDMMYY2, sorterDateInArr } from '../../utils';
 import Modal from './Modal/Modal';
 import Orientation from 'react-native-orientation-locker';
 import { styles } from './styles';
@@ -137,7 +137,8 @@ export default function Payment({ route, navigation }) {
               day_end: formatDDMMYY2(report.filter.time),
             },
           });
-          dispatch(getListReport(res.data));
+          const sortData = res?.data?.reverse();
+          dispatch(getListReport(sortData));
         }
       } catch (e) { }
     }
