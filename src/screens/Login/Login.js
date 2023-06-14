@@ -35,10 +35,10 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [isShowPass, setIsShowPass] = useState(true);
   const dispatch = useDispatch();
-  const [error, setErrpr] = useState(false)
+  const [error, setError] = useState(false)
 
   const handleLogin = async () => {
-    if (userName.length > 6 && password.length > 8) {
+    if (userName.length >= 6 && password.length >= 8) {
       try {
         const res = await axios.post(
           'http://cameraai.cds.vinorsoft.com/camera/vinorsoft/aicamera/v1.0/authenticator/login/',
@@ -61,7 +61,7 @@ const Login = ({ navigation }) => {
       }
     }
     else {
-      setErrpr(true)
+      setError(true)
     }
   };
   useEffect(() => {
@@ -95,7 +95,7 @@ const Login = ({ navigation }) => {
                     placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
                     onChangeText={text => {
                       setUserName(text)
-                      setErrpr(false)
+                      setError(false)
                     }}
                     style={
                       ((userName.length < 6 && userName !== '') || (error && userName.length === 0))
@@ -127,7 +127,7 @@ const Login = ({ navigation }) => {
                     secureTextEntry={isShowPass}
                     value={password}
                     onChangeText={text => {
-                      setErrpr(false)
+                      setError(false)
                       setPassword(text)
                     }}
                   />
