@@ -26,12 +26,14 @@ export const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         padding: 18,
+        flexWrap: 'wrap',
     },
     headerItem: {
         display: 'flex',
         width: 170,
         flexDirection: 'column',
         alignItems: 'center',
+        marginTop: 16,
     },
     number: {
         fontSize: 24,

@@ -100,6 +100,7 @@ const VideoCamera = ({
       }),
     [navigation],
   );
+  console.log(listPath, '103');
   return (
     <View style={isFullScreen ? styles.contentFull : {}}>
       {

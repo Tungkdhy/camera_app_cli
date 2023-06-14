@@ -22,7 +22,8 @@ import Notification from './src/screens/Notification';
 
 import EditInfo from './src/screens/Info/EditInfo/Edit';
 import ChangePasswordInfo from './src/screens/Info/ChangePasswordInfo/ChangePasswordInfo';
-import SplashScreen from 'react-native-splash-screen';
+import Dashboard from './src/screens/Dashboard';
+
 // import MapScreen from './src/screens/Map/MapScreen';
 // import requestUserPermission from './src/utils/FCM_helper';
 // import { NotificationListener } from './src/utils/FCM_helper';
@@ -50,16 +51,11 @@ export default function App() {
           <Stack.Screen name="Detail" component={Detail} />
           <Stack.Screen name="PlayBack" component={PlayBack} />
           <Stack.Screen name="Notification" component={Notification} />
-
-          <Stack.Screen
-            name="ChangePasswordInfo"
-            component={ChangePasswordInfo}
-          />
+          <Stack.Screen name="ChangePasswordInfo" component={ChangePasswordInfo} />
           <Stack.Screen name="EditInfo" component={EditInfo} />
           <Stack.Screen name="Report" component={Payment} />
-
+          <Stack.Screen name="Dashboard" component={Dashboard} />
           {/* <Stack.Screen name="Map" component={MapScreen} /> */}
-
           {/* <Stack.Screen name="Stream" component={Stream}/> */}
           {/* <Stack.Screen name="Forgot" component={Forgot}/> */}
         </Stack.Navigator>
