@@ -19,6 +19,8 @@ import {
   YoutubeIconActive,
 } from '../components/Icons/Index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { HomeIcon, HomeIconActive } from '../components/Icons/BottomBar/HomeIcon';
+import Dashboard from '../screens/Dashboard';
 const Tab = createBottomTabNavigator();
 const MainContainer = () => {
   const [role, setRole] = useState('A');
@@ -44,20 +46,14 @@ const MainContainer = () => {
         },
         headerShown: false,
       }}>
-      {role === 'A' && (
         <Tab.Screen
-          name="Trang chu"
-          options={({ navigator }) => ({
-            tabBarStyle: {
-              // padding:12
-            },
-            tabBarIcon: ({ color, focused }) =>
-              focused ? <ChartIconActive /> : <ChartIcon />,
-            tabBarShowLabel: false,
-          })}
-          component={Home}
-        />
-      )}
+        name="Dashboard"
+        component={Dashboard}
+        options={{
+          tabBarIcon: ({ color, focused }) => focused ? <HomeIconActive/>  : <HomeIcon />,
+          tabBarShowLabel: false,
+        }}
+      />
       <Tab.Screen
         name="Stream"
         component={Stream}
@@ -67,15 +63,6 @@ const MainContainer = () => {
           tabBarShowLabel: false,
         }}
       />
-      {/* <Tab.Screen
-        name="Map"
-        component={Map}
-        options={{
-          tabBarIcon: ({ color, focused }) =>
-            focused ? <MapIconActive /> : <MapIcon />,
-          tabBarShowLabel: false,
-        }}
-      /> */}
       <Tab.Screen
         name="Playback"
         component={Stream}
@@ -102,6 +89,17 @@ const MainContainer = () => {
           tabBarShowLabel: false,
         }}
       />
+      {role === 'A' && (
+        <Tab.Screen
+          name="Trang chu"
+          options={({ navigator }) => ({
+            tabBarIcon: ({ color, focused }) =>
+              focused ? <ChartIconActive /> : <ChartIcon />,
+            tabBarShowLabel: false,
+          })}
+          component={Home}
+        />
+      )}
     </Tab.Navigator>
   );
 };

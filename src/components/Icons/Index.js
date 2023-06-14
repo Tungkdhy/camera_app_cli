@@ -50,3 +50,9 @@ export {default as Edit} from './Info/Edit'
 export {default as BackIcon2} from './PlayBack/BackIcon'
 export {default as PlayBackDownIcon} from './PlayBack/PlayBackDownIcon'
 export {default as DateTime} from './PlayBack/DateTime'
+
+
+// icon screen dashboard
+export {default as DownIconSolid} from './Dashboard/DownIconSolid'
+export {default as UpIconSolid} from './Dashboard/UpIconSolid'
+export {default as OnlineIcon} from './Dashboard/OnlineIcon'
