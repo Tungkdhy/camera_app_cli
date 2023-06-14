@@ -143,12 +143,12 @@ export default function Stream({ navigation, ...props }) {
     //Get warehouse
     async function getLocation() {
       try {
-        const province = camera.filter?.province_code
+        const province = camera.filter?.province_code !== "All"
           ? {
             province_code: camera.filter?.province_code,
           }
           : {};
-        const district = camera.filter?.district_code
+        const district = camera.filter?.district_code !== "All"
           ? {
             district_code: camera.filter?.district_code,
           }
@@ -158,10 +158,10 @@ export default function Stream({ navigation, ...props }) {
             ? {}
             : props.route.name === 'Smart'
               ? {
-                ai_already: camera.filter?.record_status,
+                ai_already: camera.filter?.isBG,
               }
               : {
-                record_already: camera.filter?.record_status,
+                record_already: camera.filter?.isBG,
               };
         const res = await axiosClient.get(
           '/camerainfo/get-list-camera-level-by-username-mobile/',
@@ -174,22 +174,25 @@ export default function Stream({ navigation, ...props }) {
             },
           },
         );
-        console.log(res);
         dispatch(getListWareHouse(res));
       } catch (e) { }
     }
     getLocation();
   }, [
-    camera.filter?.province_code,
-    camera.filter?.district_code,
+    camera.refresh,
     camera.filter.camera_status,
-    camera.filter?.record_status,
     props.route.name,
   ]);
   useEffect(() => {
     async function getDistrict() {
+      const prams = camera.filter?.province_code === "All" ? {} : {
+        province_code: camera.filter?.province_code
+      }
       const res = await axiosClient.get(
-        `/district/get-list-district/?province_code=${camera.filter?.province_code}&size=1000&page=1&district_name=${camera.filterLocate?.district}`,
+        `/district/get-list-district/?size=1000&page=1&district_name=${camera.filterLocate?.district}`,
+        {
+          params: { ...prams }
+        }
       );
       const data = res.map(item => {
         return { name: item.DISTRICT_NAME, code: item.DISTRICT_CODE };
@@ -232,6 +235,7 @@ export default function Stream({ navigation, ...props }) {
         onShowModal={handleSetShowModal}
         isProvince={isProvince}
         setIsProvince={setIsShowProvince}
+        screen={props.route.name}
         data={isProvince ? camera?.province : camera?.district}
         filter={
           isProvince

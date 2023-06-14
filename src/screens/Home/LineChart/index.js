@@ -67,7 +67,7 @@ function LineChartService({ type, codeService }) {
         ],
     };
 
-    const getListCamera = useCallback(async (code) => {
+    const getListCamera = useCallback(async code => {
         try {
             const params = {
                 ai_service_code: code,
@@ -200,8 +200,10 @@ function LineChartService({ type, codeService }) {
             <View style={styles.choose_camera}>
                 <RNPickerSelect
                     placeholder={{
-                        label: listCamera ? listCamera?.data[0]?.CAMERA?.NAME_CAM : 'Tất cả',
-                        value: listCamera ? listCamera?.data[0]?.CAMERA?.CODE : 0
+                        label: listCamera
+                            ? listCamera?.data[0]?.CAMERA?.NAME_CAM
+                            : 'Tất cả',
+                        value: listCamera ? listCamera?.data[0]?.CAMERA?.CODE : 0,
                     }}
                     doneText="Lựa chọn"
                     style={styles}
@@ -221,7 +223,6 @@ function LineChartService({ type, codeService }) {
             </View>
             <View style={styles.contentChart}>
                 <LineChart
-
                     data={data}
                     width={screenWidth}
                     height={220}

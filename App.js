@@ -1,6 +1,5 @@
-
 import { StyleSheet, Text, View } from 'react-native';
-import React, { useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import MainContainer from './src/navigation/MainContainer';
@@ -28,15 +27,19 @@ import Dashboard from './src/screens/Dashboard';
 // import MapScreen from './src/screens/Map/MapScreen';
 // import requestUserPermission from './src/utils/FCM_helper';
 // import { NotificationListener } from './src/utils/FCM_helper';
-const Stack = createStackNavigator()
+const Stack = createStackNavigator();
 export default function App() {
-
+  // useEffect(() => {
+  //   SplashScreen.hide();
+  // }, []);
   return (
     <Provider store={Store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName='Wellcom' screenOptions={{ headerShown: false }}>
-          <Stack.Screen name='Login' component={Login} />
-          <Stack.Screen name='Wellcom' component={Wellcome} />
+        <Stack.Navigator
+          initialRouteName="Wellcom"
+          screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Wellcom" component={Wellcome} />
           <Stack.Screen name="Home" component={MainContainer} />
           <Stack.Screen name="Forgot" component={Forgot} />
           <Stack.Screen name="Register" component={Register} />
@@ -67,9 +70,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-
   },
-  auto: {
-
-  }
+  auto: {},
 });

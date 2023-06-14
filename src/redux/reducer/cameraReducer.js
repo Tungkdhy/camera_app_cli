@@ -15,6 +15,8 @@ import {
   SET_FILTER_PROVINCE,
   SET_RELOAD,
   SET_RECORD,
+  REFRESH,
+  CHECKBG,
 
 } from '../actions/cameraAction';
 
@@ -26,11 +28,12 @@ const initialState = {
   district: [],
   filter: {
     camera_status: 'On',
-    province_code: '',
-    district_code: '',
+    province_code: "All",
+    district_code: "All",
     province_name: '',
     district_name: '',
     record_status: 1,
+    isBG: false
   },
   pathStream: [],
   camera_info: {},
@@ -39,7 +42,8 @@ const initialState = {
     province: '',
     district: '',
   },
-  reload: false
+  reload: false,
+  refresh: false
 };
 
 const useReducer = (state = initialState, action) => {
@@ -59,8 +63,8 @@ const useReducer = (state = initialState, action) => {
         ...state,
         filter: {
           ...state.filter,
-          province_code: action.payload.code,
-          province_name: action.payload.name,
+          province_code: action.payload,
+          // province_name: action.payload.name,
         },
       };
     case SET_DISTRICT_CODE:
@@ -68,8 +72,8 @@ const useReducer = (state = initialState, action) => {
         ...state,
         filter: {
           ...state.filter,
-          district_code: action.payload.code,
-          district_name: action.payload.name,
+          district_code: action.payload
+          // district_name: action.payload.name,
         },
       };
     case SET_STATUS:
@@ -128,6 +132,19 @@ const useReducer = (state = initialState, action) => {
         filter: {
           ...state.filter,
           record_status: action.payload,
+        },
+      };
+    case REFRESH:
+      return {
+        ...state,
+        refresh: action.payload
+      };
+    case CHECKBG:
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          isBG: action.payload,
         },
       };
     default:

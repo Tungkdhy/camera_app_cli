@@ -12,6 +12,8 @@ export const SET_WARE_HOUSE_CODE = "SET_WARE_HOUSE_CODE"
 export const SET_IS_FULLSCREEN = "SET_IS_FULLSCREEN"
 export const SET_FILTER_PROVINCE = "SET_FILTER_PROVINCE"
 export const SET_FILTER_DISTRICT = "SET_FILTER_DISTRICT"
+export const REFRESH = "REFRESH"
+export const CHECKBG = "CHECKBG"
 
 export const SET_RELOAD = "SET_RELOAD"
 
@@ -110,6 +112,18 @@ export const setReload = (data) => {
 export const setRecord = (data) => {
   return {
     type: SET_RECORD,
+    payload: data
+  }
+}
+export const setRefresh = (data) => {
+  return {
+    type: REFRESH,
+    payload: data
+  }
+}
+export const setCheckBG = (data) => {
+  return {
+    type: CHECKBG,
     payload: data
   }
 }
