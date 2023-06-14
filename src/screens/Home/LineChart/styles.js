@@ -62,16 +62,7 @@ export const styles = StyleSheet.create({
             },
         }),
     },
-    choose_camera: {
-        display: 'flex',
-        height: 48,
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderRadius: 4,
-        marginBottom: 16,
-        alignItems: 'center',
-        borderColor: 'rgba(0, 0, 0, 0.02)',
-    },
+
     title: {
         fontWeight: '700',
         fontSize: 14,
@@ -100,5 +91,15 @@ export const styles = StyleSheet.create({
         borderRadius: 8,
         color: 'black',
         paddingRight: 30, // to ensure the text is never behind the icon
+    },
+    choose_camera: {
+        display: 'flex',
+        height: 48,
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderRadius: 4,
+        marginBottom: 16,
+        alignItems: 'center',
+        borderColor: 'rgba(0, 0, 0, 0.02)',
     },
 });

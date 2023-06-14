@@ -1,7 +1,7 @@
 #import "AppDelegate.h"
 #import "Orientation.h"
 #import <React/RCTBundleURLProvider.h>
-
+// #import "RNSplashScreen.h"
 @implementation AppDelegate
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
   while ([[UIDevice currentDevice] isGeneratingDeviceOrientationNotifications]) {
@@ -16,7 +16,7 @@
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
-
+  // [RNSplashScreen show];
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 

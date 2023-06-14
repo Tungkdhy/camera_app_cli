@@ -304,7 +304,7 @@ export default function Payment({ route, navigation }) {
                       shouldPlay={true}
                       isLooping
                       controls={true}
-                      fullscreen={report.isFullScreen}
+                      fullscreen={true}
                       style={
                         report.isFullScreen
                           ? styles.fullScreen
