@@ -14,20 +14,22 @@ const ChangePasswordInfo = ({ navigation }) => {
     const [newPassword, setNewPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [isPassword, setIsPassword] = useState(true)
+    const [isPassword1, setIsPassword1] = useState(true)
+    const [isPassword2, setIsPassword2] = useState(true)
     const [errorInNew, setErrorInNew] = useState(false)
     const [errorInConfirm, setErrorInConfirm] = useState(false)
     const [loading, setLoading] = useState(false)
-    
+
     const handleChangeOldPassword = (value) => {
         setOldPassword(value)
     }
     const handleChangeNewPassword = (value) => {
         setNewPassword(value)
-        setErrorInNew(false)
+        setErrorInNew(true)
     }
     const handleChangeConfirmPassword = (value) => {
         setConfirmPassword(value)
-        setErrorInConfirm(false)
+        setErrorInConfirm(true)
     }
 
 
@@ -115,10 +117,10 @@ const ChangePasswordInfo = ({ navigation }) => {
                             style={errorInNew ? { ...styles.input, ...styles.borderError } : { ...styles.input }}
                             onChangeText={(e) => handleChangeNewPassword(e)}
                             placeholder={'Nhập'}
-                            secureTextEntry={isPassword}
+                            secureTextEntry={isPassword1}
                         />
                         <Text
-                            onPress={() => setIsPassword(!isPassword)}
+                            onPress={() => setIsPassword1(!isPassword1)}
                             style={{ ...styles.eyeIcon, top: '44%' }}
                         >
                             <EyeIcon />
@@ -132,10 +134,10 @@ const ChangePasswordInfo = ({ navigation }) => {
                             style={errorInConfirm ? { ...styles.input, ...styles.borderError } : { ...styles.input }}
                             onChangeText={(e) => handleChangeConfirmPassword(e)}
                             placeholder={'Nhập'}
-                            secureTextEntry={isPassword}
+                            secureTextEntry={isPassword2}
                         />
                         <Text
-                            onPress={() => setIsPassword(!isPassword)}
+                            onPress={() => setIsPassword2(!isPassword2)}
                             style={styles.eyeIcon}
                         >
                             <EyeIcon />

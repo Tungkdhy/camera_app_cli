@@ -56,7 +56,7 @@ function LineChartService({ type, codeService }) {
         fillShadowGradientTo: '#141ED2',
         fillShadowGradientToOpacity: 0,
     };
-
+    console.log(dataValue);
     const data = {
         labels: listLabel,
         datasets: [
@@ -177,7 +177,7 @@ function LineChartService({ type, codeService }) {
             const analytic = getDataFill(day, data);
             setDataValue([0, ...analytic]);
         }
-    }, [codeCamera, listData, getCameraData, stateValue, getDataFill])
+    }, [codeCamera, listData, getCameraData, stateValue.value, getDataFill]);
     return (
         <View style={styles.container}>
             <View style={styles.header_fill}>
@@ -222,6 +222,7 @@ function LineChartService({ type, codeService }) {
             </View>
             <View style={styles.contentChart}>
                 <LineChart
+
                     data={data}
                     width={screenWidth}
                     height={220}

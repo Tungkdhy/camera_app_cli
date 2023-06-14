@@ -9,27 +9,28 @@ import {
   Alert,
   Modal,
   ActivityIndicator,
-} from "react-native";
-import { isValidatorEmail } from "../../utils";
-import { BackIcon } from "../../components/Icons/Index";
-import { styles } from "./style";
-import { authenticatorAPI } from "../../services/api/authenticator";
-import { useDispatch } from "react-redux";
-import { setEmailUser } from "../../redux/actions/getUserAction";
+  Pressable,
+} from 'react-native';
+import { isValidatorEmail } from '../../utils';
+import { BackIcon } from '../../components/Icons/Index';
+import style from './style';
+import { authenticatorAPI } from '../../services/api/authenticator';
+import { useDispatch } from 'react-redux';
+import { setEmailUser } from '../../redux/actions/getUserAction';
 
 const Forgot = ({ navigation }) => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const handleLogin = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       let data = {
         email: email
       }
       await authenticatorAPI.forgotPassRequire(data);
-      navigation.navigate("CodeVerify", { name: "Forgot" });
-      setLoading(false)
+      navigation.navigate('CodeVerify', { name: 'Forgot' });
+      setLoading(false);
       dispatch(setEmailUser(data.email));
     } catch (e) {
       setLoading(false)
@@ -94,8 +95,7 @@ const Forgot = ({ navigation }) => {
           <View style={styles.behavior}>
             <ActivityIndicator size={'large'} />
           </View>
-        )}
-        </Modal>
+        </View>
       </View>
     </ImageBackground>
   );

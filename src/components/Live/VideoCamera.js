@@ -130,8 +130,8 @@ const VideoCamera = ({
                       <Video
                         source={{
                           uri: `http://cameraai.cds.vinorsoft.com/${type}${type === 'playback/'
-                              ? item?.path.PATH
-                              : item?.data[0]?.PATH
+                            ? item?.path.PATH
+                            : item?.data[0]?.PATH
                             }`,
                         }}
                         ref={ref}
@@ -142,15 +142,19 @@ const VideoCamera = ({
                         shouldPlay={true}
                         useNativeControls={true}
                         isLooping
-                        poster={`http://cameraai.cds.vinorsoft.com/${type}/${item?.data[0]?.PATH.split('/')[1]
-                          }/image.jpg`}
+                        poster={
+                          type === 'playback/'
+                            ? ''
+                            : `http://cameraai.cds.vinorsoft.com/${type}/${item?.data[0]?.PATH.split('/')[1]
+                            }/image.jpg`
+                        }
                         controls={type === 'playback/' ? change : false}
                         style={
                           isFullScreen
                             ? styles.fullScreen
                             : {
                               width: '100%',
-                              height: 190,
+                              height: 200,
                             }
                         }
                       />
@@ -237,7 +241,7 @@ const VideoCamera = ({
               justifyContent: 'space-between',
             }}
             keyExtractor={(item, index) => index}
-            maxHeight={400}
+            maxHeight={420}
           />
         </View>
       )}
