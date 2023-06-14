@@ -36,27 +36,32 @@ const Login = ({ navigation }) => {
   const [isShowPass, setIsShowPass] = useState(true);
   const dispatch = useDispatch();
   const [error, setErrpr] = useState(false)
-  
+
   const handleLogin = async () => {
-    try {
-      const res = await axios.post(
-        'http://cameraai.cds.vinorsoft.com/camera/vinorsoft/aicamera/v1.0/authenticator/login/',
-        {
-          username: userName,
-          password: password,
-        },
-      );
-      if (res) {
-        await AsyncStorage.setItem('token', res.data.access);
-        await AsyncStorage.setItem('role', res.data.role);
-        const infoUser = await axiosClient.get('/user/get-user-info/');
-        let userTypeCode = infoUser[0]?.USERTYPE_CODE;
-        dispatch(setUserTypeCode(userTypeCode));
-        navigation.navigate('Home');
+    if (userName.length > 6 && password.length > 8) {
+      try {
+        const res = await axios.post(
+          'http://cameraai.cds.vinorsoft.com/camera/vinorsoft/aicamera/v1.0/authenticator/login/',
+          {
+            username: userName,
+            password: password,
+          },
+        );
+        if (res) {
+          await AsyncStorage.setItem('token', res.data.access);
+          await AsyncStorage.setItem('role', res.data.role);
+          const infoUser = await axiosClient.get('/user/get-user-info/');
+          let userTypeCode = infoUser[0]?.USERTYPE_CODE;
+          dispatch(setUserTypeCode(userTypeCode));
+          navigation.navigate('Home');
+        }
+      } catch (e) {
+        console.log(e);
+        Alert.alert('Đăng nhập không thành công');
       }
-    } catch (e) {
-      console.log(e);
-      Alert.alert('Đăng nhập không thành công');
+    }
+    else {
+      setErrpr(true)
     }
   };
   useEffect(() => {
