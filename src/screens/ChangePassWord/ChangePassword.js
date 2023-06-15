@@ -33,8 +33,18 @@ const ChangePassword = ({ route, navigation }) => {
         navigation.navigate("Success");
       }
     } catch (e) {
-      console.log(e);
-      Alert.alert("Đổi mật khẩu không thành công");
+      if(e.response.status === 400) {
+        if(e.response.data.password[0] === 'The password is too similar to the email.') {
+          Alert.alert("Đổi mật khẩu không thành công, mật khẩu quá giống với email.");
+        } if (e.response.data.password[0] === "The password is too similar to the username.") {
+          Alert.alert("Đổi mật khẩu không thành công, mật khẩu quá giống với tên đăng nhập.");
+        }
+      } else if(e.response.status === 404) {
+        Alert.alert("Mã xác thực của bạn đã hết hạn");
+      } else {
+        Alert.alert("Đổi mật khẩu không thành công");
+      }
+      console.log(e.response.status);
     }
   };
 
@@ -44,14 +54,6 @@ const ChangePassword = ({ route, navigation }) => {
       source={require("../../assets/images/BgLogin.png")}
     >
       <View style={styles.contentLogin}>
-        <Modal
-          transparent={true}
-          visible={true}
-          animationType="slide"
-          onRequestClose={() => {
-            return 0
-          }}
-        >
           <View style={styles.title}>
             <TouchableHighlight
               onPress={() => navigation.navigate("Wellcom")}
@@ -117,7 +119,6 @@ const ChangePassword = ({ route, navigation }) => {
               </TouchableHighlight>
             </View>
           </View>
-        </Modal>
       </View>
     </ImageBackground>
   );

@@ -100,140 +100,129 @@ const CodeVerify = ({ route, navigation }) => {
           style={styles.container}
           source={require('../../assets/images/BgLogin.png')}>
           <View style={styles.contentLogin}>
-            <Modal
-              transparent={true}
-              visible={true}
-              animationType="slide"
-              onRequestClose={() => {
-                return 0
-              }}
-            >
-                <View style={styles.title}>
-                  <TouchableHighlight
-                    onPress={onPrevious}
-                    style={styles.icon}>
-                    <BackIcon />
-                  </TouchableHighlight>
+            <View style={styles.title}>
+              <TouchableHighlight
+                onPress={onPrevious}
+                style={styles.icon}>
+                <BackIcon />
+              </TouchableHighlight>
+            </View>
+            <View style={styles.formLogin}>
+              <Text style={styles.header}>Xác thực tài khoản</Text>
+              <Text style={styles.description}>
+                Một mã 6 ký tự đã được gửi về địa chỉ email của bạn
+              </Text>
+              <SafeAreaView style={styles.formGroup}>
+                <View style={styles.formControl}>
+                  <TextInput
+                    placeholder="-"
+                    maxLength={1}
+                    style={styles.otp}
+                    ref={inputFirst}
+                    onChangeText={text => {
+                      setOtp({ ...otp, op1: text });
+                      text && inputS.current.focus();
+                    }}
+                    value={otp.op1}
+                  />
                 </View>
-                <View style={styles.contentForm}>
-                  <View style={styles.formLogin}>
-                    <Text style={styles.header}>Xác thực tài khoản</Text>
-                    <Text style={styles.description}>
-                      Một mã 6 ký tự đã được gửi về địa chỉ email của bạn
-                    </Text>
-                    <SafeAreaView style={styles.formGroup}>
-                      <View style={styles.formControl}>
-                        <TextInput
-                          placeholder="-"
-                          maxLength={1}
-                          style={styles.otp}
-                          ref={inputFirst}
-                          onChangeText={text => {
-                            setOtp({ ...otp, op1: text });
-                            text && inputS.current.focus();
-                          }}
-                          value={otp.op1}
-                        />
-                      </View>
-                      <View style={styles.formControl}>
-                        <TextInput
-                          placeholder="-"
-                          //   keyboardType="number-pad"
-                          maxLength={1}
-                          style={styles.otp}
-                          ref={inputS}
-                          value={otp.op2}
-                          onChangeText={text => {
-                            setOtp({ ...otp, op2: text });
-                            text
-                              ? inputT.current.focus()
-                              : inputFirst.current.focus();
-                          }}
-                        />
-                      </View>
-                      <View style={styles.formControl}>
-                        <TextInput
-                          placeholder="-"
-                          //   keyboardType="number-pad"
-                          maxLength={1}
-                          style={styles.otp}
-                          ref={inputT}
-                          value={otp.op3}
-                          onChangeText={text => {
-                            setOtp({ ...otp, op3: text });
-                            text ? inputF.current.focus() : inputS.current.focus();
-                          }}
-                        />
-                      </View>
-                      <View style={styles.formControl}>
-                        <TextInput
-                          placeholder="-"
-                          //   keyboardType="number-pad"
-                          maxLength={1}
-                          style={styles.otp}
-                          ref={inputF}
-                          value={otp.op4}
-                          onChangeText={text => {
-                            setOtp({ ...otp, op4: text });
-                            text
-                              ? inputFive.current.focus()
-                              : inputT.current.focus();
-                          }}
-                        />
-                      </View>
-                      <View style={styles.formControl}>
-                        <TextInput
-                          placeholder="-"
-                          //   keyboardType="number-pad"
-                          maxLength={1}
-                          style={styles.otp}
-                          ref={inputFive}
-                          value={otp.op5}
-                          onChangeText={text => {
-                            setOtp({ ...otp, op5: text });
-                            text
-                              ? inputSix.current.focus()
-                              : inputF.current.focus();
-                          }}
-                        />
-                      </View>
-                      <View style={styles.formControl}>
-                        <TextInput
-                          placeholder="-"
-                          //   keyboardType="number-pad"
-                          maxLength={1}
-                          style={styles.otp}
-                          ref={inputSix}
-                          value={otp.op6}
-                          onChangeText={text => {
-                            setOtp({ ...otp, op6: text });
-                            text && inputFive.current.focus();
-                          }}
-                        />
-                      </View>
-                    </SafeAreaView>
-                    <View style={styles.hl}>
-                      {reGetOTP ? (
-                        <Pressable onPress={handleReGetOTP}>
-                          <Text style={styles.send}>Gửi lại</Text>
-                        </Pressable>
-                      ) : (
-                        <Clock minutes={10} getTimeOut={onReGetOTP} isReFresh={reFresh} />
-                      )}
-                    </View>
-                    <TouchableHighlight onPress={handleLogin} style={styles.login}>
-                      <View style={styles.buttonLogin}>
-                        <Text style={styles.btnText}>Xác nhận</Text>
-                      </View>
-                    </TouchableHighlight>
-                  </View>
+                <View style={styles.formControl}>
+                  <TextInput
+                    placeholder="-"
+                    //   keyboardType="number-pad"
+                    maxLength={1}
+                    style={styles.otp}
+                    ref={inputS}
+                    value={otp.op2}
+                    onChangeText={text => {
+                      setOtp({ ...otp, op2: text });
+                      text
+                        ? inputT.current.focus()
+                        : inputFirst.current.focus();
+                    }}
+                  />
                 </View>
-              {loading && (
-                <View style={styles.behavior}>
-                  <ActivityIndicator size={'large'} />
+                <View style={styles.formControl}>
+                  <TextInput
+                    placeholder="-"
+                    //   keyboardType="number-pad"
+                    maxLength={1}
+                    style={styles.otp}
+                    ref={inputT}
+                    value={otp.op3}
+                    onChangeText={text => {
+                      setOtp({ ...otp, op3: text });
+                      text ? inputF.current.focus() : inputS.current.focus();
+                    }}
+                  />
                 </View>
-              )}
-            </Modal>
+                <View style={styles.formControl}>
+                  <TextInput
+                    placeholder="-"
+                    //   keyboardType="number-pad"
+                    maxLength={1}
+                    style={styles.otp}
+                    ref={inputF}
+                    value={otp.op4}
+                    onChangeText={text => {
+                      setOtp({ ...otp, op4: text });
+                      text
+                        ? inputFive.current.focus()
+                        : inputT.current.focus();
+                    }}
+                  />
+                </View>
+                <View style={styles.formControl}>
+                  <TextInput
+                    placeholder="-"
+                    //   keyboardType="number-pad"
+                    maxLength={1}
+                    style={styles.otp}
+                    ref={inputFive}
+                    value={otp.op5}
+                    onChangeText={text => {
+                      setOtp({ ...otp, op5: text });
+                      text
+                        ? inputSix.current.focus()
+                        : inputF.current.focus();
+                    }}
+                  />
+                </View>
+                <View style={styles.formControl}>
+                  <TextInput
+                    placeholder="-"
+                    //   keyboardType="number-pad"
+                    maxLength={1}
+                    style={styles.otp}
+                    ref={inputSix}
+                    value={otp.op6}
+                    onChangeText={text => {
+                      setOtp({ ...otp, op6: text });
+                      text && inputFive.current.focus();
+                    }}
+                  />
+                </View>
+              </SafeAreaView>
+              <View style={styles.hl}>
+                {reGetOTP ? (
+                  <Pressable onPress={handleReGetOTP}>
+                    <Text style={styles.send}>Gửi lại</Text>
+                  </Pressable>
+                ) : (
+                  <Clock minutes={10} getTimeOut={onReGetOTP} isReFresh={reFresh} />
+                )}
+              </View>
+              <TouchableHighlight onPress={handleLogin} style={styles.login}>
+                <View style={styles.buttonLogin}>
+                  <Text style={styles.btnText}>Xác nhận</Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+            {loading && (
+              <View style={styles.behavior}>
+                <ActivityIndicator size={'large'} />
+              </View>
+            )}
           </View>
         </ImageBackground>
       </TouchableWithoutFeedback>

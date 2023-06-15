@@ -22,7 +22,7 @@ const Info = ({ navigation }) => {
     await axiosClient.post('/authenticator/logout', {
       refresh: refresh,
     });
-    await AsyncStorage.clear();
+    // await AsyncStorage.clear();
     navigation.replace('Login');
   };
   React.useEffect(() => {
