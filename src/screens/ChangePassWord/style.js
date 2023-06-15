@@ -78,7 +78,8 @@ export const styles = StyleSheet.create({
         color:"red",
         fontSize:12,
         paddingTop:6,
-        paddingLeft:16
+        // paddingLeft:16
+        paddingBottom: 6,
       },
       contentForm:{
         position: 'absolute',
@@ -156,9 +157,12 @@ export const styles = StyleSheet.create({
       },
       eyeIcon:{
         position:"absolute",
+        display: 'flex',
         top: 28,
         right:12,
-        zIndex:10
+        zIndex:10,
+        gap: 4,
+        flexDirection: 'row',
       },
       header:{
         fontSize:24,
@@ -178,6 +182,10 @@ export const styles = StyleSheet.create({
         color:"#000"
       },
       contain: {
-        position: 'relative'
+        position: 'relative',
+      }, 
+      checkIcon: {
+        // position: 'absolute',
+        marginTop: 4,
       }
 })

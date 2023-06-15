@@ -21,6 +21,7 @@ import { authenticatorAPI } from '../../services/api/authenticator';
 import Clock from './Clock';
 import { useSelector } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
+import { isValidateToken } from '../../utils';
 
 const CodeVerify = ({ route, navigation }) => {
   const inputFirst = useRef();
@@ -41,28 +42,24 @@ const CodeVerify = ({ route, navigation }) => {
   const [reFresh, setReFresh] = useState(false);
   const { email } = useSelector(state => state.userReducer);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const handleLogin = async () => {
     setLoading(true)
     try {
-      if (route.params?.name === 'Forgot') {
+      let token = otp.op1 + otp.op2 + otp.op3 + otp.op4 + otp.op5 + otp.op6;
+      if (isValidateToken(token)) {
         let data = {
-          token: otp.op1 + otp.op2 + otp.op3 + otp.op4 + otp.op5 + otp.op6
+          token: token
         }
         const res = await authenticatorAPI.forgotValidateToken(data)
+        setLoading(false)
         if (res) {
           navigation.navigate('ChangePassword', { token: data });
         }
       } else {
-        const token = await AsyncStorage.getItem('token');
-        const res = await axiosClient.post('/authenticator/verifyAccount/', {
-          code: otp.op1 + otp.op2 + otp.op3 + otp.op4 + otp.op5 + otp.op6,
-          token,
-        });
-        if (res) {
-          navigation.navigate('Success');
-        }
+        setLoading(false)
+        setError(true)
       }
-      setLoading(false)
     } catch (e) {
       console.log(e);
       setLoading(false)
@@ -91,7 +88,7 @@ const CodeVerify = ({ route, navigation }) => {
   };
 
   const onPrevious = () => {
-    navigation.navigate('Wellcom');
+    navigation.navigate('Forgot');
   };
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} enabled={true} behavior="padding">
@@ -109,96 +106,108 @@ const CodeVerify = ({ route, navigation }) => {
             </View>
             <View style={styles.formLogin}>
               <Text style={styles.header}>Xác thực tài khoản</Text>
-              <Text style={styles.description}>
-                Một mã 6 ký tự đã được gửi về địa chỉ email của bạn
-              </Text>
+              {error ? (
+                <Text style={{...styles.description, ...styles.error}}>
+                 Mã xác nhận chỉ chứa các ký tự là số
+                </Text>
+              ) : (
+                <Text style={styles.description}>
+                  Một mã 6 ký tự đã được gửi về địa chỉ email của bạn
+                </Text>
+              )}
               <SafeAreaView style={styles.formGroup}>
-                <View style={styles.formControl}>
+                <View style={!error ? {...styles.formControl} : {...styles.formControl, ...styles.error}}>
                   <TextInput
                     placeholder="-"
                     maxLength={1}
-                    style={styles.otp}
+                    style={!error ? { ...styles.otp } : { ...styles.otp, ...styles.error }}
                     ref={inputFirst}
                     onChangeText={text => {
                       setOtp({ ...otp, op1: text });
+                      setError(false)
                       text && inputS.current.focus();
                     }}
                     value={otp.op1}
                   />
                 </View>
-                <View style={styles.formControl}>
+                <View style={!error ? {...styles.formControl} : {...styles.formControl, ...styles.error}}>
                   <TextInput
                     placeholder="-"
                     //   keyboardType="number-pad"
                     maxLength={1}
-                    style={styles.otp}
+                    style={!error ? { ...styles.otp } : { ...styles.otp, ...styles.error }}
                     ref={inputS}
                     value={otp.op2}
                     onChangeText={text => {
                       setOtp({ ...otp, op2: text });
+                      setError(false)
                       text
                         ? inputT.current.focus()
                         : inputFirst.current.focus();
                     }}
                   />
                 </View>
-                <View style={styles.formControl}>
+                <View style={!error ? {...styles.formControl} : {...styles.formControl, ...styles.error}}>
                   <TextInput
                     placeholder="-"
                     //   keyboardType="number-pad"
                     maxLength={1}
-                    style={styles.otp}
+                    style={!error ? { ...styles.otp } : { ...styles.otp, ...styles.error }}
                     ref={inputT}
                     value={otp.op3}
                     onChangeText={text => {
                       setOtp({ ...otp, op3: text });
+                      setError(false)
                       text ? inputF.current.focus() : inputS.current.focus();
                     }}
                   />
                 </View>
-                <View style={styles.formControl}>
+                <View style={!error ? {...styles.formControl} : {...styles.formControl, ...styles.error}}>
                   <TextInput
                     placeholder="-"
                     //   keyboardType="number-pad"
                     maxLength={1}
-                    style={styles.otp}
+                    style={!error ? { ...styles.otp } : { ...styles.otp, ...styles.error }}
                     ref={inputF}
                     value={otp.op4}
                     onChangeText={text => {
                       setOtp({ ...otp, op4: text });
+                      setError(false)
                       text
                         ? inputFive.current.focus()
                         : inputT.current.focus();
                     }}
                   />
                 </View>
-                <View style={styles.formControl}>
+                <View style={!error ? {...styles.formControl} : {...styles.formControl, ...styles.error}}>
                   <TextInput
                     placeholder="-"
                     //   keyboardType="number-pad"
                     maxLength={1}
-                    style={styles.otp}
+                    style={!error ? { ...styles.otp } : { ...styles.otp, ...styles.error }}
                     ref={inputFive}
                     value={otp.op5}
                     onChangeText={text => {
                       setOtp({ ...otp, op5: text });
+                      setError(false)
                       text
                         ? inputSix.current.focus()
                         : inputF.current.focus();
                     }}
                   />
                 </View>
-                <View style={styles.formControl}>
+                <View style={!error ? {...styles.formControl} : {...styles.formControl, ...styles.error}}>
                   <TextInput
                     placeholder="-"
                     //   keyboardType="number-pad"
                     maxLength={1}
-                    style={styles.otp}
+                    style={!error ? { ...styles.otp } : { ...styles.otp, ...styles.error }}
                     ref={inputSix}
                     value={otp.op6}
                     onChangeText={text => {
                       setOtp({ ...otp, op6: text });
-                      text && inputFive.current.focus();
+                      setError(false)
+                      // text && inputFive.current.focus();
                     }}
                   />
                 </View>
@@ -226,7 +235,7 @@ const CodeVerify = ({ route, navigation }) => {
           </View>
         </ImageBackground>
       </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+    </KeyboardAvoidingView >
   );
 };
 export default CodeVerify;

@@ -17,10 +17,12 @@ import {
   SmartIcon,
   ChartIconActive,
   YoutubeIconActive,
+  UserIcon,
 } from '../components/Icons/Index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HomeIcon, HomeIconActive } from '../components/Icons/BottomBar/HomeIcon';
 import Dashboard from '../screens/Dashboard';
+import UserIconUnActive from '../components/Icons/BottomBar/UserIconUnActive';
 const Tab = createBottomTabNavigator();
 const MainContainer = () => {
   const [role, setRole] = useState('A');
@@ -35,7 +37,7 @@ const MainContainer = () => {
   }, []);
   return (
     <Tab.Navigator
-      initialRouteName={role === 'A' ? 'Trang chu' : 'Stream'}
+      initialRouteName={'Dashboard'}
       screenOptions={{
         tabBarActiveBackgroundColor: '#FFFFFF',
         tabBarActiveTintColor: 'red',
@@ -81,14 +83,6 @@ const MainContainer = () => {
           tabBarShowLabel: false,
         }}
       />
-      <Tab.Screen
-        name="Info"
-        component={Info}
-        options={{
-          tabBarIcon: ({ color }) => <PaymentIcon />,
-          tabBarShowLabel: false,
-        }}
-      />
       {role === 'A' && (
         <Tab.Screen
           name="Trang chu"
@@ -100,6 +94,14 @@ const MainContainer = () => {
           component={Home}
         />
       )}
+      <Tab.Screen
+        name="Info"
+        component={Info}
+        options={{
+          tabBarIcon: ({ color, focused }) => focused ? <UserIcon /> : <UserIconUnActive />,
+          tabBarShowLabel: false,
+        }}
+      />
     </Tab.Navigator>
   );
 };
