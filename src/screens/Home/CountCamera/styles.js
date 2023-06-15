@@ -30,7 +30,8 @@ export const styles = StyleSheet.create({
     },
     headerItem: {
         display: 'flex',
-        width: 170,
+        // width: 170,
+        width: '50%',
         flexDirection: 'column',
         alignItems: 'center',
         marginTop: 16,
