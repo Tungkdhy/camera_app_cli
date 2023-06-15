@@ -45,23 +45,15 @@ const Forgot = ({ navigation }) => {
       source={require("../../assets/images/BgLogin.png")}
     >
       <View style={styles.contentLogin}>
-        <Modal
-          transparent={true}
-          visible={true}
-          animationType="slide"
-          onRequestClose={() => {
-            return 0
-          }}
-          style={styles.box_view}
-        >
-          <View style={styles.title}>
-            <TouchableHighlight
-              onPress={onPrevious}
-              style={styles.icon}
-            >
-              <BackIcon />
-            </TouchableHighlight>
-          </View>
+        <View style={styles.title}>
+          <TouchableHighlight
+            onPress={onPrevious}
+            style={styles.icon}
+          >
+            <BackIcon />
+          </TouchableHighlight>
+        </View>
+        <View style={styles.box_view} >
           <View style={styles.contentForm}>
             <View style={styles.formLogin}>
               <Text style={styles.header}>Quên mật khẩu</Text>
@@ -90,12 +82,12 @@ const Forgot = ({ navigation }) => {
               </TouchableHighlight>
             </View>
           </View>
-          {loading && (
-            <View style={styles.behavior}>
-              <ActivityIndicator size={'large'} />
-            </View>
-          )}
-        </Modal>
+        </View>
+        {loading && (
+          <View style={styles.behavior}>
+            <ActivityIndicator size={'large'} />
+          </View>
+        )}
       </View>
     </ImageBackground>
   );
