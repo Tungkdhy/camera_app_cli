@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   View,
   TouchableHighlight,
@@ -21,24 +21,49 @@ const Forgot = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [submit, setSubmit] = useState(false);
   const handleLogin = async () => {
     setLoading(true)
+    setSubmit(true)
     try {
-      let data = {
-        email: email
+      if (isValidatorEmail(email)) {
+        let data = {
+          email: email
+        }
+        await authenticatorAPI.forgotPassRequire(data);
+        navigation.navigate("CodeVerify", { name: "Forgot" });
+        dispatch(setEmailUser(data.email));
+        setLoading(false)
+      } else {
+        setLoading(false)
       }
-      await authenticatorAPI.forgotPassRequire(data);
-      navigation.navigate("CodeVerify", { name: "Forgot" });
-      setLoading(false)
-      dispatch(setEmailUser(data.email));
     } catch (e) {
       setLoading(false)
-      Alert.alert("Mã xác thực gửi về email của bạn");
+      Alert.alert("Email không tồn tại trong hệ thống, vui lòng kiểm tra lại");
     }
   };
   const onPrevious = () => {
-    navigation.navigate('Wellcom')
+    navigation.navigate('Login')
   }
+
+  const handleChangeMail = (text) => {
+    setEmail(text)
+    setSubmit(false)
+  }
+
+  const MessageError = useCallback(() => {
+    if (!isValidatorEmail(email)) {
+      if (!!email.match(/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/)) {
+        return (
+          <Text style={styles.error}>Email không được nhập các ký tự khoảng trắng hoặc ký tự có dấu</Text>
+        )
+      } else {
+        return (
+          <Text style={styles.error}>Email không hợp lệ</Text>
+        )
+      }
+    }
+  }, [email])
   return (
     <ImageBackground
       style={styles.container}
@@ -67,13 +92,10 @@ const Forgot = ({ navigation }) => {
                   }
                   placeholder="Nhập"
                   value={email}
-                  onChangeText={(text) => setEmail(text)}
+                  onChangeText={handleChangeMail}
+                  maxLength={255}
                 />
-                {email !== "" && !isValidatorEmail(email) ? (
-                  <Text style={styles.error}>Vui lòng nhập đúng email</Text>
-                ) : (
-                  <Text></Text>
-                )}
+                {submit && <MessageError />}
               </SafeAreaView>
               <TouchableHighlight onPress={handleLogin} style={styles.login}>
                 <View style={styles.buttonLogin}>

@@ -21,6 +21,7 @@ export {default as UserIcon} from './Login/UserIcon'
 export {default as LockIcon} from './Login/LockIcon'
 export {default as EyeIcon} from './Login/EyeIcon'
 export {default as SuccessIcon} from './Login/Success'
+export {default as UnEyeIcon} from './Login/UnEyeIcon'
 
 //icon screen Stream
 export {default as AddressIcon} from './Stream/AddressIcon'
