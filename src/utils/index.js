@@ -15,8 +15,8 @@ export const isValidatorUsername = username => {
 };
 // validator pass 11
 export const isValidatePassword = password => {
-  const regex =
-    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{11,}$/;
+  const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[^\s]{6,20}$/;
+
   return !!password.match(regex);
 };
 export const formatDDMMYY = date => {
@@ -76,31 +76,40 @@ export const formatDate = date => {
 };
 // validator confirm password
 export const isValidateConfirm = (oldVar, newVar) => {
-  if(oldVar?.length === newVar?.length) {
-    return !!newVar.match(oldVar)
+  if (oldVar?.length === newVar?.length) {
+    return !!newVar.match(oldVar);
   }
-}
-export const convertToSecond = (day)=>{
-  const split = day.split(":")
-  const hour =Number(split[0])
-  const minute =Number(split[1])
-  const second = Number(split[2])
-  return hour * 3600 + minute*60+second
-}
-export const covertWidthToHour = (width)=>{
-  const second = width*3600
-  const hour = Math.floor(second /3600)
-  const minute = Math.floor((second - hour*3600)/60)
-  const ss = Math.floor(second - hour * 3600 - minute * 60)
-  return `${hour >= 10 ?hour:'0'+hour}:${minute >= 10 ?minute:'0'+minute}:${ss >= 10 ?ss:'0'+ss}`
-}
-export const convertTimeToPx = (time)=>{
-  const second = convertToSecond(time)
-  return Math.floor((second * 100)/3600)
-}
+};
+export const convertToSecond = day => {
+  const split = day.split(':');
+  const hour = Number(split[0]);
+  const minute = Number(split[1]);
+  const second = Number(split[2]);
+  return hour * 3600 + minute * 60 + second;
+};
+export const covertWidthToHour = width => {
+  const second = width * 3600;
+  const hour = Math.floor(second / 3600);
+  const minute = Math.floor((second - hour * 3600) / 60);
+  const ss = Math.floor(second - hour * 3600 - minute * 60);
+  return `${hour >= 10 ? hour : '0' + hour}:${minute >= 10 ? minute : '0' + minute
+    }:${ss >= 10 ? ss : '0' + ss}`;
+};
+export const convertTimeToPx = time => {
+  const second = convertToSecond(time);
+  return Math.floor((second * 100) / 3600);
+};
 
 export const sorterDateInArr = (arr, method) => {
-  return arr.sort((a,b) => {
-    return new Date(a[method]) - new Date(b[method])
-  })
-}
+  return arr.sort((a, b) => {
+    return new Date(a[method]) - new Date(b[method]);
+  });
+};
+export const validationChangePassword = pass => {
+  if (pass.length < 11) {
+    return 'Mật khẩu tối thiểu 11 kí tự';
+  }
+  if (pass.length === 0) {
+    return 'Mật khẩu không được để trống';
+  }
+};

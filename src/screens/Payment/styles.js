@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
 
-    backgroundColor: '#333',
+    backgroundColor: 'black',
     zIndex: 1000,
   },
   activeFull: {
@@ -57,7 +57,9 @@ export const styles = StyleSheet.create({
   },
   infoFull: {
     position: 'absolute',
-    top: 12,
+    top: -4,
+    left: 12,
+
     // paddingTop: 8,
     // flexDirection: 'row',
     // justifyContent: 'space-between',
@@ -166,7 +168,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   fullScreen: {
-    width: width - 40,
+    width: width - 130,
     height: height,
   },
   time: {

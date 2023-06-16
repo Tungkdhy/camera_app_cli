@@ -330,7 +330,7 @@ export default function Payment({ route, navigation }) {
                       <Text
                         style={
                           report.isFullScreen
-                            ? { fontSize: 18, color: '#fff' }
+                            ? { fontSize: 14, color: '#fff' }
                             : {}
                         }>
                         {item.name}
