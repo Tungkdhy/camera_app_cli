@@ -8,5 +8,8 @@ export const eventAI = {
     },
     postStatEvent: () => {
         return axiosClient.post('statEventAI/post-add-stat-event-ai/')
-    }
+    },
+    getInfoStatEvent: () => {
+        return axiosClient.get('/statEventAI/get-info-stat-event-ai/')
+    },
 }

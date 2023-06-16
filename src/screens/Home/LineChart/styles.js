@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         lineHeight: 20,
         color: '#000000',
+        maxWidth: '50%',
     },
     boxHeader: {
         width: '100%',

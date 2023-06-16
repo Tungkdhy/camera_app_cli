@@ -5,9 +5,9 @@ import { useDispatch } from 'react-redux';
 import { setReload } from '../../redux/actions/cameraAction';
 import { styles } from './styles';
 const CameraItem = ({ title, path, setCamId, id, type }) => {
-  console.log(
-    `http://cameraai.cds.vinorsoft.com/${type}/${path.split('/')[1]}/image.jpg`,
-  );
+  // console.log(
+  //   `http://cameraai.cds.vinorsoft.com/${type}/${path.split('/')[1]}/image.jpg`,
+  // );
   const [thum, setThum] = React.useState('');
   React.useEffect(() => {
     setThum(

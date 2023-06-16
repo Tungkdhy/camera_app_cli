@@ -15,8 +15,6 @@ import {
 } from 'react-native';
 import { BackIcon } from '../Icons/Index';
 import { styles } from './style';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axiosClient from '../../services/axiosClient';
 import { authenticatorAPI } from '../../services/api/authenticator';
 import Clock from './Clock';
 import { useSelector } from 'react-redux';
@@ -63,7 +61,11 @@ const CodeVerify = ({ route, navigation }) => {
     } catch (e) {
       console.log(e);
       setLoading(false)
-      Alert.alert('Xác thực không thành công');
+      if(reGetOTP) {
+        Alert.alert('Xác thực không thành công');
+      } else {
+        Alert.alert('Các ký tự được nhập không chính xác, vui lòng kiểm tra lại');
+      }
     }
   };
 

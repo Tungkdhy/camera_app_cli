@@ -2,9 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 import { services } from "../../../services/api/services";
 import { Alert } from "react-native";
 import LineChartService from "../LineChart";
+import { eventAI } from "../../../services/api/eventAI";
 
 function AnalyticAI({ navigation }) {
     const [listService, setListService] = useState([]);
+    const [listInfo, setListInfo] = useState();
     const getListService = useCallback(async () => {
         try {
             const res = await services.getListServices()
@@ -21,15 +23,33 @@ function AnalyticAI({ navigation }) {
         }
     }, [])
 
+    const getListInfo = useCallback(async () => {
+        try {
+            const res = await eventAI.getInfoStatEvent();
+            setListInfo(res)
+        } catch (error) {
+            console.log(error);
+        }
+    }, [])
+
     useEffect(() => {
-        getListService()
-    }, [getListService])
+        const getData = async () => {
+            await getListService()
+            await getListInfo()
+        }
+        getData()
+    }, [getListService, getListInfo])
     return (
         <>
             {listService && listService.length > 0 && (
                 listService?.map(service => {
                     return (
-                        <LineChartService key={service?.CODE} type={service?.SUBJECT_NAME} codeService={service?.CODE} />
+                        <LineChartService
+                            key={service?.CODE}
+                            type={service?.SUBJECT_NAME}
+                            codeService={service?.CODE}
+                            listInfo={listInfo}
+                        />
                     )
                 })
             )}

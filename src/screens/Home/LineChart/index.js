@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import { View, Text, Pressable, Alert } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { styles } from './styles';
 import { LineChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import { eventAI } from '../../../services/api/eventAI';
 import RNPickerSelect from 'react-native-picker-select';
 
-import { cameraManagement } from '../../../services/api/cameraManagementApi';
 const Item = ({ title, active }) => (
     <View style={styles.item}>
         <Text
@@ -20,27 +19,35 @@ const dayFill = [
     {
         value: 7,
         label: '7N',
+        step: '1',
     },
     {
         value: 30,
         label: '30N',
+        step: '5',
     },
     {
         value: 90,
         label: '90N',
+        step: '10',
+    },
+    {
+        value: 180,
+        label: '180N',
+        step: '30',
     },
 ];
 
-function LineChartService({ type, codeService }) {
+function LineChartService({ type, codeService, listInfo }) {
     const [stateValue, setStateValue] = useState({
         label: dayFill[0].label,
         value: dayFill[0].value,
+        step: dayFill[0].step
     });
     const [codeCamera, setCodeCamera] = useState(null);
     const [listCamera, setListCamera] = useState();
     const [dataValue, setDataValue] = useState([0]);
-    const [listData, setListData] = useState([]);
-    const [listLabel, setListLabel] = useState(['0', dayFill[0].label]);
+    const [listLabel, setListLabel] = useState(['0']);
     const screenWidth = Dimensions.get('window').width;
     const chartConfig = {
         backgroundGradientFrom: '#fff',
@@ -67,45 +74,39 @@ function LineChartService({ type, codeService }) {
         ],
     };
 
-    const getListCamera = useCallback(async code => {
-        try {
-            const params = {
-                ai_service_code: code,
-                ai_already: 1,
-            };
-            const res = await cameraManagement.getListCamera(params);
-            return res;
-        } catch (error) {
-            return 0;
-        }
-    }, []);
-
-    const checkValue = (data, array) => {
-        let indexData = 0;
-        const arrayToSplice = [...array];
-        arrayToSplice.forEach((item, index) => {
-            if (item.value === data) {
-                indexData = index;
-            }
-        });
-        const fill = arrayToSplice.splice(0, indexData + 1);
-        const label = fill.map(item => {
-            return item.label;
-        });
-        return label;
-    };
-
-    const getDataDetectAction = useCallback(async service => {
+    const getDataDetectAction = useCallback(async (service, codeCam, duration, totalTime) => {
         try {
             const params = {
                 ai_service_code: service,
+                camera_code: codeCam,
+                total_time: totalTime,
+                duration: duration,
             };
             const res = await eventAI.getStatEvent(params);
-            if (res && res?.length > 0) {
-                await eventAI.postStatEvent();
-                return res;
-            } else {
-                return [];
+            let label = [];
+            let data = [];
+            if (res.length > 0) {
+                if (res.length === 1) {
+                    res.forEach((item) => {
+                        label.push(item.START_DATE)
+                        label.push(item.END_DATE)
+                        data = [0, item.TOTAL_RESULT]
+                    })
+                } else {
+                    res.forEach((item, index) => {
+                        if (index === 0) {
+                            label.push(item.START_DATE)
+                        } else {
+                            label.push(item.END_DATE)
+                        }
+                        data.push(item.TOTAL_RESULT)
+                    })
+                }
+                if(label.length > 5) {
+                    label[6] = ''
+                }
+                setListLabel(label);
+                setDataValue(data);
             }
         } catch (error) {
             return [];
@@ -116,67 +117,27 @@ function LineChartService({ type, codeService }) {
         setCodeCamera(value);
     };
 
-    const handleClickChangeValue = (label, value) => {
-        setStateValue({ label: label, value: value });
-        const newLabel = checkValue(value, dayFill);
-        setListLabel(['0', ...newLabel]);
+    const handleClickChangeValue = (label, value, step) => {
+        setStateValue({ label: label, value: value, step: step });
     };
 
-    const getCameraData = useCallback((codeCamera, listData) => {
-        const data = [...listData];
-        const dataCamera = data?.filter(item => item.CAMERA_CODE === codeCamera);
-        return dataCamera;
-    }, []);
-
-    const getDataFill = useCallback((day, data) => {
-        let data7Days = data?.filter(item => item.DURATION === '7 DAYS');
-        let data30Days = data?.filter(item => item.DURATION === '30 DAYS');
-        let data90Days = data?.filter(item => item.DURATION === '90 DAYS');
-        let dataStatistic = [];
-        if (day === 7) {
-            dataStatistic.push(data7Days[0]);
-        } else if (day === 30) {
-            dataStatistic.push(data7Days[0]);
-            dataStatistic.push(data30Days[0]);
-        } else if (day === 90) {
-            dataStatistic.push(data7Days[0]);
-            dataStatistic.push(data30Days[0]);
-            dataStatistic.push(data90Days[0]);
-        }
-        const values = dataStatistic.map(item => {
-            if (item && item?.COUNT) {
-                return item.COUNT;
-            } else {
-                return 0;
+    useEffect(() => {
+        if (listInfo) {
+            let listService = [...listInfo?.list_service];
+            let index = listService.findIndex(item => item?.AI_SERVICE_CODE === codeService)
+            if (index >= 0) {
+                let cameras = [...listInfo?.list_camera];
+                setListCamera(cameras)
+                setCodeCamera(cameras[0].CAMERA_CODE)
             }
-        });
-        return values;
-    }, []);
+        }
+    }, [listInfo, codeService])
 
     useEffect(() => {
-        const getData = async () => {
-            try {
-                const valueDetect = await getDataDetectAction(codeService);
-                if (valueDetect?.length > 0) {
-                    const valueCamera = await getListCamera(codeService);
-                    setListData(valueDetect);
-                    setListCamera(valueCamera);
-                    setCodeCamera(valueCamera?.data[0]?.CAMERA?.CODE);
-                }
-            } catch (error) {
-                Alert.alert('Không có dữ liệu');
-            }
-        };
-        getData();
-    }, [getDataDetectAction, getListCamera, codeService]);
-    useEffect(() => {
-        if (codeCamera && listData?.length > 0) {
-            const data = getCameraData(codeCamera, listData);
-            let day = stateValue.value;
-            const analytic = getDataFill(day, data);
-            setDataValue([0, ...analytic]);
+        if (listCamera?.length > 0 && codeCamera) {
+            getDataDetectAction(codeService, codeCamera, stateValue.step, stateValue.value)
         }
-    }, [codeCamera, listData, getCameraData, stateValue.value, getDataFill]);
+    }, [listCamera, codeCamera, codeService, stateValue, getDataDetectAction])
     return (
         <View style={styles.container}>
             <View style={styles.header_fill}>
@@ -187,7 +148,7 @@ function LineChartService({ type, codeService }) {
                             <Pressable
                                 key={item.value}
                                 style={styles.day}
-                                onPress={e => handleClickChangeValue(item.label, item.value)}>
+                                onPress={e => handleClickChangeValue(item.label, item.value, item.step)}>
                                 <Item
                                     active={stateValue.label === item.label}
                                     title={item.label}
@@ -201,20 +162,20 @@ function LineChartService({ type, codeService }) {
                 <RNPickerSelect
                     placeholder={{
                         label: listCamera
-                            ? listCamera?.data[0]?.CAMERA?.NAME_CAM
+                            ? listCamera[0]?.NAME_CAM
                             : 'Tất cả',
-                        value: listCamera ? listCamera?.data[0]?.CAMERA?.CODE : 0,
+                        value: listCamera ? listCamera[0]?.CAMERA_CODE : 0,
                     }}
                     doneText="Lựa chọn"
                     style={styles}
                     onValueChange={value => handleGetCameraAct(value)}
                     items={
                         listCamera
-                            ? listCamera?.data.map((camera, index) => {
+                            ? listCamera?.map((camera, index) => {
                                 return {
-                                    key: camera?.CAMERA?.CODE,
-                                    label: camera?.CAMERA?.NAME_CAM,
-                                    value: camera?.CAMERA?.CODE,
+                                    key: camera?.CAMERA_CODE,
+                                    label: camera?.NAME_CAM,
+                                    value: camera?.CAMERA_CODE,
                                 };
                             })
                             : []
@@ -228,7 +189,11 @@ function LineChartService({ type, codeService }) {
                     height={220}
                     chartConfig={chartConfig}
                     style={{ marginRight: 40 }}
-                    withDots={false}
+                    withDots={true}
+                    bezier
+                    verticalLabelRotation={15}
+                    fromZero
+                    segments={4}
                 />
             </View>
         </View>

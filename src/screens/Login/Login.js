@@ -12,6 +12,7 @@ import {
   TouchableWithoutFeedback,
   Pressable,
   Image,
+  Modal,
 } from 'react-native';
 import axios from 'axios';
 import {
@@ -21,6 +22,7 @@ import {
   UserIcon,
   EyeIcon,
   UnEyeIcon,
+  SuccessIcon,
 } from '../../components/Icons/Index';
 // import messaging from '@react-native-firebase/messaging';
 import { styles } from './styles';
@@ -29,14 +31,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axiosClient from '../../services/axiosClient';
 import { useDispatch } from 'react-redux';
 import { setUserTypeCode } from '../../redux/actions/getUserAction';
-import { isValidatorUsername } from '../../utils';
 
 const Login = ({ navigation }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [isShowPass, setIsShowPass] = useState(true);
   const dispatch = useDispatch();
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(false);
+  const [modalSuccess, setModalSuccess] = useState(false);
 
   const handleLogin = async () => {
     if (userName.length >= 6 && password.length >= 8) {
@@ -54,7 +56,7 @@ const Login = ({ navigation }) => {
           const infoUser = await axiosClient.get('/user/get-user-info/');
           let userTypeCode = infoUser[0]?.USERTYPE_CODE;
           dispatch(setUserTypeCode(userTypeCode));
-          navigation.navigate('Home');
+          setModalSuccess(true);
         }
       } catch (e) {
         console.log(e);
@@ -68,6 +70,15 @@ const Login = ({ navigation }) => {
   useEffect(() => {
     Orientation.lockToPortrait(); //this will lock the view to Portrait
   }, []);
+  useEffect(() => {
+    if(modalSuccess) {
+     const countNavigate = setTimeout(() => {
+        setModalSuccess(false);
+        navigation.navigate('Home')
+      }, 1000)
+      return () => clearTimeout(countNavigate)
+    }
+  }, [modalSuccess])
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <ImageBackground
@@ -114,7 +125,7 @@ const Login = ({ navigation }) => {
                   </View>
                   <Pressable onPress={() => setIsShowPass(!isShowPass)}
                     style={styles.eyeIcon}>
-                      {isShowPass ? <EyeIcon /> : <UnEyeIcon/> }
+                    {isShowPass ? <EyeIcon /> : <UnEyeIcon />}
                   </Pressable>
                   <TextInput
                     placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
@@ -150,6 +161,20 @@ const Login = ({ navigation }) => {
               </View>
             </View>
           </View>
+          <Modal
+            animationType={"fade"}
+            transparent={true}
+            visible={modalSuccess}
+            style={styles.modal}
+
+          >
+            <View style={styles.mainView}>
+              <View style={styles.headerModal}>
+                <Text style={styles.textHeader}>Đăng nhập thành công</Text>
+                <Text style={styles.textHeader}><SuccessIcon/></Text>
+              </View>
+            </View>
+          </Modal>
         </KeyboardAvoidingView>
       </ImageBackground>
     </TouchableWithoutFeedback>
