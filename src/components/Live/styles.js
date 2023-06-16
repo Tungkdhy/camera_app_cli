@@ -84,7 +84,7 @@ export const styles = StyleSheet.create({
   },
   infoFull: {
     position: 'absolute',
-    top: 10,
+    top: -6,
     left: 16,
     // paddingTop: 8,
     // flexDirection: "row",
@@ -113,7 +113,7 @@ export const styles = StyleSheet.create({
     // marginVertical: 20,
     // marginRight: 12
     paddingRight: 8,
-    marginRight: 8
+    marginRight: 8,
   },
   nameCamera: {
     paddingTop: 4,
@@ -178,7 +178,7 @@ export const styles = StyleSheet.create({
     // height: Dimensions.get('window').width,
     // minWidth: Dimensions.get('window').height,
     // minHeight: Dimensions.get('window').width,
-    width: width - 80,
+    width: width - 120,
     height: height,
 
     // transform: [{rotate: '90deg'}],

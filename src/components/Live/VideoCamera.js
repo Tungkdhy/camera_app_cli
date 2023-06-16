@@ -135,8 +135,8 @@ const VideoCamera = ({
                       <Video
                         source={{
                           uri: `http://cameraai.cds.vinorsoft.com/${type}${type === 'playback/'
-                            ? item?.path.PATH
-                            : item?.data[0]?.PATH
+                              ? item?.path.PATH
+                              : item?.data[0]?.PATH
                             }`,
                         }}
                         ref={ref}
@@ -185,7 +185,7 @@ const VideoCamera = ({
                       <Text
                         style={
                           isFullScreen
-                            ? { fontSize: 18, color: '#fff', paddingLeft: 12 }
+                            ? { fontSize: 14, color: '#fff', paddingLeft: 8 }
                             : { color: '#000' }
                         }>
                         {item.name}
