@@ -20,6 +20,7 @@ import {
   LockIcon,
   UserIcon,
   EyeIcon,
+  UnEyeIcon,
 } from '../../components/Icons/Index';
 // import messaging from '@react-native-firebase/messaging';
 import { styles } from './styles';
@@ -111,11 +112,10 @@ const Login = ({ navigation }) => {
                   <View style={styles.lockIcon}>
                     <LockIcon />
                   </View>
-                  <Text
-                    onPress={() => setIsShowPass(!isShowPass)}
+                  <Pressable onPress={() => setIsShowPass(!isShowPass)}
                     style={styles.eyeIcon}>
-                    <EyeIcon />
-                  </Text>
+                      {isShowPass ? <EyeIcon /> : <UnEyeIcon/> }
+                  </Pressable>
                   <TextInput
                     placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
                     style={

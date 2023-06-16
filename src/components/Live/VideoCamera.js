@@ -20,6 +20,7 @@ import {
   Pressable,
   StatusBar,
   Dimensions,
+  Platform,
 } from 'react-native';
 import { styles } from './styles';
 import { convertToSecond } from '../../utils';
@@ -41,6 +42,7 @@ const VideoCamera = ({
   );
   const [count, setCount] = useState(1);
   const [listPath, setListPath] = useState([]);
+  const [onAndroid, setOnAndroid] = useState(false);
   const reload = useSelector(state => state.useReducer.reload);
   const handleOrientation = orientation => {
     if (orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT') {
@@ -100,15 +102,17 @@ const VideoCamera = ({
       }),
     [navigation],
   );
-  console.log(listPath, '103');
+  useEffect(() => {
+    if(Platform?.OS === 'android') {
+      setOnAndroid(true)
+    }
+  }, [])
   return (
     <View style={isFullScreen ? styles.contentFull : {}}>
       {
         <View style={isFullScreen ? styles.activeFull : styles.active}>
           {cameraActive &&
             cameraActive.map((item, index) => {
-              console.log(item.data);
-
               return (
                 <>
                   <View
@@ -125,7 +129,7 @@ const VideoCamera = ({
                     }>
                     {item.path === 'no-path' ? (
                       <View style={styles.noPath}>
-                        <Text style={{ color: '#000' }}>Không có video</Text>
+                        <Text style={{ color: '#fff' }}>Không có video</Text>
                       </View>
                     ) : (
                       <Video
@@ -197,7 +201,7 @@ const VideoCamera = ({
                             </Pressable>
                           </View>
 
-                          {type === 'livestream' && (
+                          {(type === 'livestream' || onAndroid) && (
                             <Pressable
                               onPress={handleFullscreen}
                               style={styles.iconSetting}>

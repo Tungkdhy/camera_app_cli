@@ -52,6 +52,7 @@ export const styles = StyleSheet.create({
     paddingTop: 24,
     paddingBottom: 24,
     fontWeight: '400',
+    textAlign: 'center'
   },
   title: {
     paddingTop: 100,
@@ -242,4 +243,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-end',
   },
-});
+  error:{
+    color: '#F25B60',
+    borderColor: '#F25B60'
+  }
+})
+

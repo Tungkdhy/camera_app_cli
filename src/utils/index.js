@@ -1,6 +1,6 @@
 //validator email
 export const isValidatorEmail = email => {
-  const regex = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i;
   return !!email.match(email.match(regex));
 };
 // validator name
@@ -10,13 +10,13 @@ export const isValidatorName = name => {
   return !!name.match(regex);
 };
 export const isValidatorUsername = username => {
-  const regex = '[A-Za-z]';
+  const regex = /^[a-z0-9]{6,15}$/;
   return !!username.match(regex);
 };
 // validator pass 11
 export const isValidatePassword = password => {
-  const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[^\s]{6,20}$/;
-
+  const regex =
+  /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[^\s]{6,20}$/;;
   return !!password.match(regex);
 };
 export const formatDDMMYY = date => {
@@ -101,15 +101,12 @@ export const convertTimeToPx = time => {
 };
 
 export const sorterDateInArr = (arr, method) => {
-  return arr.sort((a, b) => {
-    return new Date(a[method]) - new Date(b[method]);
-  });
-};
-export const validationChangePassword = pass => {
-  if (pass.length < 11) {
-    return 'Mật khẩu tối thiểu 11 kí tự';
-  }
-  if (pass.length === 0) {
-    return 'Mật khẩu không được để trống';
-  }
-};
+  return arr.sort((a,b) => {
+    return new Date(a[method]) - new Date(b[method])
+  })
+}
+
+export const isValidateToken = (token) => {
+  const regex = /^[0-9]{6}$/;
+  return !!token?.match(regex)
+}
