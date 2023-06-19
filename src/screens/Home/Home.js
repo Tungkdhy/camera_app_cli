@@ -1,4 +1,4 @@
-import { View, ScrollView, Alert } from 'react-native';
+import { View, ScrollView, Alert, SafeAreaView } from 'react-native';
 import Header from '../../components/Header/Header';
 import { style } from './styles';
 import CountCamera from './CountCamera';
@@ -66,7 +66,7 @@ export default function Home({ navigation }) {
     const getAndUpDateCountCamera = async () => {
       const countCam = await getCountCam()
       let code = countCam[0]?.COMPANY_CODE
-      if(code) {
+      if (code) {
         await getCompany()
       }
     };
@@ -76,11 +76,11 @@ export default function Home({ navigation }) {
   useEffect(() => {
     const getUpdateCount = async () => {
       try {
-        if(statusGet) {
+        if (statusGet) {
           const upDateCountCamera = await axiosClient.post(
             '/statCountCam/post-add-stat-count-cam/',
           );
-          if(companyName.trim().length <= 0) {
+          if (companyName.trim().length <= 0) {
             let code = upDateCountCamera[0]?.COMPANY_CODE;
             await getCompany(code)
           }
@@ -117,18 +117,20 @@ export default function Home({ navigation }) {
   return (
     <>
       <Header title={'Thống kê'} navigation={navigation} />
-      <View style={style.container}>
-        <ScrollView>
-          <CountCamera companyName={companyName} countCamera={countCamera} />
-          <CountAI countCamera={countCamera} companyName={companyName}/>
-          <DonutChart title={'Tổng số Camera theo nhóm'} type={'group'} />
-          <DonutChart
-            title={'Tổng số Camera theo địa điểm'}
-            type={'warehouse'}
-          />
-          <AnalyticAI navigation={navigation} />
-        </ScrollView>
-      </View>
+      <SafeAreaView>
+        <View style={style.container}>
+          <ScrollView>
+            <CountCamera companyName={companyName} countCamera={countCamera} />
+            <CountAI countCamera={countCamera} companyName={companyName} />
+            <DonutChart title={'Tổng số Camera theo nhóm'} type={'group'} />
+            <DonutChart
+              title={'Tổng số Camera theo địa điểm'}
+              type={'warehouse'}
+            />
+            <AnalyticAI navigation={navigation} />
+          </ScrollView>
+        </View>
+      </SafeAreaView>
     </>
   );
 }

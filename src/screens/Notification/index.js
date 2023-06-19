@@ -206,27 +206,48 @@ function Notification({ navigation }) {
                     <Text style={styles.time_block}>{notification.TIME}</Text>
                     <View style={styles.list_item}>
                       {notification.data.map(item => {
-                        return (
-                          <Pressable
-                            key={item.CODE}
-                            onPress={() =>
-                              handleCheckNotification(item.CODE, item)
-                            }>
-                            <View
-                              style={
-                                item.SEEN === 0
-                                  ? { ...styles.item, ...styles.new }
-                                  : { ...styles.item }
+                        if (item.SEEN === 0) {
+                          return (
+                            <Pressable
+                              key={item.CODE}
+                              onPress={() =>
+                                handleCheckNotification(item.CODE, item)
                               }>
-                              <Text style={styles.time}>{item.TIME}</Text>
-                              <Text style={styles.name}>{item.NAME}</Text>
-                              <Text style={styles.title}>{item.DETAIL}</Text>
-                              {item.SEEN === 0 && (
+                              <View
+                                style={
+                                  { ...styles.item, ...styles.new }
+                                }>
+                                <Text style={styles.time}>{item.TIME}</Text>
+                                <Text style={styles.name}>{item.NAME}</Text>
+                                <Text style={styles.title}>{item.DETAIL}</Text>
+
                                 <View style={styles.tick} />
-                              )}
-                            </View>
-                          </Pressable>
-                        );
+                              </View>
+                            </Pressable>
+                          );
+                        }
+                      })}
+                      {notification.data.map(item => {
+                        if (item.SEEN === 1) {
+                          return (
+                            <Pressable
+                              key={item.CODE}
+                              onPress={() =>
+                                handleCheckNotification(item.CODE, item)
+                              }>
+                              <View
+                                style={
+
+                                  { ...styles.item }
+                                }>
+                                <Text style={styles.time}>{item.TIME}</Text>
+                                <Text style={styles.name}>{item.NAME}</Text>
+                                <Text style={styles.title}>{item.DETAIL}</Text>
+
+                              </View>
+                            </Pressable>
+                          );
+                        }
                       })}
                     </View>
                   </View>
@@ -239,23 +260,41 @@ function Notification({ navigation }) {
                   <Text style={styles.time_block}>{notification.TIME}</Text>
                   <View style={styles.list_item}>
                     {notification.data.map(item => {
-                      return (
-                        <Pressable
-                          key={item.CODE}
-                          onPress={() => handleCheckNotification(item.CODE)}>
-                          <View
-                            style={
-                              item.SEEN === 0
-                                ? { ...styles.item, ...styles.new }
-                                : { ...styles.item }
-                            }>
-                            <Text style={styles.time}>{item.TIME}</Text>
-                            <Text style={styles.name}>{item.NAME}</Text>
-                            <Text style={styles.title}>{item.DETAIL}</Text>
-                            {item.SEEN === 0 && <View style={styles.tick} />}
-                          </View>
-                        </Pressable>
-                      );
+                      if (item.SEEN === 0) {
+                        return (
+                          <Pressable
+                            key={item.CODE}
+                            onPress={() => handleCheckNotification(item.CODE)}>
+                            <View
+                              style={
+                                { ...styles.item, ...styles.new }
+                              }>
+                              <Text style={styles.time}>{item.TIME}</Text>
+                              <Text style={styles.name}>{item.NAME}</Text>
+                              <Text style={styles.title}>{item.DETAIL}</Text>
+                              <View style={styles.tick} />
+                            </View>
+                          </Pressable>
+                        );
+                      }
+                    })}
+                    {notification.data.map(item => {
+                      if (item.SEEN === 1) {
+                        return (
+                          <Pressable
+                            key={item.CODE}
+                            onPress={() => handleCheckNotification(item.CODE)}>
+                            <View
+                              style={
+                                { ...styles.item }
+                              }>
+                              <Text style={styles.time}>{item.TIME}</Text>
+                              <Text style={styles.name}>{item.NAME}</Text>
+                              <Text style={styles.title}>{item.DETAIL}</Text>
+                            </View>
+                          </Pressable>
+                        );
+                      }
                     })}
                   </View>
                 </View>
@@ -263,7 +302,7 @@ function Notification({ navigation }) {
             })}
         </ScrollView>
       </View>
-    </View>
+    </View >
   );
 }
 

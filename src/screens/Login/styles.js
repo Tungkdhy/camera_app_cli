@@ -174,4 +174,34 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 16,
   },
+  modal: {
+    
+  },
+  mainView: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    backgroundColor: 'rgba(0,0,0,0.3)'
+  },
+  headerModal: {
+    position: 'absolute',
+    display: 'flex',
+    flexDirection: 'column',
+    width: '80%',
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    top: '40%',
+    left: '10%',
+    justifyContent: 'center',
+    paddingBottom: 16,
+  },
+  textHeader : {
+    color: '#333',
+    fontSize: 24,
+    fontWeight: '600',
+    textAlign: 'center',
+    lineHeight: 80,
+  }
 });
