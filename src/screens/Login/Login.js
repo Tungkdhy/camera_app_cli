@@ -31,6 +31,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axiosClient from '../../services/axiosClient';
 import { useDispatch } from 'react-redux';
 import { setUserTypeCode } from '../../redux/actions/getUserAction';
+import { isValidatePassword, isValidatorUsername } from '../../utils';
 
 const Login = ({ navigation }) => {
   const [userName, setUserName] = useState('');
@@ -41,7 +42,7 @@ const Login = ({ navigation }) => {
   const [modalSuccess, setModalSuccess] = useState(false);
 
   const handleLogin = async () => {
-    if (userName.length >= 6 && password.length >= 8) {
+    if (isValidatorUsername(userName) && isValidatePassword(password)) {
       try {
         const res = await axios.post(
           'http://cameraai.cds.vinorsoft.com/camera/vinorsoft/aicamera/v1.0/authenticator/login/',
@@ -71,8 +72,8 @@ const Login = ({ navigation }) => {
     Orientation.lockToPortrait(); //this will lock the view to Portrait
   }, []);
   useEffect(() => {
-    if(modalSuccess) {
-     const countNavigate = setTimeout(() => {
+    if (modalSuccess) {
+      const countNavigate = setTimeout(() => {
         setModalSuccess(false);
         navigation.navigate('Home')
       }, 1000)
@@ -100,64 +101,67 @@ const Login = ({ navigation }) => {
                   <Logo />
                 </View>
                 <SafeAreaView>
-                  <View style={styles.userIcon}>
-                    <UserIcon />
+                  <View style={styles.formInput}>
+                    <View style={styles.userIcon}>
+                      <UserIcon />
+                    </View>
+                    <TextInput
+                      placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
+                      onChangeText={text => {
+                        setUserName(text)
+                        setError(false)
+                      }}
+                      style={
+                        ((userName.length < 6 && userName !== '') || (error && userName.length === 0))
+                          ? { ...styles.input, ...styles.borderError }
+                          : styles.input
+                      }
+                      value={userName}
+                      placeholder="Tên đăng nhập"
+                    />
+                    {(error && !isValidatorUsername(userName) && <Text style={styles.error}>
+                      Tên người dùng dài từ 6 - 15 ký tự. Chỉ chứa các ký tự viết thường và số.
+                    </Text>)}
                   </View>
-                  <TextInput
-                    placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
-                    onChangeText={text => {
-                      setUserName(text)
-                      setError(false)
-                    }}
-                    style={
-                      ((userName.length < 6 && userName !== '') || (error && userName.length === 0))
-                        ? { ...styles.input, ...styles.borderError }
-                        : styles.input
-                    }
-                    value={userName}
-                    placeholder="Tên đăng nhập"
-                  />
-                  {(userName.split(" ").length === 1 && userName.length > 0) ? (userName.length < 6 && userName !== '' ? (
-                    <Text style={styles.error}>Vui lòng nhập đủ 6 ký tự</Text>
-                  ) : (error && userName.length === 0) ? <Text style={styles.error}>Tên đăng nhập không được để trống</Text> : "") : (userName.length > 0 && <Text style={styles.error}>Tên đăng nhập không được chứa khoảng trắng</Text>)}
-                  <View style={styles.lockIcon}>
-                    <LockIcon />
-                  </View>
-                  <Pressable onPress={() => setIsShowPass(!isShowPass)}
-                    style={styles.eyeIcon}>
-                    {isShowPass ? <EyeIcon /> : <UnEyeIcon />}
-                  </Pressable>
-                  <TextInput
-                    placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
-                    style={
-                      ((password.length < 8 && password !== '') || (error && password.length === 0))
-                        ? { ...styles.input, ...styles.borderError }
-                        : styles.input
-                    }
-                    placeholder="Mật khẩu"
-                    secureTextEntry={isShowPass}
-                    value={password}
-                    onChangeText={text => {
-                      setError(false)
-                      setPassword(text)
-                    }}
-                  />
-                  {(password.split(" ").length === 1 && password.length > 0) ? (password.length < 8 && password !== '' ? (
-                    <Text style={styles.error_password}>
-                      Mật khẩu tối thiểu có 8 ký tự
+                  <View style={styles.formInput} >
+                    <View style={styles.lockIcon}>
+                      <LockIcon />
+                    </View>
+                    <Pressable onPress={() => setIsShowPass(!isShowPass)}
+                      style={styles.eyeIcon}>
+                      {isShowPass ? <EyeIcon /> : <UnEyeIcon />}
+                    </Pressable>
+                    <TextInput
+                      placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
+                      style={
+                        ((password.length < 8 && password !== '') || (error && password.length === 0))
+                          ? { ...styles.input, ...styles.borderError }
+                          : styles.input
+                      }
+                      placeholder="Mật khẩu"
+                      secureTextEntry={isShowPass}
+                      value={password}
+                      onChangeText={text => {
+                        setError(false)
+                        setPassword(text)
+                      }}
+                    />
+                    {(error && !isValidatePassword(password)) && <Text style={styles.error_password}>
+                      Mật khẩu 6-20 ký tự. Ít nhất 1 ký tự viết hoa, 1 ký tự viết thường, 1 ký tự đặc biệt, 1 ký tự số, không chứa khoảng trắng.
                     </Text>
-                  ) : (error && password.length === 0) ? <Text style={styles.error_password}>Mật khẩu không được để trống</Text> : "") : (password.length > 0 && <Text style={styles.error_password}>Mật khẩu không được chứa khoảng trắng</Text>)}
-                </SafeAreaView>
-                <TouchableHighlight onPress={handleLogin} style={styles.login}>
-                  <View style={styles.buttonLogin}>
-                    <Text style={styles.btnText}>Đăng nhập</Text>
+                    }
                   </View>
-                </TouchableHighlight>
-                <Text
-                  onPress={() => navigation.navigate('Forgot')}
-                  style={styles.forgot}>
-                  Quên mật khẩu
-                </Text>
+                  <TouchableHighlight onPress={handleLogin} style={styles.login}>
+                    <View style={styles.buttonLogin}>
+                      <Text style={styles.btnText}>Đăng nhập</Text>
+                    </View>
+                  </TouchableHighlight>
+                  <Text
+                    onPress={() => navigation.navigate('Forgot')}
+                    style={styles.forgot}>
+                    Quên mật khẩu
+                  </Text>
+                </SafeAreaView>
               </View>
             </View>
           </View>
@@ -171,7 +175,7 @@ const Login = ({ navigation }) => {
             <View style={styles.mainView}>
               <View style={styles.headerModal}>
                 <Text style={styles.textHeader}>Đăng nhập thành công</Text>
-                <Text style={styles.textHeader}><SuccessIcon/></Text>
+                <Text style={styles.textHeader}><SuccessIcon /></Text>
               </View>
             </View>
           </Modal>

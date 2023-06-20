@@ -25,6 +25,11 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  formInput: {
+    position: 'relative',
+    flexDirection: 'row',
+    paddingBottom: 20,
+  },
   button: {
     alignItems: 'center',
     backgroundColor: '#0040FF',
@@ -75,25 +80,26 @@ export const styles = StyleSheet.create({
     top: 68,
     left: 8,
     position: 'absolute',
+    width: '100%'
   },
   error_password: {
     color: 'red',
     fontSize: 12,
-    top: 158,
+    top: 66,
     left: 8,
     position: 'absolute',
+    width: '100%'
   },
   contentForm: {
-    height: 380,
+    // height: '70%',
     justifyContent: 'space-between',
     backgroundColor: '#ffffff',
     display: 'flex',
-    flexDirection: 'column-reverse',
+    // flexDirection: 'column-reverse',
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
   },
   input: {
-    marginTop: 10,
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.2)',
     ...Platform.select({
@@ -109,6 +115,7 @@ export const styles = StyleSheet.create({
     paddingRight: 40,
     marginBottom: 30,
     color: '#000',
+    width: '100%',
   },
   login: {
     // marginTop:24
@@ -154,12 +161,12 @@ export const styles = StyleSheet.create({
   },
   userIcon: {
     position: 'absolute',
-    top: 22,
+    top: 18,
     left: 12,
   },
   lockIcon: {
     position: 'absolute',
-    top: 114,
+    top: 16,
     left: 12,
   },
   eyeIcon: {
@@ -203,5 +210,5 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
     lineHeight: 80,
-  }
+  },
 });
