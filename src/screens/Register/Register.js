@@ -26,7 +26,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from '@react-native-picker/picker';
 
 const Register = ({ navigation }) => {
-  const [listCompany, setListCompany] = useState([])
+  const [listCompany, setListCompany] = useState([]);
   const [register, setRegister] = useState({
     name: '',
     email: '',
@@ -67,11 +67,11 @@ const Register = ({ navigation }) => {
 
   useEffect(() => {
     async function getListCompany() {
-      const res = await axiosClient.get('company/get-list-company/')
-      setListCompany(res)
+      const res = await axiosClient.get('company/get-list-company/');
+      setListCompany(res);
     }
-    getListCompany()
-  }, [])
+    getListCompany();
+  }, []);
   return (
     <ImageBackground
       style={styles.container}
@@ -104,21 +104,22 @@ const Register = ({ navigation }) => {
               {!isValidatorName(register.name) && register.name !== '' ? (
                 <Text style={styles.error}>Vui lòng nhập đúng tên</Text>
               ) : (
-                <Text></Text>
+                <Text />
               )}
               <Text style={styles.label}>Tên đăng nhập</Text>
               <TextInput
-                  onChangeText={(text) =>
-                    setRegister({ ...register, username: text })
-                  }
-                  style={
-                    !isValidatorName(register.username) && register.username !== ""
-                      ? { ...styles.input, ...styles.borderError }
-                      : styles.input
-                  }
-                  value={register.username}
-                  placeholder="Nhập"
-                />
+                onChangeText={text =>
+                  setRegister({ ...register, username: text })
+                }
+                style={
+                  !isValidatorName(register.username) &&
+                    register.username !== ''
+                    ? { ...styles.input, ...styles.borderError }
+                    : styles.input
+                }
+                value={register.username}
+                placeholder="Nhập"
+              />
               <Text style={styles.label}>Email</Text>
               <TextInput
                 onChangeText={text => setRegister({ ...register, email: text })}
@@ -133,7 +134,7 @@ const Register = ({ navigation }) => {
               {!isValidatorEmail(register.email) && register.email !== '' ? (
                 <Text style={styles.error}>Vui lòng nhập đúng email</Text>
               ) : (
-                <Text></Text>
+                <Text />
               )}
               <Text style={styles.label}>Số điện thoại</Text>
               <TextInput
@@ -159,28 +160,29 @@ const Register = ({ navigation }) => {
               /> */}
               <View>
                 <Text style={styles.label}>Công ty trực thuộc</Text>
-                <View style={
-                  register.company === 'All'
-                    ? { ...styles.input_picker, ...styles.borderError }
-                    : styles.input_picker
-                }>
+                <View
+                  style={
+                    register.company === 'All'
+                      ? { ...styles.input_picker, ...styles.borderError }
+                      : styles.input_picker
+                  }>
                   <Picker
                     selectedValue={register.company}
                     onValueChange={(itemValue, itemIndex) => {
-                      setRegister(prev => ({ ...prev, company: itemValue }))
+                      setRegister(prev => ({ ...prev, company: itemValue }));
                     }}
-                    style={{ color: 'rgba(0,0,0,0.4)', marginLeft: -4 }}
-                  >
+                    style={{ color: 'rgba(0,0,0,0.4)', marginLeft: -4 }}>
                     <Picker.Item label="Nhập" value={'All'} />
-                    {listCompany.length > 0 && listCompany.map((company) => {
-                      return (
-                        <Picker.Item
-                          key={company.CODE}
-                          label={company.NAME}
-                          value={company.CODE}
-                        />
-                      )
-                    })}
+                    {listCompany.length > 0 &&
+                      listCompany.map(company => {
+                        return (
+                          <Picker.Item
+                            key={company.CODE}
+                            label={company.NAME}
+                            value={company.CODE}
+                          />
+                        );
+                      })}
                   </Picker>
                 </View>
               </View>
@@ -216,11 +218,11 @@ const Register = ({ navigation }) => {
                   setRegister({ ...register, passwordRefresh: text })
                 }
               />
-            <TouchableHighlight onPress={handleLogin} style={styles.login}>
-              <View style={styles.buttonLogin}>
-                <Text style={styles.btnText}>Tiếp tục</Text>
-              </View>
-            </TouchableHighlight>
+              <TouchableHighlight onPress={handleLogin} style={styles.login}>
+                <View style={styles.buttonLogin}>
+                  <Text style={styles.btnText}>Tiếp tục</Text>
+                </View>
+              </TouchableHighlight>
             </ScrollView>
           </View>
         </View>
