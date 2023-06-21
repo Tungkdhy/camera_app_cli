@@ -30,6 +30,7 @@ export default function Stream({ navigation, ...props }) {
   const camera = useSelector(state => state.useReducer);
   const wareHouse = useSelector(state => state.wareHouseReducer);
   //Show filter
+  // console.log(wareHouse);
   const [modalVisible, setModalVisible] = useState(false);
   const handleSetShowModal = () => {
     setModalVisible(!modalVisible);
@@ -139,26 +140,30 @@ export default function Stream({ navigation, ...props }) {
       </>
     );
   };
+  // console.log(props.route.name);
   useEffect(() => {
     //Get warehouse
     async function getLocation() {
       try {
-        const province = camera.filter?.province_code !== "All"
-          ? {
-            province_code: camera.filter?.province_code,
-          }
-          : {};
-        const district = camera.filter?.district_code !== "All"
-          ? {
-            district_code: camera.filter?.district_code,
-          }
-          : {};
+        const province =
+          camera.filter?.province_code !== 'All'
+            ? {
+              province_code: camera.filter?.province_code,
+            }
+            : {};
+        const district =
+          camera.filter?.district_code !== 'All'
+            ? {
+              district_code: camera.filter?.district_code,
+            }
+            : {};
         const already =
           props.route.name === 'Stream'
             ? {}
             : props.route.name === 'Smart'
               ? {
                 ai_already: camera.filter?.isBG,
+                ai_service_code: camera.filter?.service,
               }
               : {
                 record_already: camera.filter?.isBG,
@@ -170,29 +175,34 @@ export default function Stream({ navigation, ...props }) {
               ...province,
               ...district,
               camera_status: camera.filter.camera_status,
+              // record_already: camera.filter?.isBG ? 1 : 0,
+
               // record_already: 0,
+              // ai_already: camera.filter?.isBG ? 1 : 0,
+              // ai_service_code: camera.filter?.service,
             },
           },
         );
         dispatch(getListWareHouse(res));
-      } catch (e) { }
+      } catch (e) {
+        console.log(e);
+      }
     }
     getLocation();
-  }, [
-    camera.refresh,
-    camera.filter.camera_status,
-    props.route.name,
-  ]);
+  }, [camera.refresh, camera.camera_status]);
   useEffect(() => {
     async function getDistrict() {
-      const prams = camera.filter?.province_code === "All" ? {} : {
-        province_code: camera.filter?.province_code
-      }
+      const prams =
+        camera.filter?.province_code === 'All'
+          ? {}
+          : {
+            province_code: camera.filter?.province_code,
+          };
       const res = await axiosClient.get(
         `/district/get-list-district/?size=1000&page=1&district_name=${camera.filterLocate?.district}`,
         {
-          params: { ...prams }
-        }
+          params: { ...prams },
+        },
       );
       const data = res.map(item => {
         return { name: item.DISTRICT_NAME, code: item.DISTRICT_CODE };

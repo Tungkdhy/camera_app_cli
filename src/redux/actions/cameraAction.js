@@ -14,6 +14,7 @@ export const SET_FILTER_PROVINCE = "SET_FILTER_PROVINCE"
 export const SET_FILTER_DISTRICT = "SET_FILTER_DISTRICT"
 export const REFRESH = "REFRESH"
 export const CHECKBG = "CHECKBG"
+export const SET_SERVICE = "SET_SERVICE"
 
 export const SET_RELOAD = "SET_RELOAD"
 
@@ -124,6 +125,12 @@ export const setRefresh = (data) => {
 export const setCheckBG = (data) => {
   return {
     type: CHECKBG,
+    payload: data
+  }
+}
+export const setService = (data) => {
+  return {
+    type: SET_SERVICE,
     payload: data
   }
 }

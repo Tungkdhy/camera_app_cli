@@ -17,7 +17,7 @@ import {
   SET_RECORD,
   REFRESH,
   CHECKBG,
-
+  SET_SERVICE,
 } from '../actions/cameraAction';
 
 const initialState = {
@@ -28,12 +28,13 @@ const initialState = {
   district: [],
   filter: {
     camera_status: 'On',
-    province_code: "All",
-    district_code: "All",
+    province_code: 'All',
+    district_code: 'All',
     province_name: '',
     district_name: '',
     record_status: 1,
-    isBG: false
+    isBG: false,
+    service: '',
   },
   pathStream: [],
   camera_info: {},
@@ -43,7 +44,7 @@ const initialState = {
     district: '',
   },
   reload: false,
-  refresh: false
+  refresh: false,
 };
 
 const useReducer = (state = initialState, action) => {
@@ -72,7 +73,7 @@ const useReducer = (state = initialState, action) => {
         ...state,
         filter: {
           ...state.filter,
-          district_code: action.payload
+          district_code: action.payload,
           // district_name: action.payload.name,
         },
       };
@@ -125,7 +126,7 @@ const useReducer = (state = initialState, action) => {
       return {
         ...state,
         reload: action.payload,
-      }
+      };
     case SET_RECORD:
       return {
         ...state,
@@ -137,7 +138,7 @@ const useReducer = (state = initialState, action) => {
     case REFRESH:
       return {
         ...state,
-        refresh: action.payload
+        refresh: action.payload,
       };
     case CHECKBG:
       return {
@@ -145,6 +146,14 @@ const useReducer = (state = initialState, action) => {
         filter: {
           ...state.filter,
           isBG: action.payload,
+        },
+      };
+    case SET_SERVICE:
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          service: action.payload,
         },
       };
     default:
