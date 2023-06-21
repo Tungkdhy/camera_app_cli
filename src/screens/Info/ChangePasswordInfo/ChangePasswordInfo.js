@@ -9,7 +9,7 @@ import {
     ActivityIndicator,
 } from 'react-native';
 
-import { Back, EyeIcon } from '../../../components/Icons/Index';
+import { Back, EyeIcon, UnEyeIcon } from '../../../components/Icons/Index';
 import axiosClient from '../../../services/axiosClient';
 import { isValidateConfirm, isValidatePassword } from '../../../utils';
 import { styles } from './styles';
@@ -26,18 +26,22 @@ const ChangePasswordInfo = ({ navigation }) => {
     const [errorInConfirm, setErrorInConfirm] = useState(false);
     const [loading, setLoading] = useState(false);
     const [isChange, setIsChange] = useState(false);
+    const [submit, setSubmit] = useState(false);
 
     const handleChangeOldPassword = value => {
         setOldPassword(value);
+        setSubmit(false);
     };
     const handleChangeNewPassword = value => {
         setNewPassword(value);
         setErrorInNew(false);
+        setSubmit(false);
     };
     const handleChangeConfirmPassword = value => {
         setConfirmPassword(value);
         setErrorInConfirm(false);
         setIsChange(true);
+        setSubmit(false);
     };
 
     const onLogout = useCallback(async () => {
@@ -57,6 +61,7 @@ const ChangePasswordInfo = ({ navigation }) => {
     }, []);
 
     const handleChangePassword = async () => {
+        setSubmit(true)
         if (
             isValidatePassword(newPassword) &&
             isValidatePassword(confirmPassword) &&
@@ -67,7 +72,7 @@ const ChangePasswordInfo = ({ navigation }) => {
         } else if (isValidatePassword(newPassword)) {
             setErrorInConfirm(true);
             Alert.alert('Thay đổi không thành công');
-        } else if (isValidateConfirm(newPassword, oldPassword)) {
+        } else if (isValidateConfirm(newPassword, oldPassword) && oldPassword.length >0) {
             setErrorInNew(true);
             Alert.alert('Mật khẩu mới không được trùng với mật khẩu hiện tại');
         } else {
@@ -117,15 +122,24 @@ const ChangePasswordInfo = ({ navigation }) => {
                         <TextInput
                             value={oldPassword}
                             onChangeText={e => handleChangeOldPassword(e)}
-                            style={styles.input}
+                            style={
+                                submit && !isValidatePassword(oldPassword)
+                                    ? { ...styles.input, ...styles.borderError }
+                                    : { ...styles.input }
+                            }
                             placeholder={'Nhập'}
                             secureTextEntry={isPassword}
                         />
-                        <Text
+                        <Pressable
                             onPress={() => setIsPassword(!isPassword)}
                             style={styles.eyeIcon}>
-                            <EyeIcon />
-                        </Text>
+                            {isPassword ? <EyeIcon /> : <UnEyeIcon />}
+                        </Pressable>
+                        {submit && !isValidatePassword(oldPassword) && (
+                            <Text style={{ ...styles.label, ...styles.borderError }}>
+                                Mật khẩu 6-20 ký tự. Ít nhất 1 ký tự viết hoa, 1 ký tự viết thường, 1 ký tự đặc biệt, 1 ký tự số, không chứa khoảng trắng.
+                            </Text>
+                        )}
                     </View>
                     <View style={styles.item}>
                         <Text style={styles.title}>Mật khẩu mới</Text>
@@ -140,21 +154,21 @@ const ChangePasswordInfo = ({ navigation }) => {
                             placeholder={'Nhập'}
                             secureTextEntry={isPassword1}
                         />
-                        <Text
+                        <Pressable
                             onPress={() => setIsPassword1(!isPassword1)}
-                            style={{ ...styles.eyeIcon, top: '44%' }}>
-                            <EyeIcon />
-                        </Text>
-                        <Text
-                            style={
-                                errorInNew
-                                    ? { ...styles.label, ...styles.borderError }
-                                    : { ...styles.label }
-                            }>
-                            Dài trên 11 kí tự, bao gồm cả chữ, số, viết hoa, viết thường và cả
-                            những kí tự đặc biệt
-                        </Text>
+                            style={{ ...styles.eyeIcon }}>
+                            {isPassword1 ? <EyeIcon /> : <UnEyeIcon />}
+                        </Pressable>
                     </View>
+                    <Text
+                        style={
+                            errorInNew
+                                ? { ...styles.label, ...styles.borderError }
+                                : { ...styles.label }
+                        }>
+                        {errorInNew ?  'Mật khẩu 6-20 ký tự. Ít nhất 1 ký tự viết hoa, 1 ký tự viết thường, 1 ký tự đặc biệt, 1 ký tự số, không chứa khoảng trắng.'
+                        : 'Dài trên 11 kí tự, bao gồm cả chữ, số, viết hoa, viết thường và cả những kí tự đặc biệt'}
+                    </Text>
                     <View style={styles.item}>
                         <Text style={styles.title}>Nhập lại mật khẩu</Text>
                         <TextInput
@@ -168,13 +182,13 @@ const ChangePasswordInfo = ({ navigation }) => {
                             placeholder={'Nhập'}
                             secureTextEntry={isPassword2}
                         />
-                        <Text
+                        <Pressable
                             onPress={() => setIsPassword2(!isPassword2)}
                             style={styles.eyeIcon}>
-                            <EyeIcon />
-                        </Text>
+                            {isPassword2 ? <EyeIcon /> : <UnEyeIcon />}
+                        </Pressable>
                     </View>
-                    {isChange && newPassword !== confirmPassword ? (
+                    {submit && !isValidateConfirm(newPassword, confirmPassword) ? (
                         <Text style={{ ...styles.label, ...styles.borderError }}>
                             Mật khẩu nhập lại không khớp
                         </Text>
