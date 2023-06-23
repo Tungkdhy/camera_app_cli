@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderBottomRightRadius: 8,
         borderBottomLeftRadius: 8,
+        paddingBottom: 60,
     },
     header: {
         display: 'flex',
@@ -42,5 +43,10 @@ export const styles = StyleSheet.create({
     },
     icon: {
         marginTop: 8,
+    },
+    buttonMore: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems:'center'
     }
 });

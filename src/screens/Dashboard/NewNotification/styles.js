@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderBottomRightRadius: 8,
         borderBottomLeftRadius: 8,
-        maxHeight: '100%',
+        // maxHeight: '100%',
         marginBottom: 8,
     },
     header: {
@@ -40,6 +40,7 @@ export const styles = StyleSheet.create({
     content: {
         marginTop: 12,
         marginBottom: 17,
+        paddingTop: 12,
         maxHeight: '100%'
     },
     item: {
@@ -89,7 +90,10 @@ export const styles = StyleSheet.create({
     buttonMore: {
         // width: '100%', 
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'center',
+        padding: 12,
+        alignItems: 'center',
+        gap: 16
     },
 });

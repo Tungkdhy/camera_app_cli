@@ -4,7 +4,8 @@ export const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#fff',
         paddingLeft:16,
-        paddingRight:16
+        paddingRight:16,
+        height: 600
       
     },
     address:{
@@ -54,7 +55,7 @@ export const styles = StyleSheet.create({
         alignItems:"center"
     },
     camera:{
-        height:600
+        height:'100%'
     },
     name:{
         // lineHeight:2,

@@ -5,6 +5,7 @@ import { LineChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import { eventAI } from '../../../services/api/eventAI';
 import RNPickerSelect from 'react-native-picker-select';
+import { getDateInChart } from '../../../utils';
 
 const Item = ({ title, active }) => (
     <View style={styles.item}>
@@ -88,23 +89,23 @@ function LineChartService({ type, codeService, listInfo }) {
             if (res.length > 0) {
                 if (res.length === 1) {
                     res.forEach((item) => {
-                        label.push(item.START_DATE)
-                        label.push(item.END_DATE)
+                        label.push(getDateInChart(item.START_DATE))
+                        label.push(getDateInChart(item.END_DATE))
                         data = [0, item.TOTAL_RESULT]
                     })
                 } else {
                     res.forEach((item, index) => {
                         if (index === 0) {
-                            label.push(item.START_DATE)
+                            label.push(getDateInChart(item.START_DATE))
                         } else {
-                            label.push(item.END_DATE)
+                            label.push(getDateInChart(item.END_DATE))
                         }
                         data.push(item.TOTAL_RESULT)
                     })
                 }
-                if(label.length > 5) {
-                    label[6] = ''
-                }
+                // if(label.length > 5) {
+                //     label[6] = ''
+                // }
                 setListLabel(label);
                 setDataValue(data);
             }
@@ -191,7 +192,7 @@ function LineChartService({ type, codeService, listInfo }) {
                     style={{ marginRight: 40 }}
                     withDots={true}
                     bezier
-                    verticalLabelRotation={15}
+                    // verticalLabelRotation={15}
                     fromZero
                     segments={4}
                 />

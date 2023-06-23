@@ -25,6 +25,7 @@ import {
 import { styles } from './styles';
 import { convertToSecond } from '../../utils';
 import { setNameAI, videoActive } from '../../redux/actions/reportAction';
+import { SafeAreaView } from 'react-native-safe-area-context';
 const VideoCamera = ({
   navigation,
   cameraActive,
@@ -103,7 +104,7 @@ const VideoCamera = ({
     [navigation],
   );
   useEffect(() => {
-    if(Platform?.OS === 'android') {
+    if (Platform?.OS === 'android') {
       setOnAndroid(true)
     }
   }, [])
@@ -135,8 +136,8 @@ const VideoCamera = ({
                       <Video
                         source={{
                           uri: `http://cameraai.cds.vinorsoft.com/${type}${type === 'playback/'
-                              ? item?.path.PATH
-                              : item?.data[0]?.PATH
+                            ? item?.path.PATH
+                            : item?.data[0]?.PATH
                             }`,
                         }}
                         ref={ref}
@@ -222,33 +223,38 @@ const VideoCamera = ({
         </View>
       }
       {!isFullScreen && type !== 'playback/' && (
-        <View>
-          <FlatList
-            onEndReached={() => {
-              setCount(count + 1);
-            }}
-            onEndReachedThreshold={0}
-            data={listPath}
-            //   scrollEnabled
-            renderItem={({ item, index }) => (
-              <CameraItem
-                key={index}
-                id={item.code}
-                setCamId={setCamId}
-                title={item?.name}
-                path={item?.data[0]?.PATH}
-                type={type}
-              />
-            )}
-            numColumns={2}
-            style={styles.list}
-            columnWrapperStyle={{
-              justifyContent: 'space-between',
-            }}
-            keyExtractor={(item, index) => index}
-            maxHeight={420}
-          />
-        </View>
+        <SafeAreaView style={{ paddingBottom: 50 }}>
+          <View style={!onAndroid ? {height: '100%'} : { height: '68%' }}>
+            <FlatList
+              onEndReached={() => {
+                setCount(count + 1);
+              }}
+              onEndReachedThreshold={0}
+              data={listPath}
+              scrollEnabled
+              renderItem={({ item, index }) => (
+                <CameraItem
+                  key={index}
+                  id={item.code}
+                  setCamId={setCamId}
+                  title={item?.name}
+                  path={item?.data[0]?.PATH}
+                  type={type}
+                />
+              )}
+              numColumns={2}
+              style={styles.list}
+              columnWrapperStyle={{
+                justifyContent: 'space-between',
+              }}
+              keyExtractor={(item, index) => index}
+              maxHeight={400}
+            />
+          </View>
+          <View style={{height: 48}}> 
+
+          </View>
+        </SafeAreaView>
       )}
     </View>
   );

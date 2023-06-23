@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Pressable, View, Text, ScrollView } from 'react-native';
 import { Back } from '../../components/Icons/Index';
 import axiosClient from '../../services/axiosClient';
 import { styles } from './styles';
 import { useDispatch } from 'react-redux';
 import { setCountNotification } from '../../redux/actions/notification';
+import { formatDate, formatDateNoSpace, formatTime } from '../../utils';
 
-function Notification({ navigation }) {
+function Notification({ route, navigation }) {
   const [listNotificationSystem, setListNotificationSystem] = useState([]);
   const [listNotificationSmart, setListNotificationSmart] = useState([]);
   const [reGetData, setReGetData] = useState(false);
@@ -14,45 +15,12 @@ function Notification({ navigation }) {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
 
-  const formatDateNoSpace = date => {
-    const dateA = new Date(date);
-    const year = dateA.getFullYear();
-    const month = dateA.getMonth() + 1;
-    const day = dateA.getDate();
-    return (
-      (day <= 9 ? '0' + day : day) + (month <= 9 ? '0' + month : month) + year
-    );
-  };
-
-  const formatTime = date => {
-    const dateA = new Date(date);
-    const hour = dateA.getHours();
-    const minute = dateA.getMinutes();
-    const seconds = dateA.getSeconds();
-    const dateToTime =
-      (hour <= 9 ? '0' + hour : hour) +
-      ':' +
-      (minute <= 9 ? '0' + minute : minute) +
-      ':' +
-      (seconds <= 9 ? '0' + seconds : seconds);
-    return dateToTime;
-  };
-
-  const formatDate = date => {
-    const dateA = new Date(date);
-    const year = dateA.getFullYear();
-    const month = dateA.getMonth() + 1;
-    const day = dateA.getDate();
-    return (
-      (day <= 9 ? '0' + day : day) +
-      '/' +
-      (month <= 9 ? '0' + month : month) +
-      '/' +
-      year
-    );
-  };
-
-  const groupNotification = data => {
+  useEffect(() => {
+    if(route?.params && route?.params?.isSmart) {
+      setSmartReport(route?.params?.isSmart)
+    }
+  }, [route])
+  const groupNotification = useCallback((data )=> {
     const arrayFormatDay = data.map(item => {
       return {
         ...item,
@@ -78,7 +46,7 @@ function Notification({ navigation }) {
       };
     });
     return dataFormat;
-  };
+  }, [])
 
   useEffect(() => {
     const getNotification = async () => {
@@ -101,6 +69,7 @@ function Notification({ navigation }) {
                 }
               });
             });
+            setListNotificationSystem(formatData);
           } else {
             setListNotificationSystem(formatData);
           }
@@ -123,7 +92,7 @@ function Notification({ navigation }) {
       }
     };
     getNotification();
-  }, [reGetData, page, smartReport]);
+  }, [reGetData, page, smartReport, groupNotification]);
 
   const seenNotification = async codeItem => {
     const res = await axiosClient.put(
@@ -220,7 +189,6 @@ function Notification({ navigation }) {
                                 <Text style={styles.time}>{item.TIME}</Text>
                                 <Text style={styles.name}>{item.NAME}</Text>
                                 <Text style={styles.title}>{item.DETAIL}</Text>
-
                                 <View style={styles.tick} />
                               </View>
                             </Pressable>
@@ -237,7 +205,6 @@ function Notification({ navigation }) {
                               }>
                               <View
                                 style={
-
                                   { ...styles.item }
                                 }>
                                 <Text style={styles.time}>{item.TIME}</Text>

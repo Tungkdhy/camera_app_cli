@@ -168,8 +168,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   fullScreen: {
-    width: width - 130,
-    height: height,
+    width: '100%',
+    height: '100%',
   },
   time: {
     display: 'flex',
