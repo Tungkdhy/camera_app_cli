@@ -38,6 +38,42 @@ export default function Payment({ route, navigation }) {
   const handleSetShowModal = useCallback(() => {
     setModalVisible(!modalVisible);
   }, [modalVisible]);
+
+  const handleOrientation = orientation => {
+    console.log(orientation);
+    if (orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT') {
+      dispatch(setIsFullScreen(true));
+      // StatusBar.setHidden(true);
+    } else {
+      dispatch(setIsFullScreen(false));
+      // StatusBar.setHidden(false);
+      console.log('run log dispat');
+    }
+  };
+  const handleFullscreen = () => {
+    console.log(report.isFullScreen);
+    if (report.isFullScreen) {
+      Orientation.lockToPortrait();
+      console.log('run full');
+      dispatch(setIsFullScreen(false));
+    } else {
+      console.log('run ony');
+      Orientation.lockToLandscapeLeft();
+      dispatch(setIsFullScreen(true));
+    }
+  };
+
+  useEffect(() => {
+    console.log('eff log full', report.isFullScreen);
+  }, [report.isFullScreen])
+  // useEffect(() => {
+  //   Orientation.addOrientationListener(handleOrientation);
+  //   console.log('run eff');
+  //   return () => {
+  //     Orientation.removeOrientationListener(handleOrientation);
+  //   };
+  // }, [handleOrientation]);
+
   const renderItem = ({ item, index }) => {
     return (
       <Pressable
@@ -50,7 +86,6 @@ export default function Payment({ route, navigation }) {
               path: item.PATH,
             }),
           );
-          console.log('Ok');
           handleFullscreen();
         }}
         key={index}
@@ -98,31 +133,7 @@ export default function Payment({ route, navigation }) {
       </Pressable>
     );
   };
-  const handleOrientation = useCallback(orientation => {
-    if (orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT') {
-      dispatch(setIsFullScreen(true));
-      StatusBar.setHidden(true);
-    } else {
-      dispatch(setIsFullScreen(false));
-      StatusBar.setHidden(false);
-    }
-  }, []);
-  const handleFullscreen = () => {
-    if (report.isFullScreen) {
-      Orientation.lockToPortrait();
 
-      dispatch(setIsFullScreen(false));
-    } else {
-      Orientation.lockToLandscapeLeft();
-      dispatch(setIsFullScreen(true));
-    }
-  };
-  useEffect(() => {
-    Orientation.addOrientationListener(handleOrientation);
-    return () => {
-      Orientation.removeOrientationListener(handleOrientation);
-    };
-  }, [handleOrientation]);
   useEffect(() => {
     async function getVideoReport() {
       try {
@@ -162,15 +173,19 @@ export default function Payment({ route, navigation }) {
 
   useEffect(() => {
     const backAction = () => {
-      handleFullscreen();
-      return true;
+      if (report.isFullScreen) {
+        handleFullscreen();
+        return true;
+      } else {
+        return false
+      }
     };
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
       backAction,
     );
     return () => backHandler.remove();
-  }, [handleFullscreen]);
+  }, [report.isFullScreen]);
 
   // JSX
 
@@ -280,64 +295,64 @@ export default function Payment({ route, navigation }) {
               key={index}
               style={report.isFullScreen ? styles.contentFull : {}}>
               <View
-                style={report.isFullScreen ? styles.activeFull : styles.active}>
-                <>
-                  <View
+                style={report.isFullScreen ? styles.activeFull : styles.active}
+              >
+                <View
+                  style={
+                    report.isFullScreen
+                      ? {
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'white'
+                      }
+                      : {}
+                  }>
+                  <Video
+                    source={{
+                      uri: `http://cameraai.cds.vinorsoft.com/event/${item.path}`,
+                    }}
+                    rate={1.0}
+                    volume={1.0}
+                    isMuted={false}
+                    resizeMode="cover"
+                    shouldPlay={true}
+                    isLooping
+                    controls={true}
+                    fullscreen={true}
                     style={
                       report.isFullScreen
-                        ? {
-                          flex: 1,
-                          justifyContent: 'center',
-                          alignItems: 'center',
+                        ? styles.fullScreen
+                        : {
                           width: '100%',
-                          height: '100%',
+                          height: 240,
                         }
-                        : {}
-                    }>
-                    <Video
-                      source={{
-                        uri: `http://cameraai.cds.vinorsoft.com/event/${item.path}`,
-                      }}
-                      rate={1.0}
-                      volume={1.0}
-                      isMuted={false}
-                      resizeMode="cover"
-                      shouldPlay={true}
-                      isLooping
-                      controls={true}
-                      fullscreen={true}
+                    }
+                  />
+                </View>
+                <View
+                  style={report.isFullScreen ? styles.infoFull : styles.info}>
+                  <View style={styles.cam}>
+                    <View>
+                      {report.isFullScreen && (
+                        <Pressable onPress={handleFullscreen}>
+                          <BackIcon2 />
+                        </Pressable>
+                      )}
+                    </View>
+
+                    <Text
                       style={
                         report.isFullScreen
-                          ? styles.fullScreen
-                          : {
-                            width: '100%',
-                            height: 240,
-                          }
-                      }
-                    />
+                          ? { fontSize: 14, color: '#fff' }
+                          : {}
+                      }>
+                      {item.name}
+                    </Text>
                   </View>
-                  <View
-                    style={report.isFullScreen ? styles.infoFull : styles.info}>
-                    <View style={styles.cam}>
-                      <View>
-                        {report.isFullScreen && (
-                          <Pressable onPress={handleFullscreen}>
-                            <BackIcon2 />
-                          </Pressable>
-                        )}
-                      </View>
-
-                      <Text
-                        style={
-                          report.isFullScreen
-                            ? { fontSize: 14, color: '#fff' }
-                            : {}
-                        }>
-                        {item.name}
-                      </Text>
-                    </View>
-                  </View>
-                </>
+                </View>
               </View>
             </View>
           );

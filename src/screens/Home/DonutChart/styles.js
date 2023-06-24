@@ -35,11 +35,9 @@ export const styles = StyleSheet.create({
     },
     legend: {
         marginTop: 30,
-
         maxHeight: 160,
         flex: 1,
         marginLeft: 16,
-        // marginRight: 32,
         backgroundColor: '#fff',
     },
     item: {

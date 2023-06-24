@@ -171,7 +171,7 @@ export const styles = StyleSheet.create({
   },
   eyeIcon: {
     position: 'absolute',
-    top: 118,
+    top: 12,
     right: 12,
     zIndex: 10,
   },

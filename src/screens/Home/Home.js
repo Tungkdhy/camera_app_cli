@@ -119,7 +119,7 @@ export default function Home({ navigation }) {
       <Header title={'Thống kê'} navigation={navigation} />
       <SafeAreaView>
         <View style={style.container}>
-          <ScrollView>
+          {/* <ScrollView> */}
             <CountCamera companyName={companyName} countCamera={countCamera} />
             <CountAI countCamera={countCamera} companyName={companyName} />
             <DonutChart title={'Tổng số Camera theo nhóm'} type={'group'} />
@@ -128,7 +128,7 @@ export default function Home({ navigation }) {
               type={'warehouse'}
             />
             <AnalyticAI navigation={navigation} />
-          </ScrollView>
+          {/* </ScrollView> */}
         </View>
       </SafeAreaView>
     </>

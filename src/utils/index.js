@@ -110,3 +110,34 @@ export const isValidateToken = (token) => {
   const regex = /^[0-9]{6}$/;
   return !!token?.match(regex)
 }
+
+export const getDateInChart = (time = '2023-06-12') => {
+  const date = new Date(time);
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+  return `${day < 10 ? '0'+day : day}/${month < 10 ? '0'+month : month}`;
+}
+
+export const formatDateNoSpace = date => {
+  const dateA = new Date(date);
+  const year = dateA.getFullYear();
+  const month = dateA.getMonth() + 1;
+  const day = dateA.getDate();
+  return (
+    (day <= 9 ? '0' + day : day) + (month <= 9 ? '0' + month : month) + year
+  );
+};
+
+export const formatTime = date => {
+  const dateA = new Date(date);
+  const hour = dateA.getHours();
+  const minute = dateA.getMinutes();
+  const seconds = dateA.getSeconds();
+  const dateToTime =
+    (hour <= 9 ? '0' + hour : hour) +
+    ':' +
+    (minute <= 9 ? '0' + minute : minute) +
+    ':' +
+    (seconds <= 9 ? '0' + seconds : seconds);
+  return dateToTime;
+};

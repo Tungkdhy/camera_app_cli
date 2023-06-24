@@ -28,6 +28,7 @@ export const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
+    backgroundColor: '#333'
   },
   text: {
     padding: 10,
@@ -178,8 +179,8 @@ export const styles = StyleSheet.create({
     // height: Dimensions.get('window').width,
     // minWidth: Dimensions.get('window').height,
     // minHeight: Dimensions.get('window').width,
-    width: width - 120,
-    height: height,
+    width: '100%',
+    height: '100%',
 
     // transform: [{rotate: '90deg'}],
   },
