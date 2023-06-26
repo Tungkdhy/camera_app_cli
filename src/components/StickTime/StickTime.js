@@ -40,7 +40,7 @@ const StickTime = ({ code, day, setChange }) => {
   const stick_time = useSelector(
     state => state.playBackReducer.filter.stick_time,
   );
-  console.log(day);
+  console.log(stick_time);
   const playback = useSelector(state => state.playBackReducer);
   const [dis, setDis] = useState([
     {
@@ -64,13 +64,13 @@ const StickTime = ({ code, day, setChange }) => {
         }),
         day: day,
       });
-      console.log(res[0].timeline_record);
       if (res.length > 0) {
         setTimelines(res[0].timeline_record)
       }
     };
     getTimeLine();
   }, [code, day]);
+  // console.log(convertTimeToPx(stick_time) , '===,', stick_time);
   return (
     <View style={{ position: 'relative', paddingRight: 16 }}>
       <Text style={styles.time}>
@@ -88,10 +88,10 @@ const StickTime = ({ code, day, setChange }) => {
             setChange(true)
           }, 300);
         }}
-        style={{ flexGrow: 0, position: 'relative' }}
+        // style={{ flexGrow: 0, position: 'relative' }}
         showsHorizontalScrollIndicator={false}
         horizontal
-        // contentOffset={{y:0,x:convertToSecond(stick_time)}}
+        contentOffset={{y:0,x:convertTimeToPx(stick_time)}}
         ref={ref}>
         <View style={styles.container}>
           {timelines?.length > 0 && timelines.map((item, index) => {

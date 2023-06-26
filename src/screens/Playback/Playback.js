@@ -202,7 +202,7 @@ export default function PlayBack({ navigation, route }) {
                 dispatch(setTime('00:00'));
                 dispatch(setTimeEnd('23:59'));
                 dispatch(play([]));
-                dispatch(setTimeStick("00:00:00"))
+                // dispatch(setTimeStick("00:00:00"))
                 navigation.navigate('Playback');
               }}>
               <Back />

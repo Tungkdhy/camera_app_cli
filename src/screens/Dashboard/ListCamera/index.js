@@ -1,20 +1,21 @@
-import { View, Text, FlatList } from "react-native"
+import { View, Text, FlatList, Pressable } from "react-native"
 import { styles } from "./styles";
 import { cameraManagement } from "../../../services/api/cameraManagementApi";
 import { useCallback, useEffect, useState } from "react";
 import streamingClient from "../../../services/axiosStreaming";
 import CameraItem from "../../../components/Live/CameraItem";
-import { OnlineIcon } from "../../../components/Icons/Index";
-function ListCamera({navigation}) {
+import { DownIconSolid, OnlineIcon, UpIconSolid } from "../../../components/Icons/Index";
+function ListCamera({ navigation }) {
     const [listCamera, setListCamera] = useState([]);
     const [listPath, setListPath] = useState([]);
     const [count, setCount] = useState(0);
+    const [page, setPage] = useState(1);
 
     const getListCamera = useCallback(async () => {
         try {
             let param = {
                 camera_status: 'On',
-                page: 1,
+                page: page,
                 size: 10,
             }
             const res = await cameraManagement.getListCamera(param);
@@ -23,12 +24,11 @@ function ListCamera({navigation}) {
         } catch (error) {
             console.log(error);
         }
-    }, [])
+    }, [page])
 
-    const handleChoseCam = (it) => {
-        console.log(it);
+    const handleChoseCam = (it, title) => {
         navigation.navigate('Live', {
-            wareHouse: 'name',
+            wareHouse: 'Xem camera',
             active: it,
             cam: listCamera,
         });
@@ -49,7 +49,11 @@ function ListCamera({navigation}) {
                     },
                 },
             );
-            setListPath(res.stream)
+            if(listCamera.length < 50) {
+                setListPath(prev => [...prev, ...res.stream])
+            } else {
+                setListPath(res.stream)
+            }
         } catch (error) {
             console.log(error);
         }
@@ -60,9 +64,13 @@ function ListCamera({navigation}) {
             try {
                 const listCam = await getListCamera();
                 let listData = listCam?.map(item => {
-                    return  item.CAMERA
+                    return item.CAMERA
                 });
-                setListCamera(listData);
+                if(listCamera.length < 50) {
+                    setListCamera(listData);
+                } else (
+                    setListCamera(prev => [...prev, ...listData])
+                )
                 getListPath(listCam);
             } catch (error) {
                 console.log(error);
@@ -71,6 +79,18 @@ function ListCamera({navigation}) {
 
         getData();
     }, [getListCamera, getListPath])
+
+    const showMore = () => {
+        if(listCamera.length < 50) {
+            setPage(page + 1)
+        } else {
+            setPage(1)
+        }
+    }
+    const onViewMore = () => {
+        setPage(1)
+        navigation.navigate('Stream')
+    }
     console.log(listCamera);
     return (
         <View style={styles.container}>
@@ -81,7 +101,7 @@ function ListCamera({navigation}) {
                     <View style={styles.icon}><OnlineIcon /></View>
                 </View>
             </View>
-            <View style={styles.content}>
+            <View >
                 <View>
                     <FlatList
                         onEndReached={() => {
@@ -93,7 +113,7 @@ function ListCamera({navigation}) {
                             <CameraItem
                                 key={index}
                                 id={item.code}
-                                setCamId={handleChoseCam}
+                                setCamId={(it, title) => handleChoseCam(it, title)}
                                 title={item?.name}
                                 path={item?.data[0]?.PATH}
                                 type={'livestream'}
@@ -106,6 +126,16 @@ function ListCamera({navigation}) {
                         }}
                         keyExtractor={(item, index) => index}
                     />
+                    <View style={styles.buttonMore} >
+                        <Pressable onPress={showMore} style={{ height: 12, width: 12 }}>
+                            {listPath.length < 50 ? <DownIconSolid /> : <UpIconSolid />}
+                        </Pressable>
+                        {listPath.length >= 50 && (
+                            <Pressable onPress={onViewMore}>
+                                <Text style={{ color: '#0040FF' }} >Đến xem trực tiếp</Text>
+                            </Pressable>
+                        )}
+                    </View>
                 </View>
             </View>
         </View>

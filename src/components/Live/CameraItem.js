@@ -19,7 +19,7 @@ const CameraItem = ({ title, path, setCamId, id, type }) => {
   return (
     <Pressable
       onPress={() => {
-        setCamId(id);
+        setCamId(id, title);
         dispatch(setReload(true));
         setTimeout(() => {
           dispatch(setReload(false));

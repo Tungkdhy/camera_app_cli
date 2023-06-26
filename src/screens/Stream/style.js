@@ -1,59 +1,63 @@
 import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        paddingLeft: 16,
-        paddingRight: 16,
+      flex: 1,
+      backgroundColor: '#fff',
+        paddingLeft:16,
+        paddingRight:16,
+        height: 600
+      
     },
-    address: {
-        flexDirection: 'row',
-        display: 'flex',
-        justifyContent: 'space-between',
+    address:{
+        flexDirection:"row",
+        display:"flex",
+        justifyContent:"space-between",
+        
     },
-    flex: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+    flex:{
+        display:"flex",
+        flexDirection:"row",
+        justifyContent:"space-between",
+        alignItems:"center",
+
     },
-    textActive: {
-        width: '50%',
-        textAlign: 'center',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 16,
-        padding: 12,
-        paddingBottom: 10,
-        color: '#0040FF',
-        borderBottomColor: '#0040FF',
-        borderBottomWidth: 2,
+    textActive:{
+        width:"50%",
+        textAlign:"center",
+        display:"flex",
+        justifyContent:"center",
+        alignItems:"center",
+        fontSize:16,
+        padding:12,
+        paddingBottom:10,
+        color:"#0040FF",
+        borderBottomColor:"#0040FF",
+        borderBottomWidth:2,
     },
-    text: {
-        padding: 12,
-        width: '50%',
-        textAlign: 'center',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 16,
-        padding: 6,
+    text:{
+        padding:12,
+        width:"50%",
+        textAlign:"center",
+        display:"flex",
+        justifyContent:"center",
+        alignItems:"center",
+        fontSize:16,
+        padding:6,
     },
-    active: {
-        color: '#0040FF',
+    active:{
+        color:"#0040FF",
     },
-    cameraItem: {
-        display: 'flex',
-        flexDirection: 'row',
-        paddingTop: 12,
-        paddingBottom: 12,
-        alignItems: 'center',
+    cameraItem:{
+        display:"flex",
+        flexDirection:"row",
+        paddingTop:12,
+        paddingBottom:12,
+        alignItems:"center"
     },
-    camera: {
-        height: 600,
+    camera:{
+        height:'100%'
     },
-    name: {
+    name:{
         // lineHeight:2,
         color: '#000',
         fontSize: 14,
