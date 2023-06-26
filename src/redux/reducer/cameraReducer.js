@@ -18,6 +18,7 @@ import {
   REFRESH,
   CHECKBG,
   SET_SERVICE,
+  SET_SCREEN,
 } from '../actions/cameraAction';
 
 const initialState = {
@@ -45,6 +46,7 @@ const initialState = {
   },
   reload: false,
   refresh: false,
+  screen: 'Stream',
 };
 
 const useReducer = (state = initialState, action) => {
@@ -155,6 +157,11 @@ const useReducer = (state = initialState, action) => {
           ...state.filter,
           service: action.payload,
         },
+      };
+    case SET_SCREEN:
+      return {
+        ...state,
+        screen: action.payload,
       };
     default:
       return state;

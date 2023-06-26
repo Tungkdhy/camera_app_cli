@@ -44,6 +44,7 @@ const Modal = ({
     dispatch(setDistrictCode('All'));
     dispatch(setRefresh(!camera.refresh));
   };
+  
   useEffect(() => {
     async function getPackage() {
       try {

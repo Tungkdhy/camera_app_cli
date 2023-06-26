@@ -21,15 +21,20 @@ const Filter = ({ onClick, address, filter, playback, record }) => {
           </View>
 
           <View style={styles.area}>
-            <Text style={{ color: 'rgba(0, 0, 0, 0.4)' }}>Khu vực: </Text>
-            <Text numberOfLines={1} style={styles.name_location}>
+            <Text
+              style={{
+                color: '#0040FF',
+              }}>
+              Bộ lọc
+            </Text>
+            {/* <Text numberOfLines={1} style={styles.name_location}>
               {camera?.filter?.district_name
                 ? camera?.filter?.district_name + ','
                 : ''}
               {camera?.filter?.province_name
                 ? camera?.filter?.province_name
                 : 'Tất cả'}
-            </Text>
+            </Text> */}
             <DownIcon />
           </View>
         </View>

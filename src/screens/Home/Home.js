@@ -42,15 +42,15 @@ export default function Home({ navigation }) {
         COMMON_OBJECT: getCountCamera.data[0]?.COMMON_OBJECT,
         MOVEMENT: getCountCamera.data[0]?.MOVEMENT,
       });
-      setStatusGet(getCountCamera.result)
+      setStatusGet(getCountCamera.result);
       return getCountCamera;
     } catch (error) {
       console.log(error);
-      setStatusGet(true)
+      setStatusGet(true);
     }
-  }, [])
+  }, []);
 
-  const getCompany = useCallback(async (code) => {
+  const getCompany = useCallback(async code => {
     try {
       const getNameCompany = await axiosClient.get(
         `/company/get-list-company/?company_code=${code}`,
@@ -60,14 +60,14 @@ export default function Home({ navigation }) {
     } catch (error) {
       console.log(error);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     const getAndUpDateCountCamera = async () => {
-      const countCam = await getCountCam()
-      let code = countCam[0]?.COMPANY_CODE
+      const countCam = await getCountCam();
+      let code = countCam[0]?.COMPANY_CODE;
       if (code) {
-        await getCompany()
+        await getCompany();
       }
     };
     getAndUpDateCountCamera();
@@ -82,16 +82,16 @@ export default function Home({ navigation }) {
           );
           if (companyName.trim().length <= 0) {
             let code = upDateCountCamera[0]?.COMPANY_CODE;
-            await getCompany(code)
+            await getCompany(code);
           }
           return upDateCountCamera;
         }
       } catch (error) {
         console.log(error);
       }
-    }
-    getUpdateCount()
-  }, [statusGet, companyName, getCompany])
+    };
+    getUpdateCount();
+  }, [statusGet, companyName, getCompany]);
 
   useEffect(() => {
     Orientation.lockToPortrait(); //this will lock the view to Portrait
@@ -101,16 +101,16 @@ export default function Home({ navigation }) {
       // Prevent default behavior of leaving the screen
       e.preventDefault();
 
-      Alert.alert('Đăng xuất?', 'Bạn có muốn đang xuất không', [
-        { text: 'Không', style: 'cancel', onPress: () => { } },
-        {
-          text: 'Có',
-          style: 'destructive',
-          // If the user confirmed, then we dispatch the action we blocked earlier
-          // This will continue the action that had triggered the removal of the screen
-          onPress: () => navigation.dispatch(e.data.action),
-        },
-      ]);
+      // Alert.alert('Đăng xuất?', 'Bạn có muốn đang xuất không', [
+      //   { text: 'Không', style: 'cancel', onPress: () => { } },
+      //   {
+      //     text: 'Có',
+      //     style: 'destructive',
+      //     // If the user confirmed, then we dispatch the action we blocked earlier
+      //     // This will continue the action that had triggered the removal of the screen
+      //     onPress: () => navigation.dispatch(e.data.action),
+      //   },
+      // ]);
       // Prompt the user before leaving the screen
     });
   }, [navigation]);

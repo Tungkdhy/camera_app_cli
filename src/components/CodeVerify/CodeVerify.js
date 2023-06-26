@@ -11,7 +11,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Pressable,
-  Modal
+  Modal,
 } from 'react-native';
 import { BackIcon } from '../Icons/Index';
 import { styles } from './style';
@@ -42,29 +42,31 @@ const CodeVerify = ({ route, navigation }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const handleLogin = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       let token = otp.op1 + otp.op2 + otp.op3 + otp.op4 + otp.op5 + otp.op6;
       if (isValidateToken(token)) {
         let data = {
-          token: token
-        }
-        const res = await authenticatorAPI.forgotValidateToken(data)
-        setLoading(false)
+          token: otp.op1,
+        };
+        const res = await authenticatorAPI.forgotValidateToken(data);
+        setLoading(false);
         if (res) {
           navigation.navigate('ChangePassword', { token: data });
         }
       } else {
-        setLoading(false)
-        setError(true)
+        setLoading(false);
+        setError(true);
       }
     } catch (e) {
       console.log(e);
-      setLoading(false)
-      if(reGetOTP) {
+      setLoading(false);
+      if (reGetOTP) {
         Alert.alert('Xác thực không thành công');
       } else {
-        Alert.alert('Các ký tự được nhập không chính xác, vui lòng kiểm tra lại');
+        Alert.alert(
+          'Các ký tự được nhập không chính xác, vui lòng kiểm tra lại',
+        );
       }
     }
   };
@@ -100,17 +102,15 @@ const CodeVerify = ({ route, navigation }) => {
           source={require('../../assets/images/BgLogin.png')}>
           <View style={styles.contentLogin}>
             <View style={styles.title}>
-              <TouchableHighlight
-                onPress={onPrevious}
-                style={styles.icon}>
+              <TouchableHighlight onPress={onPrevious} style={styles.icon}>
                 <BackIcon />
               </TouchableHighlight>
             </View>
             <View style={styles.formLogin}>
               <Text style={styles.header}>Xác thực tài khoản</Text>
               {error ? (
-                <Text style={{...styles.description, ...styles.error}}>
-                 Mã xác nhận chỉ chứa các ký tự là số
+                <Text style={{ ...styles.description, ...styles.error }}>
+                  Mã xác nhận chỉ chứa các ký tự là số
                 </Text>
               ) : (
                 <Text style={styles.description}>
@@ -118,101 +118,160 @@ const CodeVerify = ({ route, navigation }) => {
                 </Text>
               )}
               <SafeAreaView style={styles.formGroup}>
-                <View style={!error ? {...styles.formControl} : {...styles.formControl, ...styles.error}}>
+                <View
+                  style={
+                    !error
+                      ? { ...styles.formControl }
+                      : { ...styles.formControl, ...styles.error }
+                  }>
                   <TextInput
-                    placeholder="-"
-                    maxLength={1}
-                    style={!error ? { ...styles.otp } : { ...styles.otp, ...styles.error }}
+                    placeholder="Nhập mã opt"
+                    maxLength={6}
+                    style={
+                      !error
+                        ? { ...styles.otp }
+                        : { ...styles.otp, ...styles.error }
+                    }
+                    keyboardType="number-pad"
                     ref={inputFirst}
                     onChangeText={text => {
                       setOtp({ ...otp, op1: text });
-                      setError(false)
-                      text && inputS.current.focus();
+                      setError(false);
+                      // text && inputS.current.focus();
                     }}
                     value={otp.op1}
+                  // onKeyPress={({ nativeEvent }) => {
+                  //   nativeEvent.key === 'Backspace'
+                  //     ? Alert.alert('delete')
+                  //     : 'hú';
+                  // }}
                   />
                 </View>
-                <View style={!error ? {...styles.formControl} : {...styles.formControl, ...styles.error}}>
+                {/* <View
+                  style={
+                    !error
+                      ? { ...styles.formControl }
+                      : { ...styles.formControl, ...styles.error }
+                  }>
                   <TextInput
                     placeholder="-"
-                    //   keyboardType="number-pad"
+                    keyboardType="number-pad"
                     maxLength={1}
-                    style={!error ? { ...styles.otp } : { ...styles.otp, ...styles.error }}
+                    style={
+                      !error
+                        ? { ...styles.otp }
+                        : { ...styles.otp, ...styles.error }
+                    }
                     ref={inputS}
                     value={otp.op2}
                     onChangeText={text => {
                       setOtp({ ...otp, op2: text });
-                      setError(false)
+                      setError(false);
                       text
                         ? inputT.current.focus()
                         : inputFirst.current.focus();
                     }}
                   />
                 </View>
-                <View style={!error ? {...styles.formControl} : {...styles.formControl, ...styles.error}}>
+                <View
+                  style={
+                    !error
+                      ? { ...styles.formControl }
+                      : { ...styles.formControl, ...styles.error }
+                  }>
                   <TextInput
                     placeholder="-"
-                    //   keyboardType="number-pad"
+                    keyboardType="number-pad"
                     maxLength={1}
-                    style={!error ? { ...styles.otp } : { ...styles.otp, ...styles.error }}
+                    style={
+                      !error
+                        ? { ...styles.otp }
+                        : { ...styles.otp, ...styles.error }
+                    }
                     ref={inputT}
                     value={otp.op3}
-                    onChangeText={text => {
+                    onChange={text => {
                       setOtp({ ...otp, op3: text });
-                      setError(false)
+                      setError(false);
                       text ? inputF.current.focus() : inputS.current.focus();
+                      text === 'BackSpace'
+                        ? Alert.alert('delete')
+                        : Alert.alert(text);
                     }}
                   />
                 </View>
-                <View style={!error ? {...styles.formControl} : {...styles.formControl, ...styles.error}}>
+                <View
+                  style={
+                    !error
+                      ? { ...styles.formControl }
+                      : { ...styles.formControl, ...styles.error }
+                  }>
                   <TextInput
                     placeholder="-"
-                    //   keyboardType="number-pad"
+                    keyboardType="number-pad"
                     maxLength={1}
-                    style={!error ? { ...styles.otp } : { ...styles.otp, ...styles.error }}
+                    style={
+                      !error
+                        ? { ...styles.otp }
+                        : { ...styles.otp, ...styles.error }
+                    }
                     ref={inputF}
                     value={otp.op4}
                     onChangeText={text => {
                       setOtp({ ...otp, op4: text });
-                      setError(false)
-                      text
-                        ? inputFive.current.focus()
-                        : inputT.current.focus();
+                      setError(false);
+                      text ? inputFive.current.focus() : inputT.current.focus();
                     }}
                   />
                 </View>
-                <View style={!error ? {...styles.formControl} : {...styles.formControl, ...styles.error}}>
+                <View
+                  style={
+                    !error
+                      ? { ...styles.formControl }
+                      : { ...styles.formControl, ...styles.error }
+                  }>
                   <TextInput
                     placeholder="-"
-                    //   keyboardType="number-pad"
+                    keyboardType="number-pad"
                     maxLength={1}
-                    style={!error ? { ...styles.otp } : { ...styles.otp, ...styles.error }}
+                    style={
+                      !error
+                        ? { ...styles.otp }
+                        : { ...styles.otp, ...styles.error }
+                    }
                     ref={inputFive}
                     value={otp.op5}
                     onChangeText={text => {
                       setOtp({ ...otp, op5: text });
-                      setError(false)
-                      text
-                        ? inputSix.current.focus()
-                        : inputF.current.focus();
+                      setError(false);
+                      text ? inputSix.current.focus() : inputF.current.focus();
                     }}
                   />
                 </View>
-                <View style={!error ? {...styles.formControl} : {...styles.formControl, ...styles.error}}>
+                <View
+                  style={
+                    !error
+                      ? { ...styles.formControl }
+                      : { ...styles.formControl, ...styles.error }
+                  }>
                   <TextInput
                     placeholder="-"
-                    //   keyboardType="number-pad"
+                    keyboardType="number-pad"
                     maxLength={1}
-                    style={!error ? { ...styles.otp } : { ...styles.otp, ...styles.error }}
+                    style={
+                      !error
+                        ? { ...styles.otp }
+                        : { ...styles.otp, ...styles.error }
+                    }
                     ref={inputSix}
                     value={otp.op6}
                     onChangeText={text => {
                       setOtp({ ...otp, op6: text });
-                      setError(false)
+                      setError(false);
                       // text && inputFive.current.focus();
                     }}
                   />
-                </View>
+                </View> */}
               </SafeAreaView>
               <View style={styles.hl}>
                 {reGetOTP ? (
@@ -220,7 +279,11 @@ const CodeVerify = ({ route, navigation }) => {
                     <Text style={styles.send}>Gửi lại</Text>
                   </Pressable>
                 ) : (
-                  <Clock minutes={10} getTimeOut={onReGetOTP} isReFresh={reFresh} />
+                  <Clock
+                    minutes={10}
+                    getTimeOut={onReGetOTP}
+                    isReFresh={reFresh}
+                  />
                 )}
               </View>
               <TouchableHighlight onPress={handleLogin} style={styles.login}>
@@ -237,7 +300,7 @@ const CodeVerify = ({ route, navigation }) => {
           </View>
         </ImageBackground>
       </TouchableWithoutFeedback>
-    </KeyboardAvoidingView >
+    </KeyboardAvoidingView>
   );
 };
 export default CodeVerify;
