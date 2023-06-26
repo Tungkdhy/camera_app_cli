@@ -190,7 +190,7 @@ export const styles = StyleSheet.create({
         top: 14,
       },
       android: {
-        top: 118,
+        top: 14,
       },
     }),
     right: 12,
