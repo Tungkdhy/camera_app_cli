@@ -77,18 +77,32 @@ export const styles = StyleSheet.create({
   error: {
     color: 'red',
     fontSize: 12,
-    top: 68,
+    ...Platform.select({
+      ios: {
+        top: 58,
+      },
+      android: {
+        top: 68,
+      },
+    }),
     left: 8,
     position: 'absolute',
-    width: '100%'
+    width: '100%',
   },
   error_password: {
     color: 'red',
     fontSize: 12,
-    top: 66,
+    ...Platform.select({
+      ios: {
+        top: 56,
+      },
+      android: {
+        top: 66,
+      },
+    }),
     left: 8,
     position: 'absolute',
-    width: '100%'
+    width: '100%',
   },
   contentForm: {
     // height: '70%',
@@ -129,7 +143,7 @@ export const styles = StyleSheet.create({
   forgot: {
     textAlign: 'center',
     paddingTop: 28,
-    paddingBottom:16,
+    paddingBottom: 16,
     color: '#0040FF',
   },
   textLogin: {
@@ -171,9 +185,16 @@ export const styles = StyleSheet.create({
   },
   eyeIcon: {
     position: 'absolute',
-    top: 118,
+    ...Platform.select({
+      ios: {
+        top: 14,
+      },
+      android: {
+        top: 118,
+      },
+    }),
     right: 12,
-    zIndex: 10,
+    zIndex: 1000,
   },
   checkboxContainer: {
     flexDirection: 'row',
@@ -181,16 +202,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 16,
   },
-  modal: {
-    
-  },
+  modal: {},
   mainView: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
-    backgroundColor: 'rgba(0,0,0,0.3)'
+    backgroundColor: 'rgba(0,0,0,0.3)',
   },
   headerModal: {
     position: 'absolute',
@@ -204,11 +223,14 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingBottom: 16,
   },
-  textHeader : {
+  textHeader: {
     color: '#333',
     fontSize: 24,
     fontWeight: '600',
-    textAlign: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     lineHeight: 80,
+    textAlign: 'center',
   },
 });

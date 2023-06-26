@@ -52,7 +52,7 @@ export const styles = StyleSheet.create({
     paddingTop: 24,
     paddingBottom: 24,
     fontWeight: '400',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   title: {
     paddingTop: 100,
@@ -171,12 +171,13 @@ export const styles = StyleSheet.create({
   },
   formControl: {
     borderWidth: 1,
+    flex: 1,
     ...Platform.select({
       ios: {
-        paddingTop: 10,
+        paddingTop: 16,
         paddingLeft: 16,
         paddingRight: 16,
-        paddingBottom: 10,
+        paddingBottom: 16,
       },
       android: {
         paddingTop: 8,
@@ -189,7 +190,7 @@ export const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.2)',
   },
   otp: {
-    // width:"100%",
+    width: '100%',
   },
   hl: {
     flexDirection: 'row',
@@ -243,9 +244,8 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-end',
   },
-  error:{
+  error: {
     color: '#F25B60',
-    borderColor: '#F25B60'
-  }
-})
-
+    borderColor: '#F25B60',
+  },
+});

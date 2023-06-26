@@ -17,6 +17,7 @@ import {
   getListProvince,
   getListDistrict,
   setWareHouseCode,
+  setScreen,
 } from '../../redux/actions/cameraAction';
 import { getListWareHouse } from '../../redux/actions/wareHouseAction';
 import Orientation from 'react-native-orientation-locker';
@@ -26,6 +27,7 @@ import { styles } from './style';
 
 export default function Stream({ navigation, ...props }) {
   const dispatch = useDispatch();
+  // const [screen, setScreen] = useState(props.route.name);
   const [isProvince, setIsProvince] = useState(true);
   const camera = useSelector(state => state.useReducer);
   const wareHouse = useSelector(state => state.wareHouseReducer);
@@ -37,6 +39,7 @@ export default function Stream({ navigation, ...props }) {
   };
   const handleShowFilter = () => {
     setModalVisible(true);
+    dispatch(setScreen(props.route.name));
   };
 
   //Navigate Screen Live
@@ -80,6 +83,7 @@ export default function Stream({ navigation, ...props }) {
   const setIsShowProvince = () => {
     setIsProvince(!isProvince);
   };
+
   //Render menu camera
   const renderItem = ({ item, index }) => {
     return (
@@ -158,16 +162,17 @@ export default function Stream({ navigation, ...props }) {
             }
             : {};
         const already =
-          props.route.name === 'Stream'
+          camera.screen === 'Stream'
             ? {}
-            : props.route.name === 'Smart'
+            : camera.screen === 'Smart'
               ? {
-                ai_already: camera.filter?.isBG,
+                ai_already: camera.filter?.isBG ? 1 : 0,
                 ai_service_code: camera.filter?.service,
               }
               : {
-                record_already: camera.filter?.isBG,
+                record_already: camera.filter?.isBG ? 1 : 0,
               };
+        console.log(already);
         const res = await axiosClient.get(
           '/camerainfo/get-list-camera-level-by-username-mobile/',
           {
@@ -175,14 +180,11 @@ export default function Stream({ navigation, ...props }) {
               ...province,
               ...district,
               camera_status: camera.filter.camera_status,
-              // record_already: camera.filter?.isBG ? 1 : 0,
-
-              // record_already: 0,
-              // ai_already: camera.filter?.isBG ? 1 : 0,
-              // ai_service_code: camera.filter?.service,
+              ...already,
             },
           },
         );
+        console.log(res);
         dispatch(getListWareHouse(res));
       } catch (e) {
         console.log(e);
@@ -190,6 +192,7 @@ export default function Stream({ navigation, ...props }) {
     }
     getLocation();
   }, [camera.refresh, camera.camera_status]);
+  console.log(camera.refresh);
   useEffect(() => {
     async function getDistrict() {
       const prams =
@@ -225,6 +228,24 @@ export default function Stream({ navigation, ...props }) {
     }
     getProvince();
   }, [camera.filterLocate?.province]);
+  useEffect(() => {
+    navigation.addListener('beforeRemove', e => {
+      // Prevent default behavior of leaving the screen
+      e.preventDefault();
+
+      // Alert.alert('Đăng xuất?', 'Bạn có muốn đang xuất không', [
+      //   { text: 'Không', style: 'cancel', onPress: () => { } },
+      //   {
+      //     text: 'Có',
+      //     style: 'destructive',
+      //     // If the user confirmed, then we dispatch the action we blocked earlier
+      //     // This will continue the action that had triggered the removal of the screen
+      //     onPress: () => navigation.dispatch(e.data.action),
+      //   },
+      // ]);
+      // Prompt the user before leaving the screen
+    });
+  }, [navigation]);
   useEffect(() => {
     Orientation.lockToPortrait(); //this will lock the view to Portrait
   }, []);
