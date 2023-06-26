@@ -63,9 +63,8 @@ const Login = ({ navigation }) => {
         console.log(e);
         Alert.alert('Đăng nhập không thành công');
       }
-    }
-    else {
-      setError(true)
+    } else {
+      setError(true);
     }
   };
   useEffect(() => {
@@ -75,11 +74,11 @@ const Login = ({ navigation }) => {
     if (modalSuccess) {
       const countNavigate = setTimeout(() => {
         setModalSuccess(false);
-        navigation.navigate('Home')
-      }, 1000)
-      return () => clearTimeout(countNavigate)
+        navigation.navigate('Home');
+      }, 1000);
+      return () => clearTimeout(countNavigate);
     }
-  }, [modalSuccess])
+  }, [modalSuccess]);
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <ImageBackground
@@ -108,33 +107,39 @@ const Login = ({ navigation }) => {
                     <TextInput
                       placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
                       onChangeText={text => {
-                        setUserName(text)
-                        setError(false)
+                        setUserName(text);
+                        setError(false);
                       }}
                       style={
-                        ((userName.length < 6 && userName !== '') || (error && userName.length === 0))
+                        (userName.length < 6 && userName !== '') ||
+                          (error && userName.length === 0)
                           ? { ...styles.input, ...styles.borderError }
                           : styles.input
                       }
                       value={userName}
                       placeholder="Tên đăng nhập"
                     />
-                    {(error && !isValidatorUsername(userName) && <Text style={styles.error}>
-                      Tên người dùng dài từ 6 - 15 ký tự. Chỉ chứa các ký tự viết thường và số.
-                    </Text>)}
+                    {error && !isValidatorUsername(userName) && (
+                      <Text style={styles.error}>
+                        Tên người dùng dài từ 6 - 15 ký tự. Chỉ chứa các ký tự
+                        viết thường và số.
+                      </Text>
+                    )}
                   </View>
-                  <View style={styles.formInput} >
+                  <View style={styles.formInput}>
                     <View style={styles.lockIcon}>
                       <LockIcon />
                     </View>
-                    <Pressable onPress={() => setIsShowPass(!isShowPass)}
+                    <Pressable
+                      onPress={() => setIsShowPass(!isShowPass)}
                       style={styles.eyeIcon}>
                       {isShowPass ? <EyeIcon /> : <UnEyeIcon />}
                     </Pressable>
                     <TextInput
                       placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
                       style={
-                        ((password.length < 8 && password !== '') || (error && password.length === 0))
+                        (password.length < 8 && password !== '') ||
+                          (error && password.length === 0)
                           ? { ...styles.input, ...styles.borderError }
                           : styles.input
                       }
@@ -142,16 +147,22 @@ const Login = ({ navigation }) => {
                       secureTextEntry={isShowPass}
                       value={password}
                       onChangeText={text => {
-                        setError(false)
-                        setPassword(text)
+                        setError(false);
+                        setPassword(text);
                       }}
+                    
                     />
-                    {(error && !isValidatePassword(password)) && <Text style={styles.error_password}>
-                      Mật khẩu 6-20 ký tự. Ít nhất 1 ký tự viết hoa, 1 ký tự viết thường, 1 ký tự đặc biệt, 1 ký tự số, không chứa khoảng trắng.
-                    </Text>
-                    }
+                    {error && !isValidatePassword(password) && (
+                      <Text style={styles.error_password}>
+                        Mật khẩu 6-20 ký tự. Ít nhất 1 ký tự viết hoa, 1 ký tự
+                        viết thường, 1 ký tự đặc biệt, 1 ký tự số, không chứa
+                        khoảng trắng.
+                      </Text>
+                    )}
                   </View>
-                  <TouchableHighlight onPress={handleLogin} style={styles.login}>
+                  <TouchableHighlight
+                    onPress={handleLogin}
+                    style={styles.login}>
                     <View style={styles.buttonLogin}>
                       <Text style={styles.btnText}>Đăng nhập</Text>
                     </View>
@@ -166,16 +177,16 @@ const Login = ({ navigation }) => {
             </View>
           </View>
           <Modal
-            animationType={"fade"}
+            animationType={'fade'}
             transparent={true}
             visible={modalSuccess}
-            style={styles.modal}
-
-          >
+            style={styles.modal}>
             <View style={styles.mainView}>
               <View style={styles.headerModal}>
                 <Text style={styles.textHeader}>Đăng nhập thành công</Text>
-                <Text style={styles.textHeader}><SuccessIcon /></Text>
+                <View style={styles.textHeader}>
+                  <SuccessIcon />
+                </View>
               </View>
             </View>
           </Modal>
