@@ -26,7 +26,8 @@ import { HomeIcon, HomeIconActive } from '../components/Icons/BottomBar/HomeIcon
 import Dashboard from '../screens/Dashboard';
 import UserIconUnActive from '../components/Icons/BottomBar/UserIconUnActive';
 const Tab = createBottomTabNavigator();
-const MainContainer = () => {
+const MainContainer = ({ route, navigation }) => {
+  console.log(route.name);
   const [role, setRole] = useState('A');
   useEffect(() => {
     const getRole = async () => {
@@ -37,6 +38,24 @@ const MainContainer = () => {
     };
     getRole();
   }, []);
+  // useEffect(() => {
+  //   navigation.addListener('beforeRemove', e => {
+  //     // Prevent default behavior of leaving the screen
+  //     e.preventDefault();
+
+  //     // Alert.alert('Đăng xuất?', 'Bạn có muốn đang xuất không', [
+  //     //   { text: 'Không', style: 'cancel', onPress: () => { } },
+  //     //   {
+  //     //     text: 'Có',
+  //     //     style: 'destructive',
+  //     //     // If the user confirmed, then we dispatch the action we blocked earlier
+  //     //     // This will continue the action that had triggered the removal of the screen
+  //     //     onPress: () => navigation.dispatch(e.data.action),
+  //     //   },
+  //     // ]);
+  //     // Prompt the user before leaving the screen
+  //   });
+  // }, [navigation]);
   return (
     <Tab.Navigator
       initialRouteName={'Dashboard'}

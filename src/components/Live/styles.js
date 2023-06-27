@@ -85,10 +85,10 @@ export const styles = StyleSheet.create({
   },
   infoFull: {
     position: 'absolute',
-    top: 8,
-    left: 2,
-    width: '100%',
-    height: 300,
+
+    top: 2,
+    left: 14,
+
     // paddingTop: 8,
     // flexDirection: "row",
     // justifyContent: "space-between",

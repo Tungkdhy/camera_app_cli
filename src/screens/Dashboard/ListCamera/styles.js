@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
     container: {
@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
-    // header 
+    // header
     title: {
         fontWeight: '700',
         fontSize: 16,
@@ -36,10 +36,16 @@ export const styles = StyleSheet.create({
     content: {
         marginTop: 12,
         marginBottom: 17,
-        maxHeight: '100%'
+        maxHeight: '100%',
     },
     list: {
         marginVertical: 20,
+        // marginBottom: 30,
+        // ...Platform.select({
+        //     ios: {
+        //         marginBottom: 30,
+        //     },
+        // }),
     },
     icon: {
         marginTop: 8,
@@ -47,6 +53,11 @@ export const styles = StyleSheet.create({
     buttonMore: {
         display: 'flex',
         flexDirection: 'column',
-        alignItems:'center'
-    }
+        alignItems: 'center',
+        ...Platform.select({
+            ios: {
+                marginBottom: 70,
+            },
+        }),
+    },
 });
