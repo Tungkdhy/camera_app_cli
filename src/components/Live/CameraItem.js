@@ -1,19 +1,25 @@
 import React from 'react';
 import { View, Text, Pressable, Image } from 'react-native';
-import Video from 'react-native-video';
 import { useDispatch } from 'react-redux';
 import { setReload } from '../../redux/actions/cameraAction';
 import { styles } from './styles';
+import { loseConnect } from '../../utils';
 const CameraItem = ({ title, path, setCamId, id, type }) => {
   // console.log(
   //   `http://cameraai.cds.vinorsoft.com/${type}/${path.split('/')[1]}/image.jpg`,
   // );
   const [thum, setThum] = React.useState('');
   React.useEffect(() => {
-    setThum(
-      `http://cameraai.cds.vinorsoft.com/${type}/${path.split('/')[1]
-      }/image.jpg`,
-    );
+    if(type === 'livestream') {
+      setThum(
+        `http://42.96.41.28:30005/${path.split('/')[1]}/image.jpg`,
+      );
+    } else {
+      setThum(
+        `http://cameraai.cds.vinorsoft.com/${type}/${path.split('/')[1]
+        }/image.jpg`,
+      );
+    }
   }, [path]);
   const dispatch = useDispatch();
   return (
@@ -35,10 +41,9 @@ const CameraItem = ({ title, path, setCamId, id, type }) => {
           }}
           onError={e => {
             if (thum) {
-              setThum('https://baconmockup.com/300/200/');
+              setThum(loseConnect);
             }
           }}
-          // poster={`http://cameraai.cds.vinorsoft.com/${type}${path}`}
           style={{ height: 105, flex: 1, borderRadius: 4 }}
         />
       </View>

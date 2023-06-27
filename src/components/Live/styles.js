@@ -85,8 +85,10 @@ export const styles = StyleSheet.create({
   },
   infoFull: {
     position: 'absolute',
-    top: -2,
-    left: 14,
+    top: 8,
+    left: 2,
+    width: '100%',
+    height: 300,
     // paddingTop: 8,
     // flexDirection: "row",
     // justifyContent: "space-between",
@@ -179,10 +181,9 @@ export const styles = StyleSheet.create({
     // height: Dimensions.get('window').width,
     // minWidth: Dimensions.get('window').height,
     // minHeight: Dimensions.get('window').width,
-    width: Dimensions.get('screen').height - 120,
+    // width: Dimensions.get('screen').height - 120,
     height: Dimensions.get('screen').width,
-
-    // transform: [{rotate: '90deg'}],
+    width: '100%'
   },
   noPath: {
     width: '100%',
@@ -193,4 +194,18 @@ export const styles = StyleSheet.create({
     color: 'white',
     backgroundColor: '#000',
   },
+  camFull: {
+    flexDirection: 'row',
+    display: 'flex',
+    alignItems: 'center',
+    // gap: 2,
+    ...Platform.select({
+      ios: {
+        paddingTop: 4,
+        paddingLeft: 8,
+      },
+    }),
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    width: '100%'
+  }
 });

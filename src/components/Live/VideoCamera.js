@@ -45,6 +45,7 @@ const VideoCamera = ({
   const [listPath, setListPath] = useState([]);
   const [onAndroid, setOnAndroid] = useState(false);
   const reload = useSelector(state => state.useReducer.reload);
+  const [showName, setShowName] = useState(true);
   const handleOrientation = orientation => {
     if (orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT') {
       dispatch(setIsFullScreen(true));
@@ -108,6 +109,23 @@ const VideoCamera = ({
       setOnAndroid(true)
     }
   }, [])
+
+  const handlePressScreen = () => {
+    if (isFullScreen) {
+      setShowName(!showName)
+      console.log('aaa');
+    }
+  }
+
+  useEffect(() => {
+    if (isFullScreen && Platform?.OS === 'android' && showName) {
+      let timeOut = setTimeout(() => {
+        setShowName(!showName)
+      }, 4000)
+      return () => clearTimeout(timeOut);
+    }
+  }, [isFullScreen, showName])
+
   return (
     <View style={isFullScreen ? styles.contentFull : {}}>
       {
@@ -116,7 +134,7 @@ const VideoCamera = ({
             cameraActive.map((item, index) => {
               return (
                 <>
-                  <View
+                  <Pressable
                     style={
                       isFullScreen
                         ? {
@@ -127,7 +145,9 @@ const VideoCamera = ({
                           height: '100%',
                         }
                         : {}
-                    }>
+                    }
+                    onPress={handlePressScreen}
+                  >
                     {item.path === 'no-path' ? (
                       <View style={styles.noPath}>
                         <Text style={{ color: '#fff' }}>Không có video</Text>
@@ -165,33 +185,37 @@ const VideoCamera = ({
                         }
                       />
                     )}
-                  </View>
+                  </Pressable>
                   <View style={isFullScreen ? styles.infoFull : styles.info}>
-                    <View style={styles.cam}>
-                      <View>
-                        {isFullScreen ? (
-                          <Pressable onPress={handleFullscreen}>
-                            <BackIcon2 />
-                          </Pressable>
-                        ) : (
-                          type === 'playback/'
-                            ? item.status === 'On'
-                            : item.data[0].STATUS === 'On'
-                        ) ? (
-                          <Status />
-                        ) : (
-                          <Status color="#FF3300" />
-                        )}
+                    {showName && (
+                      <View style={isFullScreen ? styles.camFull : styles.cam}>
+                        <View>
+                          {isFullScreen ? (
+                            <Pressable onPress={handleFullscreen}>
+                              <BackIcon2 />
+                            </Pressable>
+                          ) : (
+                            type === 'playback/'
+                              ? item.status === 'On'
+                              : item.data[0].STATUS === 'On'
+                          ) ? (
+                            <Status />
+                          ) : (
+                            <Status color="#FF3300" />
+                          )}
+                        </View>
+                        <View>
+                          <Text
+                            style={
+                              isFullScreen
+                                ? { fontSize: 14, color: '#fff', paddingLeft: 8 }
+                                : { color: '#000' }
+                            }>
+                            {item.name}
+                          </Text>
+                        </View>
                       </View>
-                      <Text
-                        style={
-                          isFullScreen
-                            ? { fontSize: 14, color: '#fff', paddingLeft: 8 }
-                            : { color: '#000' }
-                        }>
-                        {item.name}
-                      </Text>
-                    </View>
+                    )}
 
                     {!isFullScreen && item.path !== 'no-path' && (
                       <>
@@ -224,7 +248,7 @@ const VideoCamera = ({
       }
       {!isFullScreen && type !== 'playback/' && (
         <SafeAreaView style={{ paddingBottom: 50 }}>
-          <View style={!onAndroid ? {height: '100%'} : { height: '68%' }}>
+          <View style={!onAndroid ? { height: '100%' } : { height: '68%' }}>
             <FlatList
               onEndReached={() => {
                 setCount(count + 1);
@@ -251,7 +275,7 @@ const VideoCamera = ({
               maxHeight={400}
             />
           </View>
-          <View style={{height: 48}}> 
+          <View style={{ height: 48 }}>
 
           </View>
         </SafeAreaView>
