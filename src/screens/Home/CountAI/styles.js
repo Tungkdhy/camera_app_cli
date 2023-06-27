@@ -22,16 +22,19 @@ export const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     boxHeader: {
-        width: '100%',
+        // width: '100%',
         display: 'flex',
         flexDirection: 'row',
         padding: 18,
+        flexWrap: 'wrap',
     },
     headerItem: {
         display: 'flex',
-        width: 170,
+        // width: 170,
+        width: '50%',
         flexDirection: 'column',
         alignItems: 'center',
+        marginTop: 16,
     },
     number: {
         fontSize: 24,

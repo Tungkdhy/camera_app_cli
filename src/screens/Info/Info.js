@@ -18,7 +18,7 @@ const Info = ({ navigation, route }) => {
     name: '',
     userName: '',
   });
-  const handleLogout = async () => {
+  const handleLogout = () => {
     // const refresh = await AsyncStorage.getItem('refresh');
     // await axiosClient.post('/authenticator/logout', {
     //   refresh: refresh,
