@@ -136,7 +136,7 @@ export const setService = data => {
   };
 };
 export const setScreen = data => {
-  console.log('sc', data);
+  // console.log('sc', data);
   return {
     type: SET_SCREEN,
     payload: data,

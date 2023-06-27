@@ -24,36 +24,35 @@ import Orientation from 'react-native-orientation-locker';
 import { DownIcon, Status, ShowIcon } from '../../components/Icons/Index';
 import Modal from './Modal/Modal';
 import { styles } from './style';
+import { setListCameraPlayBack } from '../../redux/actions/playBackAction';
 
-export default function Stream({ navigation, ...props }) {
+export default function MenuPlayBack({ navigation, ...props }) {
   const dispatch = useDispatch();
   // const [screen, setScreen] = useState(props.route.name);
   const [isProvince, setIsProvince] = useState(true);
   const camera = useSelector(state => state.useReducer);
-  const wareHouse = useSelector(state => state.wareHouseReducer);
-  //Show filterlog
+  const wareHouse = useSelector(state => state.playBackReducer);
   // console.log(wareHouse);
+  //Show filterlog
   const [modalVisible, setModalVisible] = useState(false);
   const handleSetShowModal = () => {
     setModalVisible(!modalVisible);
   };
   const handleShowFilter = () => {
     setModalVisible(true);
+    // dispatch(setScreen(props.route.name));
   };
 
-  //Navigate Screen Live
-  const liveStream = (it, item) => {
-    if (it.STATUS === 'On') {
-      dispatch(setWareHouseCode(''));
-      navigation.navigate('Live', {
-        wareHouse: item.WAREHOUSE_NAME,
-        active: it?.CODE,
-        cam: item.LIST_CAMERA.filter(itt => itt?.STATUS === 'On'),
-      });
-    } else {
-      Alert.alert('Camera đang tắt');
-    }
+  //Navigate Screen PlayBack
+  const navigatePlayBackCamera = (it, item) => {
+    navigation.navigate('PlayBack', {
+      wareHouse: item.WAREHOUSE_NAME,
+      active: it.CODE,
+      activeName: it.NAME_CAM,
+      cam: item.LIST_CAMERA,
+    });
   };
+  //Navigate Screen Smart
   //Show menu2 stream
   const handleShowCamera = code => {
     if (code === camera.wareCode) {
@@ -93,13 +92,7 @@ export default function Stream({ navigation, ...props }) {
                     item.LIST_CAMERA.map((it, index) => {
                       return (
                         <Pressable
-                          onPress={
-                            props.route.name === 'Stream'
-                              ? () => liveStream(it, item)
-                              : props.route.name === 'Smart'
-                                ? () => handleNavigateSmart(it, item)
-                                : () => navigatePlayBackCamera(it, item)
-                          }
+                          onPress={() => navigatePlayBackCamera(it, item)}
                           key={index}
                           style={styles.flex}>
                           <View style={styles.cameraName}>
@@ -127,23 +120,26 @@ export default function Stream({ navigation, ...props }) {
       </>
     );
   };
-  // console.log(props.route.name);
   useEffect(() => {
     //Get warehouse
     async function getLocation() {
       try {
         const province =
-          camera.filter?.province_code !== 'All'
+          wareHouse.filter?.province_code !== 'All'
             ? {
-              province_code: camera.filter?.province_code,
+              province_code: wareHouse.filter?.province_code,
             }
             : {};
         const district =
-          camera.filter?.district_code !== 'All'
+          wareHouse.filter?.district_code !== 'All'
             ? {
-              district_code: camera.filter?.district_code,
+              district_code: wareHouse.filter?.district_code,
             }
             : {};
+        const already = {
+          record_already: wareHouse.filter?.isBG ? 1 : 0,
+        };
+
         const res = await axiosClient.get(
           '/camerainfo/get-list-camera-level-by-username-mobile/',
           {
@@ -151,24 +147,25 @@ export default function Stream({ navigation, ...props }) {
               ...province,
               ...district,
               camera_status: camera.filter.camera_status,
-              // ...already,
+              ...already,
             },
           },
         );
-        dispatch(getListWareHouse(res));
+        // console.log(already);
+        dispatch(setListCameraPlayBack(res));
       } catch (e) {
         console.log(e);
       }
     }
     getLocation();
-  }, [camera.refresh, camera.filter.camera_status]);
+  }, [wareHouse.reload, camera.filter.camera_status]);
   useEffect(() => {
     async function getDistrict() {
       const prams =
-        camera.filter?.province_code === 'All'
+        wareHouse.filter?.province_code === 'All'
           ? {}
           : {
-            province_code: camera.filter?.province_code,
+            province_code: wareHouse.filter?.province_code,
           };
       const res = await axiosClient.get(
         `/district/get-list-district/?size=1000&page=1&district_name=${camera.filterLocate?.district}`,
@@ -182,7 +179,7 @@ export default function Stream({ navigation, ...props }) {
       dispatch(getListDistrict(data));
     }
     getDistrict();
-  }, [camera.filter?.province_code, camera.filterLocate?.district]);
+  }, [wareHouse.filter?.province_code, camera.filterLocate?.district]);
   useEffect(() => {
     async function getProvince() {
       try {
@@ -220,7 +217,7 @@ export default function Stream({ navigation, ...props }) {
   }, []);
   return (
     <>
-      <Header title={'Xem trực tiếp'} navigation={navigation} />
+      <Header title={'Xem lại Camera'} navigation={navigation} />
       <Modal
         isShow={modalVisible}
         onShowModal={handleSetShowModal}
@@ -243,9 +240,9 @@ export default function Stream({ navigation, ...props }) {
         />
         {/* <ScrollView> */}
         <ScrollView style={styles.camera}>
-          {wareHouse?.wareHouse.length > 0 ? (
+          {wareHouse?.cameras.length > 0 ? (
             <FlatList
-              data={wareHouse?.wareHouse}
+              data={wareHouse?.cameras}
               renderItem={renderItem}
               keyExtractor={item => item.CODE}
               onEndReachedThreshold={0}

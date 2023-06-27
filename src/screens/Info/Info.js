@@ -13,18 +13,18 @@ import axiosClient from '../../services/axiosClient';
 import { styles } from './styles';
 import { CricleUser, Logout, NextIcon, Pass } from '../../components/Icons/Index';
 
-const Info = ({ navigation }) => {
+const Info = ({ navigation, route }) => {
   const [userData, setUserData] = React.useState({
     name: '',
     userName: '',
   });
   const handleLogout = async () => {
-    const refresh = await AsyncStorage.getItem('refresh');
-    await axiosClient.post('/authenticator/logout', {
-      refresh: refresh,
-    });
+    // const refresh = await AsyncStorage.getItem('refresh');
+    // await axiosClient.post('/authenticator/logout', {
+    //   refresh: refresh,
+    // });
     // await AsyncStorage.clear();
-    navigation.replace('Login');
+    navigation.navigate('Login');
   };
   React.useEffect(() => {
     const getDataUser = async () => {
@@ -40,7 +40,7 @@ const Info = ({ navigation }) => {
             editTime: data.EDIT_TIME,
             userName: data.USERNAME,
           });
-          console.log(data);
+          // console.log(data);
         }
       } catch (error) {
         // Alert.alert('You not permission')
@@ -51,18 +51,20 @@ const Info = ({ navigation }) => {
   React.useEffect(() => {
     navigation.addListener('beforeRemove', e => {
       // Prevent default behavior of leaving the screen
-      e.preventDefault();
+      navigation.dispatch(e.data.action);
 
-      Alert.alert('Đăng xuất?', 'Bạn có muốn đang xuất không', [
-        { text: 'Không', style: 'cancel', onPress: () => { } },
-        {
-          text: 'Có',
-          style: 'destructive',
-          // If the user confirmed, then we dispatch the action we blocked earlier
-          // This will continue the action that had triggered the removal of the screen
-          onPress: () => navigation.dispatch(e.data.action),
-        },
-      ]);
+      // if (route.name === 'Info') {
+      //   Alert.alert('Đăng xuất?', 'Bạn có muốn đang xuất không', [
+      //     { text: 'Không', style: 'cancel', onPress: () => { } },
+      //     {
+      //       text: 'Có',
+      //       style: 'destructive',
+      //       // If the user confirmed, then we dispatch the action we blocked earlier
+      //       // This will continue the action that had triggered the removal of the screen
+      //       onPress: () => navigation.dispatch(e.data.action),
+      //     },
+      //   ]);
+      // }
       // Prompt the user before leaving the screen
     });
   }, [navigation]);

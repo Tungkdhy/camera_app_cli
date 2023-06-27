@@ -8,6 +8,7 @@ import {
   GET_LIST_SERVICE_PACKAGE,
   SET_AI_CODE,
   SET_AI_NAME,
+  SET_LIST_CAMERA,
 } from '../actions/reportAction';
 const initialState = {
   reports: [],
@@ -17,7 +18,11 @@ const initialState = {
     timeEnd: '23:59',
     service: 'Phát hiện chuyển động',
     ai_code: '20230222000000000001',
-    name:'Phát hiện chuyển động'
+    name: 'Phát hiện chuyển động',
+    record_status: 1,
+    isBG: false,
+    province_code: 'All',
+    district_code: 'All',
   },
   isFullScreen: false,
   video_active: [
@@ -27,12 +32,12 @@ const initialState = {
     },
   ],
   package: [],
-
+  camera: [],
 };
 const reportReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_LIST_REPORT:
-      return {...state, reports: action.payload};
+      return { ...state, reports: action.payload };
     case SET_DAY_REPORT:
       return {
         ...state,
@@ -58,11 +63,11 @@ const reportReducer = (state = initialState, action) => {
         },
       };
     case SET_FULL_SCREEN:
-      return {...state, isFullScreen: !state.isFullScreen};
+      return { ...state, isFullScreen: !state.isFullScreen };
     case VIDEO_ACTIVE:
-      return {...state, video_active: [action.payload]};
+      return { ...state, video_active: [action.payload] };
     case GET_LIST_SERVICE_PACKAGE:
-      return {...state, package: action.payload};
+      return { ...state, package: action.payload };
     case SET_AI_CODE:
       return {
         ...state,
@@ -71,14 +76,19 @@ const reportReducer = (state = initialState, action) => {
           ai_code: action.payload,
         },
       };
-      case SET_AI_NAME:
-        return {
-          ...state,
-          filter: {
-            ...state.filter,
-            name: action.payload,
-          },
-        };
+    case SET_AI_NAME:
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          name: action.payload,
+        },
+      };
+    case SET_LIST_CAMERA:
+      return {
+        ...state,
+        camera: action.payload,
+      };
     default:
       return state;
   }

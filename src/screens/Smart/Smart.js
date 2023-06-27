@@ -24,21 +24,24 @@ import Orientation from 'react-native-orientation-locker';
 import { DownIcon, Status, ShowIcon } from '../../components/Icons/Index';
 import Modal from './Modal/Modal';
 import { styles } from './style';
+import { setListCamera } from '../../redux/actions/reportAction';
 
-export default function Stream({ navigation, ...props }) {
+export default function Smart({ navigation, ...props }) {
   const dispatch = useDispatch();
   // const [screen, setScreen] = useState(props.route.name);
   const [isProvince, setIsProvince] = useState(true);
   const camera = useSelector(state => state.useReducer);
-  const wareHouse = useSelector(state => state.wareHouseReducer);
+  const wareHouse = useSelector(state => state.reportReducer);
   //Show filterlog
   // console.log(wareHouse);
   const [modalVisible, setModalVisible] = useState(false);
   const handleSetShowModal = () => {
     setModalVisible(!modalVisible);
   };
+  console.log(props);
   const handleShowFilter = () => {
     setModalVisible(true);
+    dispatch(setScreen(props.route.name));
   };
 
   //Navigate Screen Live
@@ -53,6 +56,22 @@ export default function Stream({ navigation, ...props }) {
     } else {
       Alert.alert('Camera đang tắt');
     }
+  };
+
+  //Navigate Screen PlayBack
+  const navigatePlayBackCamera = (it, item) => {
+    navigation.navigate('PlayBack', {
+      wareHouse: item.WAREHOUSE_NAME,
+      active: it.CODE,
+      activeName: it.NAME_CAM,
+      cam: item.LIST_CAMERA,
+    });
+  };
+  //Navigate Screen Smart
+  const handleNavigateSmart = (it, item) => {
+    navigation.navigate('Report', {
+      camera: it,
+    });
   };
   //Show menu2 stream
   const handleShowCamera = code => {
@@ -127,7 +146,7 @@ export default function Stream({ navigation, ...props }) {
       </>
     );
   };
-  // console.log(props.route.name);
+  console.log(props.route.name);
   useEffect(() => {
     //Get warehouse
     async function getLocation() {
@@ -144,6 +163,12 @@ export default function Stream({ navigation, ...props }) {
               district_code: camera.filter?.district_code,
             }
             : {};
+        const already = {
+          ai_already: camera.filter?.isBG ? 1 : 0,
+          ai_service_code: camera.filter?.service,
+        };
+
+        console.log(already);
         const res = await axiosClient.get(
           '/camerainfo/get-list-camera-level-by-username-mobile/',
           {
@@ -151,17 +176,18 @@ export default function Stream({ navigation, ...props }) {
               ...province,
               ...district,
               camera_status: camera.filter.camera_status,
-              // ...already,
+              ...already,
             },
           },
         );
-        dispatch(getListWareHouse(res));
+        dispatch(setListCamera(res));
       } catch (e) {
         console.log(e);
       }
     }
     getLocation();
   }, [camera.refresh, camera.filter.camera_status]);
+  console.log(camera.refresh);
   useEffect(() => {
     async function getDistrict() {
       const prams =
@@ -220,7 +246,16 @@ export default function Stream({ navigation, ...props }) {
   }, []);
   return (
     <>
-      <Header title={'Xem trực tiếp'} navigation={navigation} />
+      <Header
+        title={
+          props.route.name === 'Stream'
+            ? 'Xem trực tiếp'
+            : props.route.name === 'Smart'
+              ? 'Cảnh báo thông minh'
+              : 'Xem lại Camera'
+        }
+        navigation={navigation}
+      />
       <Modal
         isShow={modalVisible}
         onShowModal={handleSetShowModal}
@@ -243,9 +278,9 @@ export default function Stream({ navigation, ...props }) {
         />
         {/* <ScrollView> */}
         <ScrollView style={styles.camera}>
-          {wareHouse?.wareHouse.length > 0 ? (
+          {wareHouse?.camera.length > 0 ? (
             <FlatList
-              data={wareHouse?.wareHouse}
+              data={wareHouse?.camera}
               renderItem={renderItem}
               keyExtractor={item => item.CODE}
               onEndReachedThreshold={0}

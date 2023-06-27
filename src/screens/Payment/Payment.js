@@ -40,21 +40,21 @@ export default function Payment({ route, navigation }) {
   }, [modalVisible]);
 
   const handleOrientation = orientation => {
-    console.log(orientation);
+    // console.log(orientation);
     if (orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT') {
       dispatch(setIsFullScreen(true));
       // StatusBar.setHidden(true);
     } else {
       dispatch(setIsFullScreen(false));
       // StatusBar.setHidden(false);
-      console.log('run log dispat');
+      // console.log('run log dispat');
     }
   };
   const handleFullscreen = () => {
-    console.log(report.isFullScreen);
+    // console.log(report.isFullScreen);
     if (report.isFullScreen) {
       Orientation.lockToPortrait();
-      console.log('run full');
+      // console.log('run full');
       dispatch(setIsFullScreen(false));
     } else {
       console.log('run ony');

@@ -29,12 +29,13 @@ const initialState = {
   district: [],
   filter: {
     camera_status: 'On',
-    province_code: 'All',
-    district_code: 'All',
+   
     province_name: '',
     district_name: '',
     record_status: 1,
     isBG: false,
+    province_code: 'All',
+    district_code: 'All',
     service: '',
   },
   pathStream: [],

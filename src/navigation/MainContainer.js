@@ -3,6 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Home/Home';
 import Stream from '../screens/Stream/Stream';
+import MenuPlayBack from '../screens/MenuPlayBack/MenuPlayBack';
+import Smart from '../screens/Smart/Smart';
 // import Map from '../screens/Map/MapScreen';
 import Info from '../screens/Info/Info';
 // import { MapIcon } from "../components/Icons/Index";
@@ -48,11 +50,12 @@ const MainContainer = () => {
         },
         headerShown: false,
       }}>
-        <Tab.Screen
+      <Tab.Screen
         name="Dashboard"
         component={Dashboard}
         options={{
-          tabBarIcon: ({ color, focused }) => focused ? <HomeIconActive/>  : <HomeIcon />,
+          tabBarIcon: ({ color, focused }) =>
+            focused ? <HomeIconActive /> : <HomeIcon />,
           tabBarShowLabel: false,
         }}
       />
@@ -67,7 +70,7 @@ const MainContainer = () => {
       />
       <Tab.Screen
         name="Playback"
-        component={Stream}
+        component={MenuPlayBack}
         options={{
           tabBarIcon: ({ color, focused }) =>
             focused ? <YoutubeIconActive /> : <YoutubeIcon />,
@@ -76,7 +79,7 @@ const MainContainer = () => {
       />
       <Tab.Screen
         name="Smart"
-        component={Stream}
+        component={Smart}
         options={{
           tabBarIcon: ({ color, focused }) =>
             focused ? <SmartIcon /> : <PaymentIcon />,
@@ -98,7 +101,8 @@ const MainContainer = () => {
         name="Info"
         component={Info}
         options={{
-          tabBarIcon: ({ color, focused }) => focused ? <UserIcon /> : <UserIconUnActive />,
+          tabBarIcon: ({ color, focused }) =>
+            focused ? <UserIcon /> : <UserIconUnActive />,
           tabBarShowLabel: false,
         }}
       />
