@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, ImageBackground, Text, TouchableHighlight } from 'react-native';
 import { styles } from './styles';
+import { StackActions } from '@react-navigation/native';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Wellcome = ({ navigation }) => {
@@ -14,7 +15,8 @@ const Wellcome = ({ navigation }) => {
     //     navigation.navigate("Home");
     //   }
     // } else {
-    navigation.navigate('Login');
+    const resetAction = StackActions.replace('Login');
+    navigation.dispatch(resetAction);
     // }
   }
   return (

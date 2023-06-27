@@ -85,7 +85,7 @@ export const styles = StyleSheet.create({
   },
   infoFull: {
     position: 'absolute',
-    top: -2,
+    top: 2,
     left: 14,
     // paddingTop: 8,
     // flexDirection: "row",

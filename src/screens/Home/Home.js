@@ -96,30 +96,13 @@ export default function Home({ navigation }) {
   useEffect(() => {
     Orientation.lockToPortrait(); //this will lock the view to Portrait
   }, []);
-  useEffect(() => {
-    navigation.addListener('beforeRemove', e => {
-      // Prevent default behavior of leaving the screen
-      e.preventDefault();
 
-      // Alert.alert('Đăng xuất?', 'Bạn có muốn đang xuất không', [
-      //   { text: 'Không', style: 'cancel', onPress: () => { } },
-      //   {
-      //     text: 'Có',
-      //     style: 'destructive',
-      //     // If the user confirmed, then we dispatch the action we blocked earlier
-      //     // This will continue the action that had triggered the removal of the screen
-      //     onPress: () => navigation.dispatch(e.data.action),
-      //   },
-      // ]);
-      // Prompt the user before leaving the screen
-    });
-  }, [navigation]);
   return (
     <>
       <Header title={'Thống kê'} navigation={navigation} />
       <SafeAreaView>
         <View style={style.container}>
-          {/* <ScrollView> */}
+          <ScrollView>
             <CountCamera companyName={companyName} countCamera={countCamera} />
             <CountAI countCamera={countCamera} companyName={companyName} />
             <DonutChart title={'Tổng số Camera theo nhóm'} type={'group'} />
@@ -128,7 +111,7 @@ export default function Home({ navigation }) {
               type={'warehouse'}
             />
             <AnalyticAI navigation={navigation} />
-          {/* </ScrollView> */}
+          </ScrollView>
         </View>
       </SafeAreaView>
     </>

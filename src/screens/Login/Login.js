@@ -24,6 +24,9 @@ import {
   UnEyeIcon,
   SuccessIcon,
 } from '../../components/Icons/Index';
+// import { StackActions, NavigationActions } from 'react-navigation';
+import { StackActions, NavigationAction } from '@react-navigation/native';
+
 // import messaging from '@react-native-firebase/messaging';
 import { styles } from './styles';
 import Orientation from 'react-native-orientation-locker';
@@ -74,7 +77,8 @@ const Login = ({ navigation }) => {
     if (modalSuccess) {
       const countNavigate = setTimeout(() => {
         setModalSuccess(false);
-        navigation.navigate('Home');
+        const resetAction = StackActions.replace('Home');
+        navigation.dispatch(resetAction);
       }, 1000);
       return () => clearTimeout(countNavigate);
     }
@@ -150,7 +154,6 @@ const Login = ({ navigation }) => {
                         setError(false);
                         setPassword(text);
                       }}
-                    
                     />
                     {error && !isValidatePassword(password) && (
                       <Text style={styles.error_password}>
@@ -176,21 +179,21 @@ const Login = ({ navigation }) => {
               </View>
             </View>
           </View>
-          <Modal
-            animationType={'fade'}
-            transparent={true}
-            visible={modalSuccess}
-            style={styles.modal}>
-            <View style={styles.mainView}>
-              <View style={styles.headerModal}>
-                <Text style={styles.textHeader}>Đăng nhập thành công</Text>
-                <View style={styles.textHeader}>
-                  <SuccessIcon />
-                </View>
+        </KeyboardAvoidingView>
+        <Modal
+          animationType={'fade'}
+          transparent={true}
+          visible={modalSuccess}
+          style={styles.modal}>
+          <View style={styles.mainView}>
+            <View style={styles.headerModal}>
+              <Text style={styles.textHeader}>Đăng nhập thành công</Text>
+              <View style={styles.textHeader}>
+                <SuccessIcon />
               </View>
             </View>
-          </Modal>
-        </KeyboardAvoidingView>
+          </View>
+        </Modal>
       </ImageBackground>
     </TouchableWithoutFeedback>
     // </KeyboardAvoidingView>
