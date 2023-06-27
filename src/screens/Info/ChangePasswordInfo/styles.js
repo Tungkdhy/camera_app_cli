@@ -110,5 +110,11 @@ export const styles = StyleSheet.create({
     contain: {
         position:'relative',
         height: '100%',
+    },
+    checkIcon: {
+        position: "absolute",
+        top: 60,
+        right: 44,
+        zIndex: 10
     }
 })

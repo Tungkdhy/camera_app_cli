@@ -74,23 +74,25 @@ const StickTime = ({ code, day, setChange }) => {
     };
     getTimeLine();
   }, [code, day]);
-  // console.log(convertTimeToPx(stick_time) , '===,', stick_time);
-  console.log(stick_time);
+
   return (
     <View style={{ position: 'relative', paddingRight: 16 }}>
       <Text style={styles.time}>
-        {playback.filter.day} {stick_time}
+        {playback.filter.day} {stick_time.slice(0,2) !== '24' ? stick_time : '24:00:00'}
       </Text>
       <ScrollView
+
         onScrollEndDrag={event => {
           const x = event.nativeEvent.contentOffset.x / 100;
           console.log(x);
           setPosition(event.nativeEvent.contentOffset.x);
           setChange(false);
+
           if (debouce.current) {
             clearTimeout(debouce.current);
           }
           debouce.current = setTimeout(() => {
+            console.log(x.toFixed(2));
             dispatch(setTimeStick(covertWidthToHour(x)));
             setChange(true);
           }, 1000);
