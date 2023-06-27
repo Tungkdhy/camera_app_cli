@@ -16,17 +16,15 @@ import CheckBox from 'react-native-check-box';
 import { Close } from '../../../components/Icons/Index';
 import { useDispatch, useSelector } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
-import {
-  setProvinceCode,
-  setDistrictCode,
-  setFilterProvince,
-  setFilterDistrict,
-  setRefresh,
-  setCheckBG,
-  setService,
-} from '../../../redux/actions/cameraAction';
+import { setService } from '../../../redux/actions/cameraAction';
 import axiosClient from '../../../services/axiosClient';
 import { styles } from './styles';
+import {
+  setDistrictCode,
+  setProvinceCode,
+  setReload,
+  setIsBG,
+} from '../../../redux/actions/playBackAction';
 const Modal = ({
   screen,
   onShowModal,
@@ -39,11 +37,13 @@ const Modal = ({
   const dispatch = useDispatch();
   const [services, setServices] = useState([]);
   const camera = useSelector(state => state.useReducer);
+  const wareHouse = useSelector(state => state.playBackReducer);
+
   const handleResetFilter = () => {
     dispatch(setProvinceCode('All'));
     dispatch(setDistrictCode('All'));
-    dispatch(setRefresh(!camera.refresh));
-    dispatch(setCheckBG(false));
+    dispatch(setReload(!wareHouse.reload));
+    dispatch(setIsBG(false));
   };
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const Modal = ({
                     if (!isProvince) {
                       setIsProvince();
                     }
-                    dispatch(setFilterDistrict(''));
+                    // dispatch(setFilterDistrict(''));
                   }}
                   style={styles.iconModal}>
                   <Close />
@@ -95,7 +95,7 @@ const Modal = ({
                       }}
                       doneText="Lựa chọn"
                       style={styles}
-                      value={camera.filter?.province_code}
+                      value={wareHouse.filter?.province_code}
                       onValueChange={value => {
                         dispatch(setProvinceCode(value));
                       }}
@@ -128,7 +128,7 @@ const Modal = ({
                         dispatch(setDistrictCode(value));
                         // console.log(screen);
                       }}
-                      value={camera.filter?.district_code}
+                      value={wareHouse.filter?.district_code}
                       items={
                         camera?.district
                           ? camera.district.map(item => {
@@ -144,6 +144,21 @@ const Modal = ({
                   </View>
                 </View>
 
+                <View>
+                  <CheckBox
+                    style={{
+                      color: 'rgba(0, 0, 0, 0.4)',
+                    }}
+                    rightTextStyle={{
+                      color: 'rgba(0, 0, 0, 0.4)',
+                    }}
+                    onClick={() => dispatch(setIsBG(!wareHouse?.filter.isBG))}
+                    rightText={'Camera có bản ghi'}
+                    isChecked={wareHouse?.filter.isBG}
+                    checkBoxColor={'#0040FF'}
+                  />
+                </View>
+
                 <View style={styles.action}>
                   <Pressable
                     onPress={handleResetFilter}
@@ -154,7 +169,7 @@ const Modal = ({
                     </Text>
                   </Pressable>
                   <Pressable
-                    onPress={() => dispatch(setRefresh(!camera.refresh))}
+                    onPress={() => dispatch(setReload(!wareHouse.reload))}
                     style={{ ...styles.btn, ...styles.primary }}>
                     <Text style={{ color: '#fff', fontWeight: 700 }}>
                       Áp dụng

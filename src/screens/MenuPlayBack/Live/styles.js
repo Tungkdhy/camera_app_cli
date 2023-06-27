@@ -1,23 +1,30 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
-const windowHeight = Dimensions.get('window').width * (9 / 16);
-const windowWidth = Dimensions.get('window').width;
-const height = Dimensions.get('window').width;
-const width = Dimensions.get('window').height;
+
 export const styles = StyleSheet.create({
   container: {
     paddingLeft: 16,
     // paddingRight: 16,
     flex: 1,
+    paddingBottom: 100,
   },
   containerFull: {
     flex: 1,
-    // backgroundColor: 'black',
+    backgroundColor: 'black',
   },
   header: {
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingRight: 16,
+
     flexDirection: 'row',
-    paddingTop: 44,
+    ...Platform.select({
+      ios: {
+        paddingTop: 44,
+      },
+      android: {
+        paddingTop: 16,
+      },
+    }),
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.05)',
   },
@@ -28,11 +35,11 @@ export const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-    backgroundColor: '#333',
+    transform: [{ rotateZ: '90deg' }],
   },
   text: {
     padding: 10,
-    paddingLeft: 16,
+    paddingLeft: 0,
     fontSize: 18,
     fontWeight: '700',
   },
@@ -58,7 +65,6 @@ export const styles = StyleSheet.create({
   },
   active: {
     paddingTop: 12,
-    paddingRight: 16,
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.05)',
     paddingBottom: 12,
@@ -67,13 +73,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     display: 'flex',
     alignItems: 'center',
-    // gap: 2,
-    ...Platform.select({
-      ios: {
-        paddingTop: 4,
-        paddingLeft: 8,
-      },
-    }),
+    gap: 4,
   },
   info: {
     paddingTop: 8,
@@ -84,18 +84,15 @@ export const styles = StyleSheet.create({
     // transform: [{rotateZ: '90deg'}],
   },
   infoFull: {
+    paddingTop: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     position: 'absolute',
-    top: -2,
-    left: 14,
-    // paddingTop: 8,
-    // flexDirection: "row",
-    // justifyContent: "space-between",
-    // alignItems: "center",
-    // position:"absolute",
-    // top:-360,
-    // left:-160,
-    // bottom:0,
-    // right:100,
+    top: -360,
+    left: -160,
+    bottom: 0,
+    right: 100,
     // backgroundColor:"black"
   },
   setting: {
@@ -105,20 +102,12 @@ export const styles = StyleSheet.create({
   iconSetting: {
     paddingLeft: 8,
     alignItems: 'center',
-    paddingTop: 2,
-    paddingRight: 2,
-    paddingBottom: 2,
-    display: 'flex',
   },
   list: {
-    // marginVertical: 20,
-    // marginRight: 12
-    paddingRight: 8,
-    marginRight: 8,
+    marginVertical: 20,
   },
   nameCamera: {
     paddingTop: 4,
-    color: '#000',
   },
   imageItem: {
     width: '100%',
@@ -179,18 +168,9 @@ export const styles = StyleSheet.create({
     // height: Dimensions.get('window').width,
     // minWidth: Dimensions.get('window').height,
     // minHeight: Dimensions.get('window').width,
-    width: Dimensions.get('screen').height - 120,
+    width: Dimensions.get('screen').height - 160,
     height: Dimensions.get('screen').width,
 
     // transform: [{rotate: '90deg'}],
-  },
-  noPath: {
-    width: '100%',
-    height: 240,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: 'white',
-    backgroundColor: '#000',
   },
 });

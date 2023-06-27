@@ -40,7 +40,7 @@ const StickTime = ({ code, day, setChange }) => {
   const stick_time = useSelector(
     state => state.playBackReducer.filter.stick_time,
   );
-  console.log(stick_time);
+
   const playback = useSelector(state => state.playBackReducer);
   const [dis, setDis] = useState([
     {

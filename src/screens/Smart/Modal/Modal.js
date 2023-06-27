@@ -44,6 +44,7 @@ const Modal = ({
     dispatch(setDistrictCode('All'));
     dispatch(setRefresh(!camera.refresh));
     dispatch(setCheckBG(false));
+    onShowModal();
   };
 
   useEffect(() => {
@@ -126,7 +127,7 @@ const Modal = ({
                       style={styles}
                       onValueChange={value => {
                         dispatch(setDistrictCode(value));
-                        // console.log(screen);
+                        console.log(screen);
                       }}
                       value={camera.filter?.district_code}
                       items={
@@ -144,6 +145,50 @@ const Modal = ({
                   </View>
                 </View>
 
+                <View>
+                  <Text style={styles.label}>Sự kiện</Text>
+                  <View style={styles.choose_camera}>
+                    <RNPickerSelect
+                      placeholder={{
+                        label: 'Tất cả',
+                        value: 'All',
+                      }}
+                      doneText="Lựa chọn"
+                      style={styles}
+                      onValueChange={value => {
+                        dispatch(setService(value));
+                      }}
+                      value={camera.filter?.service}
+                      items={
+                        services
+                          ? services.map(item => {
+                            return {
+                              key: item.CODE,
+                              value: item.CODE,
+                              label: item.SUBJECT_NAME,
+                            };
+                          })
+                          : []
+                      }
+                    />
+                  </View>
+                </View>
+
+                <View>
+                  <CheckBox
+                    style={{
+                      color: 'rgba(0, 0, 0, 0.4)',
+                    }}
+                    rightTextStyle={{
+                      color: 'rgba(0, 0, 0, 0.4)',
+                    }}
+                    onClick={() => dispatch(setCheckBG(!camera?.filter.isBG))}
+                    rightText={'Camera có bản ghi'}
+                    isChecked={camera?.filter.isBG}
+                    checkBoxColor={'#0040FF'}
+                  />
+                </View>
+
                 <View style={styles.action}>
                   <Pressable
                     onPress={handleResetFilter}
@@ -154,7 +199,10 @@ const Modal = ({
                     </Text>
                   </Pressable>
                   <Pressable
-                    onPress={() => dispatch(setRefresh(!camera.refresh))}
+                    onPress={() => {
+                      dispatch(setRefresh(!camera.refresh));
+                      onShowModal();
+                    }}
                     style={{ ...styles.btn, ...styles.primary }}>
                     <Text style={{ color: '#fff', fontWeight: 700 }}>
                       Áp dụng

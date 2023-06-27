@@ -54,7 +54,7 @@ function MapScreen({ navigation }) {
     setModalVisible(true);
   };
 
-  console.log(camera.filter)
+  // console.log(camera.filter)
   useEffect(() => {
     const province = camera.filter?.province_code
       ? {
@@ -74,7 +74,7 @@ function MapScreen({ navigation }) {
             ...district,
           }
         })
-        console.log(res);
+        // console.log(res);
         if (res) {
           const data = res.data
           setListWareHouse(data)
@@ -89,7 +89,7 @@ function MapScreen({ navigation }) {
     }
     getListWareHouse()
   }, [camera?.filter?.province_code, camera?.filter?.district_code])
-  console.log(coordinate);
+  // console.log(coordinate);
   useEffect(() => {
     async function getProvince() {
       try {
@@ -123,7 +123,7 @@ function MapScreen({ navigation }) {
     }
     getDistrict();
   }, [camera.filter?.province_code]);
-  console.log(listWareHouse);
+  // console.log(listWareHouse);
   useEffect(() => {
     const statusWareHouse = camera.filter.camera_status;
     if (statusWareHouse === 'On') {

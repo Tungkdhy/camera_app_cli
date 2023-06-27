@@ -25,7 +25,7 @@ import { DownIcon, Status, ShowIcon } from '../../components/Icons/Index';
 import Modal from './Modal/Modal';
 import { styles } from './style';
 
-export default function Stream({ navigation, ...props }) {
+export default function MenuPlayBack({ navigation, ...props }) {
   const dispatch = useDispatch();
   // const [screen, setScreen] = useState(props.route.name);
   const [isProvince, setIsProvince] = useState(true);
@@ -37,8 +37,10 @@ export default function Stream({ navigation, ...props }) {
   const handleSetShowModal = () => {
     setModalVisible(!modalVisible);
   };
+  console.log(props);
   const handleShowFilter = () => {
     setModalVisible(true);
+    dispatch(setScreen(props.route.name));
   };
 
   //Navigate Screen Live
@@ -53,6 +55,22 @@ export default function Stream({ navigation, ...props }) {
     } else {
       Alert.alert('Camera đang tắt');
     }
+  };
+
+  //Navigate Screen PlayBack
+  const navigatePlayBackCamera = (it, item) => {
+    navigation.navigate('PlayBack', {
+      wareHouse: item.WAREHOUSE_NAME,
+      active: it.CODE,
+      activeName: it.NAME_CAM,
+      cam: item.LIST_CAMERA,
+    });
+  };
+  //Navigate Screen Smart
+  const handleNavigateSmart = (it, item) => {
+    navigation.navigate('Report', {
+      camera: it,
+    });
   };
   //Show menu2 stream
   const handleShowCamera = code => {
@@ -144,6 +162,18 @@ export default function Stream({ navigation, ...props }) {
               district_code: camera.filter?.district_code,
             }
             : {};
+        const already =
+          camera.screen === 'Stream'
+            ? {}
+            : camera.screen === 'Smart'
+              ? {
+                ai_already: camera.filter?.isBG ? 1 : 0,
+                ai_service_code: camera.filter?.service,
+              }
+              : {
+                record_already: camera.filter?.isBG ? 1 : 0,
+              };
+        // console.log(already);
         const res = await axiosClient.get(
           '/camerainfo/get-list-camera-level-by-username-mobile/',
           {
@@ -151,17 +181,19 @@ export default function Stream({ navigation, ...props }) {
               ...province,
               ...district,
               camera_status: camera.filter.camera_status,
-              // ...already,
+              ...already,
             },
           },
         );
+        // console.log(res);
         dispatch(getListWareHouse(res));
       } catch (e) {
         console.log(e);
       }
     }
     getLocation();
-  }, [camera.refresh, camera.filter.camera_status]);
+  }, [camera.refresh, camera.camera_status]);
+  // console.log(camera.refresh);
   useEffect(() => {
     async function getDistrict() {
       const prams =
@@ -220,7 +252,16 @@ export default function Stream({ navigation, ...props }) {
   }, []);
   return (
     <>
-      <Header title={'Xem trực tiếp'} navigation={navigation} />
+      <Header
+        title={
+          props.route.name === 'Stream'
+            ? 'Xem trực tiếp'
+            : props.route.name === 'Smart'
+              ? 'Cảnh báo thông minh'
+              : 'Xem lại Camera'
+        }
+        navigation={navigation}
+      />
       <Modal
         isShow={modalVisible}
         onShowModal={handleSetShowModal}

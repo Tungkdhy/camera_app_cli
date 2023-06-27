@@ -175,12 +175,12 @@ export const styles = StyleSheet.create({
   },
   userIcon: {
     position: 'absolute',
-    top: 18,
+    top: 14,
     left: 12,
   },
   lockIcon: {
     position: 'absolute',
-    top: 16,
+    top: 14,
     left: 12,
   },
   eyeIcon: {
