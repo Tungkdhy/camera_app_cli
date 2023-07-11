@@ -9,6 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StackActions, NavigationAction } from '@react-navigation/native';
 import axiosClient from '../../services/axiosClient';
 import { styles } from './styles';
 import { CricleUser, Logout, NextIcon, Pass } from '../../components/Icons/Index';
@@ -18,13 +19,13 @@ const Info = ({ navigation, route }) => {
     name: '',
     userName: '',
   });
-  const handleLogout = () => {
+  const handleLogout = async () => {
     // const refresh = await AsyncStorage.getItem('refresh');
     // await axiosClient.post('/authenticator/logout', {
     //   refresh: refresh,
     // });
-    // await AsyncStorage.clear();
-    navigation.navigate('Login');
+    await AsyncStorage.clear();
+    navigation.dispatch(StackActions.replace('Login'));
   };
   React.useEffect(() => {
     const getDataUser = async () => {

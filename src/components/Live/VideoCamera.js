@@ -106,25 +106,25 @@ const VideoCamera = ({
   );
   useEffect(() => {
     if (Platform?.OS === 'android') {
-      setOnAndroid(true)
+      setOnAndroid(true);
     }
-  }, [])
+  }, []);
 
   const handlePressScreen = () => {
     if (isFullScreen) {
-      setShowName(!showName)
+      setShowName(!showName);
       console.log('aaa');
     }
-  }
+  };
 
   useEffect(() => {
     if (isFullScreen && Platform?.OS === 'android' && showName) {
       let timeOut = setTimeout(() => {
-        setShowName(!showName)
-      }, 4000)
+        setShowName(!showName);
+      }, 4000);
       return () => clearTimeout(timeOut);
     }
-  }, [isFullScreen, showName])
+  }, [isFullScreen, showName]);
 
   return (
     <View style={isFullScreen ? styles.contentFull : {}}>
@@ -132,6 +132,7 @@ const VideoCamera = ({
         <View style={isFullScreen ? styles.activeFull : styles.active}>
           {cameraActive &&
             cameraActive.map((item, index) => {
+              console.log(item);
               return (
                 <>
                   <Pressable
@@ -146,8 +147,7 @@ const VideoCamera = ({
                         }
                         : {}
                     }
-                    onPress={handlePressScreen}
-                  >
+                    onPress={handlePressScreen}>
                     {item.path === 'no-path' ? (
                       <View style={styles.noPath}>
                         <Text style={{ color: '#fff' }}>Không có video</Text>
@@ -156,8 +156,8 @@ const VideoCamera = ({
                       <Video
                         source={{
                           uri: `http://cameraai.cds.vinorsoft.com/${type}${type === 'playback/'
-                            ? item?.path.PATH
-                            : item?.data[0]?.PATH
+                              ? item?.path.PATH
+                              : item?.data[0]?.PATH
                             }`,
                         }}
                         ref={ref}
@@ -254,7 +254,7 @@ const VideoCamera = ({
                 setCount(count + 1);
               }}
               onEndReachedThreshold={0}
-              data={listPath}
+              data={streamPath}
               scrollEnabled
               renderItem={({ item, index }) => (
                 <CameraItem
@@ -275,9 +275,7 @@ const VideoCamera = ({
               maxHeight={400}
             />
           </View>
-          <View style={{ height: 48 }}>
-
-          </View>
+          <View style={{ height: 48 }} />
         </SafeAreaView>
       )}
     </View>

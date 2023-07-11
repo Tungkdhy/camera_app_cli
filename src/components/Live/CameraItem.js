@@ -8,12 +8,11 @@ const CameraItem = ({ title, path, setCamId, id, type }) => {
   // console.log(
   //   `http://cameraai.cds.vinorsoft.com/${type}/${path.split('/')[1]}/image.jpg`,
   // );
+  // console.log(path);
   const [thum, setThum] = React.useState('');
   React.useEffect(() => {
-    if(type === 'livestream') {
-      setThum(
-        `http://42.96.41.28:30005/${path.split('/')[1]}/image.jpg`,
-      );
+    if (type === 'livestream') {
+      setThum(`http://42.96.41.28:30005/${path.split('/')[1]}/image.jpg`);
     } else {
       setThum(
         `http://cameraai.cds.vinorsoft.com/${type}/${path.split('/')[1]

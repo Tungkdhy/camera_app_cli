@@ -52,11 +52,18 @@ const Live = ({ route, navigation }) => {
         );
         // console.log(res.stream);
         dispatch(getPathStream(res.stream));
+        console.log(res.stream);
       } catch (e) {
         Alert.alert('Lấy danh sách đường dẫn ko thành công');
       }
     }
     getPath();
+    const getPath1 = setInterval(() => {
+      getPath();
+    }, 20 * 60000);
+    return () => {
+      clearInterval(getPath1);
+    };
   }, []);
   useEffect(() => {
     const camActive = streamPath.filter(item => {

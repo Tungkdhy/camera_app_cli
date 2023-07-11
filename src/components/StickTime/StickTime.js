@@ -78,10 +78,10 @@ const StickTime = ({ code, day, setChange }) => {
   return (
     <View style={{ position: 'relative', paddingRight: 16 }}>
       <Text style={styles.time}>
-        {playback.filter.day} {stick_time.slice(0,2) !== '24' ? stick_time : '24:00:00'}
+        {playback.filter.day}{' '}
+        {stick_time.slice(0, 2) !== '24' ? stick_time : '24:00:00'}
       </Text>
       <ScrollView
-
         onScrollEndDrag={event => {
           const x = event.nativeEvent.contentOffset.x / 100;
           console.log(x);

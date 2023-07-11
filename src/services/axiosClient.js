@@ -55,7 +55,7 @@ axiosClient.interceptors.response.use(
             }
           );
           await AsyncStorage.setItem("token", res.data.access);
-          window.location.reload()
+          // window.location.reload()
         } catch (error) {
           return error.response.status;
         }
