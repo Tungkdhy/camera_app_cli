@@ -57,22 +57,10 @@ export default function Payment({ route, navigation }) {
       // console.log('run full');
       dispatch(setIsFullScreen(false));
     } else {
-      console.log('run ony');
       Orientation.lockToLandscapeLeft();
       dispatch(setIsFullScreen(true));
     }
   };
-
-  useEffect(() => {
-    console.log('eff log full', report.isFullScreen);
-  }, [report.isFullScreen])
-  // useEffect(() => {
-  //   Orientation.addOrientationListener(handleOrientation);
-  //   console.log('run eff');
-  //   return () => {
-  //     Orientation.removeOrientationListener(handleOrientation);
-  //   };
-  // }, [handleOrientation]);
 
   const renderItem = ({ item, index }) => {
     return (
@@ -177,7 +165,7 @@ export default function Payment({ route, navigation }) {
         handleFullscreen();
         return true;
       } else {
-        return false
+        return false;
       }
     };
     const backHandler = BackHandler.addEventListener(
@@ -295,8 +283,7 @@ export default function Payment({ route, navigation }) {
               key={index}
               style={report.isFullScreen ? styles.contentFull : {}}>
               <View
-                style={report.isFullScreen ? styles.activeFull : styles.active}
-              >
+                style={report.isFullScreen ? styles.activeFull : styles.active}>
                 <View
                   style={
                     report.isFullScreen
@@ -306,7 +293,7 @@ export default function Payment({ route, navigation }) {
                         alignItems: 'center',
                         width: '100%',
                         height: '100%',
-                        backgroundColor: 'white'
+                        backgroundColor: 'white',
                       }
                       : {}
                   }>
@@ -345,9 +332,7 @@ export default function Payment({ route, navigation }) {
 
                     <Text
                       style={
-                        report.isFullScreen
-                          ? { fontSize: 14, color: '#fff' }
-                          : {}
+                        report.isFullScreen ? { fontSize: 14, color: '#fff' } : {}
                       }>
                       {item.name}
                     </Text>

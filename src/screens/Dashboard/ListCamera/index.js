@@ -1,7 +1,7 @@
-import {View, Text, FlatList, Pressable} from 'react-native';
-import {styles} from './styles';
-import {cameraManagement} from '../../../services/api/cameraManagementApi';
-import {useCallback, useEffect, useState} from 'react';
+import { View, Text, FlatList, Pressable } from 'react-native';
+import { styles } from './styles';
+import { cameraManagement } from '../../../services/api/cameraManagementApi';
+import { useCallback, useEffect, useState } from 'react';
 import streamingClient from '../../../services/axiosStreaming';
 import CameraItem from '../../../components/Live/CameraItem';
 import {
@@ -9,12 +9,13 @@ import {
   OnlineIcon,
   UpIconSolid,
 } from '../../../components/Icons/Index';
-function ListCamera({navigation}) {
+
+function ListCamera({ navigation }) {
   const [listCamera, setListCamera] = useState([]);
   const [listPath, setListPath] = useState([]);
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
-
+  const [refresh, setRefresh] = useState(false);
   const getListCamera = useCallback(async () => {
     try {
       let param = {
@@ -38,30 +39,34 @@ function ListCamera({navigation}) {
     });
   };
 
-  const getListPath = useCallback(async data => {
-    try {
-      let listCode = data?.map(item => {
-        return {
-          camera_code: item?.CAMERA?.CODE,
-        };
-      });
-      const res = await streamingClient.post(
-        '/streamManagement/post-list-path-streaming/',
-        {
-          list_camera: {
-            data: listCode,
+  const getListPath = useCallback(
+    async data => {
+      try {
+        let listCode = data?.map(item => {
+          return {
+            camera_code: item?.CAMERA?.CODE,
+          };
+        });
+        const res = await streamingClient.post(
+          '/streamManagement/post-list-path-streaming/',
+          {
+            list_camera: {
+              data: listCode,
+            },
           },
-        },
-      );
-      if (listCamera.length < 50) {
-        setListPath(prev => [...prev, ...res.stream]);
-      } else {
-        setListPath(res.stream);
+        );
+        if (listCamera.length < 50) {
+          setListPath(prev => [...prev, ...res.stream]);
+        } else {
+          setListPath(res.stream);
+        }
+      } catch (error) {
+        console.log(error);
+        setRefresh(!refresh);
       }
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+    },
+    [refresh],
+  );
 
   useEffect(() => {
     const getData = async () => {
@@ -82,7 +87,7 @@ function ListCamera({navigation}) {
     };
 
     getData();
-  }, [getListCamera, getListPath]);
+  }, [getListCamera, getListPath, refresh]);
 
   const showMore = () => {
     if (listCamera.length < 50) {
@@ -95,7 +100,6 @@ function ListCamera({navigation}) {
     setPage(1);
     navigation.navigate('Stream');
   };
-  console.log(listCamera);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -115,7 +119,7 @@ function ListCamera({navigation}) {
             }}
             onEndReachedThreshold={0}
             data={listPath}
-            renderItem={({item, index}) => (
+            renderItem={({ item, index }) => (
               <CameraItem
                 key={index}
                 id={item.code}
@@ -133,12 +137,12 @@ function ListCamera({navigation}) {
             keyExtractor={(item, index) => index}
           />
           <View style={styles.buttonMore}>
-            <Pressable onPress={showMore} style={{height: 12, width: 12}}>
+            <Pressable onPress={showMore} style={{ height: 12, width: 12 }}>
               {listPath.length < 50 ? <DownIconSolid /> : <UpIconSolid />}
             </Pressable>
             {listPath.length >= 50 && (
               <Pressable onPress={onViewMore}>
-                <Text style={{color: '#0040FF'}}>Đến xem trực tiếp</Text>
+                <Text style={{ color: '#0040FF' }}>Đến xem trực tiếp</Text>
               </Pressable>
             )}
           </View>

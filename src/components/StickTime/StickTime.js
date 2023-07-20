@@ -84,7 +84,6 @@ const StickTime = ({ code, day, setChange }) => {
       <ScrollView
         onScrollEndDrag={event => {
           const x = event.nativeEvent.contentOffset.x / 100;
-          console.log(x);
           setPosition(event.nativeEvent.contentOffset.x);
           setChange(false);
 
@@ -92,7 +91,6 @@ const StickTime = ({ code, day, setChange }) => {
             clearTimeout(debouce.current);
           }
           debouce.current = setTimeout(() => {
-            console.log(x.toFixed(2));
             dispatch(setTimeStick(covertWidthToHour(x)));
             setChange(true);
           }, 1000);

@@ -23,6 +23,7 @@ import Notification from './src/screens/Notification';
 import EditInfo from './src/screens/Info/EditInfo/Edit';
 import ChangePasswordInfo from './src/screens/Info/ChangePasswordInfo/ChangePasswordInfo';
 import Dashboard from './src/screens/Dashboard';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // import MapScreen from './src/screens/Map/MapScreen';
 // import requestUserPermission from './src/utils/FCM_helper';
@@ -32,11 +33,21 @@ export default function App() {
   // useEffect(() => {
   //   SplashScreen.hide();
   // }, []);
+  const [data, setData] = useState();
+  useEffect(() => {
+    let login = async () => {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        setData(token);
+      }
+    };
+    login();
+  }, []);
   return (
     <Provider store={Store}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Wellcom"
+          initialRouteName={'Wellcom'}
           screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Wellcom" component={Wellcome} />
@@ -51,7 +62,10 @@ export default function App() {
           <Stack.Screen name="Detail" component={Detail} />
           <Stack.Screen name="PlayBack" component={PlayBack} />
           <Stack.Screen name="Notification" component={Notification} />
-          <Stack.Screen name="ChangePasswordInfo" component={ChangePasswordInfo} />
+          <Stack.Screen
+            name="ChangePasswordInfo"
+            component={ChangePasswordInfo}
+          />
           <Stack.Screen name="EditInfo" component={EditInfo} />
           <Stack.Screen name="Report" component={Payment} />
           <Stack.Screen name="Dashboard" component={Dashboard} />

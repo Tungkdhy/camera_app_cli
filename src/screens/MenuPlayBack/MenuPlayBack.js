@@ -32,6 +32,11 @@ export default function MenuPlayBack({ navigation, ...props }) {
   const [isProvince, setIsProvince] = useState(true);
   const camera = useSelector(state => state.useReducer);
   const wareHouse = useSelector(state => state.playBackReducer);
+  const [search, setSearch] = useState('');
+  const [isShowSearch, setIsShowSearch] = useState(false);
+  const handleShowSearch = () => {
+    setIsShowSearch(!isShowSearch);
+  };
   // console.log(wareHouse);
   //Show filterlog
   const [modalVisible, setModalVisible] = useState(false);
@@ -148,6 +153,7 @@ export default function MenuPlayBack({ navigation, ...props }) {
               ...district,
               camera_status: camera.filter.camera_status,
               ...already,
+              camera_name: search,
             },
           },
         );
@@ -158,7 +164,7 @@ export default function MenuPlayBack({ navigation, ...props }) {
       }
     }
     getLocation();
-  }, [wareHouse.reload, camera.filter.camera_status]);
+  }, [wareHouse.reload, camera.filter.camera_status, search]);
   useEffect(() => {
     async function getDistrict() {
       const prams =
@@ -217,7 +223,14 @@ export default function MenuPlayBack({ navigation, ...props }) {
   }, []);
   return (
     <>
-      <Header title={'Xem lại Camera'} navigation={navigation} />
+      <Header
+        title={'Xem lại Camera'}
+        navigation={navigation}
+        search={search}
+        setIsShowSearch={handleShowSearch}
+        isShowSearch={isShowSearch}
+        setSearch={setSearch}
+      />
       <Modal
         isShow={modalVisible}
         onShowModal={handleSetShowModal}

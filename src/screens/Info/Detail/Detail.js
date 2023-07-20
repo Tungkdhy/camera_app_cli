@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { View, Pressable, Text } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { Back, Edit } from '../../../components/Icons/Index';
-import { setUserInfo } from '../../../redux/actions/getUserAction';
+import React, {useEffect, useState} from 'react';
+import {View, Pressable, Text} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {Back, Edit} from '../../../components/Icons/Index';
+import {setUserInfo} from '../../../redux/actions/getUserAction';
 import axiosClient from '../../../services/axiosClient';
-import { formatDate } from '../../../utils';
-import { styles } from './styles';
+import {formatDate} from '../../../utils';
+import {styles} from './styles';
 
-const Detail = ({ navigation }) => {
+const Detail = ({navigation}) => {
   const [dataUser, setDataUser] = useState({
     name: '',
     email: '',
@@ -52,8 +52,9 @@ const Detail = ({ navigation }) => {
           <Pressable
             onPress={() => {
               navigation.navigate('EditInfo');
-            }}
-          />
+            }}>
+            <Edit />
+          </Pressable>
         </View>
       </View>
       <View style={styles.content}>

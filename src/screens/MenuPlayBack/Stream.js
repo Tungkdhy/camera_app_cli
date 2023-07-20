@@ -37,7 +37,6 @@ export default function MenuPlayBack({ navigation, ...props }) {
   const handleSetShowModal = () => {
     setModalVisible(!modalVisible);
   };
-  console.log(props);
   const handleShowFilter = () => {
     setModalVisible(true);
     dispatch(setScreen(props.route.name));

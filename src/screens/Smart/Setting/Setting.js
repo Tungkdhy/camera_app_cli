@@ -34,7 +34,6 @@ const Setting = ({navigation, route}) => {
           `/cameraManagement/put-change-info-camera/?camera_code=${cameraInfo[0].CODE}`,
           {camera_status: 'On'},
         );
-        console.log(res2);
         if (res2.result) {
           Alert.alert('Bật camera thành công');
           setWaitting(!watting);

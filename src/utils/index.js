@@ -9,14 +9,18 @@ export const isValidatorName = name => {
     /[^a-z0-9A-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễếệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]/u;
   return !!name.match(regex);
 };
+
+export const isValidatorPhone = phone => {
+  const regex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
+  return !!phone.match(regex);
+};
 export const isValidatorUsername = username => {
   const regex = /^[a-z0-9]{6,15}$/;
   return !!username.match(regex);
 };
 // validator pass 11
 export const isValidatePassword = password => {
-  const regex =
-    /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[^\s]{6,20}$/;;
+  const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[^\s]{6,20}$/;
   return !!password.match(regex);
 };
 export const formatDDMMYY = date => {
@@ -68,9 +72,9 @@ export const formatDate = date => {
   const day = dateA.getDate();
   return (
     (day <= 9 ? '0' + day : day) +
-    '/' +
+    '-' +
     (month <= 9 ? '0' + month : month) +
-    '/' +
+    '-' +
     year
   );
 };
@@ -102,21 +106,21 @@ export const convertTimeToPx = time => {
 
 export const sorterDateInArr = (arr, method) => {
   return arr.sort((a, b) => {
-    return new Date(a[method]) - new Date(b[method])
-  })
-}
+    return new Date(a[method]) - new Date(b[method]);
+  });
+};
 
-export const isValidateToken = (token) => {
+export const isValidateToken = token => {
   const regex = /^[0-9]{6}$/;
-  return !!token?.match(regex)
-}
+  return !!token?.match(regex);
+};
 
 export const getDateInChart = (time = '2023-06-12') => {
   const date = new Date(time);
   let day = date.getDate();
   let month = date.getMonth() + 1;
   return `${day < 10 ? '0' + day : day}/${month < 10 ? '0' + month : month}`;
-}
+};
 
 export const formatDateNoSpace = date => {
   const dateA = new Date(date);

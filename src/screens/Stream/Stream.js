@@ -31,6 +31,11 @@ export default function Stream({ navigation, ...props }) {
   const [isProvince, setIsProvince] = useState(true);
   const camera = useSelector(state => state.useReducer);
   const wareHouse = useSelector(state => state.wareHouseReducer);
+  const [search, setSearch] = useState('');
+  const [isShowSearch, setIsShowSearch] = useState(false);
+  const handleShowSearch = () => {
+    setIsShowSearch(!isShowSearch);
+  };
   //Show filterlog
   // console.log(wareHouse);
   const [modalVisible, setModalVisible] = useState(false);
@@ -151,6 +156,7 @@ export default function Stream({ navigation, ...props }) {
               ...province,
               ...district,
               camera_status: camera.filter.camera_status,
+              camera_name: search,
               // ...already,
             },
           },
@@ -161,7 +167,7 @@ export default function Stream({ navigation, ...props }) {
       }
     }
     getLocation();
-  }, [camera.refresh, camera.filter.camera_status]);
+  }, [camera.refresh, camera.filter.camera_status, search]);
   useEffect(() => {
     async function getDistrict() {
       const prams =
@@ -220,7 +226,14 @@ export default function Stream({ navigation, ...props }) {
   }, []);
   return (
     <>
-      <Header title={'Xem trực tiếp'} navigation={navigation} />
+      <Header
+        title={'Xem trực tiếp'}
+        navigation={navigation}
+        search={search}
+        setIsShowSearch={handleShowSearch}
+        isShowSearch={isShowSearch}
+        setSearch={setSearch}
+      />
       <Modal
         isShow={modalVisible}
         onShowModal={handleSetShowModal}

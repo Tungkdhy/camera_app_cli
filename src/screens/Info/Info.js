@@ -7,9 +7,14 @@ import {
   Pressable,
   ScrollView,
   Alert,
+  Platform,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StackActions, NavigationAction } from '@react-navigation/native';
+import {
+  StackActions,
+  NavigationAction,
+  useNavigation,
+} from '@react-navigation/native';
 import axiosClient from '../../services/axiosClient';
 import { styles } from './styles';
 import { CricleUser, Logout, NextIcon, Pass } from '../../components/Icons/Index';
@@ -19,13 +24,28 @@ const Info = ({ navigation, route }) => {
     name: '',
     userName: '',
   });
+  const nav = useNavigation();
   const handleLogout = async () => {
     // const refresh = await AsyncStorage.getItem('refresh');
     // await axiosClient.post('/authenticator/logout', {
     //   refresh: refresh,
     // });
-    await AsyncStorage.clear();
-    navigation.dispatch(StackActions.replace('Login'));
+    // console.log('tung');
+    navigation.navigate('Login');
+
+    try {
+      const asyncStorageKeys = await AsyncStorage.getAllKeys();
+      if (asyncStorageKeys.length > 0) {
+        if (Platform.OS === 'android') {
+          await AsyncStorage.clear();
+        }
+        if (Platform.OS === 'ios') {
+          await AsyncStorage.multiRemove(asyncStorageKeys);
+        }
+      }
+    } catch (e) {
+      console.log('Error');
+    }
   };
   React.useEffect(() => {
     const getDataUser = async () => {

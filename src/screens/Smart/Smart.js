@@ -32,13 +32,17 @@ export default function Smart({ navigation, ...props }) {
   const [isProvince, setIsProvince] = useState(true);
   const camera = useSelector(state => state.useReducer);
   const wareHouse = useSelector(state => state.reportReducer);
+  const [search, setSearch] = useState('');
+  const [isShowSearch, setIsShowSearch] = useState(false);
+  const handleShowSearch = () => {
+    setIsShowSearch(!isShowSearch);
+  };
   //Show filterlog
   // console.log(wareHouse);
   const [modalVisible, setModalVisible] = useState(false);
   const handleSetShowModal = () => {
     setModalVisible(!modalVisible);
   };
-  console.log(props);
   const handleShowFilter = () => {
     setModalVisible(true);
     dispatch(setScreen(props.route.name));
@@ -146,7 +150,6 @@ export default function Smart({ navigation, ...props }) {
       </>
     );
   };
-  console.log(props.route.name);
   useEffect(() => {
     //Get warehouse
     async function getLocation() {
@@ -168,7 +171,6 @@ export default function Smart({ navigation, ...props }) {
           ai_service_code: camera.filter?.service,
         };
 
-        console.log(already);
         const res = await axiosClient.get(
           '/camerainfo/get-list-camera-level-by-username-mobile/',
           {
@@ -177,6 +179,7 @@ export default function Smart({ navigation, ...props }) {
               ...district,
               camera_status: camera.filter.camera_status,
               ...already,
+              camera_name: search,
             },
           },
         );
@@ -186,8 +189,7 @@ export default function Smart({ navigation, ...props }) {
       }
     }
     getLocation();
-  }, [camera.refresh, camera.filter.camera_status]);
-  console.log(camera.refresh);
+  }, [camera.refresh, camera.filter.camera_status, search]);
   useEffect(() => {
     async function getDistrict() {
       const prams =
@@ -255,6 +257,10 @@ export default function Smart({ navigation, ...props }) {
               : 'Xem lại Camera'
         }
         navigation={navigation}
+        search={search}
+        setIsShowSearch={handleShowSearch}
+        isShowSearch={isShowSearch}
+        setSearch={setSearch}
       />
       <Modal
         isShow={modalVisible}

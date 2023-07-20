@@ -57,6 +57,7 @@ const Login = ({ navigation }) => {
         if (res) {
           await AsyncStorage.setItem('token', res.data.access);
           await AsyncStorage.setItem('role', res.data.role);
+          await AsyncStorage.setItem('refresh', res.data.refresh);
           const infoUser = await axiosClient.get('/user/get-user-info/');
           let userTypeCode = infoUser[0]?.USERTYPE_CODE;
           dispatch(setUserTypeCode(userTypeCode));
@@ -103,7 +104,7 @@ const Login = ({ navigation }) => {
                 <View style={styles.logo}>
                   <Logo />
                 </View>
-                <SafeAreaView>
+                <View>
                   <View style={styles.formInput}>
                     <View style={styles.userIcon}>
                       <UserIcon />
@@ -175,25 +176,25 @@ const Login = ({ navigation }) => {
                     style={styles.forgot}>
                     Quên mật khẩu
                   </Text>
-                </SafeAreaView>
+                </View>
               </View>
             </View>
           </View>
+          <Modal
+            animationType={'fade'}
+            transparent={true}
+            visible={modalSuccess}
+            style={styles.modal}>
+            <View style={styles.mainView}>
+              <View style={styles.headerModal}>
+                <Text style={styles.textHeader}>Đăng nhập thành công</Text>
+                <View style={styles.textHeader}>
+                  <SuccessIcon />
+                </View>
+              </View>
+            </View>
+          </Modal>
         </KeyboardAvoidingView>
-        <Modal
-          animationType={'fade'}
-          transparent={true}
-          visible={modalSuccess}
-          style={styles.modal}>
-          <View style={styles.mainView}>
-            <View style={styles.headerModal}>
-              <Text style={styles.textHeader}>Đăng nhập thành công</Text>
-              <View style={styles.textHeader}>
-                <SuccessIcon />
-              </View>
-            </View>
-          </View>
-        </Modal>
       </ImageBackground>
     </TouchableWithoutFeedback>
     // </KeyboardAvoidingView>

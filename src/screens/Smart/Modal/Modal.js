@@ -127,7 +127,6 @@ const Modal = ({
                       style={styles}
                       onValueChange={value => {
                         dispatch(setDistrictCode(value));
-                        console.log(screen);
                       }}
                       value={camera.filter?.district_code}
                       items={

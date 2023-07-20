@@ -113,7 +113,7 @@ const VideoCamera = ({
   const handlePressScreen = () => {
     if (isFullScreen) {
       setShowName(!showName);
-      console.log('aaa');
+  
     }
   };
 
@@ -132,7 +132,6 @@ const VideoCamera = ({
         <View style={isFullScreen ? styles.activeFull : styles.active}>
           {cameraActive &&
             cameraActive.map((item, index) => {
-              console.log(item);
               return (
                 <>
                   <Pressable
