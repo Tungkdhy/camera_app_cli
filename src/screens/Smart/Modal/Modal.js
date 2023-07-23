@@ -144,34 +144,36 @@ const Modal = ({
                   </View>
                 </View>
 
-                <View>
-                  <Text style={styles.label}>Sự kiện</Text>
-                  <View style={styles.choose_camera}>
-                    <RNPickerSelect
-                      placeholder={{
-                        label: 'Tất cả',
-                        value: 'All',
-                      }}
-                      doneText="Lựa chọn"
-                      style={styles}
-                      onValueChange={value => {
-                        dispatch(setService(value));
-                      }}
-                      value={camera.filter?.service}
-                      items={
-                        services
-                          ? services.map(item => {
-                            return {
-                              key: item.CODE,
-                              value: item.CODE,
-                              label: item.SUBJECT_NAME,
-                            };
-                          })
-                          : []
-                      }
-                    />
+                {camera?.filter.isBG && (
+                  <View>
+                    <Text style={styles.label}>Sự kiện</Text>
+                    <View style={styles.choose_camera}>
+                      <RNPickerSelect
+                        placeholder={{
+                          label: 'Tất cả',
+                          value: 'All',
+                        }}
+                        doneText="Lựa chọn"
+                        style={styles}
+                        onValueChange={value => {
+                          dispatch(setService(value));
+                        }}
+                        value={camera.filter?.service}
+                        items={
+                          services
+                            ? services.map(item => {
+                              return {
+                                key: item.CODE,
+                                value: item.CODE,
+                                label: item.SUBJECT_NAME,
+                              };
+                            })
+                            : []
+                        }
+                      />
+                    </View>
                   </View>
-                </View>
+                )}
 
                 <View>
                   <CheckBox

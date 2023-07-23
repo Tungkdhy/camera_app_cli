@@ -77,8 +77,8 @@ export default function Home({ navigation }) {
     const getUpdateCount = async () => {
       try {
         if (statusGet) {
-          const upDateCountCamera = await axiosClient.post(
-            '/statCountCam/post-add-stat-count-cam/',
+          const upDateCountCamera = await axiosClient.get(
+            '/statCountCam/get-list-stat-count-cam/',
           );
           if (companyName.trim().length <= 0) {
             let code = upDateCountCamera[0]?.COMPANY_CODE;

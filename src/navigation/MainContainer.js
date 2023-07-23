@@ -27,7 +27,7 @@ import Dashboard from '../screens/Dashboard';
 import UserIconUnActive from '../components/Icons/BottomBar/UserIconUnActive';
 const Tab = createBottomTabNavigator();
 const MainContainer = ({ route, navigation }) => {
-  console.log(route.name);
+  // console.log(route.name);
   const [role, setRole] = useState('A');
   useEffect(() => {
     const getRole = async () => {

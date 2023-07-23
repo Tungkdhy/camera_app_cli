@@ -21,6 +21,7 @@ import {
   StatusBar,
   Dimensions,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import { styles } from './styles';
 import { convertToSecond } from '../../utils';
@@ -46,6 +47,7 @@ const VideoCamera = ({
   const [onAndroid, setOnAndroid] = useState(false);
   const reload = useSelector(state => state.useReducer.reload);
   const [showName, setShowName] = useState(true);
+  const [data, setData] = useState([]);
   const handleOrientation = orientation => {
     if (orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT') {
       dispatch(setIsFullScreen(true));
@@ -78,7 +80,7 @@ const VideoCamera = ({
     };
   }, []);
   useEffect(() => {
-    if (type !== 'livestream' && cameraActive?.length > 0) {
+    if (type !== 'livestream' && data?.length > 0) {
       if (cameraActive[0]?.path?.TIME_START) {
         ref.current.seek(
           Number(convertToSecond(stick_time)) -
@@ -87,6 +89,24 @@ const VideoCamera = ({
           ),
         );
       }
+    }
+  }, [data]);
+  useEffect(() => {
+    if (type !== 'livestream' && cameraActive?.length > 0) {
+      setData([]);
+      setTimeout(() => {
+        setData(cameraActive);
+      }, 400);
+
+      // if (
+      //   data.length > 0 &&
+      //   data[0]?.path?.PATH === cameraActive[0]?.path?.PATH
+      // ) {
+      //   setData(cameraActive);
+      // }
+    }
+    if (type === 'livestream') {
+      setData(cameraActive);
     }
   }, [cameraActive]);
   useEffect(() => {
@@ -113,7 +133,6 @@ const VideoCamera = ({
   const handlePressScreen = () => {
     if (isFullScreen) {
       setShowName(!showName);
-  
     }
   };
 
@@ -130,8 +149,8 @@ const VideoCamera = ({
     <View style={isFullScreen ? styles.contentFull : {}}>
       {
         <View style={isFullScreen ? styles.activeFull : styles.active}>
-          {cameraActive &&
-            cameraActive.map((item, index) => {
+          {data && data.length > 0 ? (
+            data.map((item, index) => {
               return (
                 <>
                   <Pressable
@@ -242,7 +261,12 @@ const VideoCamera = ({
                   </View>
                 </>
               );
-            })}
+            })
+          ) : (
+            <View style={styles.loading}>
+              <ActivityIndicator />
+            </View>
+          )}
         </View>
       }
       {!isFullScreen && type !== 'playback/' && (

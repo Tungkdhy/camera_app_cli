@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Pressable, Modal, Alert } from 'react-native';
 
-import {
-  Back,
-  DateTime,
-  Close
-} from '../../components/Icons/Index';
+import { Back, DateTime, Close } from '../../components/Icons/Index';
 import { styles } from './styles';
 import DatePicker from 'react-native-date-picker';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,7 +27,7 @@ export default function PlayBack({ navigation, route }) {
   const [open, setOpen] = useState(false);
   const [cameraActive, setCameraActive] = useState();
   const [camId, setCamId] = useState();
-  const [change, setChange] = useState(true)
+  const [change, setChange] = useState(true);
   const playback = useSelector(state => state.playBackReducer);
   const cameraInfo = useSelector(state => state.useReducer.camera_info);
   const [modalVisible, setModalVisible] = useState(false);
@@ -39,7 +35,8 @@ export default function PlayBack({ navigation, route }) {
   const stick_time = useSelector(
     state => state.playBackReducer.filter.stick_time,
   );
-  const getInfo = async (code) => {
+  // console.log(stick_time);
+  const getInfo = async code => {
     try {
       setModalVisible(!modalVisible);
       const res = await axiosClient.get(
@@ -55,6 +52,7 @@ export default function PlayBack({ navigation, route }) {
   };
   useEffect(() => {
     setCamId(route.params.active);
+    console.log(stick_time);
     async function getListPlayBack() {
       try {
         const day = { day: playback.filter.day };
@@ -71,13 +69,15 @@ export default function PlayBack({ navigation, route }) {
             },
           },
         );
+        // console.log(res);
         const playbacks = res.time_line.map(item => {
+          console.log(item.path);
           return {
             code: item.camera_code,
             path: item.path,
             // time: item.total_time,
             name: item.name_cam,
-            status: item.status
+            status: item.status,
           };
         });
         dispatch(play(playbacks));
@@ -87,12 +87,13 @@ export default function PlayBack({ navigation, route }) {
     }
     getListPlayBack();
   }, [playback.filter.day, route.params.active, stick_time]);
-  useEffect(() => {
-    const camActive = playback.playBacks.filter(item => {
-      return item.code === camId;
-    });
-    setCameraActive(camActive);
-  }, [playback.playBacks, camId]);
+  // useEffect(() => {
+  //   const camActive2 = playback.playBacks.filter(item => {
+  //     return item.code === camId;
+  //   });
+  //   setCameraActive(camActive2);
+  // }, [playback.playBacks, camId, stick_time]);
+  // console.log(cameraActive);
   return (
     <View style={styles.container}>
       <Modal
@@ -218,7 +219,7 @@ export default function PlayBack({ navigation, route }) {
       )}
       <VideoCamera
         navigation={navigation}
-        cameraActive={cameraActive}
+        cameraActive={playback.playBacks}
         isFullScreen={isFullScreen}
         streamPath={playback.playBacks}
         setCamId={setCamId}
@@ -226,7 +227,13 @@ export default function PlayBack({ navigation, route }) {
         type="playback/"
         change={change}
       />
-      {!isFullScreen && <StickTime setChange={setChange} day={playback.filter.day} code={route.params.active} />}
+      {!isFullScreen && (
+        <StickTime
+          setChange={setChange}
+          day={playback.filter.day}
+          code={route.params.active}
+        />
+      )}
     </View>
   );
 }

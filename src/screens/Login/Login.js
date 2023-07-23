@@ -23,6 +23,7 @@ import {
   EyeIcon,
   UnEyeIcon,
   SuccessIcon,
+  ErrorIcon,
 } from '../../components/Icons/Index';
 // import { StackActions, NavigationActions } from 'react-navigation';
 import { StackActions, NavigationAction } from '@react-navigation/native';
@@ -42,6 +43,7 @@ const Login = ({ navigation }) => {
   const [isShowPass, setIsShowPass] = useState(true);
   const dispatch = useDispatch();
   const [error, setError] = useState(false);
+  const [error2, setError2] = useState(false);
   const [modalSuccess, setModalSuccess] = useState(false);
 
   const handleLogin = async () => {
@@ -61,11 +63,14 @@ const Login = ({ navigation }) => {
           const infoUser = await axiosClient.get('/user/get-user-info/');
           let userTypeCode = infoUser[0]?.USERTYPE_CODE;
           dispatch(setUserTypeCode(userTypeCode));
+          setError2(false);
           setModalSuccess(true);
         }
       } catch (e) {
         console.log(e);
-        Alert.alert('Đăng nhập không thành công');
+        setError2(true);
+
+        setModalSuccess(true);
       }
     } else {
       setError(true);
@@ -78,8 +83,10 @@ const Login = ({ navigation }) => {
     if (modalSuccess) {
       const countNavigate = setTimeout(() => {
         setModalSuccess(false);
-        const resetAction = StackActions.replace('Home');
-        navigation.dispatch(resetAction);
+        if (!error2) {
+          const resetAction = StackActions.replace('Home');
+          navigation.dispatch(resetAction);
+        }
       }, 1000);
       return () => clearTimeout(countNavigate);
     }
@@ -187,9 +194,13 @@ const Login = ({ navigation }) => {
             style={styles.modal}>
             <View style={styles.mainView}>
               <View style={styles.headerModal}>
-                <Text style={styles.textHeader}>Đăng nhập thành công</Text>
+                <Text style={styles.textHeader}>
+                  {error2
+                    ? 'Đăng nhập không thành công'
+                    : 'Đăng nhập thành công'}
+                </Text>
                 <View style={styles.textHeader}>
-                  <SuccessIcon />
+                  {error2 ? <ErrorIcon /> : <SuccessIcon />}
                 </View>
               </View>
             </View>

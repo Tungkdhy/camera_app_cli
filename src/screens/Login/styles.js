@@ -225,7 +225,7 @@ export const styles = StyleSheet.create({
   },
   textHeader: {
     color: '#333',
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '600',
     display: 'flex',
     justifyContent: 'center',

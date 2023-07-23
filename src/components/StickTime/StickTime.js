@@ -68,6 +68,7 @@ const StickTime = ({ code, day, setChange }) => {
         }),
         day: day,
       });
+      console.log(res);
       if (res.length > 0) {
         setTimelines(res[0].timeline_record);
       }
@@ -93,7 +94,7 @@ const StickTime = ({ code, day, setChange }) => {
           debouce.current = setTimeout(() => {
             dispatch(setTimeStick(covertWidthToHour(x)));
             setChange(true);
-          }, 1000);
+          }, 500);
         }}
         // scrollEventThrottle={16}
         // style={{ flexGrow: 0, position: 'relative' }}

@@ -62,6 +62,7 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.05)',
     paddingBottom: 12,
+    height: 260,
   },
   cam: {
     flexDirection: 'row',
@@ -183,7 +184,7 @@ export const styles = StyleSheet.create({
     // minHeight: Dimensions.get('window').width,
     // width: Dimensions.get('screen').height - 120,
     height: Dimensions.get('screen').width,
-    width: '100%'
+    width: '100%',
   },
   noPath: {
     width: '100%',
@@ -206,6 +207,14 @@ export const styles = StyleSheet.create({
       },
     }),
     backgroundColor: 'rgba(0,0,0,0.4)',
-    width: '100%'
-  }
+    width: '100%',
+  },
+  loading: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    height: 240,
+  },
 });

@@ -50,7 +50,7 @@ const Register = ({ navigation }) => {
           usertype_code: '300920220005',
         });
         if (res) {
-          console.log(res);
+          // console.log(res);
           await AsyncStorage.setItem('token', res.token);
           Alert.alert('Tạo tài khoản thành công vui lòng xác thực');
           navigation.navigate('CodeVerify', {

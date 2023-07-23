@@ -24,16 +24,20 @@ import Orientation from 'react-native-orientation-locker';
 import { DownIcon, Status, ShowIcon } from '../../components/Icons/Index';
 import Modal from './Modal/Modal';
 import { styles } from './style';
-import { setListCamera } from '../../redux/actions/reportAction';
+import { setListCamera, setListCamera2 } from '../../redux/actions/reportAction';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Smart({ navigation, ...props }) {
   const dispatch = useDispatch();
   // const [screen, setScreen] = useState(props.route.name);
   const [isProvince, setIsProvince] = useState(true);
   const camera = useSelector(state => state.useReducer);
+  const report = useSelector(state => state.reportReducer);
   const wareHouse = useSelector(state => state.reportReducer);
   const [search, setSearch] = useState('');
+  const [code2, setCode2] = useState('');
   const [isShowSearch, setIsShowSearch] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleShowSearch = () => {
     setIsShowSearch(!isShowSearch);
   };
@@ -78,75 +82,73 @@ export default function Smart({ navigation, ...props }) {
     });
   };
   //Show menu2 stream
-  const handleShowCamera = code => {
-    if (code === camera.wareCode) {
-      dispatch(setWareHouseCode(''));
-    } else {
-      dispatch(setWareHouseCode(code));
+  const handleShowCamera = async code => {
+    try {
+      setCode2(code);
+      if (code === camera.wareCode) {
+        dispatch(setWareHouseCode(''));
+      } else {
+        dispatch(setWareHouseCode(code));
+      }
+    } catch (e) {
+      console.log(e);
+      // console.log('ree');
+      setLoading(false);
     }
   };
   // Navigate form select district
   const setIsShowProvince = () => {
     setIsProvince(!isProvince);
   };
-
+  // console.log(report.listCamera);
   //Render menu camera
   const renderItem = ({ item, index }) => {
     return (
       <>
-        {item.LIST_CAMERA && item?.LIST_CAMERA.length > 0 && (
-          <Pressable
-            onPress={() => handleShowCamera(item.WAREHOUSE_CODE)}
-            key={index}>
-            <View style={styles.border}>
-              <View style={styles.cameraItem}>
-                <View style={styles.icon}>
-                  {item.WAREHOUSE_CODE === camera.wareCode ? (
-                    <DownIcon />
-                  ) : (
-                    <ShowIcon />
-                  )}
-                </View>
-                <Text style={styles.name}>{item.WAREHOUSE_NAME}</Text>
+        <Pressable onPress={() => handleShowCamera(item.CODE)} key={index}>
+          <View style={styles.border}>
+            <View style={styles.cameraItem}>
+              <View style={styles.icon}>
+                {item.CODE === camera.wareCode ? <DownIcon /> : <ShowIcon />}
               </View>
-              {item.WAREHOUSE_CODE === camera.wareCode && (
-                <View style={styles.listCamera}>
-                  {item.LIST_CAMERA &&
-                    item.LIST_CAMERA?.length > 0 &&
-                    item.LIST_CAMERA.map((it, index) => {
-                      return (
-                        <Pressable
-                          onPress={
-                            props.route.name === 'Stream'
-                              ? () => liveStream(it, item)
-                              : props.route.name === 'Smart'
-                                ? () => handleNavigateSmart(it, item)
-                                : () => navigatePlayBackCamera(it, item)
-                          }
-                          key={index}
-                          style={styles.flex}>
-                          <View style={styles.cameraName}>
-                            <View>
-                              {it?.STATUS === 'On' ? (
-                                <Status />
-                              ) : (
-                                <Status color="#FF3300" />
-                              )}
-                            </View>
-                            <View style={styles.nameCamera}>
-                              <Text style={{ color: 'black' }}>
-                                {it?.NAME_CAM}
-                              </Text>
-                            </View>
-                          </View>
-                        </Pressable>
-                      );
-                    })}
-                </View>
-              )}
+              <Text style={styles.name}>{item?.SUBJECT_NAME}</Text>
             </View>
-          </Pressable>
-        )}
+            {item.CODE === camera.wareCode && (
+              <View style={styles.listCamera}>
+                {item.CODE === report.listCamera.code &&
+                  report.listCamera.camera &&
+                  report.listCamera.camera?.length > 0 &&
+                  report.listCamera.camera.map((it, index) => {
+                    return (
+                      <Pressable
+                        onPress={
+                          props.route.name === 'Stream'
+                            ? () => liveStream(it, item)
+                            : props.route.name === 'Smart'
+                              ? () => handleNavigateSmart(it, item)
+                              : () => navigatePlayBackCamera(it, item)
+                        }
+                        key={index}
+                        style={styles.flex}>
+                        <View style={styles.cameraName}>
+                          <View>
+                            {it?.STATUS === 'On' ? (
+                              <Status />
+                            ) : (
+                              <Status color="#FF3300" />
+                            )}
+                          </View>
+                          <View style={styles.nameCamera}>
+                            <Text style={{ color: 'black' }}>{it?.NAME_CAM}</Text>
+                          </View>
+                        </View>
+                      </Pressable>
+                    );
+                  })}
+              </View>
+            )}
+          </View>
+        </Pressable>
       </>
     );
   };
@@ -172,7 +174,7 @@ export default function Smart({ navigation, ...props }) {
         };
 
         const res = await axiosClient.get(
-          '/camerainfo/get-list-camera-level-by-username-mobile/',
+          '/warehouse/get-list-warehouse-for-mobile/',
           {
             params: {
               ...province,
@@ -183,6 +185,7 @@ export default function Smart({ navigation, ...props }) {
             },
           },
         );
+        console.log(res);
         dispatch(setListCamera(res));
       } catch (e) {
         console.log(e);
@@ -190,6 +193,63 @@ export default function Smart({ navigation, ...props }) {
     }
     getLocation();
   }, [camera.refresh, camera.filter.camera_status, search]);
+  // console.log(camera.filter?.service);
+  useEffect(() => {
+    const getListCamera = async () => {
+      try {
+        const province =
+          camera.filter?.province_code !== 'All'
+            ? {
+              province_code: camera.filter?.province_code,
+            }
+            : {};
+        const district =
+          camera.filter?.district_code !== 'All'
+            ? {
+              district_code: camera.filter?.district_code,
+            }
+            : {};
+        const serviceCode = camera.filter.isBG
+          ? {
+            ai_service_code: camera.filter?.service,
+          }
+          : {};
+
+        const already = {
+          ...serviceCode,
+          ai_already: camera.filter?.isBG ? 1 : 0,
+        };
+        const camera_name = search
+          ? {
+            camera_name: search,
+          }
+          : {};
+        const res = await axiosClient.get(
+          '/camerainfo/get-list-camera-for-mobile/',
+          {
+            params: {
+              // ...province,
+              // ...district,
+              camera_status: camera.filter.camera_status,
+              ...already,
+              ...camera_name,
+              warehouse_code: code2,
+            },
+          },
+        );
+        dispatch(
+          setListCamera2({
+            code: code2,
+            camera: res,
+          }),
+        );
+      } catch (e) {
+        console.log(e);
+        setLoading(false);
+      }
+    };
+    getListCamera();
+  }, [code2, search, camera.filter.camera_status]);
   useEffect(() => {
     async function getDistrict() {
       const prams =

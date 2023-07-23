@@ -34,6 +34,7 @@ export default function Payment({ route, navigation }) {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   const report = useSelector(state => state.reportReducer);
+  const camera = useSelector(state => state.useReducer);
   const [modalVisible, setModalVisible] = useState(false);
   const handleSetShowModal = useCallback(() => {
     setModalVisible(!modalVisible);
@@ -128,10 +129,13 @@ export default function Payment({ route, navigation }) {
         if (report.filter.day > report.filter.time) {
           Alert.alert('Vui lòng chọn ngày kết thúc lớn hơn ngày bắt đầu');
         } else {
+          const service = camera.filter?.service
+            ? { ai_service_code: camera.filter?.service }
+            : {};
           const res = await axiosClient.get('/camAI/get-list-cam-ai/', {
             params: {
               camera_code: route.params.camera.CODE,
-              ai_service_code: report.filter.ai_code,
+              ...service,
               day_start: formatDDMMYY2(report.filter.day),
               day_end: formatDDMMYY2(report.filter.time),
             },
@@ -147,7 +151,7 @@ export default function Payment({ route, navigation }) {
     report.filter.day,
     report.filter.time,
     report.filter.timeEnd,
-    report.filter.ai_code,
+    camera.filter?.service,
   ]);
   useEffect(() => {
     async function getPackage() {
@@ -213,11 +217,6 @@ export default function Payment({ route, navigation }) {
           setOpen2(false);
         }}
       />
-      <Modal
-        filter={report.filter.ai_code}
-        isShow={modalVisible}
-        onShowModal={handleSetShowModal}
-      />
       {!report.isFullScreen && (
         <>
           <View style={styles.header}>
@@ -251,16 +250,6 @@ export default function Payment({ route, navigation }) {
                   <Text style={{ color: '#000' }}>
                     {formatDDMMYY2(report.filter.time)}
                   </Text>
-                  <View>
-                    <PlayBackDownIcon />
-                  </View>
-                </View>
-              </Pressable>
-              <Pressable
-                onPress={() => setModalVisible(true)}
-                style={styles.btnFilter}>
-                <View style={styles.textContent}>
-                  <Text style={{ color: '#000' }}>{report.filter.name}</Text>
                   <View>
                     <PlayBackDownIcon />
                   </View>

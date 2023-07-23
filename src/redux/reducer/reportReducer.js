@@ -9,6 +9,7 @@ import {
   SET_AI_CODE,
   SET_AI_NAME,
   SET_LIST_CAMERA,
+  SET_LIST_CAMERA2,
 } from '../actions/reportAction';
 const initialState = {
   reports: [],
@@ -33,6 +34,10 @@ const initialState = {
   ],
   package: [],
   camera: [],
+  listCamera: {
+    camera: [],
+    code: '',
+  },
 };
 const reportReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -88,6 +93,11 @@ const reportReducer = (state = initialState, action) => {
       return {
         ...state,
         camera: action.payload,
+      };
+    case SET_LIST_CAMERA2:
+      return {
+        ...state,
+        listCamera: action.payload,
       };
     default:
       return state;
