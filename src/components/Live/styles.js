@@ -62,7 +62,7 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.05)',
     paddingBottom: 12,
-    height: 260,
+    height: 270,
   },
   cam: {
     flexDirection: 'row',

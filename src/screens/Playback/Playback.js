@@ -1,5 +1,13 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Pressable, Modal, Alert } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Modal,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
 
 import { Back, DateTime, Close } from '../../components/Icons/Index';
 import { styles } from './styles';
@@ -108,11 +116,11 @@ export default function PlayBack({ navigation, route }) {
           <View style={styles.modalView}>
             <View style={styles.modalHeader}>
               <Text style={styles.titleHeader}>Thông tin camera</Text>
-              <Pressable
+              <TouchableOpacity
                 onPress={() => setModalVisible(false)}
                 style={styles.iconModal}>
                 <Close />
-              </Pressable>
+              </TouchableOpacity>
             </View>
             <View style={styles.modalContent}>
               <View style={styles.infoItem}>
@@ -197,7 +205,7 @@ export default function PlayBack({ navigation, route }) {
       {!isFullScreen && (
         <>
           <View style={styles.header}>
-            <Pressable
+            <TouchableOpacity
               onPress={() => {
                 dispatch(setDay(formatDDMMYY2(new Date())));
                 dispatch(setTime('00:00'));
@@ -207,13 +215,13 @@ export default function PlayBack({ navigation, route }) {
                 navigation.navigate('Playback');
               }}>
               <Back />
-            </Pressable>
+            </TouchableOpacity>
             <Text style={styles.text}>{route.params?.activeName}</Text>
-            <Pressable onPress={() => setOpen(true)}>
+            <TouchableOpacity onPress={() => setOpen(true)}>
               <View>
                 <DateTime />
               </View>
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </>
       )}

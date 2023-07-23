@@ -82,9 +82,10 @@ export default function Home({ navigation }) {
           );
           if (companyName.trim().length <= 0) {
             let code = upDateCountCamera[0]?.COMPANY_CODE;
-            await getCompany(code);
+            // await getCompany(code);
           }
-          return upDateCountCamera;
+          // return upDateCountCamera;
+          console.log(upDateCountCamera);
         }
       } catch (error) {
         console.log(error);

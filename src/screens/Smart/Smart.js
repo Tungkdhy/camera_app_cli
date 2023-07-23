@@ -7,6 +7,7 @@ import {
   Pressable,
   TouchableNativeFeedback,
   KeyboardAvoidingView,
+  TouchableOpacity,
 } from 'react-native';
 import Header from '../../components/Header/Header';
 import { useEffect, useState } from 'react';
@@ -120,7 +121,7 @@ export default function Smart({ navigation, ...props }) {
                   report.listCamera.camera?.length > 0 &&
                   report.listCamera.camera.map((it, index) => {
                     return (
-                      <Pressable
+                      <TouchableOpacity
                         onPress={
                           props.route.name === 'Stream'
                             ? () => liveStream(it, item)
@@ -142,7 +143,7 @@ export default function Smart({ navigation, ...props }) {
                             <Text style={{ color: 'black' }}>{it?.NAME_CAM}</Text>
                           </View>
                         </View>
-                      </Pressable>
+                      </TouchableOpacity>
                     );
                   })}
               </View>

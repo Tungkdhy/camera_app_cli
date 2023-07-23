@@ -153,7 +153,7 @@ export default function MenuPlayBack({ navigation, ...props }) {
               ...district,
               camera_status: camera.filter.camera_status,
               ...already,
-              camera_name: search,
+              // camera_name: search,
             },
           },
         );
