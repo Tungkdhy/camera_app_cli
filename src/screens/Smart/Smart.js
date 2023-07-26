@@ -42,6 +42,7 @@ export default function Smart({ navigation, ...props }) {
   const handleShowSearch = () => {
     setIsShowSearch(!isShowSearch);
   };
+  // console.log(report.filter);
   //Show filterlog
   // console.log(wareHouse);
   const [modalVisible, setModalVisible] = useState(false);
@@ -157,21 +158,22 @@ export default function Smart({ navigation, ...props }) {
     //Get warehouse
     async function getLocation() {
       try {
+        console.log('code', report.filter?.ai_code);
         const province =
-          camera.filter?.province_code !== 'All'
+          report.filter?.province_code !== 'All'
             ? {
-              province_code: camera.filter?.province_code,
+              province_code: report.filter?.province_code,
             }
             : {};
         const district =
-          camera.filter?.district_code !== 'All'
+          report.filter?.district_code !== 'All'
             ? {
-              district_code: camera.filter?.district_code,
+              district_code: report.filter?.district_code,
             }
             : {};
         const already = {
-          ai_already: camera.filter?.isBG ? 1 : 0,
-          ai_service_code: camera.filter?.service,
+          ai_already: report.filter?.isBG ? 1 : 0,
+          ai_service_code: report.filter?.ai_code,
         };
 
         const res = await axiosClient.get(
@@ -194,31 +196,31 @@ export default function Smart({ navigation, ...props }) {
     }
     getLocation();
   }, [camera.refresh, camera.filter.camera_status, search]);
-  // console.log(camera.filter?.service);
+  // console.log(camera.filter?.ai_code);
   useEffect(() => {
     const getListCamera = async () => {
       try {
         const province =
-          camera.filter?.province_code !== 'All'
+          report.filter?.province_code !== 'All'
             ? {
-              province_code: camera.filter?.province_code,
+              province_code: report.filter?.province_code,
             }
             : {};
         const district =
-          camera.filter?.district_code !== 'All'
+          report.filter?.district_code !== 'All'
             ? {
-              district_code: camera.filter?.district_code,
+              district_code: report.filter?.district_code,
             }
             : {};
-        const serviceCode = camera.filter.isBG
+        const serviceCode = report.filter.isBG
           ? {
-            ai_service_code: camera.filter?.service,
+            ai_service_code: report.filter?.ai_code,
           }
           : {};
 
         const already = {
           ...serviceCode,
-          ai_already: camera.filter?.isBG ? 1 : 0,
+          ai_already: report.filter?.isBG ? 1 : 0,
         };
         const camera_name = search
           ? {
@@ -229,8 +231,8 @@ export default function Smart({ navigation, ...props }) {
           '/camerainfo/get-list-camera-for-mobile/',
           {
             params: {
-              // ...province,
-              // ...district,
+              ...province,
+              ...district,
               camera_status: camera.filter.camera_status,
               ...already,
               ...camera_name,
@@ -244,20 +246,21 @@ export default function Smart({ navigation, ...props }) {
             camera: res,
           }),
         );
+        console.log(res);
       } catch (e) {
         console.log(e);
         setLoading(false);
       }
     };
     getListCamera();
-  }, [code2, search, camera.filter.camera_status]);
+  }, [camera.refresh, code2, search, camera.filter.camera_status]);
   useEffect(() => {
     async function getDistrict() {
       const prams =
-        camera.filter?.province_code === 'All'
+        report.filter?.province_code === 'All'
           ? {}
           : {
-            province_code: camera.filter?.province_code,
+            province_code: report.filter?.province_code,
           };
       const res = await axiosClient.get(
         `/district/get-list-district/?size=1000&page=1&district_name=${camera.filterLocate?.district}`,
@@ -271,7 +274,7 @@ export default function Smart({ navigation, ...props }) {
       dispatch(getListDistrict(data));
     }
     getDistrict();
-  }, [camera.filter?.province_code, camera.filterLocate?.district]);
+  }, [report.filter?.province_code, camera.filterLocate?.district]);
   useEffect(() => {
     async function getProvince() {
       try {

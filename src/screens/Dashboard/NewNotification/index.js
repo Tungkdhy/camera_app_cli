@@ -1,14 +1,14 @@
-import { FlatList, Pressable, ScrollView, Text, View } from "react-native";
-import { styles } from './styles'
-import { useCallback, useEffect, useState } from "react";
-import { notificationsAPI } from "../../../services/api/notifiations";
-import { DownIconSolid, UpIconSolid } from "../../../components/Icons/Index";
-import NotificationItem from "./NotificationItem";
+import { FlatList, Pressable, ScrollView, Text, View } from 'react-native';
+import { styles } from './styles';
+import { useCallback, useEffect, useState } from 'react';
+import { notificationsAPI } from '../../../services/api/notifiations';
+import { DownIconSolid, UpIconSolid } from '../../../components/Icons/Index';
+import NotificationItem from './NotificationItem';
 
 function NewNotification({ navigation }) {
     const [listNotification, setListNotification] = useState([]);
     const [page, setPage] = useState(1);
-    const [size, setSize] = useState(4);
+    const [size, setSize] = useState(2);
     const [count, setCount] = useState(1);
     const getListNotification = useCallback(async () => {
         try {
@@ -16,7 +16,7 @@ function NewNotification({ navigation }) {
                 page: page,
                 size: size,
                 type: 'AI',
-            }
+            };
             const res = await notificationsAPI.getListNotification(params);
             setCount(res?.count_not_seen);
             if (listNotification.length < 50) {
@@ -27,31 +27,29 @@ function NewNotification({ navigation }) {
         } catch (error) {
             console.log(error);
         }
-    }, [page, size])
-
-
+    }, [page, size]);
 
     const showMore = () => {
         if (listNotification?.length < 50) {
             if (size === 4) {
-                setSize(10)
+                setSize(10);
             }
-            setPage(page + 1)
+            setPage(page + 1);
         } else {
-            setSize(4)
-            setPage(1)
+            setSize(4);
+            setPage(1);
         }
-    }
+    };
 
-    const onViewMore = (e) => {
-        setSize(4)
-        setPage(1)
-        navigation.navigate('Notification', {isSmart: 1})
-    }
+    const onViewMore = e => {
+        setSize(4);
+        setPage(1);
+        navigation.navigate('Notification', { isSmart: 1 });
+    };
 
     useEffect(() => {
-        getListNotification()
-    }, [getListNotification])
+        getListNotification();
+    }, [getListNotification]);
     // console.log(size);
     return (
         <View style={styles.container}>
@@ -70,28 +68,24 @@ function NewNotification({ navigation }) {
                     data={listNotification}
                     scrollEnabled
                     renderItem={({ item, index }) => (
-                        <NotificationItem
-                            key={index}
-                            item={item}
-                            navigation={navigation}
-                        />
+                        <NotificationItem key={index} item={item} navigation={navigation} />
                     )}
                     keyExtractor={(item, index) => index}
                     maxHeight={'100%'}
                 />
-                <View style={styles.buttonMore} >
-                    <Pressable onPress={showMore} style={{height: 12, width: 12}}>
+                <View style={styles.buttonMore}>
+                    <Pressable onPress={showMore} style={{ height: 12, width: 12 }}>
                         {listNotification.length < 50 ? <DownIconSolid /> : <UpIconSolid />}
                     </Pressable>
                     {listNotification.length >= 50 && (
                         <Pressable onPress={onViewMore}>
-                            <Text style={{color: '#0040FF'}} >Xem thêm trong thông báo</Text>
+                            <Text style={{ color: '#0040FF' }}>Xem thêm trong thông báo</Text>
                         </Pressable>
                     )}
                 </View>
             </View>
         </View>
-    )
+    );
 }
 
 export default NewNotification;

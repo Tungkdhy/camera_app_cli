@@ -76,23 +76,34 @@ export default function Home({ navigation }) {
   useEffect(() => {
     const getUpdateCount = async () => {
       try {
-        if (statusGet) {
-          const upDateCountCamera = await axiosClient.get(
-            '/statCountCam/get-list-stat-count-cam/',
-          );
-          if (companyName.trim().length <= 0) {
-            let code = upDateCountCamera[0]?.COMPANY_CODE;
-            // await getCompany(code);
-          }
-          // return upDateCountCamera;
-          console.log(upDateCountCamera);
+        console.log('tung');
+        const upDateCountCamera = await axiosClient.get(
+          '/statCountCam/get-list-stat-count-cam/',
+        );
+        setCountCamera({
+          COUNT_CAM: upDateCountCamera[0]?.COUNT_CAM,
+          ACTIVE: upDateCountCamera[0]?.ACTIVE,
+          INACTIVE: upDateCountCamera[0]?.INACTIVE,
+          NO_CONNECT: upDateCountCamera[0]?.LOST_CONNECT,
+          WEAK: upDateCountCamera[0]?.CONNECT_WEAK,
+          VIEWS: upDateCountCamera[0]?.VIEWS,
+          COMPANY_CODE: upDateCountCamera[0]?.COMPANY_CODE,
+          MOTION: upDateCountCamera[0]?.MOTION,
+          COMMON_OBJECT: upDateCountCamera[0]?.COMMON_OBJECT,
+          MOVEMENT: upDateCountCamera[0]?.MOVEMENT,
+        });
+        console.log(upDateCountCamera);
+        if (companyName.trim().length <= 0) {
+          let code = upDateCountCamera[0]?.COMPANY_CODE;
+          await getCompany(code);
         }
+        return upDateCountCamera;
       } catch (error) {
         console.log(error);
       }
     };
     getUpdateCount();
-  }, [statusGet, companyName, getCompany]);
+  }, [getCompany]);
 
   useEffect(() => {
     Orientation.lockToPortrait(); //this will lock the view to Portrait

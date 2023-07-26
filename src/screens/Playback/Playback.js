@@ -1,42 +1,30 @@
 import { useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Pressable,
-  Modal,
-  Alert,
-  TouchableOpacity,
-} from 'react-native';
-
+import { Text, View, Modal, Alert, TouchableOpacity } from 'react-native';
+import { convertArrayToJson, formatDateYYYYMMDD } from '../../utils';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { Back, DateTime, Close } from '../../components/Icons/Index';
 import { styles } from './styles';
-import DatePicker from 'react-native-date-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getListPlayBack as play,
   setDay,
   setTime,
   setTimeEnd,
-  setTimeStick,
 } from '../../redux/actions/playBackAction';
 import { getInfoCamera } from '../../redux/actions/cameraAction';
 import axiosClient from '../../services/axiosClient';
-import {
-  formatDDMMYY,
-  formatHour,
-  formatDDMMYY2,
-  formatTimehp,
-} from '../../utils';
+import { formatDDMMYY2 } from '../../utils';
 import StickTime from '../../components/StickTime/StickTime';
 import VideoCamera from '../../components/Live/VideoCamera';
 export default function PlayBack({ navigation, route }) {
   const dispatch = useDispatch();
+  // console.log(convertArrayToJson());
   const [open, setOpen] = useState(false);
   const [cameraActive, setCameraActive] = useState();
   const [camId, setCamId] = useState();
   const [change, setChange] = useState(true);
   const playback = useSelector(state => state.playBackReducer);
+  const [dayActive, setDayActive] = useState([]);
   const cameraInfo = useSelector(state => state.useReducer.camera_info);
   const [modalVisible, setModalVisible] = useState(false);
   const isFullScreen = useSelector(state => state.useReducer.isFullScreen);
@@ -60,10 +48,10 @@ export default function PlayBack({ navigation, route }) {
   };
   useEffect(() => {
     setCamId(route.params.active);
-    console.log(stick_time);
+    // console.log(stick_time);
     async function getListPlayBack() {
       try {
-        const day = { day: playback.filter.day };
+        const day = { day: formatDDMMYY2(playback.filter.day) };
         const res = await axiosClient.get(
           '/camPlayback/get-list-path-timeline/',
           {
@@ -79,7 +67,6 @@ export default function PlayBack({ navigation, route }) {
         );
         // console.log(res);
         const playbacks = res.time_line.map(item => {
-          console.log(item.path);
           return {
             code: item.camera_code,
             path: item.path,
@@ -88,6 +75,7 @@ export default function PlayBack({ navigation, route }) {
             status: item.status,
           };
         });
+        setDayActive(...res.day_playback);
         dispatch(play(playbacks));
       } catch (e) {
         console.log(e);
@@ -95,6 +83,7 @@ export default function PlayBack({ navigation, route }) {
     }
     getListPlayBack();
   }, [playback.filter.day, route.params.active, stick_time]);
+  // console.log(dayActive);
   // useEffect(() => {
   //   const camActive2 = playback.playBacks.filter(item => {
   //     return item.code === camId;
@@ -104,6 +93,40 @@ export default function PlayBack({ navigation, route }) {
   // console.log(cameraActive);
   return (
     <View style={styles.container}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={open}
+        onRequestClose={() => {
+          setOpen(!open);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalViewDate}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.titleHeader}>Chọn ngày</Text>
+              <TouchableOpacity
+                onPress={() => setOpen(false)}
+                style={styles.iconModal}>
+                <Close />
+              </TouchableOpacity>
+            </View>
+            <Calendar
+              // current={'2023-07-24'}
+              // Callback that gets called when the user selects a day
+              onDayPress={day => {
+                console.log(day);
+                dispatch(setDay(Date.parse(day.dateString)));
+              }}
+              // Mark specific dates as marked
+              markedDates={convertArrayToJson(
+                [...dayActive],
+                formatDateYYYYMMDD(playback.filter.day),
+              )}
+            />
+          </View>
+        </View>
+      </Modal>
+
       <Modal
         animationType="fade"
         transparent={true}
@@ -189,25 +212,12 @@ export default function PlayBack({ navigation, route }) {
           </View>
         </View>
       </Modal>
-      <DatePicker
-        modal
-        mode="date"
-        open={open}
-        date={new Date()}
-        onConfirm={date => {
-          setOpen(false);
-          dispatch(setDay(formatDDMMYY2(date)));
-        }}
-        onCancel={() => {
-          setOpen(false);
-        }}
-      />
       {!isFullScreen && (
         <>
           <View style={styles.header}>
             <TouchableOpacity
               onPress={() => {
-                dispatch(setDay(formatDDMMYY2(new Date())));
+                dispatch(setDay(new Date()));
                 dispatch(setTime('00:00'));
                 dispatch(setTimeEnd('23:59'));
                 dispatch(play([]));

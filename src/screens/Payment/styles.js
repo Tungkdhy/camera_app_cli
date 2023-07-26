@@ -97,7 +97,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     flexDirection: 'column',
-    marginTop: 12,
+    // marginTop: 4,
     marginBottom: 20,
   },
   item: {
@@ -140,7 +140,7 @@ export const styles = StyleSheet.create({
   },
   filter: {
     paddingTop: 10,
-    paddingBottom: 16,
+    paddingBottom: 2,
     flexDirection: 'row',
     justifyContent: 'center',
     gap: 16,
@@ -184,5 +184,63 @@ export const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.2)',
     borderRadius: 4,
     paddingLeft: -2,
+  },
+  modalViewDate: {
+    height: 430,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    paddingTop: 16,
+  },
+  centeredView: {
+    backgroundColor: '#00000047',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  modalView: {
+    height: 600,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    paddingTop: 16,
+  },
+  modalHeader: {
+    paddingTop: 4,
+    paddingBottom: 20,
+    borderBottomWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.05)',
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
+  titleHeader: {
+    fontSize: 18,
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+  iconModal: {
+    position: 'absolute',
+    right: 0,
+    top: 6,
+    zIndex: 100,
+    width: 36,
+    height: 50,
+  },
+  modalContent: {
+    padding: 16,
+  },
+  infoItem: {
+    flexDirection: 'row',
+    paddingBottom: 16,
+  },
+  titleInfo: {
+    flex: 4,
+  },
+  descriptionInfo: {
+    flex: 11,
+    paddingLeft: 16,
+  },
+  title: {
+    color: ' rgba(0, 0, 0, 0.4)',
   },
 });

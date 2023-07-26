@@ -17,14 +17,17 @@ import { Close } from '../../../components/Icons/Index';
 import { useDispatch, useSelector } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 import {
-  setProvinceCode,
-  setDistrictCode,
   setFilterProvince,
   setFilterDistrict,
   setRefresh,
-  setCheckBG,
-  setService,
+  // setCheckBGReport,
 } from '../../../redux/actions/cameraAction';
+import {
+  setProvinceCodeReport,
+  setDistrictCodeReport,
+  setCheckBGReport,
+  setServiceCode,
+} from '../../../redux/actions/reportAction';
 import axiosClient from '../../../services/axiosClient';
 import { styles } from './styles';
 const Modal = ({
@@ -39,11 +42,13 @@ const Modal = ({
   const dispatch = useDispatch();
   const [services, setServices] = useState([]);
   const camera = useSelector(state => state.useReducer);
+  const report = useSelector(state => state.reportReducer);
   const handleResetFilter = () => {
-    dispatch(setProvinceCode('All'));
-    dispatch(setDistrictCode('All'));
+    dispatch(setProvinceCodeReport('All'));
+    dispatch(setDistrictCodeReport('All'));
     dispatch(setRefresh(!camera.refresh));
-    dispatch(setCheckBG(false));
+    dispatch(setCheckBGReport(true));
+    dispatch(setServiceCode('20230222000000000001'));
     onShowModal();
   };
 
@@ -51,7 +56,7 @@ const Modal = ({
     async function getPackage() {
       try {
         const res = await axiosClient.get('/service/get-list-services/');
-        dispatch(setService(res[0].CODE));
+        dispatch(setServiceCode(res[0].CODE));
         setServices(res);
       } catch (e) { }
     }
@@ -96,9 +101,9 @@ const Modal = ({
                       }}
                       doneText="Lựa chọn"
                       style={styles}
-                      value={camera.filter?.province_code}
+                      value={report.filter?.province_code}
                       onValueChange={value => {
-                        dispatch(setProvinceCode(value));
+                        dispatch(setProvinceCodeReport(value));
                       }}
                       // onValueChange={value => handleGetCameraAct(value)}
                       items={
@@ -126,9 +131,9 @@ const Modal = ({
                       doneText="Lựa chọn"
                       style={styles}
                       onValueChange={value => {
-                        dispatch(setDistrictCode(value));
+                        dispatch(setDistrictCodeReport(value));
                       }}
-                      value={camera.filter?.district_code}
+                      value={report.filter?.district_code}
                       items={
                         camera?.district
                           ? camera.district.map(item => {
@@ -144,21 +149,17 @@ const Modal = ({
                   </View>
                 </View>
 
-                {camera?.filter.isBG && (
+                {report?.filter.isBG && (
                   <View>
                     <Text style={styles.label}>Sự kiện</Text>
                     <View style={styles.choose_camera}>
                       <RNPickerSelect
-                        placeholder={{
-                          label: 'Tất cả',
-                          value: 'All',
-                        }}
                         doneText="Lựa chọn"
                         style={styles}
                         onValueChange={value => {
-                          dispatch(setService(value));
+                          dispatch(setServiceCode(value));
                         }}
-                        value={camera.filter?.service}
+                        value={report.filter?.service}
                         items={
                           services
                             ? services.map(item => {
@@ -183,9 +184,11 @@ const Modal = ({
                     rightTextStyle={{
                       color: 'rgba(0, 0, 0, 0.4)',
                     }}
-                    onClick={() => dispatch(setCheckBG(!camera?.filter.isBG))}
+                    onClick={() =>
+                      dispatch(setCheckBGReport(!report.filter.isBG))
+                    }
                     rightText={'Camera có bản ghi'}
-                    isChecked={camera?.filter.isBG}
+                    isChecked={report.filter.isBG}
                     checkBoxColor={'#0040FF'}
                   />
                 </View>

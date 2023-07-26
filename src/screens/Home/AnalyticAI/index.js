@@ -26,7 +26,6 @@ function AnalyticAI({ navigation }) {
     const getListInfo = useCallback(async () => {
         try {
             const res = await eventAI.getInfoStatEvent();
-            console.log(res);
             setListInfo(res);
         } catch (error) {
             console.log(error);

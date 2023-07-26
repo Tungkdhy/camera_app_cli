@@ -9,6 +9,10 @@ export const SET_AI_CODE = 'SET_AI_CODE';
 export const SET_AI_NAME = 'SET_AI_NAME';
 export const SET_LIST_CAMERA = 'SET_LIST_CAMERA';
 export const SET_LIST_CAMERA2 = 'SET_LIST_CAMERA2';
+export const SET_PROVINCE_CODE_REPORT = 'SET_PROVINCE_CODE_REPORT';
+export const SET_DISTRICT_CODE_REPORT = 'SET_DISTRICT_CODE_REPORT';
+export const SET_CHECK_BG_REPORT = 'SET_CHECK_BG_REPORT';
+export const SET_SERVICE_CODE = 'SET_SERVICE_CODE';
 
 export const getListReport = data => {
   return {
@@ -74,6 +78,32 @@ export const setListCamera2 = data => {
   // console.log(data);
   return {
     type: SET_LIST_CAMERA2,
+    payload: data,
+  };
+};
+export const setDistrictCodeReport = data => {
+  // console.log(data);
+  return {
+    type: SET_DISTRICT_CODE_REPORT,
+    payload: data,
+  };
+};
+export const setProvinceCodeReport = data => {
+  // console.log(data);
+  return {
+    type: SET_PROVINCE_CODE_REPORT,
+    payload: data,
+  };
+};
+export const setCheckBGReport = data => {
+  return {
+    type: SET_CHECK_BG_REPORT,
+    payload: data,
+  };
+};
+export const setServiceCode = data => {
+  return {
+    type: SET_SERVICE_CODE,
     payload: data,
   };
 };

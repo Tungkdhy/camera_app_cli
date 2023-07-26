@@ -7,8 +7,8 @@ import {
   SET_TIME_STICK,
   SET_LIST_CAMERA_PLAYBACK,
   SET_RELOAD,
-  SET_DISTRICT_CODE,
-  SET_PROVINCE_CODE,
+  SET_DISTRICT_CODE_PLAYBACK,
+  SET_PROVINCE_CODE_PLAYBACK,
   SET_IS_BG,
 } from '../actions/playBackAction';
 import { formatDDMMYY2 } from '../../utils';
@@ -16,12 +16,12 @@ const initialState = {
   cameras: [],
   playBacks: [],
   filter: {
-    day: formatDDMMYY2(new Date()),
+    day: new Date(),
     time: '00:00',
     timeEnd: '23:59',
     stick_time: '00:00:00',
     record_status: 1,
-    isBG: false,
+    isBG: true,
     province_code: 'All',
     district_code: 'All',
   },
@@ -73,7 +73,7 @@ const playBackReducer = (state = initialState, action) => {
         ...state,
         reload: action.payload,
       };
-    case SET_PROVINCE_CODE:
+    case SET_PROVINCE_CODE_PLAYBACK:
       return {
         ...state,
         filter: {
@@ -81,7 +81,7 @@ const playBackReducer = (state = initialState, action) => {
           province_code: action.payload,
         },
       };
-    case SET_DISTRICT_CODE:
+    case SET_DISTRICT_CODE_PLAYBACK:
       return {
         ...state,
         filter: {

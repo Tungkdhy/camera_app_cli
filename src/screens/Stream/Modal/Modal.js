@@ -44,6 +44,7 @@ const Modal = ({
     dispatch(setDistrictCode('All'));
     dispatch(setRefresh(!camera.refresh));
     dispatch(setCheckBG(false));
+    onShowModal();
   };
 
   useEffect(() => {
@@ -154,7 +155,10 @@ const Modal = ({
                     </Text>
                   </Pressable>
                   <Pressable
-                    onPress={() => dispatch(setRefresh(!camera.refresh))}
+                    onPress={() => {
+                      dispatch(setRefresh(!camera.refresh));
+                      onShowModal();
+                    }}
                     style={{ ...styles.btn, ...styles.primary }}>
                     <Text style={{ color: '#fff', fontWeight: 700 }}>
                       Áp dụng

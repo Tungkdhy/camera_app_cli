@@ -20,8 +20,8 @@ import { setService } from '../../../redux/actions/cameraAction';
 import axiosClient from '../../../services/axiosClient';
 import { styles } from './styles';
 import {
-  setDistrictCode,
-  setProvinceCode,
+  setDistrictCodePlayBack,
+  setProvinceCodePlayBack,
   setReload,
   setIsBG,
 } from '../../../redux/actions/playBackAction';
@@ -40,10 +40,11 @@ const Modal = ({
   const wareHouse = useSelector(state => state.playBackReducer);
 
   const handleResetFilter = () => {
-    dispatch(setProvinceCode('All'));
-    dispatch(setDistrictCode('All'));
+    dispatch(setProvinceCodePlayBack('All'));
+    dispatch(setDistrictCodePlayBack('All'));
     dispatch(setReload(!wareHouse.reload));
     dispatch(setIsBG(false));
+    onShowModal();
   };
 
   useEffect(() => {
@@ -97,7 +98,7 @@ const Modal = ({
                       style={styles}
                       value={wareHouse.filter?.province_code}
                       onValueChange={value => {
-                        dispatch(setProvinceCode(value));
+                        dispatch(setProvinceCodePlayBack(value));
                       }}
                       // onValueChange={value => handleGetCameraAct(value)}
                       items={
@@ -125,7 +126,7 @@ const Modal = ({
                       doneText="Lựa chọn"
                       style={styles}
                       onValueChange={value => {
-                        dispatch(setDistrictCode(value));
+                        dispatch(setDistrictCodePlayBack(value));
                         // console.log(screen);
                       }}
                       value={wareHouse.filter?.district_code}
@@ -169,7 +170,10 @@ const Modal = ({
                     </Text>
                   </Pressable>
                   <Pressable
-                    onPress={() => dispatch(setReload(!wareHouse.reload))}
+                    onPress={() => {
+                      dispatch(setReload(!wareHouse.reload));
+                      onShowModal();
+                    }}
                     style={{ ...styles.btn, ...styles.primary }}>
                     <Text style={{ color: '#fff', fontWeight: 700 }}>
                       Áp dụng

@@ -62,7 +62,7 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.05)',
     paddingBottom: 12,
-    height: 270,
+    height: 260,
   },
   cam: {
     flexDirection: 'row',
@@ -188,7 +188,7 @@ export const styles = StyleSheet.create({
   },
   noPath: {
     width: '100%',
-    height: 240,
+    height: 200,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

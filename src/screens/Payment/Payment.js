@@ -6,14 +6,19 @@ import {
   Image,
   ScrollView,
   Alert,
-  StatusBar,
+  Modal,
+  TouchableOpacity,
   BackHandler,
 } from 'react-native';
 import Video from 'react-native-video';
-
+import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { useCallback, useEffect, useState } from 'react';
-
-import { Back, PlayBackDownIcon, BackIcon2 } from '../../components/Icons/Index';
+import {
+  Back,
+  PlayBackDownIcon,
+  BackIcon2,
+  Close,
+} from '../../components/Icons/Index';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getListReport,
@@ -23,9 +28,13 @@ import {
   videoActive,
   servicePackage,
 } from '../../redux/actions/reportAction';
-import DatePicker from 'react-native-date-picker';
-import { formatTimehp, formatDDMMYY2, sorterDateInArr } from '../../utils';
-import Modal from './Modal/Modal';
+import {
+  formatTimehp,
+  formatDDMMYY2,
+  sorterDateInArr,
+  formatDateYYYYMMDD,
+  convertArrayToJson,
+} from '../../utils';
 import Orientation from 'react-native-orientation-locker';
 import { styles } from './styles';
 import axiosClient from '../../services/axiosClient';
@@ -34,6 +43,7 @@ export default function Payment({ route, navigation }) {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   const report = useSelector(state => state.reportReducer);
+  const [dayActive, setDayActive] = useState([]);
   const camera = useSelector(state => state.useReducer);
   const [modalVisible, setModalVisible] = useState(false);
   const handleSetShowModal = useCallback(() => {
@@ -129,8 +139,8 @@ export default function Payment({ route, navigation }) {
         if (report.filter.day > report.filter.time) {
           Alert.alert('Vui lòng chọn ngày kết thúc lớn hơn ngày bắt đầu');
         } else {
-          const service = camera.filter?.service
-            ? { ai_service_code: camera.filter?.service }
+          const service = report.filter?.ai_code
+            ? { ai_service_code: report.filter?.ai_code }
             : {};
           const res = await axiosClient.get('/camAI/get-list-cam-ai/', {
             params: {
@@ -140,7 +150,10 @@ export default function Payment({ route, navigation }) {
               day_end: formatDDMMYY2(report.filter.time),
             },
           });
+          console.log(res);
           const sortData = res?.data?.reverse();
+          const day = res.AI_day.map(item => item.TIME);
+          setDayActive(day);
           dispatch(getListReport(sortData));
         }
       } catch (e) { }
@@ -151,7 +164,7 @@ export default function Payment({ route, navigation }) {
     report.filter.day,
     report.filter.time,
     report.filter.timeEnd,
-    camera.filter?.service,
+    report.filter?.ai_code,
   ]);
   useEffect(() => {
     async function getPackage() {
@@ -180,43 +193,70 @@ export default function Payment({ route, navigation }) {
   }, [report.isFullScreen]);
 
   // JSX
-
+  console.log(formatDateYYYYMMDD(report.filter.day));
   return (
     <View style={styles.container}>
-      <DatePicker
-        modal
-        mode="date"
-        open={open}
-        date={new Date()}
-        onConfirm={date => {
-          if (date > report.filter.time) {
-            Alert.alert('Chọn ngày bắt đầu nhỏ hơn ngày kết thúc');
-          } else {
-            dispatch(setDayReport(date));
-          }
-          setOpen(false);
-        }}
-        onCancel={() => {
-          setOpen(false);
-        }}
-      />
-      <DatePicker
-        modal
-        mode="date"
-        open={open2}
-        date={new Date()}
-        onConfirm={date => {
-          if (date < report.filter.day) {
-            Alert.alert('Chọn ngày kết thúc lớn hơn ngày bắt đầu');
-          } else {
-            dispatch(setTimeReport(date));
-          }
-          setOpen2(false);
-        }}
-        onCancel={() => {
-          setOpen2(false);
-        }}
-      />
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={open}
+        onRequestClose={() => {
+          setOpen(!open);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalViewDate}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.titleHeader}>Chọn ngày</Text>
+              <TouchableOpacity
+                onPress={() => setOpen(false)}
+                style={styles.iconModal}>
+                <Close />
+              </TouchableOpacity>
+            </View>
+            <Calendar
+              current={formatDateYYYYMMDD(report.filter.day)}
+              onDayPress={day => {
+                // console.log(day);
+                dispatch(setDayReport(Date.parse(day.dateString)));
+              }}
+              markedDates={convertArrayToJson(
+                [...dayActive, formatDateYYYYMMDD(report.filter.day)],
+                formatDateYYYYMMDD(report.filter.day),
+              )}
+            />
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={open2}
+        onRequestClose={() => {
+          setOpen2(!open2);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalViewDate}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.titleHeader}>Chọn ngày</Text>
+              <TouchableOpacity
+                onPress={() => setOpen2(false)}
+                style={styles.iconModal}>
+                <Close />
+              </TouchableOpacity>
+            </View>
+            <Calendar
+              current={formatDateYYYYMMDD(report.filter.time)}
+              onDayPress={day => {
+                dispatch(setTimeReport(Date.parse(day.dateString)));
+              }}
+              markedDates={convertArrayToJson(
+                [...dayActive, formatDateYYYYMMDD(report.filter.time)],
+                formatDateYYYYMMDD(report.filter.time),
+              )}
+            />
+          </View>
+        </View>
+      </Modal>
       {!report.isFullScreen && (
         <>
           <View style={styles.header}>
@@ -261,7 +301,20 @@ export default function Payment({ route, navigation }) {
       )}
       {!report.isFullScreen && (
         <View style={styles.content}>
-          <FlatList data={report.reports} renderItem={renderItem} />
+          {report.reports.length > 0 ? (
+            <FlatList data={report.reports} renderItem={renderItem} />
+          ) : (
+            <View
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '90%',
+                // paddingBottom: 12,
+              }}>
+              <Text>Không có dữ liệu</Text>
+            </View>
+          )}
         </View>
       )}
       {report.isFullScreen &&

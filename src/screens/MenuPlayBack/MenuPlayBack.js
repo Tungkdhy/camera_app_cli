@@ -153,11 +153,12 @@ export default function MenuPlayBack({ navigation, ...props }) {
               ...district,
               camera_status: camera.filter.camera_status,
               ...already,
-              // camera_name: search,
+              camera_name: search,
             },
           },
         );
         // console.log(already);
+
         dispatch(setListCameraPlayBack(res));
       } catch (e) {
         console.log(e);
@@ -182,6 +183,7 @@ export default function MenuPlayBack({ navigation, ...props }) {
       const data = res.map(item => {
         return { name: item.DISTRICT_NAME, code: item.DISTRICT_CODE };
       });
+      console.log(data);
       dispatch(getListDistrict(data));
     }
     getDistrict();

@@ -10,6 +10,10 @@ import {
   SET_AI_NAME,
   SET_LIST_CAMERA,
   SET_LIST_CAMERA2,
+  SET_PROVINCE_CODE_REPORT,
+  SET_DISTRICT_CODE_REPORT,
+  SET_CHECK_BG_REPORT,
+  SET_SERVICE_CODE,
 } from '../actions/reportAction';
 const initialState = {
   reports: [],
@@ -21,7 +25,7 @@ const initialState = {
     ai_code: '20230222000000000001',
     name: 'Phát hiện chuyển động',
     record_status: 1,
-    isBG: false,
+    isBG: true,
     province_code: 'All',
     district_code: 'All',
   },
@@ -98,6 +102,40 @@ const reportReducer = (state = initialState, action) => {
       return {
         ...state,
         listCamera: action.payload,
+      };
+    case SET_PROVINCE_CODE_REPORT:
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          province_code: action.payload,
+          // province_name: action.payload.name,
+        },
+      };
+    case SET_DISTRICT_CODE_REPORT:
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          district_code: action.payload,
+          // district_name: action.payload.name,
+        },
+      };
+    case SET_CHECK_BG_REPORT:
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          isBG: action.payload,
+        },
+      };
+    case SET_SERVICE_CODE:
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          service: action.payload,
+        },
       };
     default:
       return state;

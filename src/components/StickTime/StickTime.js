@@ -3,7 +3,12 @@ import { ScrollView, Text, View, Dimensions } from 'react-native';
 import { styles } from './styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { setTimeStick } from '../../redux/actions/playBackAction';
-import { convertTimeToPx, convertToSecond, covertWidthToHour } from '../../utils';
+import {
+  convertTimeToPx,
+  convertToSecond,
+  covertWidthToHour,
+  formatDDMMYY2,
+} from '../../utils';
 import { playBackApi } from '../../services/api/playBackApi';
 const StickTime = ({ code, day, setChange }) => {
   const [list, setList] = useState([
@@ -66,7 +71,7 @@ const StickTime = ({ code, day, setChange }) => {
             },
           ],
         }),
-        day: day,
+        day: formatDDMMYY2(day),
       });
       console.log(res);
       if (res.length > 0) {
@@ -79,7 +84,7 @@ const StickTime = ({ code, day, setChange }) => {
   return (
     <View style={{ position: 'relative', paddingRight: 16 }}>
       <Text style={styles.time}>
-        {playback.filter.day}{' '}
+        {formatDDMMYY2(playback.filter.day)}{' '}
         {stick_time.slice(0, 2) !== '24' ? stick_time : '24:00:00'}
       </Text>
       <ScrollView

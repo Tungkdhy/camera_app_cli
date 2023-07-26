@@ -14,11 +14,11 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     ...Platform.select({
       ios: {
-        paddingTop: 44
+        paddingTop: 44,
       },
       android: {
-        paddingTop: 16
-      }
+        paddingTop: 16,
+      },
     }),
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.05)',
@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
     paddingLeft: 16,
     fontSize: 18,
     fontWeight: '700',
-    color: "#000"
+    color: '#000',
   },
   content: {
     flex: 1,
@@ -150,5 +150,12 @@ export const styles = StyleSheet.create({
   },
   title: {
     color: ' rgba(0, 0, 0, 0.4)',
+  },
+  modalViewDate: {
+    height: 430,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    paddingTop: 16,
   },
 });

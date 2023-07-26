@@ -6,8 +6,8 @@ export const SET_FULL_SCREEN = 'SET_FULL_SCREEN';
 export const SET_TIME_STICK = 'SET_TIME_STICK';
 export const SET_LIST_CAMERA_PLAYBACK = 'SET_LIST_CAMERA_PLAYBACK';
 export const SET_RELOAD = 'SET_RELOAD';
-export const SET_PROVINCE_CODE = 'SET_PROVINCE_CODE';
-export const SET_DISTRICT_CODE = 'SET_DISTRICT_CODE';
+export const SET_PROVINCE_CODE_PLAYBACK = 'SET_PROVINCE_CODE_PLAYBACK';
+export const SET_DISTRICT_CODE_PLAYBACK = 'SET_DISTRICT_CODE_PLAYBACK';
 export const SET_IS_BG = 'SET_IS_BG';
 
 export const getListPlayBack = data => {
@@ -58,15 +58,15 @@ export const setListCameraPlayBack = data => {
     payload: data,
   };
 };
-export const setProvinceCode = data => {
+export const setProvinceCodePlayBack = data => {
   return {
-    type: SET_PROVINCE_CODE,
+    type: SET_PROVINCE_CODE_PLAYBACK,
     payload: data,
   };
 };
-export const setDistrictCode = data => {
+export const setDistrictCodePlayBack = data => {
   return {
-    type: SET_DISTRICT_CODE,
+    type: SET_DISTRICT_CODE_PLAYBACK,
     payload: data,
   };
 };
