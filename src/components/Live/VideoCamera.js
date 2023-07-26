@@ -24,7 +24,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { styles } from './styles';
-import { convertToSecond } from '../../utils';
+import { convertToSecond, formatTime } from '../../utils';
 import { setNameAI, videoActive } from '../../redux/actions/reportAction';
 import { SafeAreaView } from 'react-native-safe-area-context';
 const VideoCamera = ({
@@ -44,6 +44,7 @@ const VideoCamera = ({
   );
   const [count, setCount] = useState(1);
   const [listPath, setListPath] = useState([]);
+  const [seekVideo,setSeekVideo] = useState(false)
   const [onAndroid, setOnAndroid] = useState(false);
   const reload = useSelector(state => state.useReducer.reload);
   const [showName, setShowName] = useState(true);
@@ -90,11 +91,39 @@ const VideoCamera = ({
         );
       }
     }
-  }, [data]);
+    if(type === 'livestream'  && data?.length > 0){
+   
+        setSeekVideo(!seekVideo)
+      
+    }
+  }, [data,stick_time]);
+  useEffect(()=>{
+    if(type === 'livestream'  && data?.length > 0 && Platform.OS === "android"){
+   
+      if(ref.current){
+        const data1 = setTimeout(()=>{
+          ref.current?.seek(
+            Number(convertToSecond(formatTime(new Date()))) -
+            Number(
+              convertToSecond(cameraActive[0]?.data[0]?.LAST_EDIT_PATH?.split(' ')[1])
+            )
+          );
+        },5000)
+        return ()=>{
+          clearTimeout(data1)
+        }
+      }
+      console.log( Number(convertToSecond(formatTime(new Date()))) -
+      Number(
+        convertToSecond(cameraActive[0]?.data[0]?.LAST_EDIT_PATH?.split(' ')[1])
+      )- 10);
+    
+  }
+  },[seekVideo])
   useEffect(() => {
     if (type !== 'livestream' && cameraActive?.length > 0) {
       setData([]);
-      setTimeout(() => {
+      const setTime = setTimeout(() => {
         setData(cameraActive);
       }, 400);
 
@@ -104,11 +133,15 @@ const VideoCamera = ({
       // ) {
       //   setData(cameraActive);
       // }
+      return ()=>{
+        clearTimeout(setTime)
+      }
     }
     if (type === 'livestream') {
       setData(cameraActive);
     }
   }, [cameraActive]);
+  // console.log(cameraActive);
   useEffect(() => {
     const data = streamPath.filter(
       (item, index) => index >= (count - 1) * 6 && index < count * 6,
@@ -183,8 +216,8 @@ const VideoCamera = ({
                         volume={1.0}
                         isMuted={false}
                         resizeMode="cover"
-                        shouldPlay={true}
-                        useNativeControls={true}
+                        // shouldPlay={true}
+                        // useNativeControls={true}
                         isLooping
                         poster={
                           type === 'playback/'
@@ -192,7 +225,7 @@ const VideoCamera = ({
                             : `http://cameraai.cds.vinorsoft.com/${type}/${item?.data[0]?.PATH.split('/')[1]
                             }/image.jpg`
                         }
-                        controls={type === 'playback/' ? change : false}
+                        controls={true}
                         style={
                           isFullScreen
                             ? styles.fullScreen
@@ -269,7 +302,7 @@ const VideoCamera = ({
           )}
         </View>
       }
-      {!isFullScreen && type !== 'playback/' && (
+      {/* {!isFullScreen && type !== 'playback/' && (
         <SafeAreaView style={{ paddingBottom: 50 }}>
           <View style={!onAndroid ? { height: '100%' } : { height: '68%' }}>
             <FlatList
@@ -300,7 +333,7 @@ const VideoCamera = ({
           </View>
           <View style={{ height: 48 }} />
         </SafeAreaView>
-      )}
+      )} */}
     </View>
   );
 };

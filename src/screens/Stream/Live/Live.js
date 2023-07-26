@@ -50,8 +50,10 @@ const Live = ({ route, navigation }) => {
             },
           },
         );
+        console.log(res.stream);
         dispatch(getPathStream(res.stream));
       } catch (e) {
+        console.log(e);
         Alert.alert('Lấy danh sách đường dẫn ko thành công');
       }
     }

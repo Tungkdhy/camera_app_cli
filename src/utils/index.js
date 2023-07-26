@@ -147,17 +147,19 @@ export const formatDateNoSpace = date => {
 };
 
 export const formatTime = date => {
-  const dateA = new Date(date);
-  const hour = dateA.getHours();
-  const minute = dateA.getMinutes();
-  const seconds = dateA.getSeconds();
-  const dateToTime =
-    (hour <= 9 ? '0' + hour : hour) +
-    ':' +
-    (minute <= 9 ? '0' + minute : minute) +
-    ':' +
-    (seconds <= 9 ? '0' + seconds : seconds);
-  return dateToTime;
+  if(date){
+    const dateA = new Date(date);
+    const hour = dateA.getHours();
+    const minute = dateA.getMinutes();
+    const seconds = dateA.getSeconds();
+    const dateToTime =
+      (hour <= 9 ? '0' + hour : hour) +
+      ':' +
+      (minute <= 9 ? '0' + minute : minute) +
+      ':' +
+      (seconds <= 9 ? '0' + seconds : seconds);
+    return dateToTime;
+  }
 };
 
 export const loseConnect =
