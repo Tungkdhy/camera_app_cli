@@ -137,6 +137,7 @@ export const styles = StyleSheet.create({
     borderRadius: 4,
     textAlign: 'center',
     fontSize: 12,
+    color: 'black'
   },
   filter: {
     paddingTop: 10,

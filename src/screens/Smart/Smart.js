@@ -158,7 +158,6 @@ export default function Smart({ navigation, ...props }) {
     //Get warehouse
     async function getLocation() {
       try {
-        console.log('code', report.filter?.ai_code);
         const province =
           report.filter?.province_code !== 'All'
             ? {

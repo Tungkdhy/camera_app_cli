@@ -24,6 +24,9 @@ const Filter = ({ onClick, address, filter, playback, record }) => {
             <Text
               style={{
                 color: '#0040FF',
+                fontSize: 16,
+                lineHeight: 20,
+                marginLeft: 4
               }}>
               Bộ lọc
             </Text>
@@ -41,15 +44,14 @@ const Filter = ({ onClick, address, filter, playback, record }) => {
       </Pressable>
 
       <View style={styles.status}>
-        <Text style={{ color: 'rgba(0, 0, 0, 0.4)' }}>Hoạt động</Text>
-
+        <Text style={{ color: 'rgba(0, 0, 0, 0.8)', fontSize: 16, lineHeight: 20 }}>Hoạt động</Text>
         <Switch
           trackColor={{ false: '#767577', true: '#0040FF' }}
           thumbColor={filter === 'On' ? '#f4f3f4' : '#f4f3f4'}
           ios_backgroundColor="#3e3e3e"
           onValueChange={toggleSwitch}
           value={filter === 'On' ? true : false}
-          style={{ transform: [{ scaleX: 0.6 }, { scaleY: 0.6 }] }}
+          style={{ transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }] }}
         />
       </View>
     </View>

@@ -78,7 +78,7 @@ const Live = ({ route, navigation }) => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
+          // Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}>
         <View style={styles.centeredView}>
@@ -96,8 +96,8 @@ const Live = ({ route, navigation }) => {
                 <View style={styles.titleInfo}>
                   <Text style={styles.title}>Địa chỉ</Text>
                 </View>
-                <View style={styles.descriptionInfo}>
-                  <Text>
+                <View>
+                  <Text style={styles.descriptionInfo}>
                     {cameraInfo.length > 0 && cameraInfo[0]?.COMMUNE_NAME} ,{' '}
                     {cameraInfo.length > 0 && cameraInfo[0]?.DISTRICT_NAME},{' '}
                     {cameraInfo.length > 0 && cameraInfo[0]?.PROVINCE_NAME}
@@ -108,8 +108,8 @@ const Live = ({ route, navigation }) => {
                 <View style={styles.titleInfo}>
                   <Text style={styles.title}>Kho</Text>
                 </View>
-                <View style={styles.descriptionInfo}>
-                  <Text>
+                <View>
+                  <Text style={styles.descriptionInfo}>
                     {cameraInfo.length > 0 && cameraInfo[0]?.WAREHOUSE_NAME}
                   </Text>
                 </View>
@@ -118,8 +118,8 @@ const Live = ({ route, navigation }) => {
                 <View style={styles.titleInfo}>
                   <Text style={styles.title}>Đướng dẫn RPST</Text>
                 </View>
-                <View style={styles.descriptionInfo}>
-                  <Text>
+                <View >
+                  <Text style={styles.descriptionInfo}>
                     {cameraInfo.length > 0 && cameraInfo[0]?.RTSP_CHINH}
                   </Text>
                 </View>
@@ -128,16 +128,16 @@ const Live = ({ route, navigation }) => {
                 <View style={styles.titleInfo}>
                   <Text style={styles.title}>Nguồn</Text>
                 </View>
-                <View style={styles.descriptionInfo}>
-                  <Text>Chính</Text>
+                <View >
+                  <Text style={styles.descriptionInfo}>Chính</Text>
                 </View>
               </View>
               <View style={styles.infoItem}>
                 <View style={styles.titleInfo}>
                   <Text style={styles.title}>Độ phân giải</Text>
                 </View>
-                <View style={styles.descriptionInfo}>
-                  <Text>
+                <View >
+                  <Text style={styles.descriptionInfo}>
                     {cameraInfo.length > 0 && cameraInfo[0]?.MAIN_SOURCE}
                   </Text>
                 </View>
@@ -146,8 +146,8 @@ const Live = ({ route, navigation }) => {
                 <View style={styles.titleInfo}>
                   <Text style={styles.title}>Trạng thái</Text>
                 </View>
-                <View style={styles.descriptionInfo}>
-                  <Text>
+                <View >
+                  <Text style={styles.descriptionInfo}>
                     {cameraInfo.length > 0 && cameraInfo[0]?.STATUS === 'On'
                       ? 'Đang hoạt động'
                       : 'Không hoạt động'}
