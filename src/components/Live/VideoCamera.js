@@ -44,7 +44,7 @@ const VideoCamera = ({
   );
   const [count, setCount] = useState(1);
   const [listPath, setListPath] = useState([]);
-  const [seekVideo,setSeekVideo] = useState(false)
+  const [seekVideo, setSeekVideo] = useState(false);
   const [onAndroid, setOnAndroid] = useState(false);
   const reload = useSelector(state => state.useReducer.reload);
   const [showName, setShowName] = useState(true);
@@ -91,35 +91,33 @@ const VideoCamera = ({
         );
       }
     }
-    if(type === 'livestream'  && data?.length > 0){
-   
-        setSeekVideo(!seekVideo)
-      
+    if (type === 'livestream' && data?.length > 0) {
+      setSeekVideo(!seekVideo);
     }
-  }, [data,stick_time]);
-  useEffect(()=>{
-    if(type === 'livestream'  && data?.length > 0 && Platform.OS === "android"){
-   
-      if(ref.current){
-        const data1 = setTimeout(()=>{
+  }, [data, stick_time]);
+  useEffect(() => {
+    if (
+      type === 'livestream' &&
+      data?.length > 0 &&
+      Platform.OS === 'android'
+    ) {
+      if (ref.current) {
+        const data1 = setTimeout(() => {
           ref.current?.seek(
             Number(convertToSecond(formatTime(new Date()))) -
             Number(
-              convertToSecond(cameraActive[0]?.data[0]?.LAST_EDIT_PATH?.split(' ')[1])
-            )
+              convertToSecond(
+                cameraActive[0]?.data[0]?.LAST_EDIT_PATH?.split(' ')[1],
+              ),
+            ),
           );
-        },5000)
-        return ()=>{
-          clearTimeout(data1)
-        }
+        }, 5000);
+        return () => {
+          clearTimeout(data1);
+        };
       }
-      console.log( Number(convertToSecond(formatTime(new Date()))) -
-      Number(
-        convertToSecond(cameraActive[0]?.data[0]?.LAST_EDIT_PATH?.split(' ')[1])
-      )- 10);
-    
-  }
-  },[seekVideo])
+    }
+  }, [seekVideo]);
   useEffect(() => {
     if (type !== 'livestream' && cameraActive?.length > 0) {
       setData([]);
@@ -133,9 +131,9 @@ const VideoCamera = ({
       // ) {
       //   setData(cameraActive);
       // }
-      return ()=>{
-        clearTimeout(setTime)
-      }
+      return () => {
+        clearTimeout(setTime);
+      };
     }
     if (type === 'livestream') {
       setData(cameraActive);

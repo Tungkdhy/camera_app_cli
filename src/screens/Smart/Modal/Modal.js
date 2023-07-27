@@ -16,6 +16,7 @@ import CheckBox from 'react-native-check-box';
 import { Close } from '../../../components/Icons/Index';
 import { useDispatch, useSelector } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
+import DropdownComponent from '../../../components/Select/Select';
 import {
   setFilterProvince,
   setFilterDistrict,
@@ -51,7 +52,12 @@ const Modal = ({
     dispatch(setServiceCode('20230222000000000001'));
     onShowModal();
   };
-
+  const handleSetProvince = data => {
+    dispatch(setProvinceCodeReport(data));
+  };
+  const handleSetDistrict = data => {
+    dispatch(setDistrictCodeReport(data));
+  };
   useEffect(() => {
     async function getPackage() {
       try {
@@ -88,42 +94,32 @@ const Modal = ({
                   <Close />
                 </Pressable>
               </View>
+              {/* <DropdownComponent /> */}
               <View style={styles.modalContent}>
                 <View>
                   <Text style={styles.label}>Tỉnh/Thành phố</Text>
-                  <View style={styles.choose_camera}>
-                    <RNPickerSelect
-                      placeholder={{
-                        // label: listCamera ? listCamera?.data[0]?.CAMERA?.NAME_CAM : 'Tất cả',
-                        // value: listCamera ? listCamera?.data[0]?.CAMERA?.CODE : 0
+                  <DropdownComponent
+                    data1={[
+                      {
                         label: 'Tất cả',
                         value: 'All',
-                      }}
-                      doneText="Lựa chọn"
-                      style={styles}
-                      value={report.filter?.province_code}
-                      onValueChange={value => {
-                        dispatch(setProvinceCodeReport(value));
-                      }}
-                      // onValueChange={value => handleGetCameraAct(value)}
-                      items={
-                        camera?.province
-                          ? camera.province.map(item => {
-                            return {
-                              key: item.code,
-                              value: item.code,
-                              label: item.name,
-                            };
-                          })
-                          : []
-                      }
-                    />
-                  </View>
+                      },
+                      ...camera.province.map(item => {
+                        return {
+                          // key: item.code,
+                          value: item.code,
+                          label: item.name,
+                        };
+                      }),
+                    ]}
+                    setData={handleSetProvince}
+                    value={report.filter?.province_code}
+                  />
                 </View>
                 <View>
                   <Text style={styles.label}>Quận /Huyện</Text>
-                  <View style={styles.choose_camera}>
-                    <RNPickerSelect
+                  {/* <View style={styles.choose_camera}> */}
+                  {/* <RNPickerSelect
                       placeholder={{
                         label: 'Tất cả',
                         value: 'All',
@@ -138,15 +134,33 @@ const Modal = ({
                         camera?.district
                           ? camera.district.map(item => {
                             return {
-                              key: item.code,
+                              // key: item.code,
                               value: item.code,
                               label: item.name,
                             };
                           })
                           : []
                       }
-                    />
-                  </View>
+                    /> */}
+                  <DropdownComponent
+                    data1={[
+                      {
+                        value: 'All',
+                        label: 'Tất cả',
+                      },
+                      ...camera.district.map(item => {
+                        return {
+                          // key: item.code,
+                          value: item.code,
+                          label: item.name,
+                        };
+                      }),
+                    ]}
+                    setData={handleSetDistrict}
+                    value={report.filter?.district_code}
+                    position={report?.filter.isBG ? 'auto' : 'top'}
+                  />
+                  {/* </View> */}
                 </View>
 
                 {report?.filter.isBG && (
@@ -159,7 +173,7 @@ const Modal = ({
                         onValueChange={value => {
                           dispatch(setServiceCode(value));
                         }}
-                        value={report.filter?.service}
+                        value={report.filter?.ai_code}
                         items={
                           services
                             ? services.map(item => {
@@ -175,7 +189,7 @@ const Modal = ({
                     </View>
                   </View>
                 )}
-
+                {/* <DropdownComponent /> */}
                 <View>
                   <CheckBox
                     style={{
@@ -213,6 +227,7 @@ const Modal = ({
                     </Text>
                   </Pressable>
                 </View>
+                {/* <DropdownComponent /> */}
               </View>
             </View>
           </View>

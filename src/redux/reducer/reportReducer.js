@@ -134,7 +134,7 @@ const reportReducer = (state = initialState, action) => {
         ...state,
         filter: {
           ...state.filter,
-          service: action.payload,
+          ai_code: action.payload,
         },
       };
     default:

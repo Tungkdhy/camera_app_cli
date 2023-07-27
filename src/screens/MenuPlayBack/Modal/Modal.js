@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 import { setService } from '../../../redux/actions/cameraAction';
 import axiosClient from '../../../services/axiosClient';
+import DropdownComponent from '../../../components/Select/Select';
 import { styles } from './styles';
 import {
   setDistrictCodePlayBack,
@@ -86,7 +87,7 @@ const Modal = ({
               <View style={styles.modalContent}>
                 <View>
                   <Text style={styles.label}>Tỉnh/Thành phố</Text>
-                  <View style={styles.choose_camera}>
+                  {/* <View style={styles.choose_camera}>
                     <RNPickerSelect
                       placeholder={{
                         // label: listCamera ? listCamera?.data[0]?.CAMERA?.NAME_CAM : 'Tất cả',
@@ -113,11 +114,30 @@ const Modal = ({
                           : []
                       }
                     />
-                  </View>
+                  </View> */}
+                  <DropdownComponent
+                    data1={[
+                      {
+                        label: 'Tất cả',
+                        value: 'All',
+                      },
+                      ...camera.province.map(item => {
+                        return {
+                          // key: item.code,
+                          value: item.code,
+                          label: item.name,
+                        };
+                      }),
+                    ]}
+                    setData={value => {
+                      dispatch(setProvinceCodePlayBack(value));
+                    }}
+                    value={wareHouse.filter?.province_code}
+                  />
                 </View>
                 <View>
                   <Text style={styles.label}>Quận /Huyện</Text>
-                  <View style={styles.choose_camera}>
+                  {/* <View style={styles.choose_camera}>
                     <RNPickerSelect
                       placeholder={{
                         label: 'Tất cả',
@@ -142,7 +162,28 @@ const Modal = ({
                           : []
                       }
                     />
-                  </View>
+                  </View> */}
+                  <DropdownComponent
+                    data1={[
+                      {
+                        value: 'All',
+                        label: 'Tất cả',
+                      },
+                      ...camera.district.map(item => {
+                        return {
+                          // key: item.code,
+                          value: item.code,
+                          label: item.name,
+                        };
+                      }),
+                    ]}
+                    setData={value => {
+                      dispatch(setDistrictCodePlayBack(value));
+                      // console.log(screen);
+                    }}
+                    value={wareHouse.filter?.district_code}
+                    position={'top'}
+                  />
                 </View>
 
                 <View>

@@ -26,6 +26,7 @@
     "react-native-check-box": "^2.1.7",
     "react-native-date-picker": "^4.2.10",
     "react-native-device-info": "^10.4.0",
+    "react-native-element-dropdown": "^2.9.0",
     "react-native-elements": "^3.4.3",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-orientation-locker": "^1.5.0",
