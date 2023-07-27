@@ -42,6 +42,8 @@ export default function Smart({ navigation, ...props }) {
   const handleShowSearch = () => {
     setIsShowSearch(!isShowSearch);
   };
+  const [stateWareCode, setStateWareHouseCode]= useState();
+
   // console.log(report.filter);
   //Show filterlog
   // console.log(wareHouse);
@@ -87,10 +89,12 @@ export default function Smart({ navigation, ...props }) {
   const handleShowCamera = async code => {
     try {
       setCode2(code);
-      if (code === camera.wareCode) {
+      if (code === stateWareCode) {
         dispatch(setWareHouseCode(''));
+        setStateWareHouseCode('')
       } else {
         dispatch(setWareHouseCode(code));
+        setStateWareHouseCode(code)
       }
     } catch (e) {
       console.log(e);
@@ -111,11 +115,11 @@ export default function Smart({ navigation, ...props }) {
           <View style={styles.border}>
             <View style={styles.cameraItem}>
               <View style={styles.icon}>
-                {item.CODE === camera.wareCode ? <DownIcon /> : <ShowIcon />}
+                {item.CODE === stateWareCode ? <DownIcon /> : <ShowIcon />}
               </View>
               <Text style={styles.name}>{item?.SUBJECT_NAME}</Text>
             </View>
-            {item.CODE === camera.wareCode && (
+            {item.CODE === stateWareCode && (
               <View style={styles.listCamera}>
                 {item.CODE === report.listCamera.code &&
                   report.listCamera.camera &&
@@ -292,18 +296,6 @@ export default function Smart({ navigation, ...props }) {
     navigation.addListener('beforeRemove', e => {
       // Prevent default behavior of leaving the screen
       e.preventDefault();
-
-      // Alert.alert('Đăng xuất?', 'Bạn có muốn đang xuất không', [
-      //   { text: 'Không', style: 'cancel', onPress: () => { } },
-      //   {
-      //     text: 'Có',
-      //     style: 'destructive',
-      //     // If the user confirmed, then we dispatch the action we blocked earlier
-      //     // This will continue the action that had triggered the removal of the screen
-      //     onPress: () => navigation.dispatch(e.data.action),
-      //   },
-      // ]);
-      // Prompt the user before leaving the screen
     });
   }, [navigation]);
   useEffect(() => {
@@ -345,7 +337,6 @@ export default function Smart({ navigation, ...props }) {
           record={camera.filter.record_status}
           onClick={handleShowFilter}
         />
-        {/* <ScrollView> */}
         <ScrollView style={styles.camera}>
           {wareHouse?.camera.length > 0 ? (
             <FlatList
@@ -368,8 +359,14 @@ export default function Smart({ navigation, ...props }) {
             </View>
           )}
         </ScrollView>
-        {/* </ScrollView> */}
       </View>
     </>
   );
 }
+
+//- Fix kích thước filter
+// - Fix giao diện màn đăng nhập
+// - Fix màn thông tin camera
+// - Fix icon và tên app
+// - Fix  lọc sự kiện tất cả ko có dữ liệu, bỏ trường này đi và bỏ cả cái nhận dạng khuôn mặt
+// - FIx luu state 

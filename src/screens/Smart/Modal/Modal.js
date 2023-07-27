@@ -154,7 +154,7 @@ const Modal = ({
                     <Text style={styles.label}>Sự kiện</Text>
                     <View style={styles.choose_camera}>
                       <RNPickerSelect
-                        doneText="Lựa chọn"
+                        placeholder="Lựa chọn"
                         style={styles}
                         onValueChange={value => {
                           dispatch(setServiceCode(value));
@@ -162,12 +162,16 @@ const Modal = ({
                         value={report.filter?.service}
                         items={
                           services
-                            ? services.map(item => {
-                              return {
-                                key: item.CODE,
-                                value: item.CODE,
-                                label: item.SUBJECT_NAME,
-                              };
+                            ? services.filter((item) => item.CODE !== '20230222000000000002').map(item => {
+                              if(item.CODE !== '20230222000000000002') {
+                                return {
+                                  key: item.CODE,
+                                  value: item.CODE,
+                                  label: item.SUBJECT_NAME,
+                                };
+                              } else {
+                                return <></>
+                              }
                             })
                             : []
                         }
@@ -192,7 +196,6 @@ const Modal = ({
                     checkBoxColor={'#0040FF'}
                   />
                 </View>
-
                 <View style={styles.action}>
                   <Pressable
                     onPress={handleResetFilter}

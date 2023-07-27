@@ -111,7 +111,6 @@ const Login = ({ navigation }) => {
                   <>
                     <Image style={styles.logo} source={require('../../assets/images/Logo_app.png')} />
                     <Text style={styles.text_header}>Hệ thống Camera AI</Text>
-                    <Text style={styles.text_desc}>Giải pháp số hóa công nghệ 4.0</Text>
                   </>
                 )}
                 <View>
@@ -197,20 +196,18 @@ const Login = ({ navigation }) => {
                     <Text style={styles.text_desc_modal}>
                       {error && !isValidatePassword(password) ? (
                         <>
-                          {/* <Text style={styles.error_password}> */}
                           Mật khẩu 6-20 ký tự. Ít nhất 1 ký tự viết hoa, 1 ký tự
                           viết thường, 1 ký tự đặc biệt, 1 ký tự số, không chứa
                           khoảng trắng.
-                          {/* </Text> */}
                         </>
                       ) : !isValidatorUsername(userName) ? (
-                        <Text>
+                        <>
                           Tên người dùng dài từ 6 - 15 ký tự. Chỉ chứa các ký tự
                           viết thường và số.
-                        </Text>
+                        </>
                       ) : <>
                         <Text>
-                          Không tìm thấy tài khoản
+                          Tên đăng nhập hoặc mật khẩu không đúng
                         </Text></>}
                     </Text>
                     <View style={styles.footer}>
@@ -223,12 +220,7 @@ const Login = ({ navigation }) => {
                           </View>
                         </TouchableHighlight>
                       </Pressable>
-                      <Pressable style={({ pressed }) => [
-                        {
-                          backgroundColor: pressed ? 'red' : 'white',
-                        },
-                        styles.button_footer,
-                      ]}>
+                      <Pressable style={styles.button_footer}>
                         <TouchableHighlight
                           onPress={() => setModalSuccess(!modalSuccess)}
                           style={styles.login}>
