@@ -5,20 +5,25 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'relative',
+    backgroundColor: '#0040FF'
   },
   content: {
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     height: '100%',
+    alignItems: 'center',
     paddingBottom: 40,
     paddingLeft: 20,
     paddingRight: 20,
   },
   text: {
     color: '#ffffff',
-    fontSize: 28,
+    fontSize: 20,
     paddingBottom: 16,
-    width: '50%',
-    textAlign: 'left',
+    width: '100%',
+    textAlign: 'center',
+    marginTop: 25,
+    fontWeight: 600,
+    lineHeight: 20,
   },
   actions: {
     display: 'flex',
@@ -28,7 +33,7 @@ export const styles = StyleSheet.create({
   formInput: {
     position: 'relative',
     flexDirection: 'row',
-    paddingBottom: 20,
+    // paddingBottom: 20,
   },
   button: {
     alignItems: 'center',
@@ -37,7 +42,10 @@ export const styles = StyleSheet.create({
     borderRadius: 4,
   },
   btnText: {
-    color: '#ffffff',
+    color: '#000000',
+    fontSize: 16,
+    fontWeight: 700,
+    lineHeight: 24
   },
   countText: {
     color: '#FF00FF',
@@ -62,17 +70,23 @@ export const styles = StyleSheet.create({
     position: 'relative',
   },
   contentLogin: {
-    backgroundColor:
-      'linear-gradient(180deg, rgba(0, 64, 255, 0.69) 0%, rgba(0, 64, 255, 0.39) 100%)',
+    backgroundColor: '#0040FF',
     height: '100%',
     justifyContent: 'space-between',
   },
   formLogin: {
     padding: 16,
+    position: 'absolute',
+    top: 11,
+    zIndex: 99,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   logo: {
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: 24,
   },
   error: {
     color: 'red',
@@ -105,17 +119,19 @@ export const styles = StyleSheet.create({
     width: '100%',
   },
   contentForm: {
-    // height: '70%',
+    height: '100%',
     justifyContent: 'space-between',
-    backgroundColor: '#ffffff',
+    // backgroundColor: '#ffffff',
     display: 'flex',
     // flexDirection: 'column-reverse',
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
+    alignContent: 'flex-end',
   },
   input: {
     borderWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0.2)',
+    borderColor: 'rgba(255, 255, 255, 1)',
+    backgroundColor: 'rgba(255, 255, 255, 1)',
     ...Platform.select({
       ios: {
         padding: 16,
@@ -127,24 +143,29 @@ export const styles = StyleSheet.create({
     borderRadius: 4,
     paddingLeft: 42,
     paddingRight: 40,
-    marginBottom: 30,
+    marginBottom: 12,
     color: '#000',
     width: '100%',
   },
   login: {
-    // marginTop:24
+    marginTop:12,
   },
   buttonLogin: {
     padding: 12,
     alignItems: 'center',
     borderRadius: 4,
-    backgroundColor: '#0040FF',
+    backgroundColor: '#ACFCCF',
+    color: 'black',
+    height: 48,
   },
   forgot: {
     textAlign: 'center',
     paddingTop: 28,
     paddingBottom: 16,
-    color: '#0040FF',
+    color: '#ACFCCF',
+    fontSize: 16,
+    fontWeight: 700,
+    lineHeight: 24
   },
   textLogin: {
     color: '#fff',
@@ -176,12 +197,14 @@ export const styles = StyleSheet.create({
   userIcon: {
     position: 'absolute',
     top: 14,
-    left: 12,
+    left: 10,
+    zIndex: 9999,
   },
   lockIcon: {
     position: 'absolute',
     top: 14,
-    left: 12,
+    left: 10,
+    zIndex: 9999,
   },
   eyeIcon: {
     position: 'absolute',
@@ -233,4 +256,59 @@ export const styles = StyleSheet.create({
     lineHeight: 80,
     textAlign: 'center',
   },
+  imageBg: {
+    width: '100%',
+    bottom: 0,
+    marginTop: 'auto',
+    marginBottom: 0,
+  },
+  text_header: {
+    color: '#FFF',
+    fontSize: 28,
+    lineHeight: 39.2,
+    fontWeight: 600,
+  },
+  text_desc: {
+    color: 'rgba(255, 255, 255, 0.70)',
+    fontSize: 16,
+    fontWeight: 400,
+    lineHeight: 24,
+    width: 313,
+    textAlign: 'center',
+    marginTop: 8,
+    marginBottom: 24,
+  },
+  footer: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%'
+  },
+  button_footer: {
+    width: '50%',
+    backgroundColor: 'transparent'
+  },
+  button_footer_item: {
+    backgroundColor: 'transparent',
+    padding: 12,
+    alignItems: 'center',
+    borderRadius: 4,
+    color: 'black',
+    height: 48,
+  },
+  text_desc_modal: {
+    color: '#333',
+    fontSize: 16,
+    fontWeight: 400,
+    lineHeight: 24,
+    width: 313,
+    textAlign: 'center',
+    padding: 16,
+    paddingTop: 0,
+  },
+  primary: {
+    color: '#F30'
+  },
+  iconHeader: {
+    marginTop: 16
+  }
 });

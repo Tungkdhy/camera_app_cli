@@ -42,6 +42,7 @@ export const styles = StyleSheet.create({
     paddingLeft: 0,
     fontSize: 18,
     fontWeight: '700',
+    color: 'black'
   },
   icons: {
     flexDirection: 'row',
@@ -137,6 +138,7 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     textAlign: 'center',
+    color: 'black'
   },
   iconModal: {
     position: 'absolute',
@@ -150,15 +152,24 @@ export const styles = StyleSheet.create({
     padding: 16,
   },
   infoItem: {
-    flexDirection: 'row',
-    paddingBottom: 16,
+    // flexDirection: 'column',
+    padding: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0, 0, 0, 0.05)',
   },
   titleInfo: {
-    flex: 4,
+    // flex: 4,
+    marginBottom: 4,
+    color: 'rgba(0, 0, 0, 0.40)',
+    fontSize: 12,
+    lineHeight: 18,
+    fontWeight: 400
   },
   descriptionInfo: {
-    flex: 11,
-    paddingLeft: 16,
+    color: 'black',
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: 400
   },
   title: {
     color: ' rgba(0, 0, 0, 0.4)',

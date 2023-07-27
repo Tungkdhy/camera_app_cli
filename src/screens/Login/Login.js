@@ -13,6 +13,7 @@ import {
   Pressable,
   Image,
   Modal,
+  Button,
 } from 'react-native';
 import axios from 'axios';
 import {
@@ -45,7 +46,7 @@ const Login = ({ navigation }) => {
   const [error, setError] = useState(false);
   const [error2, setError2] = useState(false);
   const [modalSuccess, setModalSuccess] = useState(false);
-
+  const [isChange, setIsChange] = useState(false);
   const handleLogin = async () => {
     if (isValidatorUsername(userName) && isValidatePassword(password)) {
       try {
@@ -73,6 +74,7 @@ const Login = ({ navigation }) => {
         setModalSuccess(true);
       }
     } else {
+      setModalSuccess(true);
       setError(true);
     }
   };
@@ -82,8 +84,8 @@ const Login = ({ navigation }) => {
   useEffect(() => {
     if (modalSuccess) {
       const countNavigate = setTimeout(() => {
-        setModalSuccess(false);
         if (!error2) {
+          setModalSuccess(false);
           const resetAction = StackActions.replace('Home');
           navigation.dispatch(resetAction);
         }
@@ -92,25 +94,26 @@ const Login = ({ navigation }) => {
     }
   }, [modalSuccess]);
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <ImageBackground
+    <TouchableWithoutFeedback onPress={() => {
+      // setIsChange(!isChange)
+      Keyboard.dismiss()
+    }}
+    >
+      <View
         style={styles.container}
-        source={require('../../assets/images/BgLogin.png')}>
-        <KeyboardAvoidingView enabled={true} behavior="padding">
+      >
+        <KeyboardAvoidingView enabled={true} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <View style={styles.contentLogin}>
-            <View style={styles.title}>
-              <TouchableHighlight
-                onPress={() => navigation.navigate('Wellcom')}
-                style={styles.icon}>
-                <BackIcon />
-              </TouchableHighlight>
-              <Text style={styles.textLogin}>Đăng nhập</Text>
-            </View>
             <View style={styles.contentForm}>
+              <Image style={styles.imageBg} source={require('../../assets/images/Background_login.png')} />
               <View style={styles.formLogin}>
-                <View style={styles.logo}>
-                  <Logo />
-                </View>
+                {!isChange && (
+                  <>
+                    <Image style={styles.logo} source={require('../../assets/images/Logo_app.png')} />
+                    <Text style={styles.text_header}>Hệ thống Camera AI</Text>
+                    <Text style={styles.text_desc}>Giải pháp số hóa công nghệ 4.0</Text>
+                  </>
+                )}
                 <View>
                   <View style={styles.formInput}>
                     <View style={styles.userIcon}>
@@ -131,12 +134,6 @@ const Login = ({ navigation }) => {
                       value={userName}
                       placeholder="Tên đăng nhập"
                     />
-                    {error && !isValidatorUsername(userName) && (
-                      <Text style={styles.error}>
-                        Tên người dùng dài từ 6 - 15 ký tự. Chỉ chứa các ký tự
-                        viết thường và số.
-                      </Text>
-                    )}
                   </View>
                   <View style={styles.formInput}>
                     <View style={styles.lockIcon}>
@@ -163,13 +160,6 @@ const Login = ({ navigation }) => {
                         setPassword(text);
                       }}
                     />
-                    {error && !isValidatePassword(password) && (
-                      <Text style={styles.error_password}>
-                        Mật khẩu 6-20 ký tự. Ít nhất 1 ký tự viết hoa, 1 ký tự
-                        viết thường, 1 ký tự đặc biệt, 1 ký tự số, không chứa
-                        khoảng trắng.
-                      </Text>
-                    )}
                   </View>
                   <TouchableHighlight
                     onPress={handleLogin}
@@ -194,20 +184,68 @@ const Login = ({ navigation }) => {
             style={styles.modal}>
             <View style={styles.mainView}>
               <View style={styles.headerModal}>
+                <View style={{ ...styles.textHeader, ...styles.iconHeader }}>
+                  {error2 ? <ErrorIcon /> : <SuccessIcon />}
+                </View>
                 <Text style={styles.textHeader}>
                   {error2
                     ? 'Đăng nhập không thành công'
                     : 'Đăng nhập thành công'}
                 </Text>
-                <View style={styles.textHeader}>
-                  {error2 ? <ErrorIcon /> : <SuccessIcon />}
-                </View>
+                {error2 && (
+                  <>
+                    <Text style={styles.text_desc_modal}>
+                      {error && !isValidatePassword(password) ? (
+                        <>
+                          {/* <Text style={styles.error_password}> */}
+                          Mật khẩu 6-20 ký tự. Ít nhất 1 ký tự viết hoa, 1 ký tự
+                          viết thường, 1 ký tự đặc biệt, 1 ký tự số, không chứa
+                          khoảng trắng.
+                          {/* </Text> */}
+                        </>
+                      ) : !isValidatorUsername(userName) ? (
+                        <Text>
+                          Tên người dùng dài từ 6 - 15 ký tự. Chỉ chứa các ký tự
+                          viết thường và số.
+                        </Text>
+                      ) : <>
+                        <Text>
+                          Không tìm thấy tài khoản
+                        </Text></>}
+                    </Text>
+                    <View style={styles.footer}>
+                      <Pressable style={styles.button_footer}>
+                        <TouchableHighlight
+                          onPress={() => setModalSuccess(!modalSuccess)}
+                          style={styles.login}>
+                          <View style={styles.button_footer_item}>
+                            <Text style={styles.btnText}>Huỷ bỏ</Text>
+                          </View>
+                        </TouchableHighlight>
+                      </Pressable>
+                      <Pressable style={({ pressed }) => [
+                        {
+                          backgroundColor: pressed ? 'red' : 'white',
+                        },
+                        styles.button_footer,
+                      ]}>
+                        <TouchableHighlight
+                          onPress={() => setModalSuccess(!modalSuccess)}
+                          style={styles.login}>
+                          <View style={styles.button_footer_item}>
+                            <Text style={{ ...styles.btnText, ...styles.primary }}>Đồng ý</Text>
+                          </View>
+                        </TouchableHighlight>
+                      </Pressable>
+                    </View>
+                  </>
+                )}
               </View>
             </View>
           </Modal>
         </KeyboardAvoidingView>
-      </ImageBackground>
-    </TouchableWithoutFeedback>
+      </View>
+    </TouchableWithoutFeedback >
     // </KeyboardAvoidingView>
   );
 };
