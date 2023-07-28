@@ -177,7 +177,7 @@ export default function Stream({ navigation, ...props }) {
             },
           },
         );
-        dispatch(getListWareHouse(res)
+        dispatch(getListWareHouse(res));
         setLoading(false);
       } catch (e) {
         setLoading(false);
