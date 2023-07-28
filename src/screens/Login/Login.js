@@ -38,9 +38,11 @@ import axiosClient from '../../services/axiosClient';
 import { useDispatch } from 'react-redux';
 import { setUserTypeCode } from '../../redux/actions/getUserAction';
 import { isValidatePassword, isValidatorUsername } from '../../utils';
+import CompanyIcon from '../../components/Icons/Login/Company';
 
 const Login = ({ navigation }) => {
   const [userName, setUserName] = useState('');
+  const [companyTax, setCompanyTax] = useState('');
   const [password, setPassword] = useState('');
   const [isShowPass, setIsShowPass] = useState(true);
   const dispatch = useDispatch();
@@ -49,11 +51,12 @@ const Login = ({ navigation }) => {
   const [modalSuccess, setModalSuccess] = useState(false);
   const [isChange, setIsChange] = useState(false);
   const handleLogin = async () => {
-    if (isValidatorUsername(userName) && isValidatePassword(password)) {
+    if (isValidatorUsername(userName) && isValidatePassword(password) && companyTax.trim().length > 0) {
       try {
         const res = await axios.post(
           'http://cameraai.cds.vinorsoft.com/camera/vinorsoft/aicamera/v1.0/authenticator/login/',
           {
+            tax_code: companyTax,
             username: userName,
             password: password,
           },
@@ -101,9 +104,9 @@ const Login = ({ navigation }) => {
         Keyboard.dismiss();
       }}>
       <View style={styles.container}>
-        <KeyboardAvoidingView
+        {/* <KeyboardAvoidingView
           enabled={true}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}> */}
           <View style={styles.contentLogin}>
             <View style={styles.contentForm}>
               <Image
@@ -121,6 +124,26 @@ const Login = ({ navigation }) => {
                   </>
                 )}
                 <View>
+                  <View style={styles.formInput}>
+                    <View style={styles.userIcon}>
+                      <CompanyIcon />
+                    </View>
+                    <TextInput
+                      placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
+                      onChangeText={text => {
+                        setCompanyTax(text);
+                        setError(false);
+                      }}
+                      style={
+                        (companyTax.length < 6 && companyTax !== '') ||
+                          (error && companyTax.length === 0)
+                          ? { ...styles.input, ...styles.borderError }
+                          : styles.input
+                      }
+                      value={companyTax}
+                      placeholder="Mã công ty"
+                    />
+                  </View>
                   <View style={styles.formInput}>
                     <View style={styles.userIcon}>
                       <UserIcon />
@@ -227,7 +250,6 @@ const Login = ({ navigation }) => {
                           </View>
                         </TouchableOpacity>
                       </Pressable>
-                     
                         <TouchableOpacity
                           onPress={() => setModalSuccess(!modalSuccess)}
                           style={styles.login}>
@@ -238,14 +260,13 @@ const Login = ({ navigation }) => {
                             </Text>
                           </View>
                         </TouchableOpacity>
-               
                     </View>
                   </>
                 )}
               </View>
             </View>
           </Modal>
-        </KeyboardAvoidingView>
+        {/* </KeyboardAvoidingView> */}
       </View>
     </TouchableWithoutFeedback>
     // </KeyboardAvoidingView>

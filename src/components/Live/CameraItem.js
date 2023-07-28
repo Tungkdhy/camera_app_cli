@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { setReload } from '../../redux/actions/cameraAction';
 import { styles } from './styles';
 import { loseConnect } from '../../utils';
+import { Status } from '../Icons/Index';
 const CameraItem = ({ title, path, setCamId, id, type }) => {
   // console.log(
   //   `http://cameraai.cds.vinorsoft.com/${type}/${path.split('/')[1]}/image.jpg`,
@@ -46,9 +47,12 @@ const CameraItem = ({ title, path, setCamId, id, type }) => {
           style={{ height: 105, flex: 1, borderRadius: 4 }}
         />
       </View>
-      <Text onPress={() => setCamId(id)} style={styles.nameCamera}>
-        {title}
-      </Text>
+      <View style={styles.name_label}>
+        <Status color={thum === loseConnect ? '#f30' : undefined}/>
+        <Text onPress={() => setCamId(id)} style={styles.nameCamera}>
+          {title}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 };
