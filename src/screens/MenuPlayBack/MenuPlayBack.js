@@ -25,6 +25,7 @@ import { DownIcon, Status, ShowIcon } from '../../components/Icons/Index';
 import Modal from './Modal/Modal';
 import { styles } from './style';
 import { setListCameraPlayBack } from '../../redux/actions/playBackAction';
+import { ActivityIndicator } from 'react-native';
 
 export default function MenuPlayBack({ navigation, ...props }) {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ export default function MenuPlayBack({ navigation, ...props }) {
   const wareHouse = useSelector(state => state.playBackReducer);
   const [search, setSearch] = useState('');
   const [isShowSearch, setIsShowSearch] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleShowSearch = () => {
     setIsShowSearch(!isShowSearch);
   };
@@ -129,6 +131,7 @@ export default function MenuPlayBack({ navigation, ...props }) {
     //Get warehouse
     async function getLocation() {
       try {
+        setLoading(true);
         const province =
           wareHouse.filter?.province_code !== 'All'
             ? {
@@ -160,7 +163,10 @@ export default function MenuPlayBack({ navigation, ...props }) {
         // console.log(already);
 
         dispatch(setListCameraPlayBack(res));
+        setLoading(false);
       } catch (e) {
+        setLoading(false);
+
         console.log(e);
       }
     }
@@ -254,28 +260,34 @@ export default function MenuPlayBack({ navigation, ...props }) {
           onClick={handleShowFilter}
         />
         {/* <ScrollView> */}
-        <ScrollView style={styles.camera}>
-          {wareHouse?.cameras.length > 0 ? (
-            <FlatList
-              data={wareHouse?.cameras}
-              renderItem={renderItem}
-              keyExtractor={item => item.CODE}
-              onEndReachedThreshold={0}
-              accessibilityElementsHidden
-            />
-          ) : (
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                height: 500,
-              }}>
-              <Text>Không có dữ liệu</Text>
-            </View>
-          )}
-        </ScrollView>
+        {loading ? (
+          <View style={{ display: 'flex', justifyContent: 'center', flex: 1 }}>
+            <ActivityIndicator />
+          </View>
+        ) : (
+          <ScrollView style={styles.camera}>
+            {wareHouse?.cameras.length > 0 ? (
+              <FlatList
+                data={wareHouse?.cameras}
+                renderItem={renderItem}
+                keyExtractor={item => item.CODE}
+                onEndReachedThreshold={0}
+                accessibilityElementsHidden
+              />
+            ) : (
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  height: 500,
+                }}>
+                <Text>Không có dữ liệu</Text>
+              </View>
+            )}
+          </ScrollView>
+        )}
         {/* </ScrollView> */}
       </View>
     </>

@@ -8,7 +8,10 @@ import {
   TouchableNativeFeedback,
   KeyboardAvoidingView,
   ActivityIndicator,
+  AppState,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
+
 import Header from '../../components/Header/Header';
 import { useEffect, useState } from 'react';
 import Filter from '../../components/Filter/Filter';
@@ -28,6 +31,8 @@ import { styles } from './style';
 
 export default function Stream({ navigation, ...props }) {
   const dispatch = useDispatch();
+  // const ref = React.useRef(AppState.currentState);
+  // console.log('ref', ref);
   // const [screen, setScreen] = useState(props.route.name);
   const [isProvince, setIsProvince] = useState(true);
   const camera = useSelector(state => state.useReducer);
@@ -66,10 +71,10 @@ export default function Stream({ navigation, ...props }) {
   const handleShowCamera = code => {
     if (code === stateWareCode) {
       dispatch(setWareHouseCode(''));
-      setStateWareHouseCode('')
+      setStateWareHouseCode('');
     } else {
       dispatch(setWareHouseCode(code));
-      setStateWareHouseCode(code)
+      setStateWareHouseCode(code);
     }
   };
   // Navigate form select district
@@ -143,6 +148,12 @@ export default function Stream({ navigation, ...props }) {
     setLoading(true)
     async function getLocation() {
       try {
+        setLoading(true);
+        // Toast.show({
+        //   type: 'success',
+        //   text1: 'Hello',
+        //   text2: 'This is some something 👋',
+        // });
         const province =
           camera.filter?.province_code !== 'All'
             ? {
@@ -167,10 +178,11 @@ export default function Stream({ navigation, ...props }) {
             },
           },
         );
-        dispatch(getListWareHouse(res));
-        setLoading(false)
+        dispatch(getListWareHouse(res)
+        setLoading(false);
       } catch (e) {
-        setLoading(false)
+        setLoading(false);
+        console.log(e);
       }
     }
     getLocation();
@@ -262,7 +274,6 @@ export default function Stream({ navigation, ...props }) {
           record={camera.filter.record_status}
           onClick={handleShowFilter}
         />
-        {/* <ScrollView> */}
         <ScrollView style={styles.camera}>
           {!loading ? (
             <>
@@ -293,6 +304,7 @@ export default function Stream({ navigation, ...props }) {
             </View>
           )}
         </ScrollView>
+
         {/* </ScrollView> */}
       </View>
     </>
