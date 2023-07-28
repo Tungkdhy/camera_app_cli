@@ -14,7 +14,7 @@ const data = [
     { label: 'Item 8', value: '8' },
 ];
 
-const DropdownComponent = ({ data1 = [], position = 'auto', setData, value }) => {
+const DropdownComponent = ({ data1 = [], position = 'top', setData, value }) => {
     const [value2, setValue2] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
 
@@ -43,7 +43,7 @@ const DropdownComponent = ({ data1 = [], position = 'auto', setData, value }) =>
                 iconStyle={styles.iconStyle}
                 data={data1}
                 search
-                maxHeight={180}
+                maxHeight={320}
                 labelField="label"
                 valueField="value"
                 placeholder={!isFocus ? 'Lựa chọn' : '...'}

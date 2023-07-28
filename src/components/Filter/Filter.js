@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, Switch, Pressable } from 'react-native';
+import {
+  View,
+  Text,
+  Switch,
+  Pressable,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
 import { AddressIcon, DownIcon } from '../Icons/Index';
 import { setRecord, setStatus } from '../../redux/actions/cameraAction';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +21,7 @@ const Filter = ({ onClick, address, filter, playback, record }) => {
   const toggleSwitchRecording = () => dispatch(setRecord(record === 0 ? 1 : 0));
   return (
     <View style={styles.filter}>
-      <Pressable onPress={onClick}>
+      <TouchableOpacity onPress={onClick}>
         <View style={styles.location}>
           <View style={{ paddingTop: 4 }}>
             <AddressIcon />
@@ -26,7 +33,7 @@ const Filter = ({ onClick, address, filter, playback, record }) => {
                 color: '#0040FF',
                 fontSize: 16,
                 lineHeight: 20,
-                marginLeft: 4
+                marginLeft: 4,
               }}>
               Bộ lọc
             </Text>
@@ -41,17 +48,25 @@ const Filter = ({ onClick, address, filter, playback, record }) => {
             <DownIcon />
           </View>
         </View>
-      </Pressable>
+      </TouchableOpacity>
 
       <View style={styles.status}>
-        <Text style={{ color: 'rgba(0, 0, 0, 0.8)', fontSize: 16, lineHeight: 20 }}>Hoạt động</Text>
+        <Text
+          style={{ color: 'rgba(0, 0, 0, 0.8)', fontSize: 16, lineHeight: 20 }}>
+          Hoạt động
+        </Text>
         <Switch
           trackColor={{ false: '#767577', true: '#0040FF' }}
           thumbColor={filter === 'On' ? '#f4f3f4' : '#f4f3f4'}
           ios_backgroundColor="#3e3e3e"
           onValueChange={toggleSwitch}
           value={filter === 'On' ? true : false}
-          style={{ transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }] }}
+          style={{
+            transform:
+              Platform.OS === 'ios'
+                ? [{ scaleX: 0.8 }, { scaleY: 0.8 }]
+                : [{ scaleX: 1.2 }, { scaleY: 1.2 }],
+          }}
         />
       </View>
     </View>

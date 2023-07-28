@@ -6,12 +6,15 @@ export const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderBottomRightRadius: 8,
         borderBottomLeftRadius: 8,
-        paddingBottom: 60,
+        paddingBottom: 64,
+        paddingTop: 0,
     },
     header: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        paddingTop: 8,
+        paddingBottom: 8,
     },
     // header
     title: {
@@ -39,7 +42,7 @@ export const styles = StyleSheet.create({
         maxHeight: '100%',
     },
     list: {
-        marginVertical: 20,
+        // marginVertical: 20,
         // marginBottom: 30,
         // ...Platform.select({
         //     ios: {

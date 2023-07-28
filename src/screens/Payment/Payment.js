@@ -9,6 +9,7 @@ import {
   Modal,
   TouchableOpacity,
   BackHandler,
+  ActivityIndicator,
 } from 'react-native';
 import Video from 'react-native-video';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
@@ -44,8 +45,15 @@ export default function Payment({ route, navigation }) {
   const [open2, setOpen2] = useState(false);
   const report = useSelector(state => state.reportReducer);
   const [dayActive, setDayActive] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [showName, setShowName] = useState(false);
   const camera = useSelector(state => state.useReducer);
   const [modalVisible, setModalVisible] = useState(false);
+  const handlePressScreen = () => {
+    if (report.isFullScreen) {
+      setShowName(!showName);
+    }
+  };
   const handleSetShowModal = useCallback(() => {
     setModalVisible(!modalVisible);
   }, [modalVisible]);
@@ -139,6 +147,7 @@ export default function Payment({ route, navigation }) {
         if (report.filter.day > report.filter.time) {
           Alert.alert('Vui lòng chọn ngày kết thúc lớn hơn ngày bắt đầu');
         } else {
+          setLoading(true);
           const service = report.filter?.ai_code
             ? { ai_service_code: report.filter?.ai_code }
             : {};
@@ -150,13 +159,17 @@ export default function Payment({ route, navigation }) {
               day_end: formatDDMMYY2(report.filter.time),
             },
           });
-          console.log(res);
+
           const sortData = res?.data?.reverse();
           const day = res.AI_day.map(item => item.TIME);
+          setLoading(false);
+
           setDayActive(day);
           dispatch(getListReport(sortData));
         }
-      } catch (e) { }
+      } catch (e) {
+        setLoading(false);
+      }
     }
     getVideoReport();
   }, [
@@ -260,20 +273,22 @@ export default function Payment({ route, navigation }) {
       {!report.isFullScreen && (
         <>
           <View style={styles.header}>
-            <Pressable
+            <TouchableOpacity
               onPress={() => {
                 dispatch(setDayReport(new Date()));
                 dispatch(setTimeReport(new Date()));
-                navigation.navigate('Smart');
+                navigation.goBack();
               }}>
               <Back />
-            </Pressable>
+            </TouchableOpacity>
             <Text style={styles.text}>{route.params.camera.NAME_CAM}</Text>
             <View style={{ width: 20, height: 20 }} />
           </View>
           <ScrollView style={{ flexGrow: 0 }} horizontal>
             <View style={styles.filter}>
-              <Pressable onPress={() => setOpen(true)} style={styles.btnFilter}>
+              <TouchableOpacity
+                onPress={() => setOpen(true)}
+                style={styles.btnFilter}>
                 <View style={styles.textContent}>
                   <Text style={{ color: '#000' }}>
                     {formatDDMMYY2(report.filter.day)}
@@ -282,8 +297,8 @@ export default function Payment({ route, navigation }) {
                     <PlayBackDownIcon />
                   </View>
                 </View>
-              </Pressable>
-              <Pressable
+              </TouchableOpacity>
+              <TouchableOpacity
                 onPress={() => setOpen2(true)}
                 style={styles.btnFilter}>
                 <View style={styles.textContent}>
@@ -294,7 +309,7 @@ export default function Payment({ route, navigation }) {
                     <PlayBackDownIcon />
                   </View>
                 </View>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </ScrollView>
         </>
@@ -312,7 +327,7 @@ export default function Payment({ route, navigation }) {
                 height: '90%',
                 // paddingBottom: 12,
               }}>
-              <Text>Không có dữ liệu</Text>
+              {loading ? <ActivityIndicator /> : <Text>Không có dữ liệu</Text>}
             </View>
           )}
         </View>
@@ -321,9 +336,10 @@ export default function Payment({ route, navigation }) {
         report.video_active?.length > 0 &&
         report.video_active.map((item, index) => {
           return (
-            <View
+            <Pressable
               key={index}
-              style={report.isFullScreen ? styles.contentFull : {}}>
+              style={report.isFullScreen ? styles.contentFull : {}}
+              onPress={handlePressScreen}>
               <View
                 style={report.isFullScreen ? styles.activeFull : styles.active}>
                 <View
@@ -363,25 +379,29 @@ export default function Payment({ route, navigation }) {
                 </View>
                 <View
                   style={report.isFullScreen ? styles.infoFull : styles.info}>
-                  <View style={styles.cam}>
-                    <View>
-                      {report.isFullScreen && (
-                        <Pressable onPress={handleFullscreen}>
-                          <BackIcon2 />
-                        </Pressable>
-                      )}
-                    </View>
+                  {showName && (
+                    <View style={styles.cam}>
+                      <View>
+                        {report.isFullScreen && (
+                          <Pressable onPress={handleFullscreen}>
+                            <BackIcon2 />
+                          </Pressable>
+                        )}
+                      </View>
 
-                    <Text
-                      style={
-                        report.isFullScreen ? { fontSize: 14, color: '#fff' } : {}
-                      }>
-                      {item.name}
-                    </Text>
-                  </View>
+                      <Text
+                        style={
+                          report.isFullScreen
+                            ? { fontSize: 14, color: '#fff' }
+                            : {}
+                        }>
+                        {item.name}
+                      </Text>
+                    </View>
+                  )}
                 </View>
               </View>
-            </View>
+            </Pressable>
           );
         })}
     </View>
