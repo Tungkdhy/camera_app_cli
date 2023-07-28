@@ -36,7 +36,8 @@ export default function Stream({ navigation, ...props }) {
   const handleShowSearch = () => {
     setIsShowSearch(!isShowSearch);
   };
-  //Show filterlog
+  const [stateWareCode, setStateWareHouseCode]= useState();
+   //Show filterlog
   // console.log(wareHouse);
   const [modalVisible, setModalVisible] = useState(false);
   const handleSetShowModal = () => {
@@ -61,10 +62,12 @@ export default function Stream({ navigation, ...props }) {
   };
   //Show menu2 stream
   const handleShowCamera = code => {
-    if (code === camera.wareCode) {
+    if (code === stateWareCode) {
       dispatch(setWareHouseCode(''));
+      setStateWareHouseCode('')
     } else {
       dispatch(setWareHouseCode(code));
+      setStateWareHouseCode(code)
     }
   };
   // Navigate form select district
@@ -83,7 +86,7 @@ export default function Stream({ navigation, ...props }) {
             <View style={styles.border}>
               <View style={styles.cameraItem}>
                 <View style={styles.icon}>
-                  {item.WAREHOUSE_CODE === camera.wareCode ? (
+                  {item.WAREHOUSE_CODE === stateWareCode ? (
                     <DownIcon />
                   ) : (
                     <ShowIcon />
@@ -91,7 +94,7 @@ export default function Stream({ navigation, ...props }) {
                 </View>
                 <Text style={styles.name}>{item.WAREHOUSE_NAME}</Text>
               </View>
-              {item.WAREHOUSE_CODE === camera.wareCode && (
+              {item.WAREHOUSE_CODE === stateWareCode && (
                 <View style={styles.listCamera}>
                   {item.LIST_CAMERA &&
                     item.LIST_CAMERA?.length > 0 &&
