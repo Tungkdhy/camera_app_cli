@@ -351,7 +351,7 @@ export default function Payment({ route, navigation }) {
                         alignItems: 'center',
                         width: '100%',
                         height: '100%',
-                        backgroundColor: 'white',
+                        backgroundColor: 'black',
                       }
                       : {}
                   }>
@@ -366,7 +366,7 @@ export default function Payment({ route, navigation }) {
                     shouldPlay={true}
                     isLooping
                     controls={true}
-                    fullscreen={true}
+                    fullscreen={false}
                     style={
                       report.isFullScreen
                         ? styles.fullScreen
