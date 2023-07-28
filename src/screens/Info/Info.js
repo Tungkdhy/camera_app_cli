@@ -26,13 +26,7 @@ const Info = ({ navigation, route }) => {
   });
   const nav = useNavigation();
   const handleLogout = async () => {
-    // const refresh = await AsyncStorage.getItem('refresh');
-    // await axiosClient.post('/authenticator/logout', {
-    //   refresh: refresh,
-    // });
-    // console.log('tung');
     navigation.navigate('Login');
-
     try {
       const asyncStorageKeys = await AsyncStorage.getAllKeys();
       if (asyncStorageKeys.length > 0) {

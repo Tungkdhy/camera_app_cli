@@ -145,6 +145,7 @@ export default function Stream({ navigation, ...props }) {
   // console.log(props.route.name);
   useEffect(() => {
     //Get warehouse
+    setLoading(true)
     async function getLocation() {
       try {
         setLoading(true);
@@ -221,6 +222,7 @@ export default function Stream({ navigation, ...props }) {
     }
     getProvince();
   }, [camera.filterLocate?.province]);
+  console.log('aaa');
   useEffect(() => {
     navigation.addListener('beforeRemove', e => {
       // Prevent default behavior of leaving the screen
@@ -272,41 +274,37 @@ export default function Stream({ navigation, ...props }) {
           record={camera.filter.record_status}
           onClick={handleShowFilter}
         />
-        {/* <ScrollView> */}
-        {loading ? (
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              display: 'flex',
-              justifyContent: 'center',
-            }}>
-            <ActivityIndicator />
-          </View>
-        ) : (
-          <ScrollView style={styles.camera}>
-            {wareHouse?.wareHouse.length > 0 ? (
-              <FlatList
-                data={wareHouse?.wareHouse}
-                renderItem={renderItem}
-                keyExtractor={item => item.CODE}
-                onEndReachedThreshold={0}
-                accessibilityElementsHidden
-              />
-            ) : (
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                  height: 500,
-                }}>
-                <Text>Không có dữ liệu</Text>
-              </View>
-            )}
-          </ScrollView>
-        )}
+        <ScrollView style={styles.camera}>
+          {!loading ? (
+            <>
+              {wareHouse?.wareHouse.length > 0 ? (
+                <FlatList
+                  data={wareHouse?.wareHouse}
+                  renderItem={renderItem}
+                  keyExtractor={item => item.CODE}
+                  onEndReachedThreshold={0}
+                  accessibilityElementsHidden
+                />
+              ) : (
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    height: 500,
+                  }}>
+                  <Text>Không có dữ liệu</Text>
+                </View>
+              )}
+            </>
+          ) : (
+            <View style={styles.loading}>
+              <ActivityIndicator />
+            </View>
+          )}
+        </ScrollView>
+
         {/* </ScrollView> */}
       </View>
     </>

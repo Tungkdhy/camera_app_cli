@@ -342,34 +342,36 @@ export default function Smart({ navigation, ...props }) {
           record={camera.filter.record_status}
           onClick={handleShowFilter}
         />
-        {loading ? (
-          <View style={{ flex: 1, justifyContent: 'center' }}>
-            <ActivityIndicator />
-          </View>
-        ) : (
-          <ScrollView style={styles.camera}>
-            {wareHouse?.camera.length > 0 ? (
-              <FlatList
-                data={wareHouse?.camera}
-                renderItem={renderItem}
-                keyExtractor={item => item.CODE}
-                onEndReachedThreshold={0}
-                accessibilityElementsHidden
-              />
-            ) : (
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                  height: 500,
-                }}>
-                <Text>Không có dữ liệu</Text>
-              </View>
-            )}
-          </ScrollView>
-        )}
+        <ScrollView style={styles.camera}>
+          {!loading ? (
+            <>
+              {wareHouse?.camera.length > 0 ? (
+            <FlatList
+              data={wareHouse?.camera}
+              renderItem={renderItem}
+              keyExtractor={item => item.CODE}
+              onEndReachedThreshold={0}
+              accessibilityElementsHidden
+            />
+          ) : (
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                height: 500,
+              }}>
+              <Text>Không có dữ liệu</Text>
+            </View>
+          )}
+            </>
+          ): (
+            <View style={styles.loading}>
+              <ActivityIndicator />
+            </View>
+          )}
+        </ScrollView>
       </View>
     </>
   );

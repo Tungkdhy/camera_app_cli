@@ -37,12 +37,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axiosClient from '../../services/axiosClient';
 import { useDispatch } from 'react-redux';
 import { setUserTypeCode } from '../../redux/actions/getUserAction';
-import { isValidatePassword, isValidatorUsername } from '../../utils';
-import CompanyIcon from '../../components/Icons/Login/Company';
+import { isValidatePassword } from '../../utils';
+import HeaderLogin from './HeaderLogin';
 
-const Login = ({ navigation }) => {
-  const [userName, setUserName] = useState('');
-  const [companyTax, setCompanyTax] = useState('');
+const LoginFirst = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [isShowPass, setIsShowPass] = useState(true);
   const dispatch = useDispatch();
@@ -50,24 +48,24 @@ const Login = ({ navigation }) => {
   const [error2, setError2] = useState(false);
   const [modalSuccess, setModalSuccess] = useState(false);
   const handleLogin = async () => {
-    if (isValidatorUsername(userName) && isValidatePassword(password) && companyTax.trim().length > 0) {
+    let useName = await AsyncStorage.getItem('userName');
+    let taxCode = await AsyncStorage.getItem('companyCode');
+    if (isValidatePassword(password)) {
       try {
         const res = await axios.post(
           'http://cameraai.cds.vinorsoft.com/camera/vinorsoft/aicamera/v1.0/authenticator/login/',
           {
-            tax_code: companyTax,
-            username: userName,
+            tax_code: taxCode,
+            username: useName,
             password: password,
           },
         );
         if (res) {
+
           await AsyncStorage.setItem('token', res.data.access);
           await AsyncStorage.setItem('role', res.data.role);
           await AsyncStorage.setItem('refresh', res.data.refresh);
-          await AsyncStorage.setItem('userName', userName);
-          await AsyncStorage.setItem('companyCode', companyTax);
           const infoUser = await axiosClient.get('/user/get-user-info/');
-          await AsyncStorage.setItem('name', infoUser[0]?.USERNAME);
           let userTypeCode = infoUser[0]?.USERTYPE_CODE;
           dispatch(setUserTypeCode(userTypeCode));
           setError2(false);
@@ -83,7 +81,6 @@ const Login = ({ navigation }) => {
     } else {
       setModalSuccess(true);
       setError(true);
-      setError2(true);
     }
   };
   useEffect(() => {
@@ -99,6 +96,23 @@ const Login = ({ navigation }) => {
       return () => clearTimeout(countNavigate);
     }
   }, [modalSuccess]);
+
+  const handleLogout = async () => {
+    navigation.navigate('Login');
+    try {
+      const asyncStorageKeys = await AsyncStorage.getAllKeys();
+      if (asyncStorageKeys.length > 0) {
+        if (Platform.OS === 'android') {
+          await AsyncStorage.clear();
+        }
+        if (Platform.OS === 'ios') {
+          await AsyncStorage.multiRemove(asyncStorageKeys);
+        }
+      }
+    } catch (e) {
+      console.log('Error');
+    }
+  };
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -112,54 +126,8 @@ const Login = ({ navigation }) => {
               source={require('../../assets/images/Background_login.png')}
             />
             <View style={styles.formLogin}>
-              <>
-                <Image
-                  style={styles.logo}
-                  source={require('../../assets/images/Logo_app.png')}
-                />
-                <Text style={styles.text_header}>Hệ thống Camera AI</Text>
-              </>
+              <HeaderLogin />
               <View>
-                <View style={styles.formInput}>
-                  <View style={styles.userIcon}>
-                    <CompanyIcon />
-                  </View>
-                  <TextInput
-                    placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
-                    onChangeText={text => {
-                      setCompanyTax(text);
-                      setError(false);
-                    }}
-                    style={
-                      (companyTax.length < 6 && companyTax !== '') ||
-                        (error && companyTax.length === 0)
-                        ? { ...styles.input, ...styles.borderError }
-                        : styles.input
-                    }
-                    value={companyTax}
-                    placeholder="Mã công ty"
-                  />
-                </View>
-                <View style={styles.formInput}>
-                  <View style={styles.userIcon}>
-                    <UserIcon />
-                  </View>
-                  <TextInput
-                    placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
-                    onChangeText={text => {
-                      setUserName(text);
-                      setError(false);
-                    }}
-                    style={
-                      (userName.length < 6 && userName !== '') ||
-                        (error && userName.length === 0)
-                        ? { ...styles.input, ...styles.borderError }
-                        : styles.input
-                    }
-                    value={userName}
-                    placeholder="Tên đăng nhập"
-                  />
-                </View>
                 <View style={styles.formInput}>
                   <View style={styles.lockIcon}>
                     <LockIcon />
@@ -198,6 +166,11 @@ const Login = ({ navigation }) => {
                   style={styles.forgot}>
                   Quên mật khẩu
                 </Text>
+                <Text
+                  onPress={handleLogout}
+                  style={{ ...styles.forgot, ...styles.other_account }}>
+                  Đăng nhập bằng tài khoản khác
+                </Text>
               </View>
             </View>
           </View>
@@ -226,15 +199,11 @@ const Login = ({ navigation }) => {
                         viết thường, 1 ký tự đặc biệt, 1 ký tự số, không chứa
                         khoảng trắng.
                       </>
-                    ) : !isValidatorUsername(userName) ? (
-                      <>
-                        Tên người dùng dài từ 6 - 15 ký tự. Chỉ chứa các ký tự
-                        viết thường và số.
-                      </>
                     ) : <>
                       <Text>
-                        Tên đăng nhập hoặc mật khẩu không đúng
-                      </Text></>}
+                        Mật khẩu không đúng
+                      </Text>
+                    </>}
                   </Text>
                   <View style={styles.footer}>
                     <Pressable style={styles.button_footer}>
@@ -266,4 +235,4 @@ const Login = ({ navigation }) => {
     </TouchableWithoutFeedback>
   );
 };
-export default Login;
+export default LoginFirst;
