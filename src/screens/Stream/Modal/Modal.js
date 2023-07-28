@@ -26,6 +26,7 @@ import {
   setService,
 } from '../../../redux/actions/cameraAction';
 import axiosClient from '../../../services/axiosClient';
+import DropdownComponent from '../../../components/Select/Select';
 import { styles } from './styles';
 const Modal = ({
   screen,
@@ -86,7 +87,7 @@ const Modal = ({
               <View style={styles.modalContent}>
                 <View>
                   <Text style={styles.label}>Tỉnh/Thành phố</Text>
-                  <View style={styles.choose_camera}>
+                  {/* <View style={styles.choose_camera}>
                     <RNPickerSelect
                       placeholder={{
                         // label: listCamera ? listCamera?.data[0]?.CAMERA?.NAME_CAM : 'Tất cả',
@@ -113,36 +114,48 @@ const Modal = ({
                           : []
                       }
                     />
-                  </View>
+                  </View> */}
+                  <DropdownComponent
+                    data1={[
+                      {
+                        label: 'Tất cả',
+                        value: 'All',
+                      },
+                      ...camera.province.map(item => {
+                        return {
+                          // key: item.code,
+                          value: item.code,
+                          label: item.name,
+                        };
+                      }),
+                    ]}
+                    setData={value => {
+                      dispatch(setProvinceCode(value));
+                    }}
+                    value={camera.filter?.province_code}
+                  />
                 </View>
                 <View>
                   <Text style={styles.label}>Quận /Huyện</Text>
-                  <View style={styles.choose_camera}>
-                    <RNPickerSelect
-                      placeholder={{
+                  <DropdownComponent
+                    data1={[
+                      {
                         label: 'Tất cả',
                         value: 'All',
-                      }}
-                      doneText="Lựa chọn"
-                      style={styles}
-                      onValueChange={value => {
-                        dispatch(setDistrictCode(value));
-                        // console.log(screen);
-                      }}
-                      value={camera.filter?.district_code}
-                      items={
-                        camera?.district
-                          ? camera.district.map(item => {
-                            return {
-                              key: item.code,
-                              value: item.code,
-                              label: item.name,
-                            };
-                          })
-                          : []
-                      }
-                    />
-                  </View>
+                      },
+                      ...camera.district.map(item => {
+                        return {
+                          // key: item.code,
+                          value: item.code,
+                          label: item.name,
+                        };
+                      }),
+                    ]}
+                    setData={value => {
+                      dispatch(setDistrictCode(value));
+                    }}
+                    value={camera.filter?.district_code}
+                  />
                 </View>
 
                 <View style={styles.action}>

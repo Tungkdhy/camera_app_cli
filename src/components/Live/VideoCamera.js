@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 
 import {
   InfoIcon,
@@ -7,8 +7,8 @@ import {
   BackIcon2,
 } from '../../components/Icons/Index';
 
-import { setIsFullScreen } from '../../redux/actions/cameraAction';
-import { useDispatch, useSelector } from 'react-redux';
+import {setIsFullScreen} from '../../redux/actions/cameraAction';
+import {useDispatch, useSelector} from 'react-redux';
 import CameraItem from './CameraItem';
 import Video from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
@@ -22,11 +22,12 @@ import {
   Dimensions,
   Platform,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
-import { styles } from './styles';
-import { convertToSecond } from '../../utils';
-import { setNameAI, videoActive } from '../../redux/actions/reportAction';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {styles} from './styles';
+import {convertToSecond, formatTime} from '../../utils';
+import {setNameAI, videoActive} from '../../redux/actions/reportAction';
+import {SafeAreaView} from 'react-native-safe-area-context';
 const VideoCamera = ({
   navigation,
   cameraActive,
@@ -35,6 +36,7 @@ const VideoCamera = ({
   getInfo,
   setCamId,
   type = 'livestream',
+  loading = false,
   change,
 }) => {
   const ref = useRef();
@@ -44,6 +46,7 @@ const VideoCamera = ({
   );
   const [count, setCount] = useState(1);
   const [listPath, setListPath] = useState([]);
+  const [seekVideo, setSeekVideo] = useState(false);
   const [onAndroid, setOnAndroid] = useState(false);
   const reload = useSelector(state => state.useReducer.reload);
   const [showName, setShowName] = useState(true);
@@ -84,17 +87,43 @@ const VideoCamera = ({
       if (cameraActive[0]?.path?.TIME_START) {
         ref.current.seek(
           Number(convertToSecond(stick_time)) -
-          Number(
-            convertToSecond(cameraActive[0]?.path?.TIME_START.split(' ')[1]),
-          ),
+            Number(
+              convertToSecond(cameraActive[0]?.path?.TIME_START.split(' ')[1]),
+            ),
         );
       }
     }
-  }, [data]);
+    if (type === 'livestream' && data?.length > 0) {
+      setSeekVideo(!seekVideo);
+    }
+  }, [data, stick_time]);
+  useEffect(() => {
+    if (
+      type === 'livestream' &&
+      data?.length > 0 &&
+      Platform.OS === 'android'
+    ) {
+      if (ref.current) {
+        const data1 = setTimeout(() => {
+          ref.current?.seek(
+            Number(convertToSecond(formatTime(new Date()))) -
+              Number(
+                convertToSecond(
+                  cameraActive[0]?.data[0]?.LAST_EDIT_PATH?.split(' ')[1],
+                ),
+              ),
+          );
+        }, 5000);
+        return () => {
+          clearTimeout(data1);
+        };
+      }
+    }
+  }, [seekVideo]);
   useEffect(() => {
     if (type !== 'livestream' && cameraActive?.length > 0) {
       setData([]);
-      setTimeout(() => {
+      const setTime = setTimeout(() => {
         setData(cameraActive);
       }, 400);
 
@@ -104,11 +133,15 @@ const VideoCamera = ({
       // ) {
       //   setData(cameraActive);
       // }
+      return () => {
+        clearTimeout(setTime);
+      };
     }
     if (type === 'livestream') {
       setData(cameraActive);
     }
   }, [cameraActive]);
+  // console.log(cameraActive);
   useEffect(() => {
     const data = streamPath.filter(
       (item, index) => index >= (count - 1) * 6 && index < count * 6,
@@ -157,49 +190,51 @@ const VideoCamera = ({
                     style={
                       isFullScreen
                         ? {
-                          flex: 1,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          width: '100%',
-                          height: '100%',
-                        }
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '100%',
+                            height: '100%',
+                          }
                         : {}
                     }
                     onPress={handlePressScreen}>
                     {item.path === 'no-path' ? (
                       <View style={styles.noPath}>
-                        <Text style={{ color: '#fff' }}>Không có video</Text>
+                        <Text style={{color: '#fff'}}>Không có video</Text>
                       </View>
                     ) : (
                       <Video
                         source={{
-                          uri: `http://cameraai.cds.vinorsoft.com/${type}${type === 'playback/'
+                          uri: `http://cameraai.cds.vinorsoft.com/${type}${
+                            type === 'playback/'
                               ? item?.path.PATH
                               : item?.data[0]?.PATH
-                            }`,
+                          }`,
                         }}
                         ref={ref}
                         rate={1.0}
                         volume={1.0}
                         isMuted={false}
                         resizeMode="cover"
-                        shouldPlay={true}
-                        useNativeControls={true}
+                        // shouldPlay={true}
+                        // useNativeControls={true}
                         isLooping
                         poster={
                           type === 'playback/'
                             ? ''
-                            : `http://cameraai.cds.vinorsoft.com/${type}/${item?.data[0]?.PATH.split('/')[1]
-                            }/image.jpg`
+                            : `http://cameraai.cds.vinorsoft.com/${type}/${
+                                item?.data[0]?.PATH.split('/')[1]
+                              }/image.jpg`
                         }
-                        controls={type === 'playback/' ? change : false}
+                        // controls={true}
                         style={
                           isFullScreen
                             ? styles.fullScreen
                             : {
-                              width: '100%',
-                              height: 200,
-                            }
+                                width: '100%',
+                                height: 200,
+                              }
                         }
                       />
                     )}
@@ -213,10 +248,10 @@ const VideoCamera = ({
                               <BackIcon2 />
                             </Pressable>
                           ) : (
-                            type === 'playback/'
-                              ? item.status === 'On'
-                              : item.data[0].STATUS === 'On'
-                          ) ? (
+                              type === 'playback/'
+                                ? item.status === 'On'
+                                : item.data[0].STATUS === 'On'
+                            ) ? (
                             <Status />
                           ) : (
                             <Status color="#FF3300" />
@@ -226,8 +261,8 @@ const VideoCamera = ({
                           <Text
                             style={
                               isFullScreen
-                                ? { fontSize: 14, color: '#fff', paddingLeft: 8 }
-                                : { color: '#000' }
+                                ? {fontSize: 14, color: '#fff', paddingLeft: 8}
+                                : {color: '#000'}
                             }>
                             {item.name}
                           </Text>
@@ -239,21 +274,20 @@ const VideoCamera = ({
                       <>
                         <View style={styles.setting}>
                           <View style={styles.iconSetting}>
-                            <Pressable onPress={() => getInfo(item.code)}>
+                            <TouchableOpacity
+                              onPress={() => getInfo(item.code)}>
                               <InfoIcon />
-                            </Pressable>
+                            </TouchableOpacity>
                           </View>
 
                           {(type === 'livestream' || onAndroid) && (
-                            <Pressable
+                            <TouchableOpacity
                               onPress={handleFullscreen}
                               style={styles.iconSetting}>
-                              <View>
-                                <FullScreenIcon
-                                  color={isFullScreen ? '#fff' : 'black'}
-                                />
-                              </View>
-                            </Pressable>
+                              <FullScreenIcon
+                                color={isFullScreen ? '#fff' : 'black'}
+                              />
+                            </TouchableOpacity>
                           )}
                         </View>
                       </>
@@ -270,8 +304,8 @@ const VideoCamera = ({
         </View>
       }
       {!isFullScreen && type !== 'playback/' && (
-        <SafeAreaView style={{ paddingBottom: 50 }}>
-          <View style={!onAndroid ? { height: '100%' } : { height: '68%' }}>
+        <SafeAreaView style={{paddingBottom: 50}}>
+          <View style={!onAndroid ? {height: '100%'} : {height: '68%'}}>
             <FlatList
               onEndReached={() => {
                 setCount(count + 1);
@@ -279,7 +313,7 @@ const VideoCamera = ({
               onEndReachedThreshold={0}
               data={streamPath}
               scrollEnabled
-              renderItem={({ item, index }) => (
+              renderItem={({item, index}) => (
                 <CameraItem
                   key={index}
                   id={item.code}
@@ -298,7 +332,7 @@ const VideoCamera = ({
               maxHeight={400}
             />
           </View>
-          <View style={{ height: 48 }} />
+          <View style={{height: 48}} />
         </SafeAreaView>
       )}
     </View>

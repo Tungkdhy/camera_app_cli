@@ -14,6 +14,7 @@ import {
   Image,
   Modal,
   Button,
+  TouchableOpacity,
 } from 'react-native';
 import axios from 'axios';
 import {
@@ -94,22 +95,28 @@ const Login = ({ navigation }) => {
     }
   }, [modalSuccess]);
   return (
-    <TouchableWithoutFeedback onPress={() => {
-      // setIsChange(!isChange)
-      Keyboard.dismiss()
-    }}
-    >
-      <View
-        style={styles.container}
-      >
-        <KeyboardAvoidingView enabled={true} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        // setIsChange(!isChange)
+        Keyboard.dismiss();
+      }}>
+      <View style={styles.container}>
+        <KeyboardAvoidingView
+          enabled={true}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <View style={styles.contentLogin}>
             <View style={styles.contentForm}>
-              <Image style={styles.imageBg} source={require('../../assets/images/Background_login.png')} />
+              <Image
+                style={styles.imageBg}
+                source={require('../../assets/images/Background_login.png')}
+              />
               <View style={styles.formLogin}>
                 {!isChange && (
                   <>
-                    <Image style={styles.logo} source={require('../../assets/images/Logo_app.png')} />
+                    <Image
+                      style={styles.logo}
+                      source={require('../../assets/images/Logo_app.png')}
+                    />
                     <Text style={styles.text_header}>Hệ thống Camera AI</Text>
                   </>
                 )}
@@ -212,23 +219,26 @@ const Login = ({ navigation }) => {
                     </Text>
                     <View style={styles.footer}>
                       <Pressable style={styles.button_footer}>
-                        <TouchableHighlight
+                        <TouchableOpacity
                           onPress={() => setModalSuccess(!modalSuccess)}
                           style={styles.login}>
                           <View style={styles.button_footer_item}>
                             <Text style={styles.btnText}>Huỷ bỏ</Text>
                           </View>
-                        </TouchableHighlight>
+                        </TouchableOpacity>
                       </Pressable>
-                      <Pressable style={styles.button_footer}>
-                        <TouchableHighlight
+                     
+                        <TouchableOpacity
                           onPress={() => setModalSuccess(!modalSuccess)}
                           style={styles.login}>
                           <View style={styles.button_footer_item}>
-                            <Text style={{ ...styles.btnText, ...styles.primary }}>Đồng ý</Text>
+                            <Text
+                              style={{ ...styles.btnText, ...styles.primary }}>
+                              Đồng ý
+                            </Text>
                           </View>
-                        </TouchableHighlight>
-                      </Pressable>
+                        </TouchableOpacity>
+               
                     </View>
                   </>
                 )}
@@ -237,7 +247,7 @@ const Login = ({ navigation }) => {
           </Modal>
         </KeyboardAvoidingView>
       </View>
-    </TouchableWithoutFeedback >
+    </TouchableWithoutFeedback>
     // </KeyboardAvoidingView>
   );
 };

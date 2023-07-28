@@ -14,7 +14,6 @@ export const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-
     backgroundColor: 'black',
     zIndex: 1000,
   },
@@ -28,6 +27,7 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+    backgroundColor: 'black',
   },
   active: {
     paddingTop: 12,
@@ -42,10 +42,11 @@ export const styles = StyleSheet.create({
     gap: 4,
     ...Platform.select({
       ios: {
-        paddingTop: 4,
+        paddingTop: 10,
         paddingLeft: 8,
       },
     }),
+    backgroundColor: 'rgba(0,0,0,0.4)',
   },
   info: {
     paddingTop: 8,
@@ -137,7 +138,7 @@ export const styles = StyleSheet.create({
     borderRadius: 4,
     textAlign: 'center',
     fontSize: 12,
-    color: 'black'
+    color: 'black',
   },
   filter: {
     paddingTop: 10,
@@ -169,8 +170,16 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   fullScreen: {
-    width: '100%',
-    height: '100%',
+    ...Platform.select({
+      ios: {
+        height: Dimensions.get('screen').width,
+        width: Dimensions.get('screen').height - 70,
+      },
+      android: {
+        height: Dimensions.get('screen').width,
+        width: '100%',
+      },
+    }),
   },
   time: {
     display: 'flex',

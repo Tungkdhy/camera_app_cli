@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'relative',
-    backgroundColor: '#0040FF'
+    backgroundColor: '#0040FF',
   },
   content: {
     justifyContent: 'center',
@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
     color: '#000000',
     fontSize: 16,
     fontWeight: 700,
-    lineHeight: 24
+    lineHeight: 24,
   },
   countText: {
     color: '#FF00FF',
@@ -71,22 +71,28 @@ export const styles = StyleSheet.create({
   },
   contentLogin: {
     backgroundColor: '#0040FF',
-    height: '100%',
+    // height: '100%',
+    display: 'flex',
+    // flex: 1,
     justifyContent: 'space-between',
   },
   formLogin: {
     padding: 16,
     position: 'absolute',
-    top: 11,
+    flex: 1,
+    height: '80%',
+    // top: 11,
     zIndex: 99,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   logo: {
     alignItems: 'center',
     marginBottom: 24,
+    width: 60,
+    height: 80,
   },
   error: {
     color: 'red',
@@ -150,6 +156,7 @@ export const styles = StyleSheet.create({
   login: {
     marginTop:12,
     backgroundColor: '#fff'
+
   },
   buttonLogin: {
     padding: 12,
@@ -166,7 +173,7 @@ export const styles = StyleSheet.create({
     color: '#ACFCCF',
     fontSize: 16,
     fontWeight: 700,
-    lineHeight: 24
+    lineHeight: 24,
   },
   textLogin: {
     color: '#fff',
@@ -265,10 +272,11 @@ export const styles = StyleSheet.create({
   },
   text_header: {
     color: '#FFF',
-    fontSize: 28,
+    fontSize: 26,
     lineHeight: 39.2,
     fontWeight: 600,
     marginBottom: 24
+
   },
   text_desc: {
     color: 'rgba(255, 255, 255, 0.70)',
@@ -283,11 +291,13 @@ export const styles = StyleSheet.create({
   footer: {
     display: 'flex',
     flexDirection: 'row',
-    width: '100%'
+    width: '100%',
   },
   button_footer: {
     width: '50%',
+
     backgroundColor: 'white'
+
   },
   button_footer_item: {
     backgroundColor: 'transparent',
@@ -309,9 +319,9 @@ export const styles = StyleSheet.create({
     marginTop: -16
   },
   primary: {
-    color: '#F30'
+    color: '#F30',
   },
   iconHeader: {
-    marginTop: 16
-  }
+    marginTop: 16,
+  },
 });

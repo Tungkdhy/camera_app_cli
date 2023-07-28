@@ -7,7 +7,14 @@ import {
 import VideoCamera from '../../../components/Live/VideoCamera';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { View, Text, Modal, Alert, Pressable } from 'react-native';
+import {
+  View,
+  Text,
+  Modal,
+  Alert,
+  Pressable,
+  TouchableOpacity,
+} from 'react-native';
 import { styles } from './styles';
 import streamingClient from '../../../services/axiosStreaming';
 import axiosClient from '../../../services/axiosClient';
@@ -19,6 +26,7 @@ const Live = ({ route, navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [cameraActive, setCameraActive] = useState();
   const [reload, setReload] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [camId, setCamId] = useState();
   const getInfo = async code => {
     try {
@@ -37,6 +45,7 @@ const Live = ({ route, navigation }) => {
     setCamId(route.params.active);
     async function getPath() {
       try {
+        setLoading(true);
         const data = route.params.cam.map(item => {
           return {
             camera_code: item?.CODE,
@@ -50,8 +59,11 @@ const Live = ({ route, navigation }) => {
             },
           },
         );
+
         dispatch(getPathStream(res.stream));
+        setLoading(false);
       } catch (e) {
+        console.log(e);
         Alert.alert('Lấy danh sách đường dẫn ko thành công');
       }
     }
@@ -63,6 +75,7 @@ const Live = ({ route, navigation }) => {
       clearInterval(getPath1);
     };
   }, []);
+  console.log(loading);
   useEffect(() => {
     const camActive = streamPath.filter(item => {
       return item.code === camId;
@@ -83,11 +96,11 @@ const Live = ({ route, navigation }) => {
           <View style={styles.modalView}>
             <View style={styles.modalHeader}>
               <Text style={styles.titleHeader}>Thông tin camera</Text>
-              <Text
+              <TouchableOpacity
                 onPress={() => setModalVisible(false)}
                 style={styles.iconModal}>
                 <Close />
-              </Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.modalContent}>
               <View style={styles.infoItem}>
@@ -112,21 +125,21 @@ const Live = ({ route, navigation }) => {
                   </Text>
                 </View>
               </View>
-              <View style={styles.infoItem}>
+              {/* <View style={styles.infoItem}>
                 <View style={styles.titleInfo}>
                   <Text style={styles.title}>Đướng dẫn RPST</Text>
                 </View>
-                <View >
+                <View>
                   <Text style={styles.descriptionInfo}>
                     {cameraInfo.length > 0 && cameraInfo[0]?.RTSP_CHINH}
                   </Text>
                 </View>
-              </View>
+              </View> */}
               <View style={styles.infoItem}>
                 <View style={styles.titleInfo}>
                   <Text style={styles.title}>Nguồn</Text>
                 </View>
-                <View >
+                <View>
                   <Text style={styles.descriptionInfo}>Chính</Text>
                 </View>
               </View>
@@ -134,7 +147,7 @@ const Live = ({ route, navigation }) => {
                 <View style={styles.titleInfo}>
                   <Text style={styles.title}>Độ phân giải</Text>
                 </View>
-                <View >
+                <View>
                   <Text style={styles.descriptionInfo}>
                     {cameraInfo.length > 0 && cameraInfo[0]?.MAIN_SOURCE}
                   </Text>
@@ -144,7 +157,7 @@ const Live = ({ route, navigation }) => {
                 <View style={styles.titleInfo}>
                   <Text style={styles.title}>Trạng thái</Text>
                 </View>
-                <View >
+                <View>
                   <Text style={styles.descriptionInfo}>
                     {cameraInfo.length > 0 && cameraInfo[0]?.STATUS === 'On'
                       ? 'Đang hoạt động'
@@ -157,13 +170,13 @@ const Live = ({ route, navigation }) => {
         </View>
       </Modal>
       <View style={styles.header}>
-        <Pressable
+        <TouchableOpacity
           onPress={() => {
             dispatch(getPathStream([]));
-            navigation.navigate('Stream');
+            navigation.goBack();
           }}>
           <Back />
-        </Pressable>
+        </TouchableOpacity>
         <Text style={styles.text}>
           {route && route.params && route.params.wareHouse
             ? route.params.wareHouse
@@ -179,6 +192,7 @@ const Live = ({ route, navigation }) => {
         getInfo={getInfo}
         setCamId={setCamId}
         reload={reload}
+        loading={loading}
       />
     </View>
   );

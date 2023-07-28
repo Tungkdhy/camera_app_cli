@@ -220,7 +220,7 @@ export default function Smart({ navigation, ...props }) {
             ai_service_code: report.filter?.ai_code,
           }
           : {};
-
+        console.log(report.filter?.ai_code);
         const already = {
           ...serviceCode,
           ai_already: report.filter?.isBG ? 1 : 0,

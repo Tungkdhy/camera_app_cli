@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderBottomRightRadius: 8,
         borderBottomLeftRadius: 8,
+        paddingBottom: 0,
         // maxHeight: '100%',
         marginBottom: 8,
     },
@@ -14,7 +15,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         gap: 8,
     },
-    // header 
+    // header
     title: {
         fontWeight: '700',
         fontSize: 16,
@@ -39,9 +40,9 @@ export const styles = StyleSheet.create({
     // content
     content: {
         marginTop: 12,
-        marginBottom: 17,
+        // marginBottom: 17,
         paddingTop: 12,
-        maxHeight: '100%'
+        maxHeight: '100%',
     },
     item: {
         padding: 16,
@@ -54,7 +55,7 @@ export const styles = StyleSheet.create({
         padding: 16,
         backgroundColor: 'rgba(20, 30, 210, 0.2)',
         borderRadius: 4,
-        position: 'relative'
+        position: 'relative',
     },
     title: {
         fontSize: 16,
@@ -88,12 +89,12 @@ export const styles = StyleSheet.create({
     },
     // bottom
     buttonMore: {
-        // width: '100%', 
+        // width: '100%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         padding: 12,
         alignItems: 'center',
-        gap: 16
+        gap: 16,
     },
 });

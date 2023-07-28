@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Pressable } from 'react-native';
+import { View, Text, FlatList, Pressable, ActivityIndicator } from 'react-native';
 import { styles } from './styles';
 import { cameraManagement } from '../../../services/api/cameraManagementApi';
 import { useCallback, useEffect, useState } from 'react';
@@ -9,6 +9,7 @@ import {
   OnlineIcon,
   UpIconSolid,
 } from '../../../components/Icons/Index';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 function ListCamera({ navigation }) {
   const [listCamera, setListCamera] = useState([]);
@@ -16,8 +17,10 @@ function ListCamera({ navigation }) {
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
   const [refresh, setRefresh] = useState(false);
+  const [loading, setLoading] = useState(false);
   const getListCamera = useCallback(async () => {
     try {
+      setLoading(true);
       let param = {
         camera_status: 'On',
         page: page,
@@ -25,8 +28,12 @@ function ListCamera({ navigation }) {
       };
       const res = await cameraManagement.getListCamera(param);
       setCount(res.count);
+      setLoading(false);
+
       return res.data;
     } catch (error) {
+      setLoading(false);
+
       console.log(error);
     }
   }, [page]);
@@ -71,6 +78,7 @@ function ListCamera({ navigation }) {
   useEffect(() => {
     const getData = async () => {
       try {
+        console.log(page);
         const listCam = await getListCamera();
         let listData = listCam?.map(item => {
           return item.CAMERA;
@@ -78,7 +86,7 @@ function ListCamera({ navigation }) {
         if (listCamera.length < 50) {
           setListCamera(listData);
         } else {
-          setListCamera(prev => [...prev, ...listData]);
+          setListCamera(prev => [...listData]);
         }
         getListPath(listCam);
       } catch (error) {
@@ -136,14 +144,23 @@ function ListCamera({ navigation }) {
             }}
             keyExtractor={(item, index) => index}
           />
+          <View>{loading && <ActivityIndicator />}</View>
           <View style={styles.buttonMore}>
-            <Pressable onPress={showMore} style={{ height: 12, width: 12 }}>
-              {listPath.length < 50 ? <DownIconSolid /> : <UpIconSolid />}
-            </Pressable>
-            {listPath.length >= 50 && (
-              <Pressable onPress={onViewMore}>
-                <Text style={{ color: '#0040FF' }}>Đến xem trực tiếp</Text>
-              </Pressable>
+            {!loading && (
+              <>
+                <TouchableOpacity
+                  onPress={showMore}
+                  ststyle={{ padding: 16, paddingTop: 8 }}>
+                  {listPath.length < 50 ? <DownIconSolid /> : <UpIconSolid />}
+                </TouchableOpacity>
+                {listPath.length >= 50 && (
+                  <TouchableOpacity onPress={onViewMore}>
+                    <Text style={{ color: '#0040FF', paddingTop: 8 }}>
+                      Đến xem trực tiếp
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </>
             )}
           </View>
         </View>

@@ -1,17 +1,27 @@
-import { FlatList, Pressable, ScrollView, Text, View } from 'react-native';
+import {
+    FlatList,
+    Pressable,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import { styles } from './styles';
 import { useCallback, useEffect, useState } from 'react';
 import { notificationsAPI } from '../../../services/api/notifiations';
 import { DownIconSolid, UpIconSolid } from '../../../components/Icons/Index';
 import NotificationItem from './NotificationItem';
+import { ActivityIndicator } from 'react-native';
 
 function NewNotification({ navigation }) {
     const [listNotification, setListNotification] = useState([]);
     const [page, setPage] = useState(1);
     const [size, setSize] = useState(2);
     const [count, setCount] = useState(1);
+    const [loading, setLoading] = useState(false);
     const getListNotification = useCallback(async () => {
         try {
+            setLoading(true);
             let params = {
                 page: page,
                 size: size,
@@ -24,12 +34,15 @@ function NewNotification({ navigation }) {
             } else {
                 setListNotification(res?.data);
             }
+            setLoading(false);
         } catch (error) {
             console.log(error);
+            setLoading(false);
         }
     }, [page, size]);
 
     const showMore = () => {
+        console.log('tung');
         if (listNotification?.length < 50) {
             if (size === 4) {
                 setSize(10);
@@ -73,10 +86,21 @@ function NewNotification({ navigation }) {
                     keyExtractor={(item, index) => index}
                     maxHeight={'100%'}
                 />
+                <View>{loading && <ActivityIndicator style={{ paddingTop: 8 }} />}</View>
                 <View style={styles.buttonMore}>
-                    <Pressable onPress={showMore} style={{ height: 12, width: 12 }}>
-                        {listNotification.length < 50 ? <DownIconSolid /> : <UpIconSolid />}
-                    </Pressable>
+                    {loading ? (
+                        <></>
+                    ) : (
+                        <TouchableOpacity
+                            onPress={showMore}
+                            style={{ padding: 16, paddingTop: 8 }}>
+                            {listNotification.length < 50 ? (
+                                <DownIconSolid />
+                            ) : (
+                                <UpIconSolid />
+                            )}
+                        </TouchableOpacity>
+                    )}
                     {listNotification.length >= 50 && (
                         <Pressable onPress={onViewMore}>
                             <Text style={{ color: '#0040FF' }}>Xem thêm trong thông báo</Text>

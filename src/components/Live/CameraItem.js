@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Pressable, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { setReload } from '../../redux/actions/cameraAction';
 import { styles } from './styles';
@@ -22,7 +22,7 @@ const CameraItem = ({ title, path, setCamId, id, type }) => {
   }, [path]);
   const dispatch = useDispatch();
   return (
-    <Pressable
+    <TouchableOpacity
       onPress={() => {
         setCamId(id, title);
         dispatch(setReload(true));
@@ -49,7 +49,7 @@ const CameraItem = ({ title, path, setCamId, id, type }) => {
       <Text onPress={() => setCamId(id)} style={styles.nameCamera}>
         {title}
       </Text>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 

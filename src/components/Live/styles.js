@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-    backgroundColor: '#333',
+    backgroundColor: 'black',
   },
   text: {
     padding: 10,
@@ -183,8 +183,16 @@ export const styles = StyleSheet.create({
     // minWidth: Dimensions.get('window').height,
     // minHeight: Dimensions.get('window').width,
     // width: Dimensions.get('screen').height - 120,
-    height: Dimensions.get('screen').width,
-    width: '100%',
+    ...Platform.select({
+      ios: {
+        height: Dimensions.get('screen').width,
+        width: Dimensions.get('screen').height - 70,
+      },
+      android: {
+        height: Dimensions.get('screen').width,
+        width: '100%',
+      },
+    }),
   },
   noPath: {
     width: '100%',
