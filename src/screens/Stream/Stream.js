@@ -33,6 +33,7 @@ export default function Stream({ navigation, ...props }) {
   const wareHouse = useSelector(state => state.wareHouseReducer);
   const [search, setSearch] = useState('');
   const [isShowSearch, setIsShowSearch] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleShowSearch = () => {
     setIsShowSearch(!isShowSearch);
   };
@@ -165,8 +166,9 @@ export default function Stream({ navigation, ...props }) {
           },
         );
         dispatch(getListWareHouse(res));
+        setLoading(false)
       } catch (e) {
-        console.log(e);
+        setLoading(false)
       }
     }
     getLocation();

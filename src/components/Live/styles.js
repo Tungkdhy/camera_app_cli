@@ -120,8 +120,9 @@ export const styles = StyleSheet.create({
     marginRight: 8,
   },
   nameCamera: {
-    paddingTop: 4,
+    paddingLeft: 4,
     color: '#000',
+    marginTop: -2
   },
   imageItem: {
     width: '100%',
@@ -225,4 +226,9 @@ export const styles = StyleSheet.create({
     flex: 1,
     height: 240,
   },
+  name_label: {
+    display: 'flex',
+    flexDirection: 'row',
+    paddingTop: 4
+  }
 });
