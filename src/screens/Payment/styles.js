@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
+
     backgroundColor: 'black',
     zIndex: 1000,
   },
@@ -27,7 +28,6 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'black',
   },
   active: {
     paddingTop: 12,

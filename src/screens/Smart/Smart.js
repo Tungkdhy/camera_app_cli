@@ -8,6 +8,7 @@ import {
   TouchableNativeFeedback,
   KeyboardAvoidingView,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import Header from '../../components/Header/Header';
 import { useEffect, useState } from 'react';
@@ -42,7 +43,7 @@ export default function Smart({ navigation, ...props }) {
   const handleShowSearch = () => {
     setIsShowSearch(!isShowSearch);
   };
-  const [stateWareCode, setStateWareHouseCode]= useState();
+  const [stateWareCode, setStateWareHouseCode] = useState();
 
   // console.log(report.filter);
   //Show filterlog
@@ -91,10 +92,10 @@ export default function Smart({ navigation, ...props }) {
       setCode2(code);
       if (code === stateWareCode) {
         dispatch(setWareHouseCode(''));
-        setStateWareHouseCode('')
+        setStateWareHouseCode('');
       } else {
         dispatch(setWareHouseCode(code));
-        setStateWareHouseCode(code)
+        setStateWareHouseCode(code);
       }
     } catch (e) {
       console.log(e);
@@ -162,6 +163,7 @@ export default function Smart({ navigation, ...props }) {
     //Get warehouse
     async function getLocation() {
       try {
+        setLoading(true);
         const province =
           report.filter?.province_code !== 'All'
             ? {
@@ -191,9 +193,12 @@ export default function Smart({ navigation, ...props }) {
             },
           },
         );
-        console.log(res);
+
         dispatch(setListCamera(res));
+        setLoading(false);
       } catch (e) {
+        setLoading(false);
+
         console.log(e);
       }
     }
@@ -337,28 +342,34 @@ export default function Smart({ navigation, ...props }) {
           record={camera.filter.record_status}
           onClick={handleShowFilter}
         />
-        <ScrollView style={styles.camera}>
-          {wareHouse?.camera.length > 0 ? (
-            <FlatList
-              data={wareHouse?.camera}
-              renderItem={renderItem}
-              keyExtractor={item => item.CODE}
-              onEndReachedThreshold={0}
-              accessibilityElementsHidden
-            />
-          ) : (
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                height: 500,
-              }}>
-              <Text>Không có dữ liệu</Text>
-            </View>
-          )}
-        </ScrollView>
+        {loading ? (
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+            <ActivityIndicator />
+          </View>
+        ) : (
+          <ScrollView style={styles.camera}>
+            {wareHouse?.camera.length > 0 ? (
+              <FlatList
+                data={wareHouse?.camera}
+                renderItem={renderItem}
+                keyExtractor={item => item.CODE}
+                onEndReachedThreshold={0}
+                accessibilityElementsHidden
+              />
+            ) : (
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  height: 500,
+                }}>
+                <Text>Không có dữ liệu</Text>
+              </View>
+            )}
+          </ScrollView>
+        )}
       </View>
     </>
   );
@@ -369,4 +380,4 @@ export default function Smart({ navigation, ...props }) {
 // - Fix màn thông tin camera
 // - Fix icon và tên app
 // - Fix  lọc sự kiện tất cả ko có dữ liệu, bỏ trường này đi và bỏ cả cái nhận dạng khuôn mặt
-// - FIx luu state 
+// - FIx luu state

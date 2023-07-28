@@ -49,17 +49,20 @@ export const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: 'rgba(0, 0, 0, 0.05)',
         borderStyle: 'solid',
+        paddingTop: 4,
         paddingBottom: 4,
     },
     legend_color: {
         width: 8,
         height: 8,
         borderRadius: 2,
-        marginTop: 7,
+        // marginTop: 7,
     },
     label_legend: {
         display: 'flex',
         flexDirection: 'row',
+        gap: 6,
+        alignItems: 'center',
     },
     // title: {
     //     marginLeft: 8,

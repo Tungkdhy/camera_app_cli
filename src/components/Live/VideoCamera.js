@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
   InfoIcon,
@@ -7,8 +7,8 @@ import {
   BackIcon2,
 } from '../../components/Icons/Index';
 
-import {setIsFullScreen} from '../../redux/actions/cameraAction';
-import {useDispatch, useSelector} from 'react-redux';
+import { setIsFullScreen } from '../../redux/actions/cameraAction';
+import { useDispatch, useSelector } from 'react-redux';
 import CameraItem from './CameraItem';
 import Video from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
@@ -24,10 +24,10 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import {styles} from './styles';
-import {convertToSecond, formatTime} from '../../utils';
-import {setNameAI, videoActive} from '../../redux/actions/reportAction';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { styles } from './styles';
+import { convertToSecond, formatTime } from '../../utils';
+import { setNameAI, videoActive } from '../../redux/actions/reportAction';
+import { SafeAreaView } from 'react-native-safe-area-context';
 const VideoCamera = ({
   navigation,
   cameraActive,
@@ -87,16 +87,16 @@ const VideoCamera = ({
       if (cameraActive[0]?.path?.TIME_START) {
         ref.current.seek(
           Number(convertToSecond(stick_time)) -
-            Number(
-              convertToSecond(cameraActive[0]?.path?.TIME_START.split(' ')[1]),
-            ),
+          Number(
+            convertToSecond(cameraActive[0]?.path?.TIME_START.split(' ')[1]),
+          ),
         );
       }
     }
     if (type === 'livestream' && data?.length > 0) {
       setSeekVideo(!seekVideo);
     }
-  }, [data, stick_time]);
+  }, [data]);
   useEffect(() => {
     if (
       type === 'livestream' &&
@@ -107,11 +107,11 @@ const VideoCamera = ({
         const data1 = setTimeout(() => {
           ref.current?.seek(
             Number(convertToSecond(formatTime(new Date()))) -
-              Number(
-                convertToSecond(
-                  cameraActive[0]?.data[0]?.LAST_EDIT_PATH?.split(' ')[1],
-                ),
+            Number(
+              convertToSecond(
+                cameraActive[0]?.data[0]?.LAST_EDIT_PATH?.split(' ')[1],
               ),
+            ),
           );
         }, 5000);
         return () => {
@@ -190,27 +190,26 @@ const VideoCamera = ({
                     style={
                       isFullScreen
                         ? {
-                            flex: 1,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            width: '100%',
-                            height: '100%',
-                          }
+                          flex: 1,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          width: '100%',
+                          height: '100%',
+                        }
                         : {}
                     }
                     onPress={handlePressScreen}>
                     {item.path === 'no-path' ? (
                       <View style={styles.noPath}>
-                        <Text style={{color: '#fff'}}>Không có video</Text>
+                        <Text style={{ color: '#fff' }}>Không có video</Text>
                       </View>
                     ) : (
                       <Video
                         source={{
-                          uri: `http://cameraai.cds.vinorsoft.com/${type}${
-                            type === 'playback/'
+                          uri: `http://cameraai.cds.vinorsoft.com/${type}${type === 'playback/'
                               ? item?.path.PATH
                               : item?.data[0]?.PATH
-                          }`,
+                            }`,
                         }}
                         ref={ref}
                         rate={1.0}
@@ -223,18 +222,17 @@ const VideoCamera = ({
                         poster={
                           type === 'playback/'
                             ? ''
-                            : `http://cameraai.cds.vinorsoft.com/${type}/${
-                                item?.data[0]?.PATH.split('/')[1]
-                              }/image.jpg`
+                            : `http://cameraai.cds.vinorsoft.com/${type}/${item?.data[0]?.PATH.split('/')[1]
+                            }/image.jpg`
                         }
                         // controls={true}
                         style={
                           isFullScreen
                             ? styles.fullScreen
                             : {
-                                width: '100%',
-                                height: 200,
-                              }
+                              width: '100%',
+                              height: 200,
+                            }
                         }
                       />
                     )}
@@ -248,10 +246,10 @@ const VideoCamera = ({
                               <BackIcon2 />
                             </Pressable>
                           ) : (
-                              type === 'playback/'
-                                ? item.status === 'On'
-                                : item.data[0].STATUS === 'On'
-                            ) ? (
+                            type === 'playback/'
+                              ? item.status === 'On'
+                              : item.data[0].STATUS === 'On'
+                          ) ? (
                             <Status />
                           ) : (
                             <Status color="#FF3300" />
@@ -261,8 +259,8 @@ const VideoCamera = ({
                           <Text
                             style={
                               isFullScreen
-                                ? {fontSize: 14, color: '#fff', paddingLeft: 8}
-                                : {color: '#000'}
+                                ? { fontSize: 14, color: '#fff', paddingLeft: 8 }
+                                : { color: '#000' }
                             }>
                             {item.name}
                           </Text>
@@ -304,8 +302,8 @@ const VideoCamera = ({
         </View>
       }
       {!isFullScreen && type !== 'playback/' && (
-        <SafeAreaView style={{paddingBottom: 50}}>
-          <View style={!onAndroid ? {height: '100%'} : {height: '68%'}}>
+        <SafeAreaView style={{ paddingBottom: 50 }}>
+          <View style={!onAndroid ? { height: '100%' } : { height: '68%' }}>
             <FlatList
               onEndReached={() => {
                 setCount(count + 1);
@@ -313,7 +311,7 @@ const VideoCamera = ({
               onEndReachedThreshold={0}
               data={streamPath}
               scrollEnabled
-              renderItem={({item, index}) => (
+              renderItem={({ item, index }) => (
                 <CameraItem
                   key={index}
                   id={item.code}
@@ -332,7 +330,7 @@ const VideoCamera = ({
               maxHeight={400}
             />
           </View>
-          <View style={{height: 48}} />
+          <View style={{ height: 48 }} />
         </SafeAreaView>
       )}
     </View>

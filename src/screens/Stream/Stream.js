@@ -7,7 +7,11 @@ import {
   Pressable,
   TouchableNativeFeedback,
   KeyboardAvoidingView,
+  ActivityIndicator,
+  AppState,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
+
 import Header from '../../components/Header/Header';
 import { useEffect, useState } from 'react';
 import Filter from '../../components/Filter/Filter';
@@ -27,6 +31,8 @@ import { styles } from './style';
 
 export default function Stream({ navigation, ...props }) {
   const dispatch = useDispatch();
+  // const ref = React.useRef(AppState.currentState);
+  // console.log('ref', ref);
   // const [screen, setScreen] = useState(props.route.name);
   const [isProvince, setIsProvince] = useState(true);
   const camera = useSelector(state => state.useReducer);
@@ -37,8 +43,8 @@ export default function Stream({ navigation, ...props }) {
   const handleShowSearch = () => {
     setIsShowSearch(!isShowSearch);
   };
-  const [stateWareCode, setStateWareHouseCode]= useState();
-   //Show filterlog
+  const [stateWareCode, setStateWareHouseCode] = useState();
+  //Show filterlog
   // console.log(wareHouse);
   const [modalVisible, setModalVisible] = useState(false);
   const handleSetShowModal = () => {
@@ -65,10 +71,10 @@ export default function Stream({ navigation, ...props }) {
   const handleShowCamera = code => {
     if (code === stateWareCode) {
       dispatch(setWareHouseCode(''));
-      setStateWareHouseCode('')
+      setStateWareHouseCode('');
     } else {
       dispatch(setWareHouseCode(code));
-      setStateWareHouseCode(code)
+      setStateWareHouseCode(code);
     }
   };
   // Navigate form select district
@@ -141,6 +147,12 @@ export default function Stream({ navigation, ...props }) {
     //Get warehouse
     async function getLocation() {
       try {
+        setLoading(true);
+        // Toast.show({
+        //   type: 'success',
+        //   text1: 'Hello',
+        //   text2: 'This is some something 👋',
+        // });
         const province =
           camera.filter?.province_code !== 'All'
             ? {
@@ -165,10 +177,11 @@ export default function Stream({ navigation, ...props }) {
             },
           },
         );
-        dispatch(getListWareHouse(res));
-        setLoading(false)
+        dispatch(getListWareHouse(res)
+        setLoading(false);
       } catch (e) {
-        setLoading(false)
+        setLoading(false);
+        console.log(e);
       }
     }
     getLocation();
@@ -260,28 +273,40 @@ export default function Stream({ navigation, ...props }) {
           onClick={handleShowFilter}
         />
         {/* <ScrollView> */}
-        <ScrollView style={styles.camera}>
-          {wareHouse?.wareHouse.length > 0 ? (
-            <FlatList
-              data={wareHouse?.wareHouse}
-              renderItem={renderItem}
-              keyExtractor={item => item.CODE}
-              onEndReachedThreshold={0}
-              accessibilityElementsHidden
-            />
-          ) : (
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                height: 500,
-              }}>
-              <Text>Không có dữ liệu</Text>
-            </View>
-          )}
-        </ScrollView>
+        {loading ? (
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+            }}>
+            <ActivityIndicator />
+          </View>
+        ) : (
+          <ScrollView style={styles.camera}>
+            {wareHouse?.wareHouse.length > 0 ? (
+              <FlatList
+                data={wareHouse?.wareHouse}
+                renderItem={renderItem}
+                keyExtractor={item => item.CODE}
+                onEndReachedThreshold={0}
+                accessibilityElementsHidden
+              />
+            ) : (
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  height: 500,
+                }}>
+                <Text>Không có dữ liệu</Text>
+              </View>
+            )}
+          </ScrollView>
+        )}
         {/* </ScrollView> */}
       </View>
     </>

@@ -1,5 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Pressable, View, Text, ScrollView } from 'react-native';
+import {
+  Pressable,
+  View,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import { Back } from '../../components/Icons/Index';
 import axiosClient from '../../services/axiosClient';
 import { styles } from './styles';
@@ -13,14 +19,15 @@ function Notification({ route, navigation }) {
   const [reGetData, setReGetData] = useState(false);
   const [smartReport, setSmartReport] = useState(false);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if(route?.params && route?.params?.isSmart) {
-      setSmartReport(route?.params?.isSmart)
+    if (route?.params && route?.params?.isSmart) {
+      setSmartReport(route?.params?.isSmart);
     }
-  }, [route])
-  const groupNotification = useCallback((data )=> {
+  }, [route]);
+  const groupNotification = useCallback(data => {
     const arrayFormatDay = data.map(item => {
       return {
         ...item,
@@ -46,10 +53,11 @@ function Notification({ route, navigation }) {
       };
     });
     return dataFormat;
-  }, [])
+  }, []);
 
   useEffect(() => {
     const getNotification = async () => {
+      setLoading(true);
       const res = await axiosClient.get(
         `/notification/get-list-notification/?page=${page}&size=10&type=${smartReport ? 'AI' : 'STATUS'
         }`,
@@ -90,6 +98,7 @@ function Notification({ route, navigation }) {
           }
         }
       }
+      setLoading(false);
     };
     getNotification();
   }, [reGetData, page, smartReport, groupNotification]);
@@ -136,7 +145,11 @@ function Notification({ route, navigation }) {
               ? { ...styles.button, ...styles.button_active }
               : { ...styles.button }
           }
-          onPress={() => setSmartReport(false)}>
+          onPress={() => {
+            setListNotificationSmart([]);
+            setSmartReport(false);
+            setPage(1);
+          }}>
           <Text
             style={
               !smartReport
@@ -147,7 +160,11 @@ function Notification({ route, navigation }) {
           </Text>
         </Pressable>
         <Pressable
-          onPress={() => setSmartReport(true)}
+          onPress={() => {
+            setListNotificationSystem([]);
+            setSmartReport(true);
+            setPage(1);
+          }}
           style={
             smartReport
               ? { ...styles.button, ...styles.button_active }
@@ -182,13 +199,12 @@ function Notification({ route, navigation }) {
                               onPress={() =>
                                 handleCheckNotification(item.CODE, item)
                               }>
-                              <View
-                                style={
-                                  { ...styles.item, ...styles.new }
-                                }>
+                              <View style={{ ...styles.item, ...styles.new }}>
                                 <Text style={styles.time}>{item.TIME}</Text>
                                 <Text style={styles.name}>{item.NAME}</Text>
-                                <Text style={styles.title}>{item.DETAIL}</Text>
+                                <Text style={styles.title}>
+                                  {item.DETAIL}
+                                </Text>
                                 <View style={styles.tick} />
                               </View>
                             </Pressable>
@@ -203,14 +219,12 @@ function Notification({ route, navigation }) {
                               onPress={() =>
                                 handleCheckNotification(item.CODE, item)
                               }>
-                              <View
-                                style={
-                                  { ...styles.item }
-                                }>
+                              <View style={{ ...styles.item }}>
                                 <Text style={styles.time}>{item.TIME}</Text>
                                 <Text style={styles.name}>{item.NAME}</Text>
-                                <Text style={styles.title}>{item.DETAIL}</Text>
-
+                                <Text style={styles.title}>
+                                  {item.DETAIL}
+                                </Text>
                               </View>
                             </Pressable>
                           );
@@ -231,11 +245,10 @@ function Notification({ route, navigation }) {
                         return (
                           <Pressable
                             key={item.CODE}
-                            onPress={() => handleCheckNotification(item.CODE)}>
-                            <View
-                              style={
-                                { ...styles.item, ...styles.new }
-                              }>
+                            onPress={() =>
+                              handleCheckNotification(item.CODE)
+                            }>
+                            <View style={{ ...styles.item, ...styles.new }}>
                               <Text style={styles.time}>{item.TIME}</Text>
                               <Text style={styles.name}>{item.NAME}</Text>
                               <Text style={styles.title}>{item.DETAIL}</Text>
@@ -250,11 +263,10 @@ function Notification({ route, navigation }) {
                         return (
                           <Pressable
                             key={item.CODE}
-                            onPress={() => handleCheckNotification(item.CODE)}>
-                            <View
-                              style={
-                                { ...styles.item }
-                              }>
+                            onPress={() =>
+                              handleCheckNotification(item.CODE)
+                            }>
+                            <View style={{ ...styles.item }}>
                               <Text style={styles.time}>{item.TIME}</Text>
                               <Text style={styles.name}>{item.NAME}</Text>
                               <Text style={styles.title}>{item.DETAIL}</Text>
@@ -267,9 +279,14 @@ function Notification({ route, navigation }) {
                 </View>
               );
             })}
+          {loading && (
+            <View style={{ display: 'flex', flex: 1, justifyContent: 'center' }}>
+              <ActivityIndicator />
+            </View>
+          )}
         </ScrollView>
       </View>
-    </View >
+    </View>
   );
 }
 
