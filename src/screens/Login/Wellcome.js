@@ -9,8 +9,10 @@ const Wellcome = ({ navigation }) => {
   React.useEffect(() => {
     let login = async () => {
       const token = await AsyncStorage.getItem('token');
-      if (token) {
-        const resetAction = StackActions.replace('Home');
+      const userName = await AsyncStorage.getItem('userName');
+      const taxCode = await AsyncStorage.getItem('companyCode');
+      if (token && userName && taxCode) {
+        const resetAction = StackActions.replace('LoginFirst');
         navigation.dispatch(resetAction);
       } else {
         const resetAction = StackActions.replace('Login');
@@ -42,15 +44,6 @@ const Wellcome = ({ navigation }) => {
       <View style={styles.content}>
         <Image source={LogoApp} />
         <Text style={styles.text}>Hệ thống Camera AI</Text>
-        {/* <Text style={styles.description}>Giải pháp số hoá Camera AI</Text>
-
-        <View style={styles.actions}>
-          <TouchableHighlight onPress={() => getToken()} style={styles.touch}>
-            <View style={styles.button}>
-              <Text style={styles.btnText}>Đăng nhập</Text>
-            </View>
-          </TouchableHighlight>
-        </View> */}
       </View>
     </View>
   );

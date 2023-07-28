@@ -7,6 +7,7 @@ import {
   Pressable,
   TouchableNativeFeedback,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from 'react-native';
 import Header from '../../components/Header/Header';
 import { useEffect, useState } from 'react';
@@ -37,8 +38,8 @@ export default function Stream({ navigation, ...props }) {
   const handleShowSearch = () => {
     setIsShowSearch(!isShowSearch);
   };
-  const [stateWareCode, setStateWareHouseCode]= useState();
-   //Show filterlog
+  const [stateWareCode, setStateWareHouseCode] = useState();
+  //Show filterlog
   // console.log(wareHouse);
   const [modalVisible, setModalVisible] = useState(false);
   const handleSetShowModal = () => {
@@ -139,6 +140,7 @@ export default function Stream({ navigation, ...props }) {
   // console.log(props.route.name);
   useEffect(() => {
     //Get warehouse
+    setLoading(true)
     async function getLocation() {
       try {
         const province =
@@ -208,6 +210,7 @@ export default function Stream({ navigation, ...props }) {
     }
     getProvince();
   }, [camera.filterLocate?.province]);
+  console.log('aaa');
   useEffect(() => {
     navigation.addListener('beforeRemove', e => {
       // Prevent default behavior of leaving the screen
@@ -261,24 +264,32 @@ export default function Stream({ navigation, ...props }) {
         />
         {/* <ScrollView> */}
         <ScrollView style={styles.camera}>
-          {wareHouse?.wareHouse.length > 0 ? (
-            <FlatList
-              data={wareHouse?.wareHouse}
-              renderItem={renderItem}
-              keyExtractor={item => item.CODE}
-              onEndReachedThreshold={0}
-              accessibilityElementsHidden
-            />
+          {!loading ? (
+            <>
+              {wareHouse?.wareHouse.length > 0 ? (
+                <FlatList
+                  data={wareHouse?.wareHouse}
+                  renderItem={renderItem}
+                  keyExtractor={item => item.CODE}
+                  onEndReachedThreshold={0}
+                  accessibilityElementsHidden
+                />
+              ) : (
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    height: 500,
+                  }}>
+                  <Text>Không có dữ liệu</Text>
+                </View>
+              )}
+            </>
           ) : (
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                height: 500,
-              }}>
-              <Text>Không có dữ liệu</Text>
+            <View style={styles.loading}>
+              <ActivityIndicator />
             </View>
           )}
         </ScrollView>

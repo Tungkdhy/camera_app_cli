@@ -342,7 +342,7 @@ export const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 600,
     lineHeight: 39.2,
-    color: "#FFF"
+    color: "#FFF",
   },
   other_account: {
     marginTop: 'auto',

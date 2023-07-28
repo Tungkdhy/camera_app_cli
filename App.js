@@ -24,6 +24,7 @@ import EditInfo from './src/screens/Info/EditInfo/Edit';
 import ChangePasswordInfo from './src/screens/Info/ChangePasswordInfo/ChangePasswordInfo';
 import Dashboard from './src/screens/Dashboard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LoginFirst from './src/screens/LoginFirst/LoginFirst';
 
 // import MapScreen from './src/screens/Map/MapScreen';
 // import requestUserPermission from './src/utils/FCM_helper';
@@ -50,6 +51,7 @@ export default function App() {
           initialRouteName={'Wellcom'}
           screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="LoginFirst" component={LoginFirst} />
           <Stack.Screen name="Wellcom" component={Wellcome} />
           <Stack.Screen name="Home" component={MainContainer} />
           <Stack.Screen name="Forgot" component={Forgot} />

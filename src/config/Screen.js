@@ -4,6 +4,7 @@ import Forgot from "../screens/ChangePassWord/ChangePassword";
 import Login from "../screens/Login/Login";
 import Map from "../screens/Home/Map/Map";
 import Dashboard from "../screens/Dashboard";
+import LoginFirst from "../screens/LoginFirst/LoginFirst";
 
 export const screen = [
     {
@@ -35,5 +36,10 @@ export const screen = [
         name: "Dashboard",
         component: Dashboard,
         layout: true
+    },
+    {
+        name: "LoginFirst",
+        component: LoginFirst,
+        layout: false
     },
 ]

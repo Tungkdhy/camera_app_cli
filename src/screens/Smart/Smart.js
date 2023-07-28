@@ -338,7 +338,9 @@ export default function Smart({ navigation, ...props }) {
           onClick={handleShowFilter}
         />
         <ScrollView style={styles.camera}>
-          {wareHouse?.camera.length > 0 ? (
+          {!loading ? (
+            <>
+              {wareHouse?.camera.length > 0 ? (
             <FlatList
               data={wareHouse?.camera}
               renderItem={renderItem}
@@ -356,6 +358,12 @@ export default function Smart({ navigation, ...props }) {
                 height: 500,
               }}>
               <Text>Không có dữ liệu</Text>
+            </View>
+          )}
+            </>
+          ): (
+            <View style={styles.loading}>
+              <ActivityIndicator />
             </View>
           )}
         </ScrollView>
