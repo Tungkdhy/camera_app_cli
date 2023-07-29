@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, ImageBackground, Text, TouchableHighlight, Image } from 'react-native';
+import {
+  View,
+  ImageBackground,
+  Text,
+  TouchableHighlight,
+  Image,
+} from 'react-native';
 import { styles } from './styles';
 import { StackActions } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,7 +25,9 @@ const Wellcome = ({ navigation }) => {
         navigation.dispatch(resetAction);
       }
     };
-    login();
+    setTimeout(() => {
+      login();
+    }, 3000);
   }, []);
   // async function getToken() {
   //   // const token = await AsyncStorage.getItem('token');
