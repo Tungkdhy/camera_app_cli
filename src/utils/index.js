@@ -98,11 +98,15 @@ export const isValidateConfirm = (oldVar, newVar) => {
   }
 };
 export const convertToSecond = day => {
-  const split = day.split(':');
-  const hour = Number(split[0]);
-  const minute = Number(split[1]);
-  const second = Number(split[2]);
-  return hour * 3600 + minute * 60 + second;
+  const split = day?.split(':');
+  if (split) {
+    const hour = Number(split[0]);
+    const minute = Number(split[1]);
+    const second = Number(split[2]);
+    return hour * 3600 + minute * 60 + second;
+  } else {
+    return '0'
+  }
 };
 export const covertWidthToHour = width => {
   // console.log(width);
@@ -147,7 +151,7 @@ export const formatDateNoSpace = date => {
 };
 
 export const formatTime = date => {
-  if(date){
+  if (date) {
     const dateA = new Date(date);
     const hour = dateA.getHours();
     const minute = dateA.getMinutes();

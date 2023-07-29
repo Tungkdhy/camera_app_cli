@@ -84,6 +84,7 @@ const VideoCamera = ({
   }, []);
   useEffect(() => {
     if (type !== 'livestream' && data?.length > 0) {
+      console.log('cameraActive[0]', cameraActive[0]);
       if (cameraActive[0]?.path?.TIME_START) {
         ref.current.seek(
           Number(convertToSecond(stick_time)) -
@@ -327,7 +328,7 @@ const VideoCamera = ({
                 justifyContent: 'space-between',
               }}
               keyExtractor={(item, index) => index}
-              maxHeight={400}
+              // maxHeight={400}
             />
           </View>
           <View style={{ height: 48 }} />

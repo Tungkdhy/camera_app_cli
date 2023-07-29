@@ -59,7 +59,6 @@ const Live = ({ route, navigation }) => {
             },
           },
         );
-
         dispatch(getPathStream(res.stream));
         setLoading(false);
       } catch (e) {
@@ -75,7 +74,6 @@ const Live = ({ route, navigation }) => {
       clearInterval(getPath1);
     };
   }, []);
-  console.log(loading);
   useEffect(() => {
     const camActive = streamPath.filter(item => {
       return item.code === camId;
@@ -125,16 +123,6 @@ const Live = ({ route, navigation }) => {
                   </Text>
                 </View>
               </View>
-              {/* <View style={styles.infoItem}>
-                <View style={styles.titleInfo}>
-                  <Text style={styles.title}>Đướng dẫn RPST</Text>
-                </View>
-                <View>
-                  <Text style={styles.descriptionInfo}>
-                    {cameraInfo.length > 0 && cameraInfo[0]?.RTSP_CHINH}
-                  </Text>
-                </View>
-              </View> */}
               <View style={styles.infoItem}>
                 <View style={styles.titleInfo}>
                   <Text style={styles.title}>Nguồn</Text>

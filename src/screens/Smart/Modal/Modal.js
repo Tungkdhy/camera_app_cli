@@ -168,7 +168,8 @@ const Modal = ({
                     <Text style={styles.label}>Sự kiện</Text>
                     <View style={styles.choose_camera}>
                       <RNPickerSelect
-                        placeholder="Lựa chọn"
+                        doneText='Lựa chọn'
+                        placeholder={ {}}
                         style={styles}
                         onValueChange={value => {
                           dispatch(setServiceCode(value));

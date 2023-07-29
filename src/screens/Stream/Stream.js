@@ -222,7 +222,6 @@ export default function Stream({ navigation, ...props }) {
     }
     getProvince();
   }, [camera.filterLocate?.province]);
-  console.log('aaa');
   useEffect(() => {
     navigation.addListener('beforeRemove', e => {
       // Prevent default behavior of leaving the screen
@@ -286,15 +285,8 @@ export default function Stream({ navigation, ...props }) {
                   accessibilityElementsHidden
                 />
               ) : (
-                <View
-                  style={{
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                    height: 500,
-                  }}>
-                  <Text>Không có dữ liệu</Text>
+                <View style={styles.loading}>
+                  <ActivityIndicator />
                 </View>
               )}
             </>

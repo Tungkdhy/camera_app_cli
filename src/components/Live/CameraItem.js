@@ -9,7 +9,9 @@ const CameraItem = ({ title, path, setCamId, id, type }) => {
   // console.log(
   //   `http://cameraai.cds.vinorsoft.com/${type}/${path.split('/')[1]}/image.jpg`,
   // );
-  // console.log(path);
+  if(title === 'IMEXCO Q7 - HCM - C1/2') {
+    console.log(path);
+  }
   const [thum, setThum] = React.useState('');
   React.useEffect(() => {
     if (type === 'livestream') {
