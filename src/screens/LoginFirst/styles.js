@@ -80,13 +80,26 @@ export const styles = StyleSheet.create({
     padding: 16,
     position: 'absolute',
     flex: 1,
-    height: '100%',
-    // top: 11,
-    zIndex: 99,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+
+    ...Platform.select({
+      ios: {
+        top: 32,
+        zIndex: 99,
+        display: 'flex',
+        flexDirection: 'column',
+        // justifyContent: 'center',
+        alignItems: 'center',
+      },
+      android: {
+        height: '100%',
+        // top: 11,
+        zIndex: 99,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+    }),
   },
   logo: {
     alignItems: 'center',
@@ -154,9 +167,8 @@ export const styles = StyleSheet.create({
     width: '100%',
   },
   login: {
-    marginTop:12,
-    backgroundColor: '#fff'
-
+    marginTop: 12,
+    backgroundColor: '#fff',
   },
   buttonLogin: {
     padding: 12,
@@ -275,8 +287,7 @@ export const styles = StyleSheet.create({
     fontSize: 26,
     lineHeight: 39.2,
     fontWeight: 600,
-    marginBottom: 24
-
+    marginBottom: 24,
   },
   text_desc: {
     color: 'rgba(255, 255, 255, 0.70)',
@@ -296,8 +307,7 @@ export const styles = StyleSheet.create({
   button_footer: {
     width: '50%',
 
-    backgroundColor: 'white'
-
+    backgroundColor: 'white',
   },
   button_footer_item: {
     backgroundColor: 'transparent',
@@ -316,7 +326,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 16,
     paddingTop: 0,
-    marginTop: -16
+    marginTop: -16,
   },
   primary: {
     color: '#F30',
@@ -326,11 +336,11 @@ export const styles = StyleSheet.create({
   },
   text_header_small: {
     width: 71,
-    fontSize: 14, 
+    fontSize: 14,
     lineHeight: 20,
     fontWeight: 600,
     color: '#fff',
-    marginLeft: 8
+    marginLeft: 8,
   },
   welcome: {
     fontSize: 16,
@@ -342,9 +352,9 @@ export const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 600,
     lineHeight: 39.2,
-    color: "#FFF",
+    color: '#FFF',
   },
   other_account: {
     marginTop: 'auto',
-  }
+  },
 });

@@ -8,40 +8,42 @@ function HeaderLogin() {
     useEffect(() => {
         const getUserName = async () => {
             let name = await AsyncStorage.getItem('name');
-            setName(name)
-        }
-        getUserName()
-    }, [])
+            setName(name);
+        };
+        getUserName();
+    }, []);
     return (
         <>
-            <View style={{
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                marginBottom: 10
-            }}>
-                <Image
-                    source={require('../../assets/images/logo_small.png')}
-                />
+            <View
+                style={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    marginBottom: 32,
+                }}>
+                <Image source={require('../../assets/images/logo_small.png')} />
                 <Text style={styles.text_header_small}>Hệ thống Camera AI</Text>
             </View>
-            <View style={{
-                marginBottom: 24,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center'
-            }}>
+            <View
+                style={{
+                    marginBottom: 24,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                }}>
                 <Image
                     source={require('../../assets/images/Avatar2.png')}
-                    style={{ marginBottom: 24}}
+                    style={{ marginBottom: 24 }}
                 />
                 <Text style={{ textAlign: 'center', ...styles.welcome }}>Xin chào</Text>
-                <Text style={{ textAlign: 'center', ...styles.customer_name }}>{name ? name : ''}</Text>
+                <Text style={{ textAlign: 'center', ...styles.customer_name }}>
+                    {name ? name : ''}
+                </Text>
             </View>
         </>
-    )
+    );
 }
 
 export default HeaderLogin;

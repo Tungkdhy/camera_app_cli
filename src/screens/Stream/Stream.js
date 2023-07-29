@@ -145,7 +145,7 @@ export default function Stream({ navigation, ...props }) {
   // console.log(props.route.name);
   useEffect(() => {
     //Get warehouse
-    setLoading(true)
+    setLoading(true);
     async function getLocation() {
       try {
         setLoading(true);
@@ -266,7 +266,11 @@ export default function Stream({ navigation, ...props }) {
             : camera?.filter?.district_code
         }
       />
-      <View style={styles.container}>
+      <Pressable
+        onPress={() => {
+          setIsShowSearch(false);
+        }}
+        style={styles.container}>
         <Filter
           playback={props.route.name !== 'Stream'}
           filter={camera.filter.camera_status}
@@ -298,7 +302,7 @@ export default function Stream({ navigation, ...props }) {
         </ScrollView>
 
         {/* </ScrollView> */}
-      </View>
+      </Pressable>
     </>
   );
 }

@@ -335,7 +335,11 @@ export default function Smart({ navigation, ...props }) {
             : camera?.filter?.district_code
         }
       />
-      <View style={styles.container}>
+      <Pressable
+        onPress={() => {
+          setIsShowSearch(false);
+        }}
+        style={styles.container}>
         <Filter
           playback={props.route.name !== 'Stream'}
           filter={camera.filter.camera_status}
@@ -346,33 +350,33 @@ export default function Smart({ navigation, ...props }) {
           {!loading ? (
             <>
               {wareHouse?.camera.length > 0 ? (
-            <FlatList
-              data={wareHouse?.camera}
-              renderItem={renderItem}
-              keyExtractor={item => item.CODE}
-              onEndReachedThreshold={0}
-              accessibilityElementsHidden
-            />
-          ) : (
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                height: 500,
-              }}>
-              <Text>Không có dữ liệu</Text>
-            </View>
-          )}
+                <FlatList
+                  data={wareHouse?.camera}
+                  renderItem={renderItem}
+                  keyExtractor={item => item.CODE}
+                  onEndReachedThreshold={0}
+                  accessibilityElementsHidden
+                />
+              ) : (
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    height: 500,
+                  }}>
+                  <Text>Không có dữ liệu</Text>
+                </View>
+              )}
             </>
-          ): (
+          ) : (
             <View style={styles.loading}>
               <ActivityIndicator />
             </View>
           )}
         </ScrollView>
-      </View>
+      </Pressable>
     </>
   );
 }

@@ -252,7 +252,11 @@ export default function MenuPlayBack({ navigation, ...props }) {
             : camera?.filter?.district_code
         }
       />
-      <View style={styles.container}>
+      <Pressable
+        onPress={() => {
+          setIsShowSearch(false);
+        }}
+        style={styles.container}>
         <Filter
           playback={props.route.name !== 'Stream'}
           filter={camera.filter.camera_status}
@@ -289,7 +293,7 @@ export default function MenuPlayBack({ navigation, ...props }) {
           </ScrollView>
         )}
         {/* </ScrollView> */}
-      </View>
+      </Pressable>
     </>
   );
 }
