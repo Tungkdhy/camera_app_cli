@@ -64,12 +64,12 @@ export const styles = StyleSheet.create({
         gap: 6,
         alignItems: 'center',
     },
-    // title: {
-    //     marginLeft: 8,
-    //     fontSize: 14,
-    //     lineHeight: 20,
-    //     // fontWeight: 400,
-    //     color: '#000000',
-    //     maxWidth: 120,
-    // },
+    title: {
+        // marginLeft: 8,
+        // fontSize: 14,
+        // lineHeight: 20,
+        // fontWeight: 400,
+        color: '#000000',
+        // maxWidth: 120,
+    },
 });
