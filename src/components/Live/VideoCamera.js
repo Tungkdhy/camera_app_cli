@@ -204,6 +204,11 @@ const VideoCamera = ({
                       <View style={styles.noPath}>
                         <Text style={{ color: '#fff' }}>Không có video</Text>
                       </View>
+                    ) : type === 'livestream' &&
+                      item?.data[0]?.PATH === 'no-path' ? (
+                      <View style={styles.noPath}>
+                        <Text style={{ color: '#fff' }}>Mất kết nối</Text>
+                      </View>
                     ) : (
                       <Video
                         source={{
@@ -226,7 +231,7 @@ const VideoCamera = ({
                             : `http://cameraai.cds.vinorsoft.com/${type}/${item?.data[0]?.PATH.split('/')[1]
                             }/image.jpg`
                         }
-                        // controls={true}
+                        controls={type === 'playback/' ? true : false}
                         style={
                           isFullScreen
                             ? styles.fullScreen
@@ -253,7 +258,7 @@ const VideoCamera = ({
                           ) ? (
                             <Status />
                           ) : (
-                            <Status color="#FF3300" />
+                            <Status color="#ff8d00" />
                           )}
                         </View>
                         <View>
@@ -328,7 +333,7 @@ const VideoCamera = ({
                 justifyContent: 'space-between',
               }}
               keyExtractor={(item, index) => index}
-              // maxHeight={400}
+            // maxHeight={400}
             />
           </View>
           <View style={{ height: 48 }} />

@@ -277,10 +277,11 @@ export default function Stream({ navigation, ...props }) {
           record={camera.filter.record_status}
           onClick={handleShowFilter}
         />
-        <ScrollView style={styles.camera}>
-          {!loading ? (
-            <>
-              {wareHouse?.wareHouse.length > 0 ? (
+
+        {!loading ? (
+          <>
+            {wareHouse?.wareHouse.length > 0 ? (
+              <ScrollView style={styles.camera}>
                 <FlatList
                   data={wareHouse?.wareHouse}
                   renderItem={renderItem}
@@ -288,18 +289,18 @@ export default function Stream({ navigation, ...props }) {
                   onEndReachedThreshold={0}
                   accessibilityElementsHidden
                 />
-              ) : (
-                <View style={styles.loading}>
-                  <ActivityIndicator />
-                </View>
-              )}
-            </>
-          ) : (
-            <View style={styles.loading}>
-              <ActivityIndicator />
-            </View>
-          )}
-        </ScrollView>
+              </ScrollView>
+            ) : (
+              <View style={styles.loading}>
+                <Text>Không có dữ liệu</Text>
+              </View>
+            )}
+          </>
+        ) : (
+          <View style={styles.loading}>
+            <ActivityIndicator />
+          </View>
+        )}
 
         {/* </ScrollView> */}
       </Pressable>

@@ -87,7 +87,7 @@ const Modal = ({
               <View style={styles.modalContent}>
                 <View>
                   <Text style={styles.label}>Tỉnh/Thành phố</Text>
-                  {/* <View style={styles.choose_camera}>
+                  <View style={styles.choose_camera}>
                     <RNPickerSelect
                       placeholder={{
                         // label: listCamera ? listCamera?.data[0]?.CAMERA?.NAME_CAM : 'Tất cả',
@@ -114,8 +114,8 @@ const Modal = ({
                           : []
                       }
                     />
-                  </View> */}
-                  <DropdownComponent
+                  </View>
+                  {/* <DropdownComponent
                     data1={[
                       {
                         label: 'Tất cả',
@@ -133,11 +133,11 @@ const Modal = ({
                       dispatch(setProvinceCodePlayBack(value));
                     }}
                     value={wareHouse.filter?.province_code}
-                  />
+                  /> */}
                 </View>
                 <View>
                   <Text style={styles.label}>Quận /Huyện</Text>
-                  {/* <View style={styles.choose_camera}>
+                  <View style={styles.choose_camera}>
                     <RNPickerSelect
                       placeholder={{
                         label: 'Tất cả',
@@ -162,8 +162,8 @@ const Modal = ({
                           : []
                       }
                     />
-                  </View> */}
-                  <DropdownComponent
+                  </View>
+                  {/* <DropdownComponent
                     data1={[
                       {
                         value: 'All',
@@ -183,7 +183,7 @@ const Modal = ({
                     }}
                     value={wareHouse.filter?.district_code}
                     position={'top'}
-                  />
+                  /> */}
                 </View>
 
                 <View>

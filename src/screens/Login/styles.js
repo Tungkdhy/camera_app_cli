@@ -154,9 +154,8 @@ export const styles = StyleSheet.create({
     width: '100%',
   },
   login: {
-    marginTop:12,
-    backgroundColor: '#fff'
-
+    marginTop: 12,
+    backgroundColor: '#fff',
   },
   buttonLogin: {
     padding: 12,
@@ -275,8 +274,7 @@ export const styles = StyleSheet.create({
     fontSize: 26,
     lineHeight: 39.2,
     fontWeight: 600,
-    marginBottom: 24
-
+    marginBottom: 24,
   },
   text_desc: {
     color: 'rgba(255, 255, 255, 0.70)',
@@ -296,8 +294,7 @@ export const styles = StyleSheet.create({
   button_footer: {
     width: '50%',
 
-    backgroundColor: 'white'
-
+    backgroundColor: 'white',
   },
   button_footer_item: {
     backgroundColor: 'transparent',
@@ -316,21 +313,23 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 16,
     paddingTop: 0,
-    marginTop: -16
+    marginTop: -16,
   },
   primary: {
     color: '#F30',
+    alignItems: 'center',
+    flex: 1,
   },
   iconHeader: {
     marginTop: 16,
   },
   text_header_small: {
     width: 71,
-    fontSize: 14, 
+    fontSize: 14,
     lineHeight: 20,
     fontWeight: 600,
     color: '#fff',
-    marginLeft: 8
+    marginLeft: 8,
   },
   welcome: {
     fontSize: 16,
@@ -342,9 +341,9 @@ export const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 600,
     lineHeight: 39.2,
-    color: "#FFF"
+    color: '#FFF',
   },
   other_account: {
     marginTop: 'auto',
-  }
+  },
 });

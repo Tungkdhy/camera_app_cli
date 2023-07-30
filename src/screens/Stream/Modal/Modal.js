@@ -87,7 +87,7 @@ const Modal = ({
               <View style={styles.modalContent}>
                 <View>
                   <Text style={styles.label}>Tỉnh/Thành phố</Text>
-                  {/* <View style={styles.choose_camera}>
+                  <View style={styles.choose_camera}>
                     <RNPickerSelect
                       placeholder={{
                         // label: listCamera ? listCamera?.data[0]?.CAMERA?.NAME_CAM : 'Tất cả',
@@ -114,8 +114,8 @@ const Modal = ({
                           : []
                       }
                     />
-                  </View> */}
-                  <DropdownComponent
+                  </View>
+                  {/* <DropdownComponent
                     data1={[
                       {
                         label: 'Tất cả',
@@ -133,11 +133,37 @@ const Modal = ({
                       dispatch(setProvinceCode(value));
                     }}
                     value={camera.filter?.province_code}
-                  />
+                  /> */}
                 </View>
                 <View>
                   <Text style={styles.label}>Quận /Huyện</Text>
-                  <DropdownComponent
+                  <RNPickerSelect
+                    placeholder={{
+                      // label: listCamera ? listCamera?.data[0]?.CAMERA?.NAME_CAM : 'Tất cả',
+                      // value: listCamera ? listCamera?.data[0]?.CAMERA?.CODE : 0
+                      label: 'Tất cả',
+                      value: 'All',
+                    }}
+                    doneText="Lựa chọn"
+                    style={styles}
+                    value={camera.filter?.district_code}
+                    onValueChange={value => {
+                      dispatch(setDistrictCode(value));
+                    }}
+                    // onValueChange={value => handleGetCameraAct(value)}
+                    items={
+                      camera?.district
+                        ? camera.district.map(item => {
+                          return {
+                            key: item.code,
+                            value: item.code,
+                            label: item.name,
+                          };
+                        })
+                        : []
+                    }
+                  />
+                  {/* <DropdownComponent
                     data1={[
                       {
                         label: 'Tất cả',
@@ -155,7 +181,7 @@ const Modal = ({
                       dispatch(setDistrictCode(value));
                     }}
                     value={camera.filter?.district_code}
-                  />
+                  /> */}
                 </View>
 
                 <View style={styles.action}>

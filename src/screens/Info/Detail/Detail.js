@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {View, Pressable, Text} from 'react-native';
-import {useDispatch} from 'react-redux';
-import {Back, Edit} from '../../../components/Icons/Index';
-import {setUserInfo} from '../../../redux/actions/getUserAction';
+import React, { useEffect, useState } from 'react';
+import { View, Pressable, Text } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { Back, Edit } from '../../../components/Icons/Index';
+import { setUserInfo } from '../../../redux/actions/getUserAction';
 import axiosClient from '../../../services/axiosClient';
-import {formatDate} from '../../../utils';
-import {styles} from './styles';
+import { formatDate } from '../../../utils';
+import { styles } from './styles';
 
-const Detail = ({navigation}) => {
+const Detail = ({ navigation }) => {
   const [dataUser, setDataUser] = useState({
     name: '',
     email: '',
@@ -57,28 +57,28 @@ const Detail = ({navigation}) => {
           </Pressable>
         </View>
       </View>
-      <View style={styles.content}>
-        <View style={styles.item}>
-          <Text style={styles.title}>Tên người dùng</Text>
-          <Text style={styles.description}>{dataUser.name}</Text>
+      <View style={styles.modalContent}>
+        <View style={styles.infoItem}>
+          <Text style={styles.titleInfo}>Tên người dùng</Text>
+          <Text style={styles.descriptionInfo}>{dataUser.name}</Text>
         </View>
-        <View style={styles.item}>
-          <Text style={styles.title}>Email</Text>
-          <Text style={styles.description}>{dataUser.email}</Text>
+        <View style={styles.infoItem}>
+          <Text style={styles.titleInfo}>Email</Text>
+          <Text style={styles.descriptionInfo}>{dataUser.email}</Text>
         </View>
-        <View style={styles.item}>
-          <Text style={styles.title}>Số điện thoại</Text>
-          <Text style={styles.description}>{dataUser.phoneNumber}</Text>
+        <View style={styles.infoItem}>
+          <Text style={styles.titleInfo}>Số điện thoại</Text>
+          <Text style={styles.descriptionInfo}>{dataUser.phoneNumber}</Text>
         </View>
-        <View style={styles.item}>
-          <Text style={styles.title}>Thời gian tạo</Text>
-          <Text style={styles.description}>
+        <View style={styles.infoItem}>
+          <Text style={styles.titleInfo}>Thời gian tạo</Text>
+          <Text style={styles.descriptionInfo}>
             {formatDate(dataUser.dateJoined)}
           </Text>
         </View>
-        <View style={styles.item}>
-          <Text style={styles.title}>Sửa lần cuối</Text>
-          <Text style={styles.description}>
+        <View style={styles.infoItem}>
+          <Text style={styles.titleInfo}>Sửa lần cuối</Text>
+          <Text style={styles.descriptionInfo}>
             {formatDate(dataUser.editTime)}
           </Text>
         </View>

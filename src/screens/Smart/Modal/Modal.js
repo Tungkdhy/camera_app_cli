@@ -98,7 +98,7 @@ const Modal = ({
               <View style={styles.modalContent}>
                 <View>
                   <Text style={styles.label}>Tỉnh/Thành phố</Text>
-                  <DropdownComponent
+                  {/* <DropdownComponent
                     data1={[
                       {
                         label: 'Tất cả',
@@ -114,12 +114,37 @@ const Modal = ({
                     ]}
                     setData={handleSetProvince}
                     value={report.filter?.province_code}
-                  />
+                  /> */}
+                  <View style={styles.choose_camera}>
+                    <RNPickerSelect
+                      placeholder={{
+                        label: 'Tất cả',
+                        value: 'All',
+                      }}
+                      doneText="Lựa chọn"
+                      style={styles}
+                      onValueChange={value => {
+                        dispatch(setProvinceCodeReport(value));
+                      }}
+                      value={report.filter?.province_code}
+                      items={
+                        camera?.province
+                          ? camera.province.map(item => {
+                            return {
+                              // key: item.code,
+                              value: item.code,
+                              label: item.name,
+                            };
+                          })
+                          : []
+                      }
+                    />
+                  </View>
                 </View>
                 <View>
                   <Text style={styles.label}>Quận /Huyện</Text>
-                  {/* <View style={styles.choose_camera}> */}
-                  {/* <RNPickerSelect
+                  <View style={styles.choose_camera}>
+                    <RNPickerSelect
                       placeholder={{
                         label: 'Tất cả',
                         value: 'All',
@@ -141,8 +166,9 @@ const Modal = ({
                           })
                           : []
                       }
-                    /> */}
-                  <DropdownComponent
+                    />
+                  </View>
+                  {/* <DropdownComponent
                     data1={[
                       {
                         value: 'All',
@@ -159,7 +185,7 @@ const Modal = ({
                     setData={handleSetDistrict}
                     value={report.filter?.district_code}
                     position={report?.filter.isBG ? 'auto' : 'top'}
-                  />
+                  /> */}
                   {/* </View> */}
                 </View>
 
@@ -168,8 +194,8 @@ const Modal = ({
                     <Text style={styles.label}>Sự kiện</Text>
                     <View style={styles.choose_camera}>
                       <RNPickerSelect
-                        doneText='Lựa chọn'
-                        placeholder={ {}}
+                        doneText="Lựa chọn"
+                        placeholder={{}}
                         style={styles}
                         onValueChange={value => {
                           dispatch(setServiceCode(value));
@@ -177,17 +203,21 @@ const Modal = ({
                         value={report.filter?.ai_code}
                         items={
                           services
-                            ? services.filter((item) => item.CODE !== '20230222000000000002').map(item => {
-                              if(item.CODE !== '20230222000000000002') {
-                                return {
-                                  key: item.CODE,
-                                  value: item.CODE,
-                                  label: item.SUBJECT_NAME,
-                                };
-                              } else {
-                                return <></>
-                              }
-                            })
+                            ? services
+                              .filter(
+                                item => item.CODE !== '20230222000000000002',
+                              )
+                              .map(item => {
+                                if (item.CODE !== '20230222000000000002') {
+                                  return {
+                                    key: item.CODE,
+                                    value: item.CODE,
+                                    label: item.SUBJECT_NAME,
+                                  };
+                                } else {
+                                  return <></>;
+                                }
+                              })
                             : []
                         }
                       />

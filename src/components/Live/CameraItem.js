@@ -9,7 +9,7 @@ const CameraItem = ({ title, path, setCamId, id, type }) => {
   // console.log(
   //   `http://cameraai.cds.vinorsoft.com/${type}/${path.split('/')[1]}/image.jpg`,
   // );
-  if(title === 'IMEXCO Q7 - HCM - C1/2') {
+  if (title === 'IMEXCO Q7 - HCM - C1/2') {
     console.log(path);
   }
   const [thum, setThum] = React.useState('');
@@ -50,7 +50,7 @@ const CameraItem = ({ title, path, setCamId, id, type }) => {
         />
       </View>
       <View style={styles.name_label}>
-        <Status color={thum === loseConnect ? '#f30' : undefined}/>
+        <Status color={thum === loseConnect ? '#ff8d00' : undefined} />
         <Text onPress={() => setCamId(id)} style={styles.nameCamera}>
           {title}
         </Text>

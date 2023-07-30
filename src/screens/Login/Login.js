@@ -48,9 +48,14 @@ const Login = ({ navigation }) => {
   const dispatch = useDispatch();
   const [error, setError] = useState(false);
   const [error2, setError2] = useState(false);
+  const [message, setMessage] = useState();
   const [modalSuccess, setModalSuccess] = useState(false);
   const handleLogin = async () => {
-    if (isValidatorUsername(userName) && isValidatePassword(password) && companyTax.trim().length > 0) {
+    if (
+      isValidatorUsername(userName) &&
+      isValidatePassword(password) &&
+      companyTax.trim().length > 0
+    ) {
       try {
         const res = await axios.post(
           'http://cameraai.cds.vinorsoft.com/camera/vinorsoft/aicamera/v1.0/authenticator/login/',
@@ -79,6 +84,7 @@ const Login = ({ navigation }) => {
         console.log(e);
         setError2(true);
         setModalSuccess(true);
+        setMessage(e.response.data.detail);
       }
     } else {
       setModalSuccess(true);
@@ -186,9 +192,7 @@ const Login = ({ navigation }) => {
                     }}
                   />
                 </View>
-                <TouchableHighlight
-                  onPress={handleLogin}
-                  style={styles.login}>
+                <TouchableHighlight onPress={handleLogin} style={styles.login}>
                   <View style={styles.buttonLogin}>
                     <Text style={styles.btnText}>Đăng nhập</Text>
                   </View>
@@ -213,9 +217,7 @@ const Login = ({ navigation }) => {
                 {error2 ? <ErrorIcon /> : <SuccessIcon />}
               </View>
               <Text style={styles.textHeader}>
-                {error2
-                  ? 'Đăng nhập không thành công'
-                  : 'Đăng nhập thành công'}
+                {error2 ? 'Đăng nhập không thành công' : 'Đăng nhập thành công'}
               </Text>
               {error2 && (
                 <>
@@ -231,10 +233,11 @@ const Login = ({ navigation }) => {
                         Tên người dùng dài từ 6 - 15 ký tự. Chỉ chứa các ký tự
                         viết thường và số.
                       </>
-                    ) : <>
-                      <Text>
-                        Tên đăng nhập hoặc mật khẩu không đúng
-                      </Text></>}
+                    ) : (
+                      <>
+                        <Text>{message}</Text>
+                      </>
+                    )}
                   </Text>
                   <View style={styles.footer}>
                     <Pressable style={styles.button_footer}>
@@ -250,8 +253,7 @@ const Login = ({ navigation }) => {
                       onPress={() => setModalSuccess(!modalSuccess)}
                       style={styles.login}>
                       <View style={styles.button_footer_item}>
-                        <Text
-                          style={{ ...styles.btnText, ...styles.primary }}>
+                        <Text style={{ ...styles.btnText, ...styles.primary }}>
                           Đồng ý
                         </Text>
                       </View>
