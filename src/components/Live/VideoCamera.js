@@ -96,7 +96,7 @@ const VideoCamera = ({
           );
         }
       }
-      if ((Platform.OS = 'android')) {
+      if (Platform.OS === 'android') {
         const setTime = setTimeout(() => {
           if (cameraActive[0]?.path?.TIME_START) {
             ref.current.seek(

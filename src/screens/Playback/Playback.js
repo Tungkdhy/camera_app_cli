@@ -168,7 +168,7 @@ export default function PlayBack({ navigation, route }) {
                   </Text>
                 </View>
               </View>
-              <View style={styles.infoItem}>
+              {/* <View style={styles.infoItem}>
                 <View style={styles.titleInfo}>
                   <Text style={styles.title}>Đướng dẫn RPST</Text>
                 </View>
@@ -177,7 +177,7 @@ export default function PlayBack({ navigation, route }) {
                     {cameraInfo.length > 0 && cameraInfo[0]?.RTSP_CHINH}
                   </Text>
                 </View>
-              </View>
+              </View> */}
               <View style={styles.infoItem}>
                 <View style={styles.titleInfo}>
                   <Text style={styles.title}>Nguồn</Text>
