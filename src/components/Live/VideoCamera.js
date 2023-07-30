@@ -84,14 +84,34 @@ const VideoCamera = ({
   }, []);
   useEffect(() => {
     if (type !== 'livestream' && data?.length > 0) {
-      console.log('cameraActive[0]', cameraActive[0]);
-      if (cameraActive[0]?.path?.TIME_START) {
-        ref.current.seek(
-          Number(convertToSecond(stick_time)) -
-          Number(
-            convertToSecond(cameraActive[0]?.path?.TIME_START.split(' ')[1]),
-          ),
-        );
+      if (Platform.OS === 'ios') {
+        if (cameraActive[0]?.path?.TIME_START) {
+          ref.current.seek(
+            Number(convertToSecond(stick_time)) -
+            Number(
+              convertToSecond(
+                cameraActive[0]?.path?.TIME_START.split(' ')[1],
+              ),
+            ),
+          );
+        }
+      }
+      if ((Platform.OS = 'android')) {
+        const setTime = setTimeout(() => {
+          if (cameraActive[0]?.path?.TIME_START) {
+            ref.current.seek(
+              Number(convertToSecond(stick_time)) -
+              Number(
+                convertToSecond(
+                  cameraActive[0]?.path?.TIME_START.split(' ')[1],
+                ),
+              ),
+            );
+          }
+        }, 5000);
+        return () => {
+          clearTimeout(setTime);
+        };
       }
     }
     if (type === 'livestream' && data?.length > 0) {
