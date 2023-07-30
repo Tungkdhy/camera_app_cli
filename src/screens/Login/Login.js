@@ -240,18 +240,17 @@ const Login = ({ navigation }) => {
                     )}
                   </Text>
                   <View style={styles.footer}>
-                    <Pressable style={styles.button_footer}>
-                      <TouchableOpacity
-                        onPress={() => setModalSuccess(!modalSuccess)}
-                        style={styles.login}>
-                        <View style={styles.button_footer_item}>
-                          <Text style={styles.btnText}>Huỷ bỏ</Text>
-                        </View>
-                      </TouchableOpacity>
-                    </Pressable>
                     <TouchableOpacity
                       onPress={() => setModalSuccess(!modalSuccess)}
-                      style={styles.login}>
+                      style={styles.login_item}>
+                      <View style={styles.button_footer_item}>
+                        <Text style={styles.btnText}>Huỷ bỏ</Text>
+                      </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      onPress={() => setModalSuccess(!modalSuccess)}
+                      style={styles.login_item}>
                       <View style={styles.button_footer_item}>
                         <Text style={{ ...styles.btnText, ...styles.primary }}>
                           Đồng ý

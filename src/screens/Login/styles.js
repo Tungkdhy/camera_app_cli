@@ -296,6 +296,11 @@ export const styles = StyleSheet.create({
 
     backgroundColor: 'white',
   },
+  login_item: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+  },
   button_footer_item: {
     backgroundColor: 'transparent',
     padding: 12,

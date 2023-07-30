@@ -27,7 +27,7 @@ const Wellcome = ({ navigation }) => {
     };
     setTimeout(() => {
       login();
-    }, 3000);
+    }, 2000);
   }, []);
   // async function getToken() {
   //   // const token = await AsyncStorage.getItem('token');

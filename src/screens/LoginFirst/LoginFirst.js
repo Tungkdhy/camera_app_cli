@@ -61,7 +61,6 @@ const LoginFirst = ({ navigation }) => {
           },
         );
         if (res) {
-
           await AsyncStorage.setItem('token', res.data.access);
           await AsyncStorage.setItem('role', res.data.role);
           await AsyncStorage.setItem('refresh', res.data.refresh);
@@ -80,7 +79,7 @@ const LoginFirst = ({ navigation }) => {
       }
     } else {
       setModalSuccess(true);
-      setError(true);
+      setError2(true);
     }
   };
   useEffect(() => {
@@ -154,9 +153,7 @@ const LoginFirst = ({ navigation }) => {
                     }}
                   />
                 </View>
-                <TouchableHighlight
-                  onPress={handleLogin}
-                  style={styles.login}>
+                <TouchableHighlight onPress={handleLogin} style={styles.login}>
                   <View style={styles.buttonLogin}>
                     <Text style={styles.btnText}>Đăng nhập</Text>
                   </View>
@@ -186,41 +183,36 @@ const LoginFirst = ({ navigation }) => {
                 {error2 ? <ErrorIcon /> : <SuccessIcon />}
               </View>
               <Text style={styles.textHeader}>
-                {error2
-                  ? 'Đăng nhập không thành công'
-                  : 'Đăng nhập thành công'}
+                {error2 ? 'Đăng nhập không thành công' : 'Đăng nhập thành công'}
               </Text>
               {error2 && (
                 <>
                   <Text style={styles.text_desc_modal}>
-                    {error && !isValidatePassword(password) ? (
+                    {error2 && !isValidatePassword(password) ? (
                       <>
                         Mật khẩu 6-20 ký tự. Ít nhất 1 ký tự viết hoa, 1 ký tự
                         viết thường, 1 ký tự đặc biệt, 1 ký tự số, không chứa
                         khoảng trắng.
                       </>
-                    ) : <>
-                      <Text>
-                        Mật khẩu không đúng
-                      </Text>
-                    </>}
+                    ) : (
+                      <>
+                        <Text>Mật khẩu không đúng</Text>
+                      </>
+                    )}
                   </Text>
                   <View style={styles.footer}>
-                    <Pressable style={styles.button_footer}>
-                      <TouchableOpacity
-                        onPress={() => setModalSuccess(!modalSuccess)}
-                        style={styles.login}>
-                        <View style={styles.button_footer_item}>
-                          <Text style={styles.btnText}>Huỷ bỏ</Text>
-                        </View>
-                      </TouchableOpacity>
-                    </Pressable>
                     <TouchableOpacity
                       onPress={() => setModalSuccess(!modalSuccess)}
-                      style={styles.login}>
+                      style={styles.login_item}>
                       <View style={styles.button_footer_item}>
-                        <Text
-                          style={{ ...styles.btnText, ...styles.primary }}>
+                        <Text style={styles.btnText}>Huỷ bỏ</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => setModalSuccess(!modalSuccess)}
+                      style={styles.login_item}>
+                      <View style={styles.button_footer_item}>
+                        <Text style={{ ...styles.btnText, ...styles.primary }}>
                           Đồng ý
                         </Text>
                       </View>

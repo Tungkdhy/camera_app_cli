@@ -76,6 +76,10 @@ export const styles = StyleSheet.create({
     // flex: 1,
     justifyContent: 'space-between',
   },
+  login_item: {
+    flex: 1,
+    justifyContent: 'center',
+  },
   formLogin: {
     padding: 16,
     position: 'absolute',
