@@ -114,7 +114,7 @@ export default function PlayBack({ navigation, route }) {
               // current={'2023-07-24'}
               // Callback that gets called when the user selects a day
               onDayPress={day => {
-                console.log(day);
+                // console.log(day);
                 dispatch(setDay(Date.parse(day.dateString)));
               }}
               // Mark specific dates as marked

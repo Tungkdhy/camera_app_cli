@@ -49,12 +49,12 @@ const Detail = ({ navigation }) => {
         </Pressable>
         <Text style={styles.text}>Thông tin cá nhân</Text>
         <View>
-          <Pressable
+          {/* <Pressable
             onPress={() => {
               navigation.navigate('EditInfo');
             }}>
             <Edit />
-          </Pressable>
+          </Pressable> */}
         </View>
       </View>
       <View style={styles.modalContent}>
