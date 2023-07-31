@@ -86,13 +86,16 @@ export const styles = StyleSheet.create({
     }),
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.05)',
+    backgroundColor: '#0040FF',
+    marginLeft: -16,
+    marginRight: -16,
   },
   text: {
     padding: 10,
     paddingLeft: 16,
     fontSize: 18,
     fontWeight: '700',
-    color: '#000',
+    color: '#fff',
   },
   content: {
     flex: 1,
@@ -253,4 +256,8 @@ export const styles = StyleSheet.create({
   title: {
     color: ' rgba(0, 0, 0, 0.4)',
   },
+  singleContent: {
+    paddingLeft: 16,
+    paddingRight: 16
+  }
 });

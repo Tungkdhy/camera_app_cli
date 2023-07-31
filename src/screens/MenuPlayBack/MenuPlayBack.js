@@ -36,6 +36,7 @@ export default function MenuPlayBack({ navigation, ...props }) {
   const [search, setSearch] = useState('');
   const [isShowSearch, setIsShowSearch] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [stateWareCode, setStateWareHouseCode] = useState();
   const handleShowSearch = () => {
     setIsShowSearch(!isShowSearch);
   };
@@ -62,10 +63,12 @@ export default function MenuPlayBack({ navigation, ...props }) {
   //Navigate Screen Smart
   //Show menu2 stream
   const handleShowCamera = code => {
-    if (code === camera.wareCode) {
+    if (code === stateWareCode) {
       dispatch(setWareHouseCode(''));
+      setStateWareHouseCode('');
     } else {
       dispatch(setWareHouseCode(code));
+      setStateWareHouseCode(code)
     }
   };
   // Navigate form select district
@@ -84,7 +87,7 @@ export default function MenuPlayBack({ navigation, ...props }) {
             <View style={styles.border}>
               <View style={styles.cameraItem}>
                 <View style={styles.icon}>
-                  {item.WAREHOUSE_CODE === camera.wareCode ? (
+                  {item.WAREHOUSE_CODE === stateWareCode ? (
                     <DownIcon />
                   ) : (
                     <ShowIcon />
@@ -92,7 +95,7 @@ export default function MenuPlayBack({ navigation, ...props }) {
                 </View>
                 <Text style={styles.name}>{item.WAREHOUSE_NAME}</Text>
               </View>
-              {item.WAREHOUSE_CODE === camera.wareCode && (
+              {item.WAREHOUSE_CODE === stateWareCode && (
                 <View style={styles.listCamera}>
                   {item.LIST_CAMERA &&
                     item.LIST_CAMERA?.length > 0 &&

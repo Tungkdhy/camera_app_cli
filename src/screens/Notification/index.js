@@ -5,6 +5,8 @@ import {
   Text,
   ScrollView,
   ActivityIndicator,
+  TouchableHighlight,
+  Modal,
 } from 'react-native';
 import { Back } from '../../components/Icons/Index';
 import axiosClient from '../../services/axiosClient';
@@ -20,6 +22,7 @@ function Notification({ route, navigation }) {
   const [smartReport, setSmartReport] = useState(false);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [loadingCheck, setLoadingCheck] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -104,11 +107,17 @@ function Notification({ route, navigation }) {
   }, [reGetData, page, smartReport, groupNotification]);
 
   const seenNotification = async codeItem => {
-    const res = await axiosClient.put(
-      `notification/put-change-notification-seen/?notification_code=${codeItem}`,
-    );
-    setReGetData(!reGetData);
-    return res;
+    setLoadingCheck(true)
+    try {
+      const res = await axiosClient.put(
+        `notification/put-change-notification-seen/?notification_code=${codeItem}`,
+      );
+      setReGetData(!reGetData);
+      setLoadingCheck(false)
+      return res;
+    } catch (error) {
+      setLoadingCheck(false)
+    }
   };
 
   const handleCheckNotification = (code, notification) => {
@@ -185,7 +194,7 @@ function Notification({ route, navigation }) {
           {smartReport
             ? listNotificationSmart.map((notification, index) => {
               return (
-                <Pressable
+                <TouchableHighlight
                   onPress={() => navigatePlayBackCamera(notification)}
                   key={index}>
                   <View style={styles.date_block}>
@@ -232,7 +241,7 @@ function Notification({ route, navigation }) {
                       })}
                     </View>
                   </View>
-                </Pressable>
+                </TouchableHighlight>
               );
             })
             : listNotificationSystem.map((notification, index) => {
@@ -286,6 +295,16 @@ function Notification({ route, navigation }) {
           )}
         </ScrollView>
       </View>
+      <Modal
+        visible={loadingCheck}
+        transparent={true}
+        animationType={'fade'}
+        style={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}}
+      >
+        <View style={{ height: '100%', display: 'flex', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.3)' }} >
+          <ActivityIndicator style={{marginTop: '50%'}} size={'large'}/>
+        </View>
+      </Modal>
     </View>
   );
 }

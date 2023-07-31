@@ -1,7 +1,7 @@
 import { StyleSheet, Platform } from 'react-native';
 export const styles = StyleSheet.create({
   container: {
-    paddingLeft: 16,
+    // paddingLeft: 16,
     // paddingRight: 16,
     flex: 1,
     backgroundColor: '#fff',
@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     paddingRight: 16,
-
     justifyContent: 'space-between',
     flexDirection: 'row',
     ...Platform.select({
@@ -22,14 +21,15 @@ export const styles = StyleSheet.create({
     }),
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.05)',
-    backgroundColor: '#fff',
+    backgroundColor: '#0040FF',
+    paddingLeft: 16,
   },
   text: {
     padding: 10,
     paddingLeft: 16,
     fontSize: 18,
     fontWeight: '700',
-    color: '#000',
+    color: '#fff',
   },
   content: {
     flex: 1,

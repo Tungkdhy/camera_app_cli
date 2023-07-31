@@ -72,7 +72,7 @@ const Login = ({ navigation }) => {
           await AsyncStorage.setItem('userName', userName);
           await AsyncStorage.setItem('companyCode', companyTax);
           const infoUser = await axiosClient.get('/user/get-user-info/');
-          await AsyncStorage.setItem('name', infoUser[0]?.USERNAME);
+          await AsyncStorage.setItem('name', infoUser[0]?.NAME);
           let userTypeCode = infoUser[0]?.USERTYPE_CODE;
           dispatch(setUserTypeCode(userTypeCode));
           setError2(false);
@@ -81,7 +81,6 @@ const Login = ({ navigation }) => {
           navigation.dispatch(resetAction);
         }
       } catch (e) {
-        console.log(e);
         setError2(true);
         setModalSuccess(true);
         setMessage(e.response.data.detail);
@@ -101,10 +100,10 @@ const Login = ({ navigation }) => {
         if (!error2) {
           setModalSuccess(false);
         }
-      }, 1000);
+      }, 1500);
       return () => clearTimeout(countNavigate);
     }
-  }, [modalSuccess]);
+  }, [modalSuccess, error2]);
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -235,7 +234,8 @@ const Login = ({ navigation }) => {
                       </>
                     ) : (
                       <>
-                        <Text>{message}</Text>
+                        {/* <Text>{message}</Text> */}
+                        <Text>Sai thông tin đăng nhập</Text>
                       </>
                     )}
                   </Text>

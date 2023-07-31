@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions, Platform } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
-    paddingLeft: 16,
+    // paddingLeft: 16,
     // paddingRight: 16,
     flex: 1,
     paddingBottom: 100,
@@ -15,7 +15,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingRight: 16,
-
+    paddingLeft: 16,
+    backgroundColor: '#0040FF',
+    width: '100%',
     flexDirection: 'row',
     ...Platform.select({
       ios: {
@@ -42,7 +44,7 @@ export const styles = StyleSheet.create({
     paddingLeft: 0,
     fontSize: 18,
     fontWeight: '700',
-    color: 'black'
+    color: '#fff',
   },
   icons: {
     flexDirection: 'row',
