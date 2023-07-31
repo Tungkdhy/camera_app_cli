@@ -92,6 +92,9 @@ const ChangePasswordInfo = ({ navigation }) => {
                 new_password: newPassword,
             });
             setLoading(false);
+            setConfirmPassword('');
+            setOldPassword('');
+            setNewPassword('');
             Alert.alert('Thay đổi thành công', 'Vui lòng đăng nhập lại', [
                 {
                     text: 'Ok',

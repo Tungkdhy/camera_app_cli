@@ -72,7 +72,7 @@ export const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         paddingTop: 4,
-        paddingLeft: 8,
+        paddingLeft: 2,
       },
     }),
   },
@@ -230,5 +230,11 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     paddingTop: 4
+  },
+  name_cam: {
+    marginLeft: 8,
+  },
+  singleContent: {
+    paddingLeft: 16,
   }
 });

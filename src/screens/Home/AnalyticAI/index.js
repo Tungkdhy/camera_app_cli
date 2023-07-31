@@ -39,11 +39,14 @@ function AnalyticAI({ navigation }) {
         };
         getData();
     }, [getListService, getListInfo]);
+    console.log('listService', listService);
     return (
         <>
             {listService &&
                 listService.length > 0 &&
-                listService?.map(service => {
+                listService?.filter(
+                    item => (item.CODE !== '20230222000000000002' && item.CODE !== '20230222000000000004'),
+                  )?.map(service => {
                     return (
                         <LineChartService
                             key={service?.CODE}

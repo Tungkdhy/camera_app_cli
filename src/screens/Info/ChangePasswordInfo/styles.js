@@ -8,19 +8,22 @@ export const styles = StyleSheet.create({
     header: {
         alignItems: "center",
         flexDirection: "row",
-        paddingTop: 44,
+        // paddingTop: 44,
         borderBottomWidth: 1,
         borderColor: "rgba(0, 0, 0, 0.05)",
         paddingLeft: 12,
         paddingRight: 12,
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: '#0040FF',
     },
     text: {
         padding: 10,
-        paddingLeft: 16,
+        // paddingLeft: 16,
         fontSize: 18,
         marginLeft: '25%',
         fontWeight: "700",
-        color: "#000000",
+        color: "#fff",
     },
     content: {
         padding: 12
@@ -108,7 +111,7 @@ export const styles = StyleSheet.create({
         height: '100%',
     },
     contain: {
-        position:'relative',
+        position: 'relative',
         height: '100%',
     },
     checkIcon: {

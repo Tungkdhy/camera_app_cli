@@ -3,6 +3,7 @@ import { View, Text, Image, Pressable, TextInput } from 'react-native';
 import { SearchIcon, BellIcon, Close } from '../Icons/Index';
 import { style } from './style';
 import { useSelector } from 'react-redux';
+import { TouchableNativeFeedback } from 'react-native';
 
 const Header = ({
     title,
@@ -70,6 +71,7 @@ const Header = ({
                         onPress={() => {
                             setSearch('');
                             setInput('');
+                            setIsShowSearch();
                         }}>
                         <Close width={24} height={24} color={'#000'} />
                     </Pressable>

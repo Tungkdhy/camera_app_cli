@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator,
   AppState,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
 
@@ -44,8 +45,6 @@ export default function Stream({ navigation, ...props }) {
     setIsShowSearch(!isShowSearch);
   };
   const [stateWareCode, setStateWareHouseCode] = useState();
-  //Show filterlog
-  // console.log(wareHouse);
   const [modalVisible, setModalVisible] = useState(false);
   const handleSetShowModal = () => {
     setModalVisible(!modalVisible);
@@ -145,15 +144,10 @@ export default function Stream({ navigation, ...props }) {
   // console.log(props.route.name);
   useEffect(() => {
     //Get warehouse
-    setLoading(true);
+    setLoading(true)
     async function getLocation() {
       try {
         setLoading(true);
-        // Toast.show({
-        //   type: 'success',
-        //   text1: 'Hello',
-        //   text2: 'This is some something 👋',
-        // });
         const province =
           camera.filter?.province_code !== 'All'
             ? {
@@ -226,84 +220,72 @@ export default function Stream({ navigation, ...props }) {
     navigation.addListener('beforeRemove', e => {
       // Prevent default behavior of leaving the screen
       e.preventDefault();
-
-      // Alert.alert('Đăng xuất?', 'Bạn có muốn đang xuất không', [
-      //   { text: 'Không', style: 'cancel', onPress: () => { } },
-      //   {
-      //     text: 'Có',
-      //     style: 'destructive',
-      //     // If the user confirmed, then we dispatch the action we blocked earlier
-      //     // This will continue the action that had triggered the removal of the screen
-      //     onPress: () => navigation.dispatch(e.data.action),
-      //   },
-      // ]);
-      // Prompt the user before leaving the screen
     });
   }, [navigation]);
   useEffect(() => {
     Orientation.lockToPortrait(); //this will lock the view to Portrait
   }, []);
+  const handleClickOutSide = () => {
+    isShowSearch && setIsShowSearch(false)
+  }
   return (
-    <>
-      <Header
-        title={'Xem trực tiếp'}
-        navigation={navigation}
-        search={search}
-        setIsShowSearch={handleShowSearch}
-        isShowSearch={isShowSearch}
-        setSearch={setSearch}
-      />
-      <Modal
-        isShow={modalVisible}
-        onShowModal={handleSetShowModal}
-        isProvince={isProvince}
-        setIsProvince={setIsShowProvince}
-        screen={props.route.name}
-        data={isProvince ? camera?.province : camera?.district}
-        filter={
-          isProvince
-            ? camera?.filter?.province_code
-            : camera?.filter?.district_code
-        }
-      />
-      <Pressable
-        onPress={() => {
-          setIsShowSearch(false);
-        }}
-        style={styles.container}>
-        <Filter
-          playback={props.route.name !== 'Stream'}
-          filter={camera.filter.camera_status}
-          record={camera.filter.record_status}
-          onClick={handleShowFilter}
-        />
-
-        {!loading ? (
-          <>
-            {wareHouse?.wareHouse.length > 0 ? (
-              <ScrollView style={styles.camera}>
-                <FlatList
-                  data={wareHouse?.wareHouse}
-                  renderItem={renderItem}
-                  keyExtractor={item => item.CODE}
-                  onEndReachedThreshold={0}
-                  accessibilityElementsHidden
-                />
-              </ScrollView>
-            ) : (
-              <View style={styles.loading}>
-                <Text>Không có dữ liệu</Text>
-              </View>
-            )}
-          </>
-        ) : (
-          <View style={styles.loading}>
-            <ActivityIndicator />
+    <View style={{width: '100%', height: '100%'}}>
+      <TouchableWithoutFeedback onPress={handleClickOutSide}>
+        <View style={{width: '100%', height: '100%'}}>
+          <Header
+            title={'Xem trực tiếp'}
+            navigation={navigation}
+            search={search}
+            setIsShowSearch={handleShowSearch}
+            isShowSearch={isShowSearch}
+            setSearch={setSearch}
+          />
+          <Modal
+            isShow={modalVisible}
+            onShowModal={handleSetShowModal}
+            isProvince={isProvince}
+            setIsProvince={setIsShowProvince}
+            screen={props.route.name}
+            data={isProvince ? camera?.province : camera?.district}
+            filter={
+              isProvince
+                ? camera?.filter?.province_code
+                : camera?.filter?.district_code
+            }
+          />
+          <View style={styles.container}>
+            <Filter
+              playback={props.route.name !== 'Stream'}
+              filter={camera.filter.camera_status}
+              record={camera.filter.record_status}
+              onClick={handleShowFilter}
+            />
+            <ScrollView style={styles.camera}>
+              {!loading ? (
+                <>
+                  {wareHouse?.wareHouse.length > 0 ? (
+                    <FlatList
+                      data={wareHouse?.wareHouse}
+                      renderItem={renderItem}
+                      keyExtractor={item => item.CODE}
+                      onEndReachedThreshold={0}
+                      accessibilityElementsHidden
+                    />
+                  ) : (
+                    <View style={styles.loading}>
+                      <ActivityIndicator />
+                    </View>
+                  )}
+                </>
+              ) : (
+                <View style={styles.loading}>
+                  <ActivityIndicator />
+                </View>
+              )}
+            </ScrollView>
           </View>
-        )}
-
-        {/* </ScrollView> */}
-      </Pressable>
-    </>
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
   );
 }

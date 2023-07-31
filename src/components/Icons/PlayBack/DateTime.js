@@ -1,10 +1,22 @@
 import React from 'react';
-import { Svg,Path } from 'react-native-svg';
+import { Svg, Path, G, Defs, Rect, ClipPath } from 'react-native-svg';
 const DateTime = () => {
   return (
-    <Svg width={20} height={20} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-      <Path d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm64 80v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm128 0v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H208c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H336zM64 400v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H208zm112 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H336c-8.8 0-16 7.2-16 16z" />
+    <Svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <G clipPath="url(#clip0_5121_8130)">
+        <Path d="M18 5H6C4.89543 5 4 5.89543 4 7V19C4 20.1046 4.89543 21 6 21H18C19.1046 21 20 20.1046 20 19V7C20 5.89543 19.1046 5 18 5Z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <Path d="M16 3V7" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <Path d="M8 3V7" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <Path d="M4 11H20" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <Path d="M10 16H14" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      </G>
+      <Defs>
+        <ClipPath id="clip0_5121_8130">
+          <Rect width="24" height="24" fill="white" />
+        </ClipPath>
+      </Defs>
     </Svg>
+
   );
 };
 
