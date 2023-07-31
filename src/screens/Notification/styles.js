@@ -1,17 +1,18 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#fff",
+        backgroundColor: '#fff',
         height: '100%',
     },
     header: {
         display: 'flex',
+
         alignItems: "center",
         flexDirection: "row",
         // paddingTop: 36,
         borderBottomWidth: 1,
-        borderColor: "rgba(0, 0, 0, 0.05)",
+        borderColor: 'rgba(0, 0, 0, 0.05)',
         paddingLeft: 12,
         paddingRight: 12,
         paddingTop: 10,
@@ -22,10 +23,11 @@ export const styles = StyleSheet.create({
         display: 'flex',
         padding: 10,
         fontSize: 18,
+
         fontWeight: "700",
         color: "#fff",
         textAlign: 'center',
-        marginLeft: '30%'
+        marginLeft: '30%',
     },
     control: {
         paddingTop: 12,
@@ -35,30 +37,31 @@ export const styles = StyleSheet.create({
         gap: 8,
         justifyContent: 'center',
         borderBottomColor: 'rgba(0,0,0,0.04)',
-        borderBottomWidth: 1
+        borderBottomWidth: 1,
     },
     button: {
         paddingBottom: 8,
         paddingRight: 8,
-        paddingLeft: 8
+        paddingLeft: 8,
     },
     button_active: {
         borderBottomColor: '#0040FF',
         borderBottomWidth: 1,
+        color: '#0040FF',
     },
     sub_button: {
-        fontSize: 16,
+        // fontSize: 16,
         fontWeight: '400',
         lineHeight: 24,
         color: 'rgba(0,0,0,0.4)',
     },
     sub_button_active: {
-        color: '#0040FF'
+        color: '#0040FF',
     },
     content: {
         padding: 12,
         height: '85%',
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
     },
     date_block: {
         backgroundColor: 'white',
@@ -82,13 +85,13 @@ export const styles = StyleSheet.create({
         padding: 16,
         backgroundColor: 'rgba(20, 30, 210, 0.05)',
         borderRadius: 4,
-        position: 'relative'
+        position: 'relative',
     },
     new: {
         padding: 16,
         backgroundColor: 'rgba(20, 30, 210, 0.2)',
         borderRadius: 4,
-        position: 'relative'
+        position: 'relative',
     },
     title: {
         fontSize: 16,
@@ -120,4 +123,4 @@ export const styles = StyleSheet.create({
         backgroundColor: '#0040FF',
         borderRadius: 4,
     },
-})
+});

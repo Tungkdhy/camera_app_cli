@@ -25,6 +25,7 @@ import {
   setProvinceCodePlayBack,
   setReload,
   setIsBG,
+  setStatusPlayBack,
 } from '../../../redux/actions/playBackAction';
 const Modal = ({
   screen,
@@ -33,6 +34,7 @@ const Modal = ({
   setIsProvince,
   isProvince,
   animate,
+  status,
 }) => {
   const ref = React.useRef(null);
   const dispatch = useDispatch();
@@ -185,7 +187,59 @@ const Modal = ({
                     position={'top'}
                   /> */}
                 </View>
-
+                <View>
+                  <Text style={styles.label}>Trạng thái</Text>
+                  <View style={styles.choose_camera}>
+                    <RNPickerSelect
+                      placeholder={{}}
+                      doneText="Lựa chọn"
+                      style={styles}
+                      value={status}
+                      onValueChange={value => {
+                        console.log(value);
+                        dispatch(setStatusPlayBack(value));
+                      }}
+                      // onValueChange={value => handleGetCameraAct(value)}
+                      items={[
+                        {
+                          label: 'Tất cả',
+                          value: 'All',
+                        },
+                        {
+                          label: 'Đang trực tuyến',
+                          value: 'On',
+                        },
+                        {
+                          label: 'Mất kết nối',
+                          value: 'Lose',
+                        },
+                        {
+                          label: 'Sẵn sàng',
+                          value: 'Off',
+                        },
+                      ]}
+                    />
+                  </View>
+                  {/* <DropdownComponent
+                    data1={[
+                      {
+                        label: 'Tất cả',
+                        value: 'All',
+                      },
+                      ...camera.district.map(item => {
+                        return {
+                          // key: item.code,
+                          value: item.code,
+                          label: item.name,
+                        };
+                      }),
+                    ]}
+                    setData={value => {
+                      dispatch(setDistrictCode(value));
+                    }}
+                    value={camera.filter?.district_code}
+                  /> */}
+                </View>
                 <View>
                   <CheckBox
                     style={{

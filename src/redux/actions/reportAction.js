@@ -13,6 +13,7 @@ export const SET_PROVINCE_CODE_REPORT = 'SET_PROVINCE_CODE_REPORT';
 export const SET_DISTRICT_CODE_REPORT = 'SET_DISTRICT_CODE_REPORT';
 export const SET_CHECK_BG_REPORT = 'SET_CHECK_BG_REPORT';
 export const SET_SERVICE_CODE = 'SET_SERVICE_CODE';
+export const SET_STATUS = 'SET_STATUS';
 
 export const getListReport = data => {
   return {
@@ -104,6 +105,12 @@ export const setCheckBGReport = data => {
 export const setServiceCode = data => {
   return {
     type: SET_SERVICE_CODE,
+    payload: data,
+  };
+};
+export const setStatusAI = data => {
+  return {
+    type: SET_STATUS,
     payload: data,
   };
 };

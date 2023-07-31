@@ -10,6 +10,7 @@ import {
   SET_DISTRICT_CODE_PLAYBACK,
   SET_PROVINCE_CODE_PLAYBACK,
   SET_IS_BG,
+  SET_STATUS,
 } from '../actions/playBackAction';
 import { formatDDMMYY2 } from '../../utils';
 const initialState = {
@@ -24,6 +25,7 @@ const initialState = {
     isBG: true,
     province_code: 'All',
     district_code: 'All',
+    status: 'On',
   },
   isFullScreen: false,
   reload: false,
@@ -95,6 +97,14 @@ const playBackReducer = (state = initialState, action) => {
         filter: {
           ...state.filter,
           isBG: action.payload,
+        },
+      };
+    case SET_STATUS:
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          status: action.payload,
         },
       };
     default:
