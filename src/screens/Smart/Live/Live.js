@@ -151,7 +151,7 @@ const Live = ({ route, navigation }) => {
           </View>
         </View>
       </Modal>
-      <View style={styles.header}>
+      <View  style={styles.header}>
         <Pressable
           onPress={() => {
             dispatch(getPathStream([]));

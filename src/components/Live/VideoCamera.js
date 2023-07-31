@@ -146,14 +146,7 @@ const VideoCamera = ({
       setData([]);
       const setTime = setTimeout(() => {
         setData(cameraActive);
-      }, 400);
-
-      // if (
-      //   data.length > 0 &&
-      //   data[0]?.path?.PATH === cameraActive[0]?.path?.PATH
-      // ) {
-      //   setData(cameraActive);
-      // }
+      }, 200);
       return () => {
         clearTimeout(setTime);
       };
@@ -162,7 +155,6 @@ const VideoCamera = ({
       setData(cameraActive);
     }
   }, [cameraActive]);
-  // console.log(cameraActive);
   useEffect(() => {
     const data = streamPath.filter(
       (item, index) => index >= (count - 1) * 6 && index < count * 6,
@@ -194,13 +186,15 @@ const VideoCamera = ({
     if (isFullScreen && Platform?.OS === 'android' && showName) {
       let timeOut = setTimeout(() => {
         setShowName(!showName);
-      }, 4000);
+      }, 2000);
       return () => clearTimeout(timeOut);
     }
   }, [isFullScreen, showName]);
-
+  useEffect(() => {
+    StatusBar.setHidden(!isFullScreen)
+  }, [isFullScreen])
   return (
-    <View style={isFullScreen ? styles.contentFull : {}}>
+    <View style={isFullScreen ? styles.contentFull : styles.singleContent}>
       {
         <View style={isFullScreen ? styles.activeFull : styles.active}>
           {data && data.length > 0 ? (
@@ -234,8 +228,8 @@ const VideoCamera = ({
                       <Video
                         source={{
                           uri: `http://cameraai.cds.vinorsoft.com/${type}${type === 'playback/'
-                              ? item?.path.PATH
-                              : item?.data[0]?.PATH
+                            ? item?.path.PATH
+                            : item?.data[0]?.PATH
                             }`,
                         }}
                         ref={ref}
@@ -243,8 +237,6 @@ const VideoCamera = ({
                         volume={1.0}
                         isMuted={false}
                         resizeMode="cover"
-                        // shouldPlay={true}
-                        // useNativeControls={true}
                         isLooping
                         poster={
                           type === 'playback/'
@@ -282,7 +274,7 @@ const VideoCamera = ({
                             <Status color="#ff8d00" />
                           )}
                         </View>
-                        <View>
+                        <View style={styles.name_cam}>
                           <Text
                             style={
                               isFullScreen
@@ -330,7 +322,7 @@ const VideoCamera = ({
       }
       {!isFullScreen && type !== 'playback/' && (
         <SafeAreaView style={{ paddingBottom: 50 }}>
-          <View style={!onAndroid ? { height: '100%' } : { height: '68%' }}>
+          <View style={!onAndroid ? { height: '100%' } : { height: '100%' }}>
             <FlatList
               onEndReached={() => {
                 setCount(count + 1);

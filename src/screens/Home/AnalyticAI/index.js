@@ -39,24 +39,23 @@ function AnalyticAI({ navigation }) {
         };
         getData();
     }, [getListService, getListInfo]);
+    console.log('listService', listService);
     return (
         <>
             {listService &&
                 listService.length > 0 &&
-                listService?.map(service => {
-                    if (
-                        service.CODE !== '20230222000000000002' &&
-                        service.CODE !== '20230222000000000004'
-                    ) {
-                        return (
-                            <LineChartService
-                                key={service?.CODE}
-                                type={service?.SUBJECT_NAME}
-                                codeService={service?.CODE}
-                                listInfo={listInfo}
-                            />
-                        );
-                    }
+
+                listService?.filter(
+                    item => (item.CODE !== '20230222000000000002' && item.CODE !== '20230222000000000004'),
+                  )?.map(service => {
+                    return (
+                        <LineChartService
+                            key={service?.CODE}
+                            type={service?.SUBJECT_NAME}
+                            codeService={service?.CODE}
+                            listInfo={listInfo}
+                        />
+                    );
                 })}
         </>
     );

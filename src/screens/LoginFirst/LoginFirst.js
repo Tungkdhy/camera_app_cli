@@ -94,7 +94,7 @@ const LoginFirst = ({ navigation }) => {
       }, 1000);
       return () => clearTimeout(countNavigate);
     }
-  }, [modalSuccess]);
+  }, [modalSuccess, error2]);
 
   const handleLogout = async () => {
     navigation.navigate('Login');

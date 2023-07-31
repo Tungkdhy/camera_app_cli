@@ -260,23 +260,15 @@ const Modal = ({
                           services
                             ? services
                               .filter(
-                                item =>
-                                  item.CODE !== '20230222000000000002' &&
-                                  item.CODE !== '20230222000000000004',
+                                item => (item.CODE !== '20230222000000000002' && item.CODE !== '20230222000000000004'),
                               )
                               .map(item => {
-                                if (
-                                  item.CODE !== '20230222000000000002' &&
-                                  item.CODE !== '20230222000000000004'
-                                ) {
+
                                   return {
                                     key: item.CODE,
                                     value: item.CODE,
                                     label: item.SUBJECT_NAME,
                                   };
-                                } else {
-                                  return <></>;
-                                }
                               })
                             : []
                         }

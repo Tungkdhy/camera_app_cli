@@ -11,7 +11,7 @@ const Back = () => {
       <G clipPath="url(#clip0_4558_8240)">
         <Path
           d="M15 6L9 12L15 18"
-          stroke="black"
+          stroke="white"
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"

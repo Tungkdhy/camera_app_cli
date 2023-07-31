@@ -65,7 +65,7 @@ const Filter = ({ onClick, address, filter, playback, record }) => {
             transform:
               Platform.OS === 'ios'
                 ? [{ scaleX: 0.8 }, { scaleY: 0.8 }]
-                : [{ scaleX: 1.2 }, { scaleY: 1.2 }],
+                : [{ scaleX: 1 }, { scaleY: 1 }],
           }}
         />
       </View> */}

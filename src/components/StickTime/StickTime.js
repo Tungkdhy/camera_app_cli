@@ -82,7 +82,7 @@ const StickTime = ({ code, day, setChange }) => {
   }, [code, day]);
 
   return (
-    <View style={{ position: 'relative', paddingRight: 16 }}>
+    <View style={{ position: 'relative', paddingRight: 16, paddingLeft: 16 }}>
       <Text style={styles.time}>
         {formatDDMMYY2(playback.filter.day)}{' '}
         {stick_time.slice(0, 2) !== '24' ? stick_time : '24:00:00'}
