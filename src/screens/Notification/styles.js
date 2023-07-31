@@ -8,14 +8,14 @@ export const styles = StyleSheet.create({
     header: {
         display: 'flex',
 
-        alignItems: "center",
-        flexDirection: "row",
-        // paddingTop: 36,
+        alignItems: 'center',
+        flexDirection: 'row',
+        paddingTop: 36,
         borderBottomWidth: 1,
         borderColor: 'rgba(0, 0, 0, 0.05)',
         paddingLeft: 12,
         paddingRight: 12,
-        paddingTop: 10,
+        // paddingTop: 10,
         paddingBottom: 10,
         backgroundColor: '#0040FF',
     },
@@ -24,8 +24,8 @@ export const styles = StyleSheet.create({
         padding: 10,
         fontSize: 18,
 
-        fontWeight: "700",
-        color: "#fff",
+        fontWeight: '700',
+        color: '#fff',
         textAlign: 'center',
         marginLeft: '30%',
     },
@@ -40,8 +40,8 @@ export const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     button: {
-        paddingBottom: 8,
-        paddingRight: 8,
+        paddingBottom: 12,
+        paddingRight: 12,
         paddingLeft: 8,
     },
     button_active: {

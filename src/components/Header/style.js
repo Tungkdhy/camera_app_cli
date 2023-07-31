@@ -9,7 +9,7 @@ export const style = StyleSheet.create({
     color: '#ffffff',
     ...Platform.select({
       ios: {
-        paddingTop: 44,
+        paddingTop: 36,
       },
       android: {
         // paddingTop:12
