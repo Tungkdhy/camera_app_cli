@@ -28,6 +28,7 @@ import {
   setDistrictCodeReport,
   setCheckBGReport,
   setServiceCode,
+  setStatusAI,
 } from '../../../redux/actions/reportAction';
 import axiosClient from '../../../services/axiosClient';
 import { styles } from './styles';
@@ -38,6 +39,7 @@ const Modal = ({
   setIsProvince,
   isProvince,
   animate,
+  status,
 }) => {
   const ref = React.useRef(null);
   const dispatch = useDispatch();
@@ -68,6 +70,8 @@ const Modal = ({
     }
     getPackage();
   }, []);
+  console.log(services);
+
   return (
     <ModalLocation
       animationType={animate ? animate : 'fade'}
@@ -188,7 +192,58 @@ const Modal = ({
                   /> */}
                   {/* </View> */}
                 </View>
-
+                {/* <View>
+                  <Text style={styles.label}>Trạng thái</Text>
+                  <View style={styles.choose_camera}>
+                    <RNPickerSelect
+                      placeholder={{}}
+                      doneText="Lựa chọn"
+                      style={styles}
+                      value={status}
+                      onValueChange={value => {
+                        dispatch(setStatusAI(value));
+                      }}
+                      // onValueChange={value => handleGetCameraAct(value)}
+                      items={[
+                        {
+                          label: 'Tất cả',
+                          value: 'All',
+                        },
+                        {
+                          label: 'Đang trực tuyến',
+                          value: 'On',
+                        },
+                        {
+                          label: 'Mất kết nối',
+                          value: 'Lose',
+                        },
+                        {
+                          label: 'Sẵn sàng',
+                          value: 'Off',
+                        },
+                      ]}
+                    />
+                  </View> */}
+                {/* <DropdownComponent
+                    data1={[
+                      {
+                        label: 'Tất cả',
+                        value: 'All',
+                      },
+                      ...camera.district.map(item => {
+                        return {
+                          // key: item.code,
+                          value: item.code,
+                          label: item.name,
+                        };
+                      }),
+                    ]}
+                    setData={value => {
+                      dispatch(setDistrictCode(value));
+                    }}
+                    value={camera.filter?.district_code}
+                  /> */}
+                {/* </View> */}
                 {report?.filter.isBG && (
                   <View>
                     <Text style={styles.label}>Sự kiện</Text>
@@ -205,10 +260,15 @@ const Modal = ({
                           services
                             ? services
                               .filter(
-                                item => item.CODE !== '20230222000000000002',
+                                item =>
+                                  item.CODE !== '20230222000000000002' &&
+                                  item.CODE !== '20230222000000000004',
                               )
                               .map(item => {
-                                if (item.CODE !== '20230222000000000002') {
+                                if (
+                                  item.CODE !== '20230222000000000002' &&
+                                  item.CODE !== '20230222000000000004'
+                                ) {
                                   return {
                                     key: item.CODE,
                                     value: item.CODE,

@@ -104,10 +104,12 @@ export default function MenuPlayBack({ navigation, ...props }) {
                           style={styles.flex}>
                           <View style={styles.cameraName}>
                             <View>
-                              {it?.STATUS === 'On' ? (
+                              {it?.STATUS_ACTIVE === 0 ? (
                                 <Status />
-                              ) : (
+                              ) : it?.STATUS_ACTIVE === 3 ? (
                                 <Status color="#FF3300" />
+                              ) : (
+                                <Status color="#ff8d00" />
                               )}
                             </View>
                             <View style={styles.nameCamera}>
@@ -147,20 +149,33 @@ export default function MenuPlayBack({ navigation, ...props }) {
         const already = {
           record_already: wareHouse.filter?.isBG ? 1 : 0,
         };
-
+        const status =
+          wareHouse.filter.status === 'All'
+            ? {}
+            : {
+              status_active:
+                wareHouse.filter.status === 'On'
+                  ? '["0"]'
+                  : wareHouse.filter.status === 'Off'
+                    ? '["3"]'
+                    : '["1","2"]',
+            };
         const res = await axiosClient.get(
           '/camerainfo/get-list-camera-level-by-username-mobile/',
           {
             params: {
               ...province,
               ...district,
-              camera_status: camera.filter.camera_status,
+              ...status,
               ...already,
               camera_name: search,
             },
           },
         );
-        // console.log(already);
+        console.log({
+          ...province,
+          acc: wareHouse.filter.status,
+        });
 
         dispatch(setListCameraPlayBack(res));
         setLoading(false);
@@ -171,7 +186,7 @@ export default function MenuPlayBack({ navigation, ...props }) {
       }
     }
     getLocation();
-  }, [wareHouse.reload, camera.filter.camera_status, search]);
+  }, [wareHouse.reload, search]);
   useEffect(() => {
     async function getDistrict() {
       const prams =
@@ -251,6 +266,7 @@ export default function MenuPlayBack({ navigation, ...props }) {
             ? camera?.filter?.province_code
             : camera?.filter?.district_code
         }
+        status={camera.filter.camera_status}
       />
       <Pressable
         onPress={() => {

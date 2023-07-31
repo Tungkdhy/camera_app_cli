@@ -50,7 +50,7 @@ const Filter = ({ onClick, address, filter, playback, record }) => {
         </View>
       </TouchableOpacity>
 
-      <View style={styles.status}>
+      {/* <View style={styles.status}>
         <Text
           style={{ color: 'rgba(0, 0, 0, 0.8)', fontSize: 16, lineHeight: 20 }}>
           Hoạt động
@@ -68,7 +68,7 @@ const Filter = ({ onClick, address, filter, playback, record }) => {
                 : [{ scaleX: 1.2 }, { scaleY: 1.2 }],
           }}
         />
-      </View>
+      </View> */}
     </View>
   );
 };

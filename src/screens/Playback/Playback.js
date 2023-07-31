@@ -38,6 +38,7 @@ export default function PlayBack({ navigation, route }) {
       const res = await axiosClient.get(
         `/cameraManagement/get-camera-info-by-code/?camera_code=${code}`,
       );
+      console.log(res);
       if (res) {
         dispatch(getInfoCamera(res));
       }
@@ -91,6 +92,7 @@ export default function PlayBack({ navigation, route }) {
   //   setCameraActive(camActive2);
   // }, [playback.playBacks, camId, stick_time]);
   // console.log(cameraActive);
+  console.log(cameraInfo[0]);
   return (
     <View style={styles.container}>
       <Modal
@@ -202,9 +204,11 @@ export default function PlayBack({ navigation, route }) {
                 </View>
                 <View style={styles.descriptionInfo}>
                   <Text>
-                    {cameraInfo.length > 0 && cameraInfo[0]?.STATUS === 'On'
-                      ? 'Đang hoạt động'
-                      : 'Không hoạt động'}
+                    {cameraInfo.length > 0 && cameraInfo[0]?.STATUS_ACTIVE === 0
+                      ? 'Đang trực tuyến'
+                      : cameraInfo[0]?.STATUS_ACTIVE === 3
+                        ? 'Sẵn sàng'
+                        : 'Mất kết nối'}
                   </Text>
                 </View>
               </View>

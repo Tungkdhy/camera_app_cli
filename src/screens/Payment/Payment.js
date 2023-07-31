@@ -151,6 +151,7 @@ export default function Payment({ route, navigation }) {
           const service = report.filter?.ai_code
             ? { ai_service_code: report.filter?.ai_code }
             : {};
+          console.log(service);
           const res = await axiosClient.get('/camAI/get-list-cam-ai/', {
             params: {
               camera_code: route.params.camera.CODE,
@@ -159,7 +160,7 @@ export default function Payment({ route, navigation }) {
               day_end: formatDDMMYY2(report.filter.time),
             },
           });
-
+          console.log(res);
           const sortData = res?.data?.reverse();
           const day = res.AI_day.map(item => item.TIME);
           setLoading(false);

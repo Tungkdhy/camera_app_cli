@@ -147,9 +147,11 @@ const Live = ({ route, navigation }) => {
                 </View>
                 <View>
                   <Text style={styles.descriptionInfo}>
-                    {cameraInfo.length > 0 && cameraInfo[0]?.STATUS === 'On'
-                      ? 'Đang hoạt động'
-                      : 'Không hoạt động'}
+                    {cameraInfo.length > 0 && cameraInfo[0]?.STATUS_ACTIVE === 0
+                      ? 'Đang trực tuyến'
+                      : cameraInfo[0]?.STATUS_ACTIVE === 3
+                        ? 'Không hoạt động'
+                        : 'Mất kết nối'}
                   </Text>
                 </View>
               </View>

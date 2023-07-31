@@ -5,6 +5,7 @@ import {
   Text,
   ScrollView,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import { Back } from '../../components/Icons/Index';
 import axiosClient from '../../services/axiosClient';
@@ -150,12 +151,7 @@ function Notification({ route, navigation }) {
             setSmartReport(false);
             setPage(1);
           }}>
-          <Text
-            style={
-              !smartReport
-                ? { ...styles.sub_button, ...styles.sub_button_active }
-                : { ...styles.button }
-            }>
+          <Text style={!smartReport ? { color: '#0040FF' } : {}}>
             Thông báo hệ thống
           </Text>
         </Pressable>
@@ -165,11 +161,7 @@ function Notification({ route, navigation }) {
             setSmartReport(true);
             setPage(1);
           }}
-          style={
-            smartReport
-              ? { ...styles.button, ...styles.button_active }
-              : { ...styles.button }
-          }>
+          style={smartReport ? { color: '#0040FF' } : {s}}>
           <Text
             style={
               smartReport
@@ -243,7 +235,7 @@ function Notification({ route, navigation }) {
                     {notification.data.map(item => {
                       if (item.SEEN === 0) {
                         return (
-                          <Pressable
+                          <TouchableOpacity
                             key={item.CODE}
                             onPress={() =>
                               handleCheckNotification(item.CODE)
@@ -254,14 +246,14 @@ function Notification({ route, navigation }) {
                               <Text style={styles.title}>{item.DETAIL}</Text>
                               <View style={styles.tick} />
                             </View>
-                          </Pressable>
+                          </TouchableOpacity>
                         );
                       }
                     })}
                     {notification.data.map(item => {
                       if (item.SEEN === 1) {
                         return (
-                          <Pressable
+                          <TouchableOpacity
                             key={item.CODE}
                             onPress={() =>
                               handleCheckNotification(item.CODE)
@@ -271,7 +263,7 @@ function Notification({ route, navigation }) {
                               <Text style={styles.name}>{item.NAME}</Text>
                               <Text style={styles.title}>{item.DETAIL}</Text>
                             </View>
-                          </Pressable>
+                          </TouchableOpacity>
                         );
                       }
                     })}

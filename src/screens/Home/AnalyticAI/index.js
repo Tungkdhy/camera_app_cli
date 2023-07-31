@@ -44,14 +44,19 @@ function AnalyticAI({ navigation }) {
             {listService &&
                 listService.length > 0 &&
                 listService?.map(service => {
-                    return (
-                        <LineChartService
-                            key={service?.CODE}
-                            type={service?.SUBJECT_NAME}
-                            codeService={service?.CODE}
-                            listInfo={listInfo}
-                        />
-                    );
+                    if (
+                        service.CODE !== '20230222000000000002' &&
+                        service.CODE !== '20230222000000000004'
+                    ) {
+                        return (
+                            <LineChartService
+                                key={service?.CODE}
+                                type={service?.SUBJECT_NAME}
+                                codeService={service?.CODE}
+                                listInfo={listInfo}
+                            />
+                        );
+                    }
                 })}
         </>
     );

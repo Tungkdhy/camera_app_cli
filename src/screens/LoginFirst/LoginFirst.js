@@ -189,14 +189,10 @@ const LoginFirst = ({ navigation }) => {
                 <>
                   <Text style={styles.text_desc_modal}>
                     {error2 && !isValidatePassword(password) ? (
-                      <>
-                        Mật khẩu 6-20 ký tự. Ít nhất 1 ký tự viết hoa, 1 ký tự
-                        viết thường, 1 ký tự đặc biệt, 1 ký tự số, không chứa
-                        khoảng trắng.
-                      </>
+                      <>Sai thông tin đăng nhập</>
                     ) : (
                       <>
-                        <Text>Mật khẩu không đúng</Text>
+                        <Text>Sai thông tin đăng nhập</Text>
                       </>
                     )}
                   </Text>

@@ -68,11 +68,11 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     display: 'flex',
     alignItems: 'center',
-    // gap: 2,
+    gap: 2,
     ...Platform.select({
       ios: {
         paddingTop: 4,
-        paddingLeft: 8,
+        // paddingLeft: 8,
       },
     }),
   },
@@ -122,7 +122,7 @@ export const styles = StyleSheet.create({
   nameCamera: {
     paddingLeft: 4,
     color: '#000',
-    marginTop: -2
+    marginTop: -2,
   },
   imageItem: {
     width: '100%',
@@ -229,6 +229,6 @@ export const styles = StyleSheet.create({
   name_label: {
     display: 'flex',
     flexDirection: 'row',
-    paddingTop: 4
-  }
+    paddingTop: 4,
+  },
 });
