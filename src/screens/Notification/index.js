@@ -107,16 +107,16 @@ function Notification({ route, navigation }) {
   }, [reGetData, page, smartReport, groupNotification]);
 
   const seenNotification = async codeItem => {
-    setLoadingCheck(true)
+    setLoadingCheck(true);
     try {
       const res = await axiosClient.put(
         `notification/put-change-notification-seen/?notification_code=${codeItem}`,
       );
       setReGetData(!reGetData);
-      setLoadingCheck(false)
+      setLoadingCheck(false);
       return res;
     } catch (error) {
-      setLoadingCheck(false)
+      setLoadingCheck(false);
     }
   };
 
@@ -159,12 +159,7 @@ function Notification({ route, navigation }) {
             setSmartReport(false);
             setPage(1);
           }}>
-          <Text
-            style={
-              !smartReport
-                ? { ...styles.sub_button, ...styles.sub_button_active }
-                : { ...styles.button }
-            }>
+          <Text style={!smartReport ? { color: '#0040FF' } : {}}>
             Thông báo hệ thống
           </Text>
         </Pressable>
@@ -179,12 +174,7 @@ function Notification({ route, navigation }) {
               ? { ...styles.button, ...styles.button_active }
               : { ...styles.button }
           }>
-          <Text
-            style={
-              smartReport
-                ? { ...styles.sub_button, ...styles.sub_button_active }
-                : { ...styles.button }
-            }>
+          <Text style={smartReport ? { color: '#0040FF' } : {}}>
             Cảnh báo thông minh
           </Text>
         </Pressable>
@@ -252,7 +242,7 @@ function Notification({ route, navigation }) {
                     {notification.data.map(item => {
                       if (item.SEEN === 0) {
                         return (
-                          <Pressable
+                          <TouchableHighlight
                             key={item.CODE}
                             onPress={() =>
                               handleCheckNotification(item.CODE)
@@ -263,14 +253,14 @@ function Notification({ route, navigation }) {
                               <Text style={styles.title}>{item.DETAIL}</Text>
                               <View style={styles.tick} />
                             </View>
-                          </Pressable>
+                          </TouchableHighlight>
                         );
                       }
                     })}
                     {notification.data.map(item => {
                       if (item.SEEN === 1) {
                         return (
-                          <Pressable
+                          <TouchableHighlight
                             key={item.CODE}
                             onPress={() =>
                               handleCheckNotification(item.CODE)
@@ -280,7 +270,7 @@ function Notification({ route, navigation }) {
                               <Text style={styles.name}>{item.NAME}</Text>
                               <Text style={styles.title}>{item.DETAIL}</Text>
                             </View>
-                          </Pressable>
+                          </TouchableHighlight>
                         );
                       }
                     })}
@@ -299,10 +289,15 @@ function Notification({ route, navigation }) {
         visible={loadingCheck}
         transparent={true}
         animationType={'fade'}
-        style={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}}
-      >
-        <View style={{ height: '100%', display: 'flex', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.3)' }} >
-          <ActivityIndicator style={{marginTop: '50%'}} size={'large'}/>
+        style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+        <View
+          style={{
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0,0,0,0.3)',
+          }}>
+          <ActivityIndicator style={{ marginTop: '50%' }} size={'large'} />
         </View>
       </Modal>
     </View>

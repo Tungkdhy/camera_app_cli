@@ -24,6 +24,7 @@ import {
   setRefresh,
   setCheckBG,
   setService,
+  setStatus,
 } from '../../../redux/actions/cameraAction';
 import axiosClient from '../../../services/axiosClient';
 import DropdownComponent from '../../../components/Select/Select';
@@ -35,6 +36,7 @@ const Modal = ({
   setIsProvince,
   isProvince,
   animate,
+  status,
 }) => {
   const ref = React.useRef(null);
   const dispatch = useDispatch();
@@ -45,6 +47,7 @@ const Modal = ({
     dispatch(setDistrictCode('All'));
     dispatch(setRefresh(!camera.refresh));
     dispatch(setCheckBG(false));
+    dispatch(setStatus("All"));
     onShowModal();
   };
 
@@ -137,32 +140,34 @@ const Modal = ({
                 </View>
                 <View>
                   <Text style={styles.label}>Quận /Huyện</Text>
-                  <RNPickerSelect
-                    placeholder={{
-                      // label: listCamera ? listCamera?.data[0]?.CAMERA?.NAME_CAM : 'Tất cả',
-                      // value: listCamera ? listCamera?.data[0]?.CAMERA?.CODE : 0
-                      label: 'Tất cả',
-                      value: 'All',
-                    }}
-                    doneText="Lựa chọn"
-                    style={styles}
-                    value={camera.filter?.district_code}
-                    onValueChange={value => {
-                      dispatch(setDistrictCode(value));
-                    }}
-                    // onValueChange={value => handleGetCameraAct(value)}
-                    items={
-                      camera?.district
-                        ? camera.district.map(item => {
-                          return {
-                            key: item.code,
-                            value: item.code,
-                            label: item.name,
-                          };
-                        })
-                        : []
-                    }
-                  />
+                  <View style={styles.choose_camera}>
+                    <RNPickerSelect
+                      placeholder={{
+                        // label: listCamera ? listCamera?.data[0]?.CAMERA?.NAME_CAM : 'Tất cả',
+                        // value: listCamera ? listCamera?.data[0]?.CAMERA?.CODE : 0
+                        label: 'Tất cả',
+                        value: 'All',
+                      }}
+                      doneText="Lựa chọn"
+                      style={styles}
+                      value={camera.filter?.district_code}
+                      onValueChange={value => {
+                        dispatch(setDistrictCode(value));
+                      }}
+                      // onValueChange={value => handleGetCameraAct(value)}
+                      items={
+                        camera?.district
+                          ? camera.district.map(item => {
+                            return {
+                              key: item.code,
+                              value: item.code,
+                              label: item.name,
+                            };
+                          })
+                          : []
+                      }
+                    />
+                  </View>
                   {/* <DropdownComponent
                     data1={[
                       {
@@ -183,7 +188,58 @@ const Modal = ({
                     value={camera.filter?.district_code}
                   /> */}
                 </View>
-
+                <View>
+                  <Text style={styles.label}>Trạng thái</Text>
+                  <View style={styles.choose_camera}>
+                    <RNPickerSelect
+                      placeholder={{}}
+                      doneText="Lựa chọn"
+                      style={styles}
+                      value={status}
+                      onValueChange={value => {
+                        dispatch(setStatus(value));
+                      }}
+                      // onValueChange={value => handleGetCameraAct(value)}
+                      items={[
+                        {
+                          label: 'Tất cả',
+                          value: 'All',
+                        },
+                        {
+                          label: 'Đang trực tuyến',
+                          value: 'On',
+                        },
+                        {
+                          label: 'Mất kết nối',
+                          value: 'Lose',
+                        },
+                        {
+                          label: 'Sẵn sàng',
+                          value: 'Off',
+                        },
+                      ]}
+                    />
+                  </View>
+                  {/* <DropdownComponent
+                    data1={[
+                      {
+                        label: 'Tất cả',
+                        value: 'All',
+                      },
+                      ...camera.district.map(item => {
+                        return {
+                          // key: item.code,
+                          value: item.code,
+                          label: item.name,
+                        };
+                      }),
+                    ]}
+                    setData={value => {
+                      dispatch(setDistrictCode(value));
+                    }}
+                    value={camera.filter?.district_code}
+                  /> */}
+                </View>
                 <View style={styles.action}>
                   <Pressable
                     onPress={handleResetFilter}

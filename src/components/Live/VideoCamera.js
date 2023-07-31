@@ -199,6 +199,7 @@ const VideoCamera = ({
         <View style={isFullScreen ? styles.activeFull : styles.active}>
           {data && data.length > 0 ? (
             data.map((item, index) => {
+              console.log(item);
               return (
                 <>
                   <Pressable
@@ -266,7 +267,7 @@ const VideoCamera = ({
                           ) : (
                             type === 'playback/'
                               ? item.status === 'On'
-                              : item.data[0].STATUS === 'On'
+                              : item.status_active === 0
                           ) ? (
                             <Status />
                           ) : (
@@ -345,7 +346,7 @@ const VideoCamera = ({
                 justifyContent: 'space-between',
               }}
               keyExtractor={(item, index) => index}
-            // maxHeight={400}
+              maxHeight={400}
             />
           </View>
           <View style={{ height: 48 }} />

@@ -9,6 +9,7 @@ export const SET_RELOAD = 'SET_RELOAD';
 export const SET_PROVINCE_CODE_PLAYBACK = 'SET_PROVINCE_CODE_PLAYBACK';
 export const SET_DISTRICT_CODE_PLAYBACK = 'SET_DISTRICT_CODE_PLAYBACK';
 export const SET_IS_BG = 'SET_IS_BG';
+export const SET_STATUS = 'SET_STATUS';
 
 export const getListPlayBack = data => {
   return {
@@ -73,6 +74,12 @@ export const setDistrictCodePlayBack = data => {
 export const setIsBG = data => {
   return {
     type: SET_IS_BG,
+    payload: data,
+  };
+};
+export const setStatusPlayBack = data => {
+  return {
+    type: SET_STATUS,
     payload: data,
   };
 };

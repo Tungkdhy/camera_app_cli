@@ -118,10 +118,10 @@ export default function Stream({ navigation, ...props }) {
                           style={styles.flex}>
                           <View style={styles.cameraName}>
                             <View>
-                              {it?.STATUS === 'On' ? (
+                              {it?.STATUS_ACTIVE === 0 ? (
                                 <Status />
-                              ) : (
-                                <Status color="#FF3300" />
+                              ) :( it?.STATUS_ACTIVE === 3?
+                                <Status color="#FF3300" />:<Status color='#ff8d00'/>
                               )}
                             </View>
                             <View style={styles.nameCamera}>
@@ -141,6 +141,7 @@ export default function Stream({ navigation, ...props }) {
       </>
     );
   };
+  console.log(camera.filter.camera_status);
   // console.log(props.route.name);
   useEffect(() => {
     //Get warehouse
@@ -160,18 +161,22 @@ export default function Stream({ navigation, ...props }) {
               district_code: camera.filter?.district_code,
             }
             : {};
+        const status_active = camera.filter.camera_status === "All" ? {}:{
+          status_active: camera.filter.camera_status === "On" ?`["0"]`:camera.filter.camera_status === "Off" ?`["3"]`:`["1","2"]`
+        }
         const res = await axiosClient.get(
           '/camerainfo/get-list-camera-level-by-username-mobile/',
           {
             params: {
               ...province,
               ...district,
-              camera_status: camera.filter.camera_status,
+              ...status_active,
               camera_name: search,
               // ...already,
             },
           },
         );
+        console.log(res[0].LIST_CAMERA);
         dispatch(getListWareHouse(res));
         setLoading(false);
       } catch (e) {
@@ -180,7 +185,7 @@ export default function Stream({ navigation, ...props }) {
       }
     }
     getLocation();
-  }, [camera.refresh, camera.filter.camera_status, search]);
+  }, [camera.refresh, search]);
   useEffect(() => {
     async function getDistrict() {
       const prams =

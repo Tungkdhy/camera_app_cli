@@ -222,16 +222,9 @@ const Login = ({ navigation }) => {
                 <>
                   <Text style={styles.text_desc_modal}>
                     {error && !isValidatePassword(password) ? (
-                      <>
-                        Mật khẩu 6-20 ký tự. Ít nhất 1 ký tự viết hoa, 1 ký tự
-                        viết thường, 1 ký tự đặc biệt, 1 ký tự số, không chứa
-                        khoảng trắng.
-                      </>
+                      <>Sai thông tin đăng nhập</>
                     ) : !isValidatorUsername(userName) ? (
-                      <>
-                        Tên người dùng dài từ 6 - 15 ký tự. Chỉ chứa các ký tự
-                        viết thường và số.
-                      </>
+                      <>Sai thông tin đăng nhập</>
                     ) : (
                       <>
                         {/* <Text>{message}</Text> */}

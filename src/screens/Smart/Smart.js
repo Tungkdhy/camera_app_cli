@@ -241,7 +241,7 @@ export default function Smart({ navigation, ...props }) {
             params: {
               ...province,
               ...district,
-              camera_status: camera.filter.camera_status,
+              // status_active: report.filter.status === 'On' ? '["0"]' : '["3"]',
               ...already,
               ...camera_name,
               warehouse_code: code2,
@@ -334,6 +334,7 @@ export default function Smart({ navigation, ...props }) {
             ? camera?.filter?.province_code
             : camera?.filter?.district_code
         }
+        status={camera.filter.camera_status}
       />
       <Pressable
         onPress={() => {

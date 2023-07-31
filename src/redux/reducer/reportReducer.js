@@ -14,6 +14,7 @@ import {
   SET_DISTRICT_CODE_REPORT,
   SET_CHECK_BG_REPORT,
   SET_SERVICE_CODE,
+  SET_STATUS,
 } from '../actions/reportAction';
 const initialState = {
   reports: [],
@@ -28,6 +29,7 @@ const initialState = {
     isBG: true,
     province_code: 'All',
     district_code: 'All',
+    status: 'On',
   },
   isFullScreen: false,
   video_active: [
@@ -135,6 +137,14 @@ const reportReducer = (state = initialState, action) => {
         filter: {
           ...state.filter,
           ai_code: action.payload,
+        },
+      };
+    case SET_STATUS:
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          status: action.payload,
         },
       };
     default:
