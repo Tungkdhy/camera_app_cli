@@ -1,59 +1,67 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from 'react-native';
 
 export const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#fff",
-        flex: 1
+        backgroundColor: '#fff',
+        flex: 1,
     },
     header: {
-        alignItems: "center",
-        flexDirection: "row",
+        alignItems: 'center',
+        flexDirection: 'row',
         // paddingTop: 44,
         borderBottomWidth: 1,
-        borderColor: "rgba(0, 0, 0, 0.05)",
+        borderColor: 'rgba(0, 0, 0, 0.05)',
         paddingLeft: 12,
         paddingRight: 12,
         paddingTop: 10,
         paddingBottom: 10,
         backgroundColor: '#0040FF',
+        ...Platform.select({
+            ios: {
+                paddingTop: 44,
+            },
+            android: {
+                paddingTop: 10,
+            },
+        }),
     },
     text: {
         padding: 10,
         // paddingLeft: 16,
         fontSize: 18,
         marginLeft: '25%',
-        fontWeight: "700",
-        color: "#fff",
+        fontWeight: '700',
+        color: '#fff',
     },
     content: {
-        padding: 12
+        padding: 12,
     },
     item: {
         position: 'relative',
-        flexDirection: "column",
-        display: "flex",
+        flexDirection: 'column',
+        display: 'flex',
         paddingTop: 10,
-        paddingBottom: 10
+        paddingBottom: 10,
     },
     title: {
-        color: "rgba(0, 0, 0, 0.7)",
+        color: 'rgba(0, 0, 0, 0.7)',
     },
 
     label: {
-        color: "rgba(0, 0, 0, 0.4)",
+        color: 'rgba(0, 0, 0, 0.4)',
         marginTop: 8,
         letterSpacing: 0.9,
     },
     description: {
         flex: 2,
-        color: "#000000",
-        paddingLeft: 12
+        color: '#000000',
+        paddingLeft: 12,
     },
     input: {
         marginTop: 10,
         borderWidth: 1,
         padding: 12,
-        borderColor: "rgba(0, 0, 0, 0.2)",
+        borderColor: 'rgba(0, 0, 0, 0.2)',
         borderRadius: 4,
         fontWeight: '400',
         fontSize: 16,
@@ -61,7 +69,7 @@ export const styles = StyleSheet.create({
         color: 'rgba(0, 0, 0, 0.7)',
     },
     disable: {
-        backgroundColor: '#F7F7F7'
+        backgroundColor: '#F7F7F7',
     },
     labelButton: {
         width: '100%',
@@ -70,16 +78,16 @@ export const styles = StyleSheet.create({
         padding: 12,
         alignItems: 'center',
         borderRadius: 4,
-        backgroundColor: "#0040FF",
+        backgroundColor: '#0040FF',
         height: 48,
-        width: '100%'
+        width: '100%',
     },
     btnText: {
         color: '#ffffff',
         fontSize: 16,
         lineHeight: 24,
         width: '100%',
-        textAlign: 'center'
+        textAlign: 'center',
     },
     picker: {
         height: 48,
@@ -93,14 +101,14 @@ export const styles = StyleSheet.create({
         display: 'flex',
     },
     eyeIcon: {
-        position: "absolute",
+        position: 'absolute',
         top: 54,
         right: 12,
-        zIndex: 10
+        zIndex: 10,
     },
     borderError: {
-        borderColor: "red",
-        color: "red"
+        borderColor: 'red',
+        color: 'red',
     },
     loading: {
         flex: 1,
@@ -115,9 +123,9 @@ export const styles = StyleSheet.create({
         height: '100%',
     },
     checkIcon: {
-        position: "absolute",
+        position: 'absolute',
         top: 60,
         right: 44,
-        zIndex: 10
-    }
-})
+        zIndex: 10,
+    },
+});

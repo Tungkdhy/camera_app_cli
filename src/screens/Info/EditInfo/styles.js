@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     header: {
         alignItems: 'center',
         flexDirection: 'row',
-        paddingTop: 44,
+        paddingTop: 48,
         borderBottomWidth: 1,
         borderColor: 'rgba(0, 0, 0, 0.05)',
         paddingLeft: 12,
