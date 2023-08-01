@@ -43,6 +43,7 @@ export const styles = StyleSheet.create({
         paddingBottom: 12,
         paddingRight: 12,
         paddingLeft: 8,
+        fontSize: 18,
     },
     button_active: {
         borderBottomColor: '#0040FF',

@@ -78,7 +78,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     ...Platform.select({
       ios: {
-        paddingTop: 36,
+        paddingTop: 44,
       },
       android: {
         paddingTop: 16,

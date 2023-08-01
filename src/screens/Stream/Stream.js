@@ -164,6 +164,7 @@ export default function Stream({ navigation, ...props }) {
         const status_active = camera.filter.camera_status === "All" ? {}:{
           status_active: camera.filter.camera_status === "On" ?`["0"]`:camera.filter.camera_status === "Off" ?`["3"]`:`["1","2"]`
         }
+
         const res = await axiosClient.get(
           '/camerainfo/get-list-camera-level-by-username-mobile/',
           {
@@ -176,7 +177,7 @@ export default function Stream({ navigation, ...props }) {
             },
           },
         );
-        console.log(res[0].LIST_CAMERA);
+        // console.log(res[0].LIST_CAMERA);
         dispatch(getListWareHouse(res));
         setLoading(false);
       } catch (e) {
@@ -257,6 +258,7 @@ export default function Stream({ navigation, ...props }) {
                 ? camera?.filter?.province_code
                 : camera?.filter?.district_code
             }
+            status={camera.filter.camera_status}
           />
           <View style={styles.container}>
             <Filter
