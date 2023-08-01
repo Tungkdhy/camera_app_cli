@@ -10,9 +10,7 @@ import DisConnect from '../../../assets/images/DisConnect.png';
 function CountCamera({ countCamera, companyName }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>
-        Thống kê camera {companyName}
-      </Text>
+      <Text style={styles.header}>Thống kê camera {companyName}</Text>
       {/* content */}
       <View style={styles.contentHeader}>
         <View style={styles.boxHeader}>
@@ -28,8 +26,15 @@ function CountCamera({ countCamera, companyName }) {
           </View>
           <View style={styles.headerItem}>
             <ImageBackground style={styles.image_camera} source={DisConnect} />
-            <Text style={styles.number}>{Number(countCamera?.NO_CONNECT) + Number(countCamera?.INACTIVE) + Number(countCamera?.WEAK)}</Text>
+            <Text style={styles.number}>
+              {Number(countCamera?.INACTIVE) + Number(countCamera?.WEAK)}
+            </Text>
             <Text style={styles.name}>Mất kết nối</Text>
+          </View>
+          <View style={styles.headerItem}>
+            <ImageBackground style={styles.image_camera} source={DisConnect} />
+            <Text style={styles.number}>{Number(countCamera?.NO_CONNECT)}</Text>
+            <Text style={styles.name}>Sẵn sàng</Text>
           </View>
         </View>
       </View>

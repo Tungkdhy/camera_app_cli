@@ -47,6 +47,7 @@ const Modal = ({
     dispatch(setDistrictCodePlayBack('All'));
     dispatch(setReload(!wareHouse.reload));
     dispatch(setIsBG(false));
+    dispatch(setStatusPlayBack('On'));
     onShowModal();
   };
 
