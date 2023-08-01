@@ -47,7 +47,7 @@ const Modal = ({
     dispatch(setDistrictCode('All'));
     dispatch(setRefresh(!camera.refresh));
     dispatch(setCheckBG(false));
-    dispatch(setStatus("All"));
+    dispatch(setStatus('On'));
     onShowModal();
   };
 
