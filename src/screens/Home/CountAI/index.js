@@ -19,19 +19,14 @@ function CountAI({ countCamera, companyName }) {
           <Text style={styles.number}>{countCamera.MOVEMENT}</Text>
           <Text style={styles.name}>Camera dịch chuyển</Text>
         </View>
-        {/* <View style={styles.headerItem}>
+      </View>
+      <View style={styles.boxHeader}>
+      <View style={styles.headerItem}>
           <ImageBackground style={styles.image_camera} source={Object1} />
           <Text style={styles.number}>{countCamera.COMMON_OBJECT}</Text>
           <Text style={styles.name}>Đối tượng phổ biến</Text>
-        </View> */}
-      </View>
-      {/* <View style={styles.boxHeader}>
-        <View style={styles.headerItem}>
-          <ImageBackground style={styles.image_camera} source={Move} />
-          <Text style={styles.number}>{countCamera.MOVEMENT}</Text>
-          <Text style={styles.name}>Camera dịch chuyển</Text>
         </View>
-      </View> */}
+      </View>
     </View>
   );
 }
