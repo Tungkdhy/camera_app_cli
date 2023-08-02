@@ -191,8 +191,8 @@ const VideoCamera = ({
     }
   }, [isFullScreen, showName]);
   useEffect(() => {
-    StatusBar.setHidden(!isFullScreen)
-  }, [isFullScreen])
+    StatusBar.setHidden(!isFullScreen);
+  }, [isFullScreen]);
   return (
     <View style={isFullScreen ? styles.contentFull : styles.singleContent}>
       {
@@ -228,8 +228,8 @@ const VideoCamera = ({
                       <Video
                         source={{
                           uri: `http://cameraai.cds.vinorsoft.com/${type}${type === 'playback/'
-                            ? item?.path.PATH
-                            : item?.data[0]?.PATH
+                              ? item?.path.PATH
+                              : item?.data[0]?.PATH
                             }`,
                         }}
                         ref={ref}
@@ -297,15 +297,15 @@ const VideoCamera = ({
                             </TouchableOpacity>
                           </View>
 
-                          {(type === 'livestream' || onAndroid) && (
-                            <TouchableOpacity
-                              onPress={handleFullscreen}
-                              style={styles.iconSetting}>
-                              <FullScreenIcon
-                                color={isFullScreen ? '#fff' : 'black'}
-                              />
-                            </TouchableOpacity>
-                          )}
+                          {/* {(type === 'livestream' || onAndroid) && ( */}
+                          <TouchableOpacity
+                            onPress={handleFullscreen}
+                            style={styles.iconSetting}>
+                            <FullScreenIcon
+                              color={isFullScreen ? '#fff' : 'black'}
+                            />
+                          </TouchableOpacity>
+                          {/* )} */}
                         </View>
                       </>
                     )}
@@ -346,7 +346,7 @@ const VideoCamera = ({
                 justifyContent: 'space-between',
               }}
               keyExtractor={(item, index) => index}
-              maxHeight={400}
+              maxHeight={500}
             />
           </View>
           <View style={{ height: 48 }} />

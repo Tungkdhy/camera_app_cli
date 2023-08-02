@@ -121,7 +121,7 @@ const StickTime = ({ code, day, setChange }) => {
                       left:
                         screenWidth / 2 +
                         convertTimeToPx(item?.TIME_START) -
-                        15,
+                        30,
                       right: 2400 - convertTimeToPx(item?.TIME_END),
                       backgroundColor: '#29b1ed',
                       zIndex: 2,
@@ -134,7 +134,7 @@ const StickTime = ({ code, day, setChange }) => {
             })}
           <View
             style={{
-              width: screenWidth / 2 - 15,
+              width: screenWidth / 2 - 30,
               height: 40,
               backgroundColor: 'black',
             }}

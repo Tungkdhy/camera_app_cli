@@ -119,6 +119,7 @@ export const styles = StyleSheet.create({
     // marginRight: 12
     paddingRight: 8,
     marginRight: 8,
+    marginBottom: 30,
   },
   nameCamera: {
     paddingLeft: 4,
@@ -230,12 +231,12 @@ export const styles = StyleSheet.create({
   name_label: {
     display: 'flex',
     flexDirection: 'row',
-    paddingTop: 4
+    paddingTop: 4,
   },
   name_cam: {
     marginLeft: 8,
   },
   singleContent: {
     paddingLeft: 16,
-  }
+  },
 });
