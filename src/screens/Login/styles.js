@@ -21,9 +21,9 @@ export const styles = StyleSheet.create({
     paddingBottom: 16,
     width: '100%',
     textAlign: 'center',
-    marginTop: 25,
+    paddingTop: 25,
     fontWeight: 600,
-    lineHeight: 20,
+    lineHeight: 18,
   },
   actions: {
     display: 'flex',
